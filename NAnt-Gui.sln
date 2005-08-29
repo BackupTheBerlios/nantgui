@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nant-Gui.Core", "Nant-Gui.Core\Nant-Gui.Core.csproj", "{DEE131EE-4233-4ED3-8F31-956532A29E8F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui", "NAnt-Gui\NAnt-Gui.csproj", "{0AEAC6D0-BB00-465C-8580-D52160F60395}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{DEE131EE-4233-4ED3-8F31-956532A29E8F}.Debug.ActiveCfg = Debug|.NET
+		{DEE131EE-4233-4ED3-8F31-956532A29E8F}.Debug.Build.0 = Debug|.NET
+		{DEE131EE-4233-4ED3-8F31-956532A29E8F}.Release.ActiveCfg = Release|.NET
+		{DEE131EE-4233-4ED3-8F31-956532A29E8F}.Release.Build.0 = Release|.NET
+		{0AEAC6D0-BB00-465C-8580-D52160F60395}.Debug.ActiveCfg = Debug|.NET
+		{0AEAC6D0-BB00-465C-8580-D52160F60395}.Debug.Build.0 = Debug|.NET
+		{0AEAC6D0-BB00-465C-8580-D52160F60395}.Release.ActiveCfg = Release|.NET
+		{0AEAC6D0-BB00-465C-8580-D52160F60395}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
