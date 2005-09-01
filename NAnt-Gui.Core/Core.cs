@@ -62,11 +62,11 @@ namespace NAntGui.Core
 				{
 					HandleErrorInBuildFile(error);
 				}
-//				catch (Exception error)
-//				{
-//					// all other exceptions should have been caught
-//					MessageBox.Show(error.Message, "Internal Error");
-//				}
+				catch (Exception error)
+				{
+					// all other exceptions should have been caught
+					MessageBox.Show(error.Message, "Internal Error");
+				}
 			}
 			else
 			{

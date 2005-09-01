@@ -26,13 +26,12 @@ Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 ChangesAssociations=true
-LicenseFile=NAnt-Gui.Core\License.txt
+LicenseFile=License.txt
 AppCopyright=2005 Colin Svingen
 AppVersion=1.2.5.1
 AppID={{5A46EB86-CC66-403A-9789-E7D7413C20D2}
 AppContact=nantgui@swoogan.com
 UninstallDisplayIcon={app}\src\Ant.ico
-SourceDir=..\
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
@@ -45,23 +44,24 @@ Name: envpath; GroupDescription: Set environment variables; Description: Add bin
 ; Binary
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe.config; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
-Source: NAnt-Gui\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
-Source: NAnt-Gui\bin\Release\log4net.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; Source
 Source: NAnt-Gui.sln; DestDir: {app}\src; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.build; DestDir: {app}\src; Flags: ignoreversion; Components: src
+Source: Ant.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
+Source: Ant_small.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
+Source: License.txt; DestDir: {app}; Flags: ignoreversion
+Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
 ;	NAnt-Gui.Core
 Source: NAnt-Gui.Core\Images\*; DestDir: {app}\src\Nant-Gui.Core\Images; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.cs; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
-Source: NAnt-Gui.Core\Ant.ico; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
-Source: NAnt-Gui.Core\Ant_small.ico; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
-Source: NAnt-Gui.Core\NAnt-Gui.build; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
-Source: NAnt-Gui.Core\License.txt; DestDir: {app}; Flags: ignoreversion
-Source: NAnt-Gui.Core\NAnt-Gui.iss; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Core\NAnt-Gui.Core.build; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
 ;	NAnt-Gui
 Source: NAnt-Gui\app.config; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\*.cs; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\NAnt-Gui.csproj; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui\NAnt-Gui.build; DestDir: {app}\src\NAnt-Gui; Flags: ignoreversion; Components: src
 ; NAnt/NAnt-Contrib
 Source: C:\Program Files\{#NAntDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nant
 Source: C:\Program Files\{#NAntDir}\examples\*; DestDir: {app}\examples; Flags: ignoreversion recursesubdirs; Components: examples

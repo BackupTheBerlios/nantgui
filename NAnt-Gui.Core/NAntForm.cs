@@ -892,6 +892,7 @@ namespace NAntGui.Core
 			string projectName	= hasProjectName ? project.Name : filename;
 
 			_recentItems.Add(_buildFile);
+			_recentItems.Save();
 			this.UpdateRecentItemsMenu();
 
 			this.MainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);

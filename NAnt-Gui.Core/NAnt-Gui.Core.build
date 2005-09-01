@@ -1,16 +1,12 @@
-<project name="BWI.NAnt-Gui" default="Installer">
-  <description>Builds NAnt-Gui</description>
+<project name="NAnt-Gui.Core" default="Release">
+  <description>Builds NAnt-Gui.Core.dll</description>
   <property name="build.basedir" value="bin" unless="${property::exists('build.basedir')}"/>
-  <property name="build.icon" value="Ant.ico" unless="${property::exists('build.icon')}"/>
-  <!--<property name="nant.dir" value="nant" unless="${property::exists('nant.dir')}"/>-->
   <property name="nant.dir" value="nant-0.85-rc3" unless="${property::exists('nant.dir')}"/>
 
   <target name="Debug" description="Build Debug App">
     <echo message="Setting properties..." />
     <property name="build.dir" value="${build.basedir}\Debug" unless="${property::exists('build.dir')}"/>
-    <property name="project.name" value="BWI.NAnt-Gui" unless="${property::exists('project.name')}"/>
-    <property name="slingshot.config" value="Debug" unless="${property::exists('slingshot.config')}"/>
-    <property name="output" value="${build.dir}\NAnt-Gui.exe" unless="${property::exists('output')}"/>
+    <property name="output" value="${build.dir}\NAnt-Gui.Core.dll" unless="${property::exists('output')}"/>
     <property name="debug" value="true" unless="${property::exists('debug')}"/>
     <property name="unsafe" value="false" unless="${property::exists('unsafe')}"/>
     <property name="checked" value="false" unless="${property::exists('checked')}"/>
@@ -22,9 +18,7 @@
   <target name="Release" description="Build Release App">
     <echo message="Setting properties..." />
     <property name="build.dir" value="${build.basedir}\Release" unless="${property::exists('build.dir')}"/>
-    <property name="project.name" value="BWI.NAnt-Gui" unless="${property::exists('project.name')}"/>
-    <property name="slingshot.config" value="Release" unless="${property::exists('slingshot.config')}"/>
-    <property name="output" value="${build.dir}\NAnt-Gui.exe" unless="${property::exists('output')}"/>
+    <property name="output" value="${build.dir}\NAnt-Gui.Core.dll" unless="${property::exists('output')}"/>
     <property name="debug" value="false" unless="${property::exists('debug')}"/>
     <property name="unsafe" value="false" unless="${property::exists('unsafe')}"/>
     <property name="checked" value="false" unless="${property::exists('checked')}"/>
@@ -38,12 +32,12 @@
 
     <csc unsafe="${unsafe}"
       checked="${checked}"
-      target="winexe"
+      target="library"
       output="${output}"
       debug="${debug}"
       define="${define}"
       warninglevel="${warninglevel}"
-      win32icon="${build.icon}">
+      >
       <sources>
         <include name="*.cs" />
       </sources>
@@ -60,18 +54,9 @@
   </target>
 
   <target name="Clean">
-    <delete file="${build.basedir}\Debug\NAnt-Gui.exe" failonerror="false" />
-    <delete file="${build.basedir}\Debug\NAnt-Gui.pdb" failonerror="false" />
-    <delete file="${build.basedir}\Release\NAnt-Gui.exe" failonerror="false" />
-    <delete file="${build.basedir}\Release\NAnt-Gui.pdb" failonerror="false" />
-  </target>
-
-  <target name="Installer" description="Create InnoSetup Installer" depends="Release">
-    <innosetup script="NAnt-Gui.iss" />
-  </target>
-
-  <target name="TestInstaller" depends="Installer">
-	<fail message="Not implemented" />
-    <!-- <exec program="installer\NAnt-Gui-${build.version}.exe" /> -->
+    <delete file="${build.basedir}\Debug\NAnt-Gui.Core.dll" failonerror="false" />
+    <delete file="${build.basedir}\Debug\NAnt-Gui.Core.pdb" failonerror="false" />
+    <delete file="${build.basedir}\Release\NAnt-Gui.Core.dll" failonerror="false" />
+    <delete file="${build.basedir}\Release\NAnt-Gui.Core.pdb" failonerror="false" />
   </target>
 </project>

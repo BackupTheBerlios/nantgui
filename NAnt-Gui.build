@@ -1,0 +1,23 @@
+<project name="NAnt-Gui" default="Installer">
+  <description>Builds NAnt-Gui</description>
+
+  <target name="Installer" description="Create InnoSetup Installer" depends="Release">
+    <innosetup script="NAnt-Gui.iss" />
+  </target>
+  
+  <target name="Debug" description="Build Debug App">
+    <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Debug" />
+    <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Debug" />    
+  </target>
+
+  <target name="Release" description="Build Release App">    
+    <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Release" />
+    <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Release" />
+  </target>
+
+  <target name="Clean">
+    <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Clean" />
+    <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Clean" />
+  </target>
+
+</project>

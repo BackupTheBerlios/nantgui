@@ -7,7 +7,7 @@
     >
         <Build>
             <Settings
-                ApplicationIcon = "Ant.ico"
+                ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
                 AssemblyName = "NAnt-Gui.Core"
                 AssemblyOriginatorKeyFile = ""
@@ -126,14 +126,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "Ant.ico"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Ant_small.ico"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -193,7 +185,7 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "NAnt-Gui.build"
+                    RelPath = "NAnt-Gui.Core.build"
                     BuildAction = "None"
                 />
                 <File
