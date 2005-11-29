@@ -55,7 +55,11 @@ namespace NAntGui.Core
 		private bool _firstLoad = true;
 		private DockingManager _dockManager;
 		private string _buildFile;
-		private PopupMenu _editContextMenu = new PopupMenu();
+		private string _XML = "";
+
+		#region GUI Items
+		private PopupMenu _outputContextMenu = new PopupMenu();
+		private PopupMenu _xmlContextMenu = new PopupMenu();
 
 		private MenuCommand ExitMenuCommand;
 		private MenuCommand MenuCommand4;
@@ -114,7 +118,7 @@ namespace NAntGui.Core
 		private WindowContent _targetWindowContent;
 		private SaveFileDialog OutputSaveFileDialog;
 		private SaveFileDialog XMLSaveFileDialog;
-		private string _XML = "";
+		#endregion
 
 		public NAntForm(CommandLineOptions options)
 		{
@@ -125,12 +129,7 @@ namespace NAntGui.Core
 
 			InitializeComponent();
 
-			this.MainToolBar.ImageList				= this.ToolBarImageList;
-			this.OpenMenuCommand.ImageList			= this.ToolBarImageList;
-			this.SaveMenuCommand.ImageList			= this.ToolBarImageList;
-			this.ReloadMenuCommand.ImageList		= this.ToolBarImageList;
-			this.PropertiesMenuCommand.ImageList	= this.ToolBarImageList;
-			this.BuildMenuCommand.ImageList			= this.ToolBarImageList;
+			this.AssignImagesToMenuCommands();
 
 			// Reduce the amount of flicker that occurs when windows are redocked within
 			// the container. As this prevents unsightly backcolors being drawn in the
@@ -139,7 +138,8 @@ namespace NAntGui.Core
 //			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 
 			this.SetupDockManager();
-			this.CreateOutputTextBoxMenu();
+			this.CreateOutputContextMenu();
+			this.CreateXmlContextMenu();
 			this.CreateTargetTreeViewMenu();
 
 			this.TabControl.Appearance = TabControl.VisualAppearance.MultiDocument;
@@ -150,6 +150,16 @@ namespace NAntGui.Core
 
 			this.UpdateRecentItemsMenu();
 			this.LoadInitialBuildFile();
+		}
+
+		private void AssignImagesToMenuCommands()
+		{
+			this.MainToolBar.ImageList				= this.ToolBarImageList;
+			this.OpenMenuCommand.ImageList			= this.ToolBarImageList;
+			this.SaveMenuCommand.ImageList			= this.ToolBarImageList;
+			this.ReloadMenuCommand.ImageList		= this.ToolBarImageList;
+			this.PropertiesMenuCommand.ImageList	= this.ToolBarImageList;
+			this.BuildMenuCommand.ImageList			= this.ToolBarImageList;
 		}
 
 		private void SetupDockManager()
@@ -457,7 +467,7 @@ namespace NAntGui.Core
 			// 
 			this.CopyMenuCommand.Description = "MenuCommand";
 			this.CopyMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
-			this.CopyMenuCommand.Text = "&Copy";
+			this.CopyMenuCommand.Text = "Cop&y";
 			this.CopyMenuCommand.Click += new System.EventHandler(this.CopyText);
 			// 
 			// SelectAllMenuCommand
@@ -918,7 +928,7 @@ namespace NAntGui.Core
 			{
 				this.OutputTextBox.Copy();
 			}
-			else if (this.TabControl.SelectedTab == this.XMLTabPage)
+			else
 			{
 				this.XMLRichTextBox.Copy();
 			}
@@ -930,12 +940,41 @@ namespace NAntGui.Core
 			{
 				this.OutputTextBox.SelectAll();
 			}
-			else if (this.TabControl.SelectedTab == this.XMLTabPage)
+			else
 			{
 				this.XMLRichTextBox.SelectAll();
 			}
 		}
 
+		private void CopyOutputText(object sender, EventArgs e)
+		{
+			this.OutputTextBox.Copy();
+		}
+
+		private void SelectAllOutputText(object sender, EventArgs e)
+		{
+			this.OutputTextBox.SelectAll();
+		}
+
+		private void CopyXmlText(object sender, EventArgs e)
+		{
+			this.XMLRichTextBox.Copy();
+		}
+
+		private void CutXmlText(object sender, EventArgs e)
+		{
+			this.XMLRichTextBox.Cut();
+		}
+
+		private void PasteXmlText(object sender, EventArgs e)
+		{
+			this.XMLRichTextBox.Paste();
+		}
+
+		private void SelectAllXmlText(object sender, EventArgs e)
+		{
+			this.XMLRichTextBox.SelectAll();
+		}
 
 		public void DoClose()
 		{
@@ -950,28 +989,28 @@ namespace NAntGui.Core
 
 		private void DisableMenuCommandsAndButtons()
 		{
-			this.ReloadMenuCommand.Enabled			= false;
+			this.ReloadMenuCommand.Enabled		= false;
 			this.ReloadToolBarButton.Enabled	= false;
-			this.SaveMenuCommand.Enabled			= false;
+			this.SaveMenuCommand.Enabled		= false;
 			this.SaveToolBarButton.Enabled		= false;
 			this.StopToolBarButton.Enabled		= false;
-			this.SaveAsMenuCommand.Enabled			= false;
-			this.BuildMenuCommand.Enabled			= false;
+			this.SaveAsMenuCommand.Enabled		= false;
+			this.BuildMenuCommand.Enabled		= false;
 			this.BuildToolBarButton.Enabled		= false;
-			this.CloseMenuCommand.Enabled			= false;
+			this.CloseMenuCommand.Enabled		= false;
 		}
 
 		private void EnableMenuCommandsAndButtons()
 		{
-			this.ReloadMenuCommand.Enabled			= true;
+			this.ReloadMenuCommand.Enabled		= true;
 			this.ReloadToolBarButton.Enabled	= true;
-			this.SaveMenuCommand.Enabled			= true;
+			this.SaveMenuCommand.Enabled		= true;
 			this.SaveToolBarButton.Enabled		= true;
 			this.StopToolBarButton.Enabled		= true;
-			this.SaveAsMenuCommand.Enabled			= true;
-			this.BuildMenuCommand.Enabled			= true;
+			this.SaveAsMenuCommand.Enabled		= true;
+			this.BuildMenuCommand.Enabled		= true;
 			this.BuildToolBarButton.Enabled		= true;
-			this.CloseMenuCommand.Enabled			= true;
+			this.CloseMenuCommand.Enabled		= true;
 		}
 
 		private void OptionsMenuCommand_Click(object sender, EventArgs e)
@@ -1308,12 +1347,23 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void CreateOutputTextBoxMenu()
+		private void CreateOutputContextMenu()
 		{
-			MenuCommand copy = new MenuCommand("&Copy", new EventHandler(this.CopyText));
-			MenuCommand selectAll = new MenuCommand("Select &All", new EventHandler(this.SelectAllText));
+			MenuCommand copy = new MenuCommand("Cop&y", new EventHandler(this.CopyOutputText));
+			MenuCommand selectAll = new MenuCommand("Select &All", new EventHandler(this.SelectAllOutputText));
 
-			_editContextMenu.MenuCommands.AddRange(new MenuCommand[] {copy, selectAll});
+			_outputContextMenu.MenuCommands.AddRange(new MenuCommand[] {copy, selectAll});
+		}
+
+		private void CreateXmlContextMenu()
+		{
+			MenuCommand copy = new MenuCommand("Cop&y", new EventHandler(this.CopyXmlText));
+			MenuCommand cut = new MenuCommand("Cu&t", new EventHandler(this.CutXmlText));
+			MenuCommand paste = new MenuCommand("&Paste", new EventHandler(this.PasteXmlText));
+			MenuCommand spacer = new MenuCommand("-");
+			MenuCommand selectAll = new MenuCommand("Select &All", new EventHandler(this.SelectAllXmlText));
+
+			_xmlContextMenu.MenuCommands.AddRange(new MenuCommand[] {copy, cut, paste, spacer, selectAll});
 		}
 
 		private void OutputTextBox_MouseUp(object sender, MouseEventArgs e)
@@ -1321,7 +1371,7 @@ namespace NAntGui.Core
 			RichTextBox box = sender as RichTextBox;
 			if (e.Button == MouseButtons.Right)
 			{
-				_editContextMenu.TrackPopup(box.PointToScreen(new Point(e.X, e.Y)));
+				_outputContextMenu.TrackPopup(box.PointToScreen(new Point(e.X, e.Y)));
 			}
 		}
 
@@ -1330,7 +1380,7 @@ namespace NAntGui.Core
 			RichTextBox box = sender as RichTextBox;
 			if (e.Button == MouseButtons.Right)
 			{
-				_editContextMenu.TrackPopup(box.PointToScreen(new Point(e.X, e.Y)));
+				_xmlContextMenu.TrackPopup(box.PointToScreen(new Point(e.X, e.Y)));
 			}
 		}
 

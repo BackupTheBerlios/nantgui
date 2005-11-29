@@ -109,7 +109,8 @@ namespace NAntGui.Core
 
 			if (error.InnerException != null && error.InnerException.Message != null)
 			{
-				MessageBox.Show(error.Message, "Error encountered in build file");
+				string message = error.Message + Environment.NewLine + error.InnerException.Message;
+				MessageBox.Show(message , "Error encountered in build file");
 			}
 			else
 			{
