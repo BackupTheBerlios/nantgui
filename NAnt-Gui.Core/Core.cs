@@ -36,7 +36,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for Core.
 	/// </summary>
-	public class Core
+	public abstract class BuildRunner
 	{
 		public event BuildFileChangedEH BuildFileChanged;
 		public event BuildEventHandler BuildFinished;
@@ -48,7 +48,7 @@ namespace NAntGui.Core
 		private string		_buildFile;
 		private CommandLineOptions _options;
 
-		public Core(NAntForm nantForm)
+		public BuildRunner(NAntForm nantForm)
 		{
 			_nantForm	= nantForm;
 			_options	= nantForm.Options;
@@ -238,14 +238,13 @@ namespace NAntGui.Core
 		private void AddBuildListeners(NProject project)
 		{
 			BuildListenerCollection listeners = new BuildListenerCollection();
-			IBuildLogger lBuildLogger = new GuiLogger(_nantForm);
+			IBuildLogger buildLogger = new GuiLogger(_nantForm);
 
 			// set threshold of build logger equal to threshold of project
-			//lBuildLogger.Threshold = pProject.Threshold;
-			lBuildLogger.Threshold = Level.Info;
+			buildLogger.Threshold = project.Threshold;
 
 			// add build logger to listeners collection
-			listeners.Add(lBuildLogger);
+			listeners.Add(buildLogger);
 
 			// attach listeners to project
 			project.AttachBuildListeners(listeners);

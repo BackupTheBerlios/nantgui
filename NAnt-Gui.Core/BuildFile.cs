@@ -90,11 +90,6 @@ namespace NAntGui.Core
 			_watcher.DisableEvents();
 		}
 
-		public virtual void Build()
-		{
-			
-		}
-
 		public virtual bool SaveRequired
 		{
 			get{ return _isDirty; }

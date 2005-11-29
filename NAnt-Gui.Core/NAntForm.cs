@@ -49,7 +49,7 @@ namespace NAntGui.Core
 
 		private delegate void MessageEventHandler(string pMessage);
 
-		private Core _core;
+		private BuildRunner _core;
 		private CommandLineOptions _options;
 		private RecentItems _recentItems = new RecentItems();
 		private bool _firstLoad = true;
@@ -144,7 +144,7 @@ namespace NAntGui.Core
 
 			this.TabControl.Appearance = TabControl.VisualAppearance.MultiDocument;
 
-			_core = new Core(this);
+			_core = new BuildRunner(this);
 			_core.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
 			_core.BuildFinished += new BuildEventHandler(this.Build_Finished);
 
