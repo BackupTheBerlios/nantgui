@@ -300,8 +300,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Images\1.3.0_screen_1.png"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Images\MenuItems.bmp"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Images\nantgui-1.2.5beta2.png"
+                    BuildAction = "Content"
                 />
             </Include>
         </Files>
