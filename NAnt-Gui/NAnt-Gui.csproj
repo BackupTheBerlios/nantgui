@@ -20,7 +20,7 @@
                 PostBuildEvent = ""
                 RootNamespace = "NAnt_Gui"
                 RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
+                StartupObject = "NAntGui.AppEntry"
             >
                 <Config
                     Name = "Debug"

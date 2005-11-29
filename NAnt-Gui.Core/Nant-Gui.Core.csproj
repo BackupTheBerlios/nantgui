@@ -111,6 +111,12 @@
                     AssemblyName = "NAnt.Core"
                     HintPath = "..\..\..\..\..\..\Program Files\NAnt\bin\NAnt.Core.dll"
                 />
+                <Reference
+                    Name = "MagicLibrary"
+                    AssemblyName = "MagicLibrary"
+                    HintPath = "..\..\..\..\..\..\Program Files\Crownwood Consulting Ltd\Magic Library 1.7.4\Bin\MagicLibrary.DLL"
+                    AssemblyFolderKey = "hklm\dn\magic library"
+                />
             </References>
         </Build>
         <Files>
@@ -166,11 +172,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "License.txt"
-                    BuildAction = "Content"
+                    RelPath = "Main.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Main.cs"
+                    RelPath = "nant.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -189,8 +196,14 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "NAnt-Gui.iss"
-                    BuildAction = "None"
+                    RelPath = "NewProjectForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NewProjectForm.resx"
+                    DependentUpon = "NewProjectForm.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "OptionsForm.cs"
@@ -273,24 +286,8 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Images\build.bmp"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Images\open.bmp"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\reload.bmp"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\save.bmp"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\stop.bmp"
-                    BuildAction = "Content"
+                    RelPath = "Images\MenuItems.bmp"
+                    BuildAction = "EmbeddedResource"
                 />
             </Include>
         </Files>

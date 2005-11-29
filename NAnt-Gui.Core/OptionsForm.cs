@@ -1,17 +1,43 @@
+#region Copyleft and Copyright
+
+// NAnt-Gui - Gui frontend to the NAnt .NET build tool
+// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// Colin Svingen (nantgui@swoogan.com)
+
+#endregion
+
+using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for Options.
 	/// </summary>
-	public class OptionsForm : System.Windows.Forms.Form
+	public class OptionsForm : Form
 	{
-		private System.Windows.Forms.Button OKButton;
-		private System.Windows.Forms.Button CloseButton;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.NumericUpDown MaxRecentItemsUpDown;
-		private System.Windows.Forms.CheckBox HideTargetsCheckBox;
-		private System.ComponentModel.IContainer components = null;
+		private Button OKButton;
+		private Button CloseButton;
+		private Label label1;
+		private NumericUpDown MaxRecentItemsUpDown;
+		private CheckBox HideTargetsCheckBox;
+		private IContainer components = null;
 
 		public OptionsForm()
 		{
@@ -28,19 +54,20 @@ namespace NAntGui.Core
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
+			if (disposing)
 			{
-				if(components != null)
+				if (components != null)
 				{
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
+			base.Dispose(disposing);
 		}
 
 		#region Windows Form Designer generated code
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -109,12 +136,13 @@ namespace NAntGui.Core
 			this.AcceptButton = this.OKButton;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.CloseButton;
-			this.ClientSize = new System.Drawing.Size(352, 126);
+			this.ClientSize = new System.Drawing.Size(352, 133);
 			this.Controls.Add(this.MaxRecentItemsUpDown);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.CloseButton);
 			this.Controls.Add(this.OKButton);
 			this.Controls.Add(this.HideTargetsCheckBox);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -126,18 +154,19 @@ namespace NAntGui.Core
 			this.ResumeLayout(false);
 
 		}
+
 		#endregion
 
-		private void OptionsForm_Load(object sender, System.EventArgs e)
+		private void OptionsForm_Load(object sender, EventArgs e)
 		{
 			this.HideTargetsCheckBox.Checked = Settings.HideTargetsWithoutDescription;
 			this.MaxRecentItemsUpDown.Value = Settings.MaxRecentItems;
 		}
 
-		private void OKButton_Click(object sender, System.EventArgs e)
+		private void OKButton_Click(object sender, EventArgs e)
 		{
 			Settings.HideTargetsWithoutDescription = this.HideTargetsCheckBox.Checked;
-			Settings.MaxRecentItems = (int)this.MaxRecentItemsUpDown.Value;
+			Settings.MaxRecentItems = (int) this.MaxRecentItemsUpDown.Value;
 		}
 
 	}

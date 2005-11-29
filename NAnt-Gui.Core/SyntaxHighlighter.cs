@@ -1,4 +1,5 @@
 #region Copyleft and Copyright
+
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
 // Copyright (C) 2004-2005 Colin Svingen, Business Watch International
 //
@@ -16,7 +17,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (csvingen@businesswatch.ca)
+// Colin Svingen (nantgui@swoogan.com)
+
 #endregion
 
 using System.Text.RegularExpressions;
@@ -30,12 +32,16 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for SyntaxHighlighter.
 	/// </summary>
+
 	#region TestFixture
+
 #if TEST
 	[TestFixture]
 #endif
-	#endregion
-	public class SyntaxHighlighter
+
+		#endregion
+
+		public class SyntaxHighlighter
 	{
 		private const string BUILD_SUCCEEDED = "BUILD SUCCEEDED";
 		public const string BUILD_FAILED = "BUILD FAILED";
@@ -55,11 +61,14 @@ namespace NAntGui.Core
 			public const string SPACE = " ";
 		}
 
-
 		#region TestConstuctor
+
 #if TEST
-		public SyntaxHighlighter(){}
+		public SyntaxHighlighter()
+		{
+		}
 #endif
+
 		#endregion
 
 		public static string Highlight(string pText)
@@ -70,7 +79,7 @@ namespace NAntGui.Core
 			foreach (string lExpression in lExpressions)
 			{
 				Regex lRegex = new Regex(lExpression, RegexOptions.IgnoreCase);
-				
+
 				if (lRegex.IsMatch(lHighlightedText))
 				{
 					Match lMatch = lRegex.Match(lHighlightedText);
@@ -121,6 +130,7 @@ namespace NAntGui.Core
 		}
 
 		#region Tests
+
 #if TEST
 		[Test]
 		public void ModifyBuildFailed()
@@ -154,6 +164,7 @@ namespace NAntGui.Core
 			Assert.AreEqual(lModifiedError, Highlight(lError));
 		}
 #endif
+
 		#endregion
 	}
 }

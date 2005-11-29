@@ -49,6 +49,7 @@
         <include name="C:\Program Files\${nant.dir}\bin\NAnt.Win32Tasks.dll" />
         <include name="C:\Program Files\${nant.dir}\bin\log4net.dll" />
         <include name="C:\Program Files\NUnit 2.2.2\bin\nunit.framework.dll" />
+        <include name="C:\Program Files\Crownwood Consulting Ltd\Magic Library 1.7.4\Bin\MagicLibrary.dll" />
       </references>
     </csc>
   </target>

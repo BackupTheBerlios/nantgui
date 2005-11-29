@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "NAnt-Gui"
-#define MyAppVerName "NAnt-Gui 1.2.5"
+#define MyAppVerName "NAnt-Gui 1.3.0"
 #define MyAppPublisher "Colin Svingen"
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
@@ -21,14 +21,14 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=true
 OutputDir=installer
-OutputBaseFilename=NAnt-Gui-1.2.5-beta2
+OutputBaseFilename=NAnt-Gui-1.3.0
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 ChangesAssociations=true
 LicenseFile=License.txt
 AppCopyright=2005 Colin Svingen
-AppVersion=1.2.5.1
+AppVersion=1.3.0
 AppID={{5A46EB86-CC66-403A-9789-E7D7413C20D2}
 AppContact=nantgui@swoogan.com
 UninstallDisplayIcon={app}\src\Ant.ico
@@ -52,22 +52,25 @@ Source: Ant.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Ant_small.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: License.txt; DestDir: {app}; Flags: ignoreversion
 Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
-;	NAnt-Gui.Core
+; NAnt-Gui.Core
 Source: NAnt-Gui.Core\Images\*; DestDir: {app}\src\Nant-Gui.Core\Images; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.cs; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\NAnt-Gui.Core.build; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
-;	NAnt-Gui
+Source: NAnt-Gui.Core\Nant-Gui.Core.csproj; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
+; NAnt-Gui
 Source: NAnt-Gui\app.config; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\*.cs; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
-Source: NAnt-Gui\NAnt-Gui.csproj; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\NAnt-Gui.build; DestDir: {app}\src\NAnt-Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui\NAnt-Gui.csproj; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 ; NAnt/NAnt-Contrib
 Source: C:\Program Files\{#NAntDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nant
 Source: C:\Program Files\{#NAntDir}\examples\*; DestDir: {app}\examples; Flags: ignoreversion recursesubdirs; Components: examples
 Source: C:\Program Files\{#NAntDir}\doc\*; DestDir: {app}\nant-docs; Flags: ignoreversion recursesubdirs; Components: docs
 Source: C:\Program Files\{#NAntContribDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\contrib
 Source: C:\Program Files\{#NAntContribDir}\doc\*; DestDir: {app}\nantcontrib-docs; Flags: ignoreversion recursesubdirs; Components: docs
+; Libraries
+Source: ..\..\..\..\..\Program Files\Crownwood Consulting Ltd\Magic Library 1.7.4\Bin\MagicLibrary.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: docs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

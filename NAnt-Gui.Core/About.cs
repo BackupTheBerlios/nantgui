@@ -1,4 +1,5 @@
 #region Copyleft and Copyright
+
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
 // Copyright (C) 2004-2005 Colin Svingen, Business Watch International
 //
@@ -16,7 +17,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (csvingen@businesswatch.ca)
+// Colin Svingen (nantgui@swoogan.com)
+
 #endregion
 
 using System;
@@ -39,8 +41,8 @@ namespace NAntGui.Core
 		private Button OKButton;
 		private Label VersionLabel;
 		private Label label5;
-		private System.Windows.Forms.LinkLabel EmailLinkLabel;
-		private System.Windows.Forms.LinkLabel WebLinkLabel;
+		private LinkLabel EmailLinkLabel;
+		private LinkLabel WebLinkLabel;
 
 		/// <summary>
 		/// Required designer variable.
@@ -101,7 +103,7 @@ namespace NAntGui.Core
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(216, 24);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "NAnt-Gui: it\'s like NAnt but with a GUI.";
+			this.label1.Text = "NAnt-Gui: It\'s like NAnt, but with a GUI.";
 			// 
 			// label2
 			// 
@@ -205,12 +207,12 @@ namespace NAntGui.Core
 			this.VersionLabel.Text = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
 		}
 
-		private void linkLabel1_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			Process.Start("mailto://nantgui@swoogan.com");
 		}
 
-		private void WebLinkLabel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void WebLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			Process.Start("http://www.swoogan.com/nantgui.html");
 		}

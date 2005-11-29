@@ -19,7 +19,6 @@
 
 using System.Collections.Specialized;
 using System.IO;
-
 using NAnt.Core.Util;
 
 namespace NAntGui.Core
@@ -27,44 +26,25 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Represents the set of command-line options supported by NAnt.
 	/// </summary>
-	public class CommandLineOptions 
+	public class CommandLineOptions
 	{
-//		/// <summary>
-//		/// Gets or sets the target framework to use (overrides 
-//		/// NAnt.exe.config settings)
-//		/// </summary>
-//		/// <value>
-//		/// The framework that should be used.
-//		/// </value>
-//		/// <remarks>
-//		/// For a list of possible frameworks, see NAnt.exe.config, possible
-//		/// values include "net-1.0", "net-1.1", etc.
-//		/// </remarks>
-//		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="targetframework", ShortName="t",  Description="Specifies the framework to target")]
-//		public string TargetFramework 
-//		{
-//			get { return _targetFramework; }
-//			set { _targetFramework = value; }
-//		}
-//
-//		/// <summary>
-//		/// Gets or sets the target framework to use (overrides 
-//		/// NAnt.exe.config settings)
-//		/// </summary>
-//		/// <value>
-//		/// The framework that should be used.
-//		/// </value>
-//		/// <remarks>
-//		/// For a list of possible frameworks, see NAnt.exe.config, possible
-//		/// values include "net-1.0", "net-1.1", etc.
-//		/// </remarks>
-//		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="defaultframework", ShortName="k",  Description="Specifies the framework to target")]
-//		[Obsolete("Use the -[t]argetframework option instead.", false)]
-//		public string DefaultFramework 
-//		{
-//			get { return _targetFramework; }
-//			set { _targetFramework = value; }
-//		}
+		/// <summary>
+		/// Gets or sets the target framework to use (overrides 
+		/// NAnt.exe.config settings)
+		/// </summary>
+		/// <value>
+		/// The framework that should be used.
+		/// </value>
+		/// <remarks>
+		/// For a list of possible frameworks, see NAnt.exe.config, possible
+		/// values include "net-1.0", "net-1.1", etc.
+		/// </remarks>
+		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="targetframework", ShortName="t",  Description="Specifies the framework to target")]
+		public string TargetFramework 
+		{
+			get { return _targetFramework; }
+			set { _targetFramework = value; }
+		}
 
 		/// <summary>
 		/// Gets or sets the buildfile that should be executed.
@@ -75,59 +55,59 @@ namespace NAntGui.Core
 		/// <remarks>
 		/// Can be both a file or an URI.
 		/// </remarks>
-		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="buildfile", ShortName="f",  Description="Use given buildfile")]
-		public string BuildFile 
+		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="buildfile", ShortName="f", Description="Use given buildfile")]
+		public string BuildFile
 		{
 			get { return _buildFile; }
 			set { _buildFile = value; }
 		}
 
-//		/// <summary>
-//		/// Gets or sets a value indicating whether more information should be
-//		/// displayed during the build process.
-//		/// </summary>
-//		/// <value>
-//		/// <see langword="true" /> if more information should be displayed; 
-//		/// otherwise, <see langword="false" />. The default is <see langword="false" />.
-//		/// </value>
-//		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "verbose", ShortName="v", Description = "Displays more information during build process")]
-//		public bool Verbose 
-//		{
-//			get { return _verbose; }
-//			set { _verbose = value; }
-//		}
-//
-//		/// <summary>
-//		/// Gets or sets a value indicating whether debug information should be
-//		/// displayed during the build process.
-//		/// </summary>
-//		/// <value>
-//		/// <see langword="true" /> if debug information should be displayed; 
-//		/// otherwise, <see langword="false" />. The default is <see langword="false" />.
-//		/// </value>
-//		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "debug", Description = "Displays debug information during build process")]
-//		public bool Debug 
-//		{
-//			get { return _debug; }
-//			set { _debug = value; }
-//		}
-//        
-//		/// <summary>
-//		/// Gets or sets a value indicating whether only error and debug debug messages should be
-//		/// displayed during the build process.
-//		/// </summary>
-//		/// <value>
-//		/// <see langword="true" /> if only error or warning messages should be 
-//		/// displayed; otherwise, <see langword="false" />. The default is
-//		/// <see langword="false" />.
-//		/// </value>
-//		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "quiet", ShortName="q", Description = "Displays only error or warning messages during build process")]
-//		public bool Quiet 
-//		{
-//			get { return _quiet; }
-//			set { _quiet = value; }
-//		}
-//
+		/// <summary>
+		/// Gets or sets a value indicating whether more information should be
+		/// displayed during the build process.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if more information should be displayed; 
+		/// otherwise, <see langword="false" />. The default is <see langword="false" />.
+		/// </value>
+		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "verbose", ShortName="v", Description = "Displays more information during build process")]
+		public bool Verbose 
+		{
+			get { return _verbose; }
+			set { _verbose = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether debug information should be
+		/// displayed during the build process.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if debug information should be displayed; 
+		/// otherwise, <see langword="false" />. The default is <see langword="false" />.
+		/// </value>
+		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "debug", Description = "Displays debug information during build process")]
+		public bool Debug 
+		{
+			get { return _debug; }
+			set { _debug = value; }
+		}
+        
+		/// <summary>
+		/// Gets or sets a value indicating whether only error and debug debug messages should be
+		/// displayed during the build process.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if only error or warning messages should be 
+		/// displayed; otherwise, <see langword="false" />. The default is
+		/// <see langword="false" />.
+		/// </value>
+		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "quiet", ShortName="q", Description = "Displays only error or warning messages during build process")]
+		public bool Quiet 
+		{
+			get { return _quiet; }
+			set { _quiet = value; }
+		}
+
 //		/// <summary>
 //		/// Gets or sets a value indicating whether to produce emacs (and other
 //		/// editor) friendly output.
@@ -180,7 +160,7 @@ namespace NAntGui.Core
 		/// The list of properties that should be set.
 		/// </value>
 		[CommandLineArgument(CommandLineArgumentTypes.MultipleUnique, Name = "D", Description = "Use value for given property")]
-		public NameValueCollection Properties 
+		public NameValueCollection Properties
 		{
 			get { return _properties; }
 		}
@@ -210,7 +190,7 @@ namespace NAntGui.Core
 		/// The name of the file to log output to.
 		/// </value>
 		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="logfile", ShortName="l", Description="Use value as name of log output file")]
-		public FileInfo LogFile 
+		public FileInfo LogFile
 		{
 			get { return _logFile; }
 			set { _logFile = value; }
@@ -273,7 +253,7 @@ namespace NAntGui.Core
 //			get { return _noLogo; }
 //			set { _noLogo = value; }
 //		}
-//
+
 //		/// <summary>
 //		/// Gets or sets a value indicating whether the NAnt help should be
 //		/// printed.
@@ -301,13 +281,13 @@ namespace NAntGui.Core
 //			get { return _targets; }
 //		}
 
-//		private string _targetFramework;
+		private string _targetFramework;
 		private string _buildFile;
 //		private bool _noLogo;
 //		private bool _showHelp;
-//		private bool _quiet;
-//		private bool _verbose;
-//		private bool _debug;
+		private bool _quiet;
+		private bool _verbose;
+		private bool _debug;
 //		private bool _emacsMode;
 //		private int _indentationLevel = 0;
 //		private bool _findInParent;

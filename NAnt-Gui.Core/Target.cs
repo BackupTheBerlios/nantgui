@@ -1,4 +1,5 @@
 #region Copyleft and Copyright
+
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
 // Copyright (C) 2004-2005 Colin Svingen, Business Watch International
 //
@@ -16,7 +17,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (csvingen@businesswatch.ca)
+// Colin Svingen (nantgui@swoogan.com)
+
 #endregion
 
 using System.Xml;
@@ -40,10 +42,10 @@ namespace NAntGui.Core
 
 		private void ParseAttributes(XmlElement element)
 		{
-			this._name			= element.GetAttribute("name");
-			this._description	= element.GetAttribute("description");
-			string depends		= element.GetAttribute("depends");
-			this._depends		= this.SplitDepends(depends);
+			this._name = element.GetAttribute("name");
+			this._description = element.GetAttribute("description");
+			string depends = element.GetAttribute("depends");
+			this._depends = this.SplitDepends(depends);
 		}
 
 		private string[] SplitDepends(string depends)

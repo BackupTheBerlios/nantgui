@@ -1,3 +1,25 @@
+#region Copyleft and Copyright
+
+// NAnt-Gui - Gui frontend to the NAnt .NET build tool
+// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// Colin Svingen (nantgui@swoogan.com)
+
+#endregion
 
 #if TEST
 using NUnit.Framework;
@@ -8,36 +30,44 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for Outputter.
 	/// </summary>
+
 	#region TestFixture
+
 #if TEST
 	[TestFixture]
 #endif
-	#endregion
-	public class Outputter
+
+		#endregion
+
+		public class Outputter
 	{
-		private static string Header = 
-								@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033" 
-								+ @"{\fonttbl{\f0\fnil\fcharset0 Arial;}}" 
-								+ ColorTable.ColorTableRtf 
-								+ @"\viewkind4\uc1\pard\cf0\fs17 ";
+		private static string Header =
+			@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
+				+ @"{\fonttbl{\f0\fnil\fcharset0 Arial;}}"
+				+ ColorTable.ColorTableRtf
+				+ @"\viewkind4\uc1\pard\cf0\fs17 ";
 
 		private const string FOOTER = @"\par}";
 
 		private static string Output = "";
 
 		#region TestConstuctor
+
 #if TEST
-		public Outputter(){}
+		public Outputter()
+		{
+		}
 #endif
+
 		#endregion
 
 		public static void AppendRtfText(string pRtfText)
 		{
-			Header = 
-				@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033" 
-				+ @"{\fonttbl{\f0\fnil\fcharset0 Arial;}}" 
-				+ ColorTable.ColorTableRtf 
-				+ @"\viewkind4\uc1\pard\cf0\fs17 ";
+			Header =
+				@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
+					+ @"{\fonttbl{\f0\fnil\fcharset0 Arial;}}"
+					+ ColorTable.ColorTableRtf
+					+ @"\viewkind4\uc1\pard\cf0\fs17 ";
 
 			Output = pRtfText;
 		}
@@ -54,6 +84,7 @@ namespace NAntGui.Core
 		}
 
 		#region Tests
+
 #if TEST
 		[Test]
 		public void Document()
@@ -66,7 +97,7 @@ namespace NAntGui.Core
 			Assert.AreEqual(lExpectedRtf, RtfDocument);
 		}
 #endif
-		#endregion
 
+		#endregion
 	}
 }

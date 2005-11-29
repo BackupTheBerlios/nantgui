@@ -1,4 +1,5 @@
 #region Copyleft and Copyright
+
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
 // Copyright (C) 2004-2005 Colin Svingen, Business Watch International
 //
@@ -16,7 +17,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (csvingen@businesswatch.ca)
+// Colin Svingen (nantgui@swoogan.com)
+
 #endregion
 
 using System.IO;
@@ -35,10 +37,12 @@ namespace NAntGui.Core
 	{
 		private static readonly ILog Logger = LogManager.GetLogger("NAnt");
 
-		private TargetCollection	_targets	= new TargetCollection();
-		private PropertyCollection	_properties = new PropertyCollection();
-		private DependsCollection	_depends	= new DependsCollection();
-		private NAnt.Core.Project	_project;
+		private string _description = "";
+
+		private TargetCollection _targets = new TargetCollection();
+		private PropertyCollection _properties = new PropertyCollection();
+		private DependsCollection _depends = new DependsCollection();
+		private NAnt.Core.Project _project;
 
 		/// <summary>
 		/// Create a new project parser.
@@ -49,6 +53,7 @@ namespace NAntGui.Core
 			_project = project;
 
 			this.AddTargets(_project.Document);
+			this.AddDescription();
 			this.AddBaseDir();
 			this.AddProperties(_project.Document);
 			this.AddNonPropertyProperties(_project);
@@ -108,8 +113,10 @@ namespace NAntGui.Core
 				{
 					property.ExpandedValue = _project.ExpandProperties(property.Value, new Location("Buildfile"));
 				}
-				catch (BuildException){ /* ignore */ }
-				
+				catch (BuildException)
+				{ /* ignore */
+				}
+
 				if (!_project.Properties.Contains(property.Name))
 				{
 					_project.Properties.AddReadOnly(property.Name, property.ExpandedValue);
@@ -126,18 +133,18 @@ namespace NAntGui.Core
 
 		private void AddTstamps(NAnt.Core.Project pProject)
 		{
-			foreach (XmlElement lElement in pProject.Document.GetElementsByTagName("tstamp")) 
+			foreach (XmlElement lElement in pProject.Document.GetElementsByTagName("tstamp"))
 			{
-				if (TypeFactory.TaskBuilders.Contains(lElement.Name)) 
+				if (TypeFactory.TaskBuilders.Contains(lElement.Name))
 				{
-					TStampTask task = (TStampTask)pProject.CreateTask(lElement);
-					if (task != null) 
+					TStampTask task = (TStampTask) pProject.CreateTask(lElement);
+					if (task != null)
 					{
 						task.Execute();
 
 						Property lProperty = new Property(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value, false);
 						lProperty.ExpandedValue = lProperty.Value;
-						_properties.Add(lProperty);							
+						_properties.Add(lProperty);
 					}
 				}
 			}
@@ -145,23 +152,30 @@ namespace NAntGui.Core
 
 		private void AddReadRegistrys(NAnt.Core.Project pProject)
 		{
-			foreach (XmlElement lElement in pProject.Document.GetElementsByTagName("readregistry")) 
+			foreach (XmlElement lElement in pProject.Document.GetElementsByTagName("readregistry"))
 			{
-				if (TypeFactory.TaskBuilders.Contains(lElement.Name)) 
+				if (TypeFactory.TaskBuilders.Contains(lElement.Name))
 				{
-					ReadRegistryTask task = (ReadRegistryTask)pProject.CreateTask(lElement);
-					if (task != null && task.PropertyName != null) 
+					ReadRegistryTask task = (ReadRegistryTask) pProject.CreateTask(lElement);
+					if (task != null && task.PropertyName != null)
 					{
 						task.Execute();
 
 						Property lProperty = new Property(task.PropertyName, task.Properties[task.PropertyName], lElement.ParentNode.Attributes["name"].Value, false);
 						lProperty.ExpandedValue = lProperty.Value;
-						_properties.Add(lProperty);							
+						_properties.Add(lProperty);
 					}
 				}
 			}
 		}
-	
+
+		private void AddDescription()
+		{
+			foreach (XmlElement lElement in _project.Document.GetElementsByTagName("description"))
+			{
+				_description = lElement.InnerText;
+			}
+		}
 
 		#region Properties
 
@@ -192,7 +206,7 @@ namespace NAntGui.Core
 
 		public string Description
 		{
-			get { return ""; }
+			get { return _description; }
 		}
 
 		#endregion

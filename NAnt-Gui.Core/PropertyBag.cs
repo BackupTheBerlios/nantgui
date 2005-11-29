@@ -325,7 +325,6 @@ namespace Flobbster.Windows.Forms
 		}
 
 
-
 		/// <summary>
 		/// Gets or sets a collection of additional Attributes for this property.  This can
 		/// be used to specify attributes beyond those supported intrinsically by the
@@ -402,7 +401,7 @@ namespace Flobbster.Windows.Forms
 			get { return type; }
 			set { type = value; }
 		}
-	
+
 		#region IComparable Members
 
 //		public int CompareTo(object obj)

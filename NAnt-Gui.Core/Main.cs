@@ -1,4 +1,5 @@
 #region Copyleft and Copyright
+
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
 // Copyright (C) 2004-2005 Colin Svingen, Business Watch International
 //
@@ -16,7 +17,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (csvingen@businesswatch.ca)
+// Colin Svingen (nantgui@swoogan.com)
+
 #endregion
 
 using System;
@@ -38,20 +40,20 @@ namespace NAntGui.Core
 		/// </summary>
 		public static int Run(string[] args)
 		{
-			AppDomain.CurrentDomain.AssemblyResolve += 
+			AppDomain.CurrentDomain.AssemblyResolve +=
 				new ResolveEventHandler(ResolveHandler);
 
 			CommandLineOptions cmdLineOptions = new CommandLineOptions();
 
-			try 
+			try
 			{
-				_commandLineParser = new CommandLineParser(typeof(CommandLineOptions), false);
+				_commandLineParser = new CommandLineParser(typeof (CommandLineOptions), false);
 				_commandLineParser.Parse(args, cmdLineOptions);
-			} 
-			catch (CommandLineArgumentException ex) 
+			}
+			catch (CommandLineArgumentException ex)
 			{
 				// Write logo banner to console if parser was created successfully
-				if (_commandLineParser != null) 
+				if (_commandLineParser != null)
 				{
 					Console.WriteLine(_commandLineParser.LogoBanner);
 					// insert empty line
@@ -63,13 +65,13 @@ namespace NAntGui.Core
 				Exception nestedException = ex.InnerException;
 				// set initial indentation level for the nested exceptions
 				int exceptionIndentationLevel = 0;
-				while (nestedException != null && !StringUtils.IsNullOrEmpty(nestedException.Message)) 
+				while (nestedException != null && !StringUtils.IsNullOrEmpty(nestedException.Message))
 				{
 					// indent exception message with 4 extra spaces 
 					// (for each nesting level)
 					exceptionIndentationLevel += 4;
 					// output exception message
-					Console.Error.WriteLine(new string(' ', exceptionIndentationLevel) 
+					Console.Error.WriteLine(new string(' ', exceptionIndentationLevel)
 						+ nestedException.Message);
 					// move on to next inner exception
 					nestedException = nestedException.InnerException;
@@ -95,7 +97,7 @@ namespace NAntGui.Core
 			return 0;
 		}
 
-		static Assembly ResolveHandler(object sender, ResolveEventArgs args) 
+		static Assembly ResolveHandler(object sender, ResolveEventArgs args)
 		{
 			const string nantCoreAssembly = "NAnt.Core.dll";
 			string nantPath = @"C:\Program Files\nant-0.85-rc3\bin\";

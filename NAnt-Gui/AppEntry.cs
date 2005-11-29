@@ -1,6 +1,7 @@
 #region Copyleft and Copyright
+
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +17,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (csvingen@businesswatch.ca)
+// Colin Svingen (nantgui@swoogan.com)
+
 #endregion
 
 using System;
@@ -35,13 +37,13 @@ namespace NAntGui
 		[STAThread]
 		private static int Main(string[] args)
 		{
-			AppDomain.CurrentDomain.AssemblyResolve += 
+			AppDomain.CurrentDomain.AssemblyResolve +=
 				new ResolveEventHandler(ResolveHandler);
 
 			return NAntGui.Core.Main.Run(args);
 		}
 
-		static Assembly ResolveHandler(object sender, ResolveEventArgs args) 
+		static Assembly ResolveHandler(object sender, ResolveEventArgs args)
 		{
 			const string nantCoreAssembly = "NAnt.Core.dll";
 			string nantPath = @"C:\Program Files\nant-0.85-rc3\bin\";
