@@ -1452,6 +1452,7 @@ namespace NAntGui.Core
 				}
 				this.Text = this.Text.TrimEnd(new char[] {'*'});
 				this.LoadBuildFile(this.XMLSaveFileDialog.FileName);
+//				_buildFile = this.XMLSaveFileDialog.FileName;
 			}
 		}
 
