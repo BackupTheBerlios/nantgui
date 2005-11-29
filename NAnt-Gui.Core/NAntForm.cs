@@ -79,7 +79,7 @@ namespace NAntGui.Core
 		private MenuCommand HelpMenuItem;
 		private MenuCommand AboutMenuItem;
 		private MenuCommand NAntMenuItem;
-		private MenuCommand RunMenuItem;
+		private MenuCommand BuildMenuItem;
 		private StatusBarPanel ProgressPanel;
 		private MenuCommand EditMainMenuItem;
 		private MenuCommand CopyMenuItem;
@@ -130,7 +130,7 @@ namespace NAntGui.Core
 			this.SaveMenuItem.ImageList			= this.ToolBarImageList;
 			this.ReloadMenuItem.ImageList		= this.ToolBarImageList;
 			this.PropertiesMenuItem.ImageList	= this.ToolBarImageList;
-			this.RunMenuItem.ImageList			= this.ToolBarImageList;
+			this.BuildMenuItem.ImageList			= this.ToolBarImageList;
 
 			// Reduce the amount of flicker that occurs when windows are redocked within
 			// the container. As this prevents unsightly backcolors being drawn in the
@@ -263,7 +263,7 @@ namespace NAntGui.Core
 			this.TargetsMenuItem = new Crownwood.Magic.Menus.MenuCommand();
 			this.PropertiesMenuItem = new Crownwood.Magic.Menus.MenuCommand();
 			this.NAntMenuItem = new Crownwood.Magic.Menus.MenuCommand();
-			this.RunMenuItem = new Crownwood.Magic.Menus.MenuCommand();
+			this.BuildMenuItem = new Crownwood.Magic.Menus.MenuCommand();
 			this.ToolsMenuItem = new Crownwood.Magic.Menus.MenuCommand();
 			this.OptionsMenuItem = new Crownwood.Magic.Menus.MenuCommand();
 			this.HelpMenuItem = new Crownwood.Magic.Menus.MenuCommand();
@@ -501,17 +501,17 @@ namespace NAntGui.Core
 			this.NAntMenuItem.Description = "MenuItem";
 			this.NAntMenuItem.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
 				{
-					this.RunMenuItem
+					this.BuildMenuItem
 				});
 			this.NAntMenuItem.Text = "&NAnt";
 			// 
 			// RunMenuItem
 			// 
-			this.RunMenuItem.Description = "MenuItem";
-			this.RunMenuItem.ImageIndex = 7;
-			this.RunMenuItem.Shortcut = System.Windows.Forms.Shortcut.F5;
-			this.RunMenuItem.Text = "&Build";
-			this.RunMenuItem.Click += new System.EventHandler(this.RunMenuItem_Click);
+			this.BuildMenuItem.Description = "MenuItem";
+			this.BuildMenuItem.ImageIndex = 7;
+			this.BuildMenuItem.Shortcut = System.Windows.Forms.Shortcut.F5;
+			this.BuildMenuItem.Text = "&Build";
+			this.BuildMenuItem.Click += new System.EventHandler(this.RunMenuItem_Click);
 			// 
 			// ToolsMenuItem
 			// 
@@ -944,6 +944,34 @@ namespace NAntGui.Core
 			this.ClearOutput();
 			this.TargetsTreeView.Nodes.Clear();
 			this.ProjectPropertyGrid.SelectedObject = null;
+
+			this.DisableMenuItemsAndButtons();
+		}
+
+		private void DisableMenuItemsAndButtons()
+		{
+			this.ReloadMenuItem.Enabled			= false;
+			this.ReloadToolBarButton.Enabled	= false;
+			this.SaveMenuItem.Enabled			= false;
+			this.SaveToolBarButton.Enabled		= false;
+			this.StopToolBarButton.Enabled		= false;
+			this.SaveAsMenuItem.Enabled			= false;
+			this.BuildMenuItem.Enabled			= false;
+			this.BuildToolBarButton.Enabled		= false;
+			this.CloseMenuItem.Enabled			= false;
+		}
+
+		private void EnableMenuItemsAndButtons()
+		{
+			this.ReloadMenuItem.Enabled			= true;
+			this.ReloadToolBarButton.Enabled	= true;
+			this.SaveMenuItem.Enabled			= true;
+			this.SaveToolBarButton.Enabled		= true;
+			this.StopToolBarButton.Enabled		= true;
+			this.SaveAsMenuItem.Enabled			= true;
+			this.BuildMenuItem.Enabled			= true;
+			this.BuildToolBarButton.Enabled		= true;
+			this.CloseMenuItem.Enabled			= true;
 		}
 
 		private void OptionsMenuItem_Click(object sender, EventArgs e)
@@ -955,7 +983,7 @@ namespace NAntGui.Core
 		private void BuildFileLoaded(Project project)
 		{
 			this.ClearOutput();
-
+			this.EnableMenuItemsAndButtons();
 			this.UpdateDisplay(project);
 			this.AddTargets(project);
 			this.AddProperties(project);
@@ -1127,7 +1155,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void RunMenuItemClick(object sender, EventArgs e)
+		private void BuildMenuItem_Click(object sender, EventArgs e)
 		{
 			this.ClearOutput();
 			_core.Run(_buildFile);
@@ -1162,7 +1190,7 @@ namespace NAntGui.Core
 
 		private void RecentFile_Clicked(object sender, EventArgs e)
 		{
-			MenuItem lItem = (MenuItem) sender;
+			MenuCommand lItem = (MenuCommand) sender;
 			this.LoadBuildFile(lItem.Text.Substring(2));
 		}
 
@@ -1224,10 +1252,13 @@ namespace NAntGui.Core
 
 		private void Save()
 		{
-			using (TextWriter writer = File.CreateText(_buildFile))
+			if (File.Exists(_buildFile))
 			{
-				writer.Write(this.XMLRichTextBox.Text);
-				this.Text = this.Text.TrimEnd(new char[] {'*'});
+				using (TextWriter writer = File.CreateText(_buildFile))
+				{
+					writer.Write(this.XMLRichTextBox.Text);
+					this.Text = this.Text.TrimEnd(new char[] {'*'});
+				}
 			}
 		}
 
@@ -1311,10 +1342,10 @@ namespace NAntGui.Core
 
 		private void CreateTargetTreeViewMenu()
 		{
-			MenuCommand run = new MenuCommand("&Run", new EventHandler(this.RunMenuItemClick));
-			run.ImageList = this.ToolBarImageList;
-			run.ImageIndex = 7;
-			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {run});
+			MenuCommand build = new MenuCommand("&Build", new EventHandler(this.BuildMenuItem_Click));
+			build.ImageList = this.ToolBarImageList;
+			build.ImageIndex = 7;
+			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {build});
 		}
 
 		private void TargetsMenuItem_Click(object sender, EventArgs e)

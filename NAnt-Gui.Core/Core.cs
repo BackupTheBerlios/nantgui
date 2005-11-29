@@ -77,7 +77,6 @@ namespace NAntGui.Core
 			{
 				throw new BuildFileNotFoundException(buildFile + " not found.");
 			}
-
 		}
 
 		private void LoadingBuildFile(string buildFile)
@@ -210,7 +209,10 @@ namespace NAntGui.Core
 
 		public void Stop()
 		{
-			_thread.Abort();
+			if (_thread != null)
+			{
+				_thread.Abort();
+			}
 		}
 
 		/// <summary>
