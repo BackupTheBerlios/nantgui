@@ -33,21 +33,15 @@ namespace NAntGui.Core
 	/// </summary>
 	public class Watcher
 	{
+		public event VoidVoid BuildFileChanged;
+		public event VoidVoid BuildFileDeleted;
 		private FileSystemWatcher _watcher = new FileSystemWatcher();
-		private Core _core;
-		private NAntForm _nantForm;
 
-		public Watcher(Core core, NAntForm nantForm)
+		public Watcher()
 		{
-			Assert.NotNull(core, "core");
-			Assert.NotNull(nantForm, "nantForm");
-
-			_core = core;
-			_nantForm = nantForm;
-
 			_watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
-			_watcher.Changed += new FileSystemEventHandler(this.FileChanges);
-			_watcher.Deleted += new FileSystemEventHandler(this.FileChanges);
+			_watcher.Changed += new FileSystemEventHandler(this.OnFileChanged);
+			_watcher.Deleted += new FileSystemEventHandler(this.OnFileDeleted);
 		}
 
 		public void WatchBuildFile(FileInfo buildFile)
@@ -59,35 +53,28 @@ namespace NAntGui.Core
 			_watcher.EnableRaisingEvents = true;
 		}
 
-//		private void OnFileChanged(object sender, FileSystemEventArgs e)
-//		{
-//			if (this.InvokeRequired)
-//			{
-//				FileSystemEventHandler lEventHandler = new FileSystemEventHandler(this.FileChanges);
-//				this.Invoke(lEventHandler, new object[] {sender, e});
-//			}
-//			else
-//			{
-//				this.FileChanges(sender, e);
-//			}
-//		}
-
-		private void FileChanges(object sender, FileSystemEventArgs e)
+		private void OnFileChanged(object sender, FileSystemEventArgs e)
 		{
 			this.DisableEvents();
 			// without this the file changed event 
 			// seems to be fired twice\
 			Application.DoEvents();
 
-			if (e.ChangeType == WatcherChangeTypes.Changed)
-			{
-				Thread.Sleep(100);
-				_core.LoadBuildFile(e.FullPath);
-			}
-			else if (e.ChangeType == WatcherChangeTypes.Deleted)
-			{
-				_nantForm.DoClose();
-			}
+			Thread.Sleep(100);
+
+			if (this.BuildFileChanged != null)
+				this.BuildFileChanged();
+		}
+
+		private void OnFileDeleted(object sender, FileSystemEventArgs e)
+		{
+			this.DisableEvents();
+			// without this the file changed event 
+			// seems to be fired twice\
+			Application.DoEvents();
+
+			if (this.BuildFileDeleted != null)
+				this.BuildFileDeleted();
 		}
 
 		public void DisableEvents()

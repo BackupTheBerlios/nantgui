@@ -296,6 +296,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "VoidVoidDelegate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Watcher.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

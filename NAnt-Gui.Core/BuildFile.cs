@@ -13,6 +13,8 @@ namespace NAntGui.Core
 		protected string _buildFilePath;
 		protected string _buildFileText;
 
+		private Watcher	_watcher = new Watcher();
+
 		/// <summary>
 		/// Flag used to determine if the file has been
 		/// modified since the last save.
@@ -46,9 +48,18 @@ namespace NAntGui.Core
 			this.Load(buildFile);
 		}
 
+		public virtual void Load(string buildFile)
+		{
+			if (File.Exists(buildFile))
+			{
+				FileInfo info = new FileInfo(buildFile);
+				this.Load(info);
+			}
+		}
+
 		public virtual void Load(FileInfo buildFile)
 		{
-			
+			_watcher.WatchBuildFile(buildFile);
 		}
 
 		public virtual void ReLoad()
@@ -76,7 +87,7 @@ namespace NAntGui.Core
 
 		public virtual void Close()
 		{
-			
+			_watcher.DisableEvents();
 		}
 
 		public virtual void Build()

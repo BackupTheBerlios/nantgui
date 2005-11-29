@@ -52,7 +52,15 @@ namespace NAntGui.Core
 		{
 			_nantForm	= nantForm;
 			_options	= nantForm.Options;
-			_watcher	= new Watcher(this, _nantForm);
+
+			_watcher	= new Watcher();
+			_watcher.BuildFileChanged += new VoidVoid(this.ReloadBuildFile);
+			_watcher.BuildFileDeleted += new VoidVoid(_nantForm.CloseBuildFile);
+		}
+
+		private void ReloadBuildFile()
+		{
+			this.LoadBuildFile(_buildFile);	
 		}
 
 		public void LoadBuildFile(string buildFile)
@@ -241,11 +249,6 @@ namespace NAntGui.Core
 
 			// attach listeners to project
 			project.AttachBuildListeners(listeners);
-		}
-
-		public void DisableWatcher()
-		{
-			_watcher.DisableEvents();
 		}
 	}
 }

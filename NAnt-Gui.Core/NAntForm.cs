@@ -805,7 +805,7 @@ namespace NAntGui.Core
 
 		private void CloseMenuCommand_Click(object sender, EventArgs e)
 		{
-			this.DoClose();
+			this.CloseBuildFile();
 		}
 
 		private void MainToolBar_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
@@ -976,9 +976,9 @@ namespace NAntGui.Core
 			this.XMLRichTextBox.SelectAll();
 		}
 
-		public void DoClose()
+		public void CloseBuildFile()
 		{
-			_core.DisableWatcher();
+//			_buildFile.Close();
 			_buildFile = "";
 			this.ClearOutput();
 			this.TargetsTreeView.Nodes.Clear();
