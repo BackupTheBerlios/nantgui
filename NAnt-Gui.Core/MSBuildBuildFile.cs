@@ -12,5 +12,11 @@ namespace NAntGui.Core
 			// TODO: Add constructor logic here
 			//
 		}
+
+		protected override string Extension
+		{
+			get { return "proj"; }
+		}
+
 	}
 }

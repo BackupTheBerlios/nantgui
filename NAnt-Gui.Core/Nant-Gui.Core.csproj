@@ -182,12 +182,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MSBuildBuildFile.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "nant.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "NantBuildFile.cs"
+                    RelPath = "NAntBuildFile.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -1450,10 +1450,16 @@ namespace NAntGui.Core
 				{
 					writer.Write(this.XMLRichTextBox.Text);
 				}
-				this.Text = this.Text.TrimEnd(new char[] {'*'});
+
+				this.RemoveUnsavedFileAsterisk();
 				this.LoadBuildFile(this.XMLSaveFileDialog.FileName);
 //				_buildFile = this.XMLSaveFileDialog.FileName;
 			}
+		}
+
+		private void RemoveUnsavedFileAsterisk()
+		{
+			this.Text = this.Text.TrimEnd(new char[] {'*'});
 		}
 
 		public CommandLineOptions Options

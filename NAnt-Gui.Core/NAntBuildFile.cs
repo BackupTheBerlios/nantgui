@@ -12,5 +12,15 @@ namespace NAntGui.Core
 			// TODO: Add constructor logic here
 			//
 		}
+
+		/// <summary>
+		/// This may be an issue.  ".build" is a bad
+		/// extension for NAnt.  ".nant" would be better.
+		/// Alternatively, the option should be given.
+		/// </summary>
+		protected override string Extension
+		{
+			get { return "build"; }
+		}
 	}
 }

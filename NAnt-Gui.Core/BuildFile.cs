@@ -7,21 +7,34 @@ namespace NAntGui.Core
 	/// </summary>
 	public abstract class BuildFile
 	{
+		protected const string UNTITLED_FILE = "Untitled";
+
+		protected string _buildFileName;
+		protected string _buildFilePath;
+		protected string _buildFileText;
+
+		/// <summary>
+		/// Flag used to determine if the file has been
+		/// modified since the last save.
+		/// </summary>
+		protected bool _isDirty = false;
+
 		/// <summary>
 		/// Create a new build file.
 		/// </summary>
 		public BuildFile()
 		{
-
+			_buildFileName = UNTITLED_FILE + "." + Extension;
+			_buildFilePath = ".\\";
 		}
 
 		/// <summary>
 		/// Create a build file from the given contents.
 		/// </summary>
 		/// <param name="buildFileContents">Text contents of a build file</param>
-		public BuildFile(string buildFileContents)
+		public BuildFile(string buildFileContents) : this()
 		{
-
+			_buildFileText = buildFileContents;
 		}
 
 		/// <summary>
@@ -30,7 +43,7 @@ namespace NAntGui.Core
 		/// <param name="buildFile">Path to the file</param>
 		public BuildFile(FileInfo buildFile)
 		{
-			
+			this.Load(buildFile);
 		}
 
 		public virtual void Load(FileInfo buildFile)
@@ -43,9 +56,12 @@ namespace NAntGui.Core
 			
 		}
 
-		public virtual void Save()
+		public virtual void Save(string text)
 		{
-			
+			using (TextWriter writer = File.CreateText(_buildFilePath))
+			{
+				writer.Write(text);
+			}
 		}
 
 		public virtual void SaveAs()
@@ -67,5 +83,12 @@ namespace NAntGui.Core
 		{
 			
 		}
+
+		public virtual bool SaveRequired
+		{
+			get{ return _isDirty; }
+		}
+
+		protected abstract string Extension { get; }
 	}
 }
