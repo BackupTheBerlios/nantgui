@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen
+// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,22 +21,46 @@
 
 #endregion
 
-using NAntGui.Core.NAnt;
+using System.Collections;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.NAnt
 {
 	/// <summary>
-	/// Summary description for NAntBuildRunner.
+	/// Summary description for PropertyCollection.
 	/// </summary>
-	public class NAntBuildRunner : BuildRunner
+	public class PropertyCollection : IEnumerable
 	{
-		private Project	_myProject;
+		private Hashtable _properties;
 
-		public NAntBuildRunner(NAntForm nantForm) : base(nantForm)
+		public PropertyCollection()
 		{
-			//
-			// TODO: Add constructor logic here
-			//
+			_properties = new Hashtable();
+		}
+
+		public PropertyCollection(int pSize)
+		{
+			_properties = new Hashtable(pSize);
+		}
+
+		public void Add(Property property)
+		{
+			_properties.Add(property.Name, property);
+		}
+
+		public IEnumerator GetEnumerator()
+		{
+			return _properties.Values.GetEnumerator();
+		}
+
+		public bool Contains(string key)
+		{
+			return _properties.Contains(key);
+		}
+
+		public Property this[string key]
+		{
+			get { return (Property) _properties[key]; }
+			set { _properties[key] = value; }
 		}
 	}
 }

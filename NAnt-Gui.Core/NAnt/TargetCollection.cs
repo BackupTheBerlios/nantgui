@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen
+// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,22 +21,40 @@
 
 #endregion
 
-using NAntGui.Core.NAnt;
+using System.Collections;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.NAnt
 {
 	/// <summary>
-	/// Summary description for NAntBuildRunner.
+	/// Summary description for TargetCollection.
 	/// </summary>
-	public class NAntBuildRunner : BuildRunner
+	public class TargetCollection : IEnumerable
 	{
-		private Project	_myProject;
+		public ArrayList _targets;
 
-		public NAntBuildRunner(NAntForm nantForm) : base(nantForm)
+		public TargetCollection()
 		{
-			//
-			// TODO: Add constructor logic here
-			//
+			_targets = new ArrayList();
+		}
+
+		public TargetCollection(int pSize)
+		{
+			_targets = new ArrayList(pSize);
+		}
+
+		public void Add(Target pTarget)
+		{
+			_targets.Add(pTarget);
+		}
+
+		public IEnumerator GetEnumerator()
+		{
+			return _targets.GetEnumerator();
+		}
+
+		public void Sort()
+		{
+			_targets.Sort();
 		}
 	}
 }

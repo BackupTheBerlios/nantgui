@@ -27,6 +27,7 @@ using System.Threading;
 using System.Windows.Forms;
 using NAnt.Core;
 using NProject = NAnt.Core.Project;
+using Project = NAntGui.Core.NAnt.Project;
 
 namespace NAntGui.Core
 {
@@ -163,7 +164,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void SetTargetFramework(NAnt.Core.Project project)
+		private void SetTargetFramework(NProject project)
 		{
 			FrameworkInfo frameworkInfo = project.Frameworks[_options.TargetFramework];
 

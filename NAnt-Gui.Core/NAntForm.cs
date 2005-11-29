@@ -32,8 +32,8 @@ using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
 using Flobbster.Windows.Forms;
-using NAnt.Core;
-using NProject = NAnt.Core.Project;
+using NAntGui.Core.NAnt;
+using NC = NAnt.Core;
 using TabControl = Crownwood.Magic.Controls.TabControl;
 using TabPage = Crownwood.Magic.Controls.TabPage;
 
@@ -146,7 +146,7 @@ namespace NAntGui.Core
 
 			_nantBuildRunner = new NAntBuildRunner(this);
 			_nantBuildRunner.BuildFileLoaded += new BuildFileChangedEH(this.BuildFileLoaded);
-			_nantBuildRunner.BuildFinished += new BuildEventHandler(this.Build_Finished);
+			_nantBuildRunner.BuildFinished += new NC.BuildEventHandler(this.Build_Finished);
 
 			this.UpdateRecentItemsMenu();
 			this.LoadInitialBuildFile();
@@ -912,7 +912,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void Build_Finished(object sender, BuildEventArgs e)
+		public void Build_Finished(object sender, NC.BuildEventArgs e)
 		{
 			this.Update();
 		}
@@ -1099,7 +1099,7 @@ namespace NAntGui.Core
 			return false;
 		}
 
-		public void AddTreeTargetsToBuild(NProject project)
+		public void AddTreeTargetsToBuild(NC.Project project)
 		{
 			foreach (TreeNode lItem in this.TargetsTreeView.Nodes[0].Nodes)
 			{
@@ -1110,7 +1110,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void AddPropertiesToProject(NProject project)
+		public void AddPropertiesToProject(NC.Project project)
 		{
 			foreach (PropertySpec spec in _propertyTable.Properties)
 			{
@@ -1125,23 +1125,23 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void LoadNonProjectProperty(PropertySpec spec, NAnt.Core.Project project)
+		private void LoadNonProjectProperty(PropertySpec spec, NC.Project project)
 		{
 			string lValue = _propertyTable[GetKey(spec)].ToString();
 			string lExpandedProperty = lValue;
 			try
 			{
 				lExpandedProperty = project.ExpandProperties(lValue,
-				                                             new Location(_buildFile));
+				                                             new NC.Location(_buildFile));
 			}
-			catch (BuildException)
+			catch (NC.BuildException)
 			{ /* ignore */
 			}
 
 			project.Properties.AddReadOnly(spec.Name, lExpandedProperty);
 		}
 
-		private bool ValidTarget(string category, NProject project)
+		private bool ValidTarget(string category, NC.Project project)
 		{
 			return project.BuildTargets.Contains(category);
 		}

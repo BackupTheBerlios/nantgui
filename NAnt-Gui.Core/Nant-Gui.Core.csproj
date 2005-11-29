@@ -245,22 +245,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Project.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Property.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "PropertyBag.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PropertyCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -271,21 +256,6 @@
                 />
                 <File
                     RelPath = "Settings.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Target.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TargetCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TargetComparer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -310,6 +280,31 @@
                 <File
                     RelPath = "Images\nantgui-1.2.5beta2.png"
                     BuildAction = "Content"
+                />
+                <File
+                    RelPath = "NAnt\Project.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\Property.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\PropertyCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\Target.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\TargetCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
             </Include>
         </Files>
