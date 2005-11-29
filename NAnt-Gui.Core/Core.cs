@@ -70,7 +70,9 @@ namespace NAntGui.Core
 				catch (Exception error)
 				{
 					// all other exceptions should have been caught
-					MessageBox.Show(error.Message, "Internal Error");
+					string message = error.Message + Environment.NewLine + 
+						error.StackTrace;
+					MessageBox.Show(message, "Internal Error");
 				}
 			}
 			else
@@ -104,17 +106,21 @@ namespace NAntGui.Core
 
 		private static void HandleErrorInBuildFile(ApplicationException error)
 		{
-			MessageBox.Show(error.GetType().ToString());
-			MessageBox.Show(error.StackTrace);
+#if DEBUG
+			string errorType = error.GetType().ToString() 
+				+ Environment.NewLine + error.StackTrace;
+
+			MessageBox.Show(errorType);
+#endif
 
 			if (error.InnerException != null && error.InnerException.Message != null)
 			{
 				string message = error.Message + Environment.NewLine + error.InnerException.Message;
-				MessageBox.Show(message , "Error encountered in build file");
+				MessageBox.Show(message , "Error Loading Build File");
 			}
 			else
 			{
-				MessageBox.Show(error.Message, "Error");
+				MessageBox.Show(error.Message, "Error Loading Build File");
 			}
 		}
 
