@@ -21,21 +21,45 @@
 
 #endregion
 
+using NAntGui.Core;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
-namespace NAntGui.Core
+namespace NAntGui.Unittests
 {
 	/// <summary>
-	/// Summary description for NAntBuildRunner.
+	/// Summary description for ColorTable.
 	/// </summary>
-	public class NAntBuildRunner : BuildRunner
+	[TestFixture]
+	public class ColorTableTests
 	{
-		private Project	_myProject;
-
-		public NAntBuildRunner(NAntForm nantForm) : base(nantForm)
+		public ColorTableTests()
 		{
 			//
 			// TODO: Add constructor logic here
 			//
+		}
+
+		[Test]
+		public void CheckTable()
+		{
+			///ColorTable table = new ColorTable();
+			ColorTable.Reset();
+			string lUseless = ColorTable.RedTag;
+			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;}", ColorTable.ColorTableRtf, lUseless);
+			lUseless = ColorTable.BlueTag;
+			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}", 
+				ColorTable.ColorTableRtf);
+		}
+
+		[Test]
+		public void CheckTags()
+		{
+			///ColorTable table = new ColorTable();
+			ColorTable.Reset();
+			Assert.AreEqual("\\cf1", ColorTable.RedTag);
+			Assert.AreEqual("\\cf2", ColorTable.BlueTag);
+			Assert.AreEqual("\\cf3", ColorTable.GreenTag);
 		}
 	}
 }

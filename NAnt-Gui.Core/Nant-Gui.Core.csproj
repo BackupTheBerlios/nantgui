@@ -230,6 +230,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "OutputHighlighter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Outputter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -266,11 +271,6 @@
                 />
                 <File
                     RelPath = "Settings.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SyntaxHighlighter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
