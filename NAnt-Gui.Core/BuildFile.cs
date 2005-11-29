@@ -33,9 +33,9 @@ namespace NAntGui.Core
 	{
 		protected const string UNTITLED_FILE = "Untitled";
 
-		protected string _buildFileName;
-		protected string _buildFilePath;
-		protected string _buildFileText;
+		protected string _name;
+		protected string _fullPath;
+		protected string _contents;
 
 		private Watcher	_watcher = new Watcher();
 
@@ -50,8 +50,8 @@ namespace NAntGui.Core
 		/// </summary>
 		public BuildFile()
 		{
-			_buildFileName = UNTITLED_FILE + "." + Extension;
-			_buildFilePath = ".\\";
+			_name = UNTITLED_FILE + "." + Extension;
+			_fullPath = ".\\";
 		}
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace NAntGui.Core
 		/// <param name="buildFileContents">Text contents of a build file</param>
 		public BuildFile(string buildFileContents) : this()
 		{
-			_buildFileText = buildFileContents;
+			_contents = buildFileContents;
 		}
 
 		/// <summary>
@@ -97,6 +97,13 @@ namespace NAntGui.Core
 
 		public virtual void Load(FileInfo buildFile)
 		{
+			using (TextReader reader = buildFile.OpenText())
+			{
+				_contents = reader.ReadToEnd();
+			}
+
+			_fullPath = buildFile.FullName;
+			_name = buildFile.Name;
 			_watcher.WatchBuildFile(buildFile);
 		}
 
@@ -105,22 +112,26 @@ namespace NAntGui.Core
 			
 		}
 
-		public virtual void Save(string text)
+//		public virtual void Save(string text)
+//		{
+//			using (TextWriter writer = File.CreateText(_fullPath))
+//			{
+//				writer.Write(text);
+//			}
+//		}
+
+		public virtual void Save()
 		{
-			using (TextWriter writer = File.CreateText(_buildFilePath))
+			using (TextWriter writer = File.CreateText(_fullPath))
 			{
-				writer.Write(text);
+				writer.Write(_contents);
 			}
 		}
 
-		public virtual void SaveAs()
+		public virtual void SaveAs(string fileName)
 		{
-			
-		}
-
-		public virtual void SaveAs(string buildFileContents)
-		{
-			
+			_fullPath = fileName;
+			this.Save();
 		}
 
 		public virtual void Close()
@@ -134,5 +145,15 @@ namespace NAntGui.Core
 		}
 
 		protected abstract string Extension { get; }
+
+		#region Properties
+
+		public string Contents
+		{
+			get { return _contents; }
+			set { _contents = value; }
+		}
+
+		#endregion
 	}
 }

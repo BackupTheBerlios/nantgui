@@ -209,6 +209,11 @@ namespace NAntGui.Core
 			get { return _description; }
 		}
 
+		public bool HasName
+		{
+			get { return _project.ProjectName.Length > 0; }
+		}
+
 		#endregion
 	}
 

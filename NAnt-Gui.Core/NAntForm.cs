@@ -145,7 +145,7 @@ namespace NAntGui.Core
 			this.TabControl.Appearance = TabControl.VisualAppearance.MultiDocument;
 
 			_nantBuildRunner = new NAntBuildRunner(this);
-			_nantBuildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
+			_nantBuildRunner.BuildFileLoaded += new BuildFileChangedEH(this.BuildFileLoaded);
 			_nantBuildRunner.BuildFinished += new BuildEventHandler(this.Build_Finished);
 
 			this.UpdateRecentItemsMenu();
@@ -1037,8 +1037,7 @@ namespace NAntGui.Core
 
 			this.Text = "NAnt-Gui" + string.Format(" - {0}", filename);
 
-			bool hasProjectName = project.Name.Length > 0;
-			string projectName = hasProjectName ? project.Name : filename;
+			string projectName = project.HasName ? project.Name : filename;
 
 			_recentItems.Add(_buildFile);
 			_recentItems.Save();

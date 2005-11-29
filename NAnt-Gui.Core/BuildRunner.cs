@@ -34,7 +34,7 @@ namespace NAntGui.Core
 
 	public abstract class BuildRunner
 	{
-		public event BuildFileChangedEH BuildFileChanged;
+		public event BuildFileChangedEH BuildFileLoaded;
 		public event BuildEventHandler BuildFinished;
 
 		private Watcher		_watcher;
@@ -95,15 +95,15 @@ namespace NAntGui.Core
 			NProject nantProject = new NProject(buildFile, Level.Info, 0);
 			_myProject = new Project(nantProject);
 
-			if (this.BuildFileChanged != null)
+			if (this.BuildFileLoaded != null)
 			{
 				if (_nantForm.InvokeRequired)
 				{
-					_nantForm.Invoke(this.BuildFileChanged, new object[] {_myProject});
+					_nantForm.Invoke(this.BuildFileLoaded, new object[] {_myProject});
 				}
 				else
 				{
-					this.BuildFileChanged(_myProject);
+					this.BuildFileLoaded(_myProject);
 				}
 			}
 		}
