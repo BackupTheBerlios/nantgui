@@ -90,12 +90,6 @@
                     HintPath = "..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\..\..\..\..\..\Program Files\NUnit 2.2.2\bin\nunit.framework.dll"
-                    AssemblyFolderKey = "hklm\dn\nunit.framework"
-                />
-                <Reference
                     Name = "log4net"
                     AssemblyName = "log4net"
                     HintPath = "..\..\..\..\..\..\..\Program Files\log4net\log4net.dll"
@@ -147,17 +141,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "BuildRunner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ColorTable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "CommandLineOptions.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Core.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -193,6 +187,11 @@
                 />
                 <File
                     RelPath = "NAntBuildFile.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAntBuildRunner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -287,11 +286,6 @@
                 />
                 <File
                     RelPath = "TargetComparer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utils.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

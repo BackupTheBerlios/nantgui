@@ -49,7 +49,7 @@ namespace NAntGui.Core
 
 		private delegate void MessageEventHandler(string pMessage);
 
-		private BuildRunner _core;
+		private BuildRunner _nantBuildRunner;
 		private CommandLineOptions _options;
 		private RecentItems _recentItems = new RecentItems();
 		private bool _firstLoad = true;
@@ -144,9 +144,9 @@ namespace NAntGui.Core
 
 			this.TabControl.Appearance = TabControl.VisualAppearance.MultiDocument;
 
-			_core = new BuildRunner(this);
-			_core.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
-			_core.BuildFinished += new BuildEventHandler(this.Build_Finished);
+			_nantBuildRunner = new NAntBuildRunner(this);
+			_nantBuildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
+			_nantBuildRunner.BuildFinished += new BuildEventHandler(this.Build_Finished);
 
 			this.UpdateRecentItemsMenu();
 			this.LoadInitialBuildFile();
@@ -212,7 +212,7 @@ namespace NAntGui.Core
 		private void LoadBuildFile(string buildFile)
 		{
 			_buildFile = buildFile;
-			_core.LoadBuildFile(buildFile);
+			_nantBuildRunner.LoadBuildFile(buildFile);
 		}
 
 		private void LoadRecentBuildFile()
@@ -778,12 +778,7 @@ namespace NAntGui.Core
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
-				string lFileName = GetDragFilename(e);
-
-				if (Utils.ExtensionIsValid(lFileName))
-				{
-					e.Effect = DragDropEffects.Copy;
-				}
+				e.Effect = DragDropEffects.Copy;
 			}
 			else
 			{
@@ -828,7 +823,7 @@ namespace NAntGui.Core
 			}
 			else if (e.Button == this.StopToolBarButton)
 			{
-				_core.Stop();
+				_nantBuildRunner.Stop();
 			}
 		}
 
@@ -849,7 +844,7 @@ namespace NAntGui.Core
 		private void Build()
 		{
 			this.ClearOutput();
-			_core.Run(_buildFile);
+			_nantBuildRunner.Run(_buildFile);
 		}
 
 		private void ClearOutput()
@@ -909,7 +904,7 @@ namespace NAntGui.Core
 			{
 				if (!this.OutputTextBox.Focused) this.OutputTextBox.Focus();
 
-				Outputter.AppendRtfText(SyntaxHighlighter.Highlight(pMessage));
+				Outputter.AppendRtfText(OutputHighlighter.Highlight(pMessage));
 
 				this.OutputTextBox.SelectionStart = this.OutputTextBox.TextLength;
 				this.OutputTextBox.SelectedRtf = Outputter.RtfDocument;

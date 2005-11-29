@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,25 +23,12 @@
 
 using System.Text.RegularExpressions;
 
-#if TEST
-using NUnit.Framework;
-#endif
-
 namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for SyntaxHighlighter.
 	/// </summary>
-
-	#region TestFixture
-
-#if TEST
-	[TestFixture]
-#endif
-
-		#endregion
-
-		public class SyntaxHighlighter
+	public class OutputHighlighter
 	{
 		private const string BUILD_SUCCEEDED = "BUILD SUCCEEDED";
 		public const string BUILD_FAILED = "BUILD FAILED";
@@ -60,16 +47,6 @@ namespace NAntGui.Core
 
 			public const string SPACE = " ";
 		}
-
-		#region TestConstuctor
-
-#if TEST
-		public SyntaxHighlighter()
-		{
-		}
-#endif
-
-		#endregion
 
 		public static string Highlight(string pText)
 		{
@@ -128,43 +105,5 @@ namespace NAntGui.Core
 			lText = lText.Replace("}", @"\}");
 			return lText;
 		}
-
-		#region Tests
-
-#if TEST
-		[Test]
-		public void ModifyBuildFailed()
-		{
-			string lBuildFailed = "BUILD FAILED";
-			string lModifiedBuildFailed = @"\cf1\b\fs18 BUILD FAILED\cf0\b0\fs17 ";
-			Assert.AreEqual(lModifiedBuildFailed, Highlight(lBuildFailed));
-		}
-
-		[Test]
-		public void ModifyBuildSucceeded()
-		{
-			string lBuildSucceeded = "BUILD SUCCEEDED";
-			string lModifiedBuildSucceeded = @"\cf3\b\fs18 BUILD SUCCEEDED\cf0\b0\fs17 ";
-			Assert.AreEqual(lModifiedBuildSucceeded, Highlight(lBuildSucceeded));
-		}
-
-		[Test]
-		public void ModifySquareTag()
-		{
-			string lSquareTag = "this [that] theotherthing";
-			string lModifiedSquareTag = @"this \cf2 [that]\cf0  theotherthing ";
-			Assert.AreEqual(lModifiedSquareTag, Highlight(lSquareTag));
-		}
-
-		[Test]
-		public void ModifyError()
-		{
-			string lError = "asdfd error sfdsfd";
-			string lModifiedError = @"asdfd \cf1\b error\cf0\b0  sfdsfd ";
-			Assert.AreEqual(lModifiedError, Highlight(lError));
-		}
-#endif
-
-		#endregion
 	}
 }

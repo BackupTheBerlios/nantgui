@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,16 +26,12 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using NAnt.Core;
-using NAntGui.Utils;
 using NProject = NAnt.Core.Project;
 
 namespace NAntGui.Core
 {
 	public delegate void BuildFileChangedEH(Project project);
 
-	/// <summary>
-	/// Summary description for Core.
-	/// </summary>
 	public abstract class BuildRunner
 	{
 		public event BuildFileChangedEH BuildFileChanged;
@@ -65,7 +61,7 @@ namespace NAntGui.Core
 
 		public void LoadBuildFile(string buildFile)
 		{
-			if (Utils.BuildfileIsValid(buildFile))
+			if (File.Exists(buildFile))
 			{
 				try
 				{

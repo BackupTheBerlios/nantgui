@@ -100,10 +100,7 @@ namespace NAntGui.Core
 
 				if (name == LOOP_ESCAPE) break;
 
-				if (Utils.BuildfileIsValid(name))
-				{
-					this.InsertItem(name, itemsAddedCount++);
-				}
+				this.InsertItem(name, itemsAddedCount++);
 			}
 		}
 

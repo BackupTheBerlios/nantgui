@@ -25,25 +25,12 @@ using System;
 using System.Collections;
 using System.Text;
 
-#if TEST
-using NUnit.Framework;
-#endif
-
 namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for ColorTable.
 	/// </summary>
-
-	#region TestFixture
-
-#if TEST
-	[TestFixture]
-#endif
-
-		#endregion
-
-		public class ColorTable
+	public class ColorTable
 	{
 		private const string COLOR_TAG = @"\cf";
 		private const string RED = @"\red255\green0\blue0;";
@@ -61,16 +48,6 @@ namespace NAntGui.Core
 			Green,
 			Blue
 		}
-
-		#region TestConstuctor
-
-#if TEST
-		public ColorTable()
-		{
-		}
-#endif
-
-		#endregion
 
 		public static string RedTag
 		{
@@ -122,30 +99,5 @@ namespace NAntGui.Core
 					throw new ArgumentException("Invalid color: " + pColor, "pColor");
 			}
 		}
-
-		#region Tests
-
-#if TEST
-		[Test]
-		public void CheckTable()
-		{
-			Reset();
-			string lUseless = RedTag;
-			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;}", ColorTableRtf, lUseless);
-			lUseless = BlueTag;
-			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}", ColorTableRtf);
-		}
-
-		[Test]
-		public void CheckTags()
-		{
-			Reset();
-			Assert.AreEqual("\\cf1", RedTag);
-			Assert.AreEqual("\\cf2", BlueTag);
-			Assert.AreEqual("\\cf3", GreenTag);
-		}
-#endif
-
-		#endregion
 	}
 }

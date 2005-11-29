@@ -22,8 +22,9 @@
 #endregion
 
 using System;
+using System.IO;
 
-namespace NAntGui.Utils
+namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for Assert.
@@ -33,6 +34,11 @@ namespace NAntGui.Utils
 		public static void NotNull(object item, string param)
 		{
 			if (item == null) throw new ArgumentNullException(param);
+		}
+
+		public static void FileExists(string buildFile)
+		{
+			if (!File.Exists(buildFile)) throw new BuildFileNotFoundException(buildFile + " not found.");
 		}
 	}
 }
