@@ -176,6 +176,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MainMenuControl.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MainMenuControl.resx"
+                    DependentUpon = "MainMenuControl.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "MSBuildBuildFile.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

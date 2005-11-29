@@ -61,57 +61,34 @@ namespace NAntGui.Core
 		private PopupMenu _outputContextMenu = new PopupMenu();
 		private PopupMenu _xmlContextMenu = new PopupMenu();
 
-		private MenuCommand ExitMenuCommand;
-		private MenuCommand MenuCommand4;
-		private MenuCommand MenuCommand5;
 		private StatusBarPanel FileStatusBarPanel;
 		private OpenFileDialog OpenFileDialog;
 		private StatusBar MainStatusBar;
-		private MenuControl MainMenu;
 		private RichTextBox OutputTextBox;
-		private MenuCommand FileMenuCommand;
-		private MenuCommand OpenMenuCommand;
-		private MenuCommand SaveMenuCommand;
-		private MenuCommand SaveAsMenuCommand;
-		private MenuCommand CloseMenuCommand;
-		private MenuCommand RecentMenuCommand;
+		private RichTextBox XMLRichTextBox;
+
 		private ToolBar MainToolBar;
 		private ImageList ToolBarImageList;
-		private MenuCommand ReloadMenuCommand;
 		private TreeView TargetsTreeView;
 		public PropertyGrid ProjectPropertyGrid;
-		private MenuCommand HelpMenuCommand;
-		private MenuCommand AboutMenuCommand;
-		private MenuCommand NAntMenuCommand;
-		private MenuCommand BuildMenuCommand;
 		private StatusBarPanel ProgressPanel;
-		private MenuCommand EditMainMenuCommand;
-		private MenuCommand CopyMenuCommand;
-		private MenuCommand SelectAllMenuCommand;
-		private MenuCommand ToolsMenuCommand;
-		private MenuCommand OptionsMenuCommand;
 		private ToolTip ToolTip;
 		private StatusBarPanel FullFileStatusBarPanel;
 		private IContainer components;
+		private PropertyTable _propertyTable = new PropertyTable();
+		
+		private MainMenuControl MainMenu;
+
 		private ToolBarButton OpenToolBarButton;
 		private ToolBarButton SaveToolBarButton;
 		private ToolBarButton BuildToolBarButton;
 		private ToolBarButton ReloadToolBarButton;
 		private ToolBarButton StopToolBarButton;
-		private PropertyTable _propertyTable = new PropertyTable();
-		private RichTextBox XMLRichTextBox;
-		private MenuCommand NAntContribMenuCommand;
-		private MenuCommand NAntHelpMenuCommand;
-		private MenuCommand NAntSDKMenuCommand;
-		private MenuCommand MenuCommand1;
-		private MenuCommand SaveOutputMenuCommand;
-		private MenuCommand WordWrapMenuCommand;
+
 		private TabControl TabControl;
 		private TabPage XMLTabPage;
 		private TabPage OutputTabPage;
-		private MenuCommand ViewMenuCommand;
-		private MenuCommand TargetsMenuCommand;
-		private MenuCommand PropertiesMenuCommand;
+
 		private PopupMenu _targetsPopupMenu = new PopupMenu();
 		private Content _targetsContent;
 		private Content _propertiesContent;
@@ -129,8 +106,9 @@ namespace NAntGui.Core
 
 			InitializeComponent();
 
-			this.AssignImagesToMenuCommands();
+			this.MainToolBar.ImageList = this.ToolBarImageList;
 
+			this.AssignMenuCommands();
 			// Reduce the amount of flicker that occurs when windows are redocked within
 			// the container. As this prevents unsightly backcolors being drawn in the
 			// WM_ERASEBACKGROUND that seems to occur.
@@ -152,15 +130,28 @@ namespace NAntGui.Core
 			this.LoadInitialBuildFile();
 		}
 
-		private void AssignImagesToMenuCommands()
+		private void AssignMenuCommands()
 		{
-			this.MainToolBar.ImageList				= this.ToolBarImageList;
-			this.OpenMenuCommand.ImageList			= this.ToolBarImageList;
-			this.SaveMenuCommand.ImageList			= this.ToolBarImageList;
-			this.ReloadMenuCommand.ImageList		= this.ToolBarImageList;
-			this.PropertiesMenuCommand.ImageList	= this.ToolBarImageList;
-			this.BuildMenuCommand.ImageList			= this.ToolBarImageList;
+			this.MainMenu.About_Click		= new EventHandler(this.AboutMenuCommand_Click);
+			this.MainMenu.Build_Click		= new EventHandler(this.BuildMenuCommand_Click);
+			this.MainMenu.Close_Click		= new EventHandler(this.CloseMenuCommand_Click);
+			this.MainMenu.Copy_Click		= new EventHandler(this.CopyMenuCommand_Click);
+			this.MainMenu.Exit_Click		= new EventHandler(this.ExitMenuCommand_Click);
+			this.MainMenu.NAntContrib_Click = new EventHandler(this.NAntContribMenuCommand_Click);
+			this.MainMenu.NAntHelp_Click	= new EventHandler(this.NAntHelpMenuCommand_Click);
+			this.MainMenu.NAntSDK_Click		= new EventHandler(this.NAntSDKMenuCommand_Click);
+			this.MainMenu.Open_Click		= new EventHandler(this.OpenMenuCommand_Click);
+			this.MainMenu.Options_Click		= new EventHandler(this.OptionsMenuCommand_Click);
+			this.MainMenu.Properties_Click	= new EventHandler(this.PropertiesMenuCommand_Click);
+			this.MainMenu.Reload_Click		= new EventHandler(this.ReloadMenuCommand_Click);
+			this.MainMenu.SelectAll_Click	= new EventHandler(this.SelectAllMenuCommand_Click);
+			this.MainMenu.SaveOutput_Click	= new EventHandler(this.SaveOutputMenuCommand_Click);
+			this.MainMenu.Save_Click		= new EventHandler(this.SaveMenuCommand_Click);
+			this.MainMenu.SaveAs_Click		= new EventHandler(this.SaveAsMenuCommand_Click);
+			this.MainMenu.Targets_Click		= new EventHandler(this.TargetsMenuCommand_Click);
+			this.MainMenu.WordWrap_Click	= new EventHandler(this.WordWrapMenuCommand_Click);
 		}
+
 
 		private void SetupDockManager()
 		{
@@ -253,35 +244,7 @@ namespace NAntGui.Core
 			this.FileStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
 			this.FullFileStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
 			this.ProgressPanel = new System.Windows.Forms.StatusBarPanel();
-			this.MainMenu = new Crownwood.Magic.Menus.MenuControl();
-			this.FileMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.OpenMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.SaveMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.SaveAsMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.ReloadMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.CloseMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.SaveOutputMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.MenuCommand4 = new Crownwood.Magic.Menus.MenuCommand();
-			this.RecentMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.MenuCommand5 = new Crownwood.Magic.Menus.MenuCommand();
-			this.ExitMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.EditMainMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.CopyMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.SelectAllMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.WordWrapMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.ViewMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.TargetsMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.PropertiesMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.NAntMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.BuildMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.ToolsMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.OptionsMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.HelpMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.NAntHelpMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.NAntSDKMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.NAntContribMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
-			this.MenuCommand1 = new Crownwood.Magic.Menus.MenuCommand();
-			this.AboutMenuCommand = new Crownwood.Magic.Menus.MenuCommand();
+			this.MainMenu = new MainMenuControl();
 			this.OutputTextBox = new System.Windows.Forms.RichTextBox();
 			this.MainToolBar = new System.Windows.Forms.ToolBar();
 			this.OpenToolBarButton = new System.Windows.Forms.ToolBarButton();
@@ -341,244 +304,7 @@ namespace NAntGui.Core
 			this.ProgressPanel.MinWidth = 0;
 			this.ProgressPanel.Style = System.Windows.Forms.StatusBarPanelStyle.OwnerDraw;
 			this.ProgressPanel.Width = 10;
-			// 
-			// MainMenu
-			// 
-			this.MainMenu.AnimateStyle = Crownwood.Magic.Menus.Animation.System;
-			this.MainMenu.AnimateTime = 100;
-			this.MainMenu.Cursor = System.Windows.Forms.Cursors.Arrow;
-			this.MainMenu.Direction = Crownwood.Magic.Common.Direction.Horizontal;
-			this.MainMenu.Dock = System.Windows.Forms.DockStyle.Top;
-			this.MainMenu.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((System.Byte) (0)));
-			this.MainMenu.HighlightTextColor = System.Drawing.SystemColors.MenuText;
-			this.MainMenu.Location = new System.Drawing.Point(0, 0);
-			this.MainMenu.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
-				{
-					this.FileMenuCommand,
-					this.EditMainMenuCommand,
-					this.ViewMenuCommand,
-					this.NAntMenuCommand,
-					this.ToolsMenuCommand,
-					this.HelpMenuCommand
-				});
-			this.MainMenu.Name = "MainMenu";
-			this.MainMenu.Size = new System.Drawing.Size(824, 25);
-			this.MainMenu.Style = Crownwood.Magic.Common.VisualStyle.IDE;
-			this.MainMenu.TabIndex = 13;
-			this.MainMenu.TabStop = false;
-			// 
-			// FileMenuCommand
-			// 
-			this.FileMenuCommand.Description = "MenuCommand";
-			this.FileMenuCommand.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
-				{
-					this.OpenMenuCommand,
-					this.SaveMenuCommand,
-					this.SaveAsMenuCommand,
-					this.ReloadMenuCommand,
-					this.CloseMenuCommand,
-					this.SaveOutputMenuCommand,
-					this.MenuCommand4,
-					this.RecentMenuCommand,
-					this.MenuCommand5,
-					this.ExitMenuCommand
-				});
-			this.FileMenuCommand.Text = "&File";
-			// 
-			// OpenMenuCommand
-			// 
-			this.OpenMenuCommand.Description = "MenuCommand";
-			this.OpenMenuCommand.ImageIndex = 5;
-			this.OpenMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
-			this.OpenMenuCommand.Text = "&Open";
-			this.OpenMenuCommand.Click += new System.EventHandler(this.BrowseButton_Click);
-			// 
-			// SaveMenuCommand
-			// 
-			this.SaveMenuCommand.Description = "MenuCommand";
-			this.SaveMenuCommand.ImageIndex = 2;
-			this.SaveMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
-			this.SaveMenuCommand.Text = "&Save";
-			this.SaveMenuCommand.Click += new System.EventHandler(this.SaveMenuCommand_Click);
-			// 
-			// SaveAsMenuCommand
-			// 
-			this.SaveAsMenuCommand.Description = "MenuCommand";
-			this.SaveAsMenuCommand.ImageIndex = 2;
-			this.SaveAsMenuCommand.Shortcut = System.Windows.Forms.Shortcut.F12;
-			this.SaveAsMenuCommand.Text = "Save &As";
-			this.SaveAsMenuCommand.Click += new System.EventHandler(this.SaveAsMenuCommand_Click);
-			// 
-			// ReloadMenuCommand
-			// 
-			this.ReloadMenuCommand.Description = "MenuCommand";
-			this.ReloadMenuCommand.ImageIndex = 4;
-			this.ReloadMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlR;
-			this.ReloadMenuCommand.Text = "&Reload";
-			this.ReloadMenuCommand.Click += new System.EventHandler(this.ReloadMenuCommand_Click);
-			// 
-			// CloseMenuCommand
-			// 
-			this.CloseMenuCommand.Description = "MenuCommand";
-			this.CloseMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlW;
-			this.CloseMenuCommand.Text = "&Close";
-			this.CloseMenuCommand.Click += new System.EventHandler(this.CloseMenuCommand_Click);
-			// 
-			// SaveOutputMenuCommand
-			// 
-			this.SaveOutputMenuCommand.Description = "MenuCommand";
-			this.SaveOutputMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlU;
-			this.SaveOutputMenuCommand.Text = "Save O&utput";
-			this.SaveOutputMenuCommand.Click += new System.EventHandler(this.SaveOutputMenuCommand_Click);
-			// 
-			// MenuCommand4
-			// 
-			this.MenuCommand4.Description = "MenuCommand";
-			this.MenuCommand4.Text = "-";
-			// 
-			// RecentMenuCommand
-			// 
-			this.RecentMenuCommand.Description = "MenuCommand";
-			this.RecentMenuCommand.Text = "Recent &Files";
-			// 
-			// MenuCommand5
-			// 
-			this.MenuCommand5.Description = "MenuCommand";
-			this.MenuCommand5.Text = "-";
-			// 
-			// ExitMenuCommand
-			// 
-			this.ExitMenuCommand.Description = "MenuCommand";
-			this.ExitMenuCommand.Text = "E&xit";
-			this.ExitMenuCommand.Click += new System.EventHandler(this.ExitMenuCommand_Click);
-			// 
-			// EditMainMenuCommand
-			// 
-			this.EditMainMenuCommand.Description = "MenuCommand";
-			this.EditMainMenuCommand.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
-				{
-					this.CopyMenuCommand,
-					this.SelectAllMenuCommand,
-					this.WordWrapMenuCommand
-				});
-			this.EditMainMenuCommand.Text = "&Edit";
-			// 
-			// CopyMenuCommand
-			// 
-			this.CopyMenuCommand.Description = "MenuCommand";
-			this.CopyMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
-			this.CopyMenuCommand.Text = "Cop&y";
-			this.CopyMenuCommand.Click += new System.EventHandler(this.CopyText);
-			// 
-			// SelectAllMenuCommand
-			// 
-			this.SelectAllMenuCommand.Description = "MenuCommand";
-			this.SelectAllMenuCommand.Shortcut = System.Windows.Forms.Shortcut.CtrlA;
-			this.SelectAllMenuCommand.Text = "Select &All";
-			this.SelectAllMenuCommand.Click += new System.EventHandler(this.SelectAllText);
-			// 
-			// WordWrapMenuCommand
-			// 
-			this.WordWrapMenuCommand.Description = "MenuCommand";
-			this.WordWrapMenuCommand.Text = "&Word Wrap";
-			this.WordWrapMenuCommand.Click += new System.EventHandler(this.WordWrapMenuCommand_Click);
-			// 
-			// ViewMenuCommand
-			// 
-			this.ViewMenuCommand.Description = "MenuCommand";
-			this.ViewMenuCommand.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
-				{
-					this.TargetsMenuCommand,
-					this.PropertiesMenuCommand
-				});
-			this.ViewMenuCommand.Text = "&View";
-			// 
-			// TargetsMenuCommand
-			// 
-			this.TargetsMenuCommand.Description = "MenuCommand";
-			this.TargetsMenuCommand.Text = "&Targets";
-			this.TargetsMenuCommand.Click += new System.EventHandler(this.TargetsMenuCommand_Click);
-			// 
-			// PropertiesMenuCommand
-			// 
-			this.PropertiesMenuCommand.Description = "MenuCommand";
-			this.PropertiesMenuCommand.ImageIndex = 0;
-			this.PropertiesMenuCommand.Text = "&Properties";
-			this.PropertiesMenuCommand.Click += new System.EventHandler(this.PropertiesMenuCommand_Click);
-			// 
-			// NAntMenuCommand
-			// 
-			this.NAntMenuCommand.Description = "MenuCommand";
-			this.NAntMenuCommand.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
-				{
-					this.BuildMenuCommand
-				});
-			this.NAntMenuCommand.Text = "&NAnt";
-			// 
-			// BuildMenuCommand
-			// 
-			this.BuildMenuCommand.Description = "Builds the current build file";
-			this.BuildMenuCommand.ImageIndex = 7;
-			this.BuildMenuCommand.Shortcut = System.Windows.Forms.Shortcut.F5;
-			this.BuildMenuCommand.Text = "&Build";
-			this.BuildMenuCommand.Click += new System.EventHandler(this.BuildMenuCommand_Click);
-			// 
-			// ToolsMenuCommand
-			// 
-			this.ToolsMenuCommand.Description = "MenuCommand";
-			this.ToolsMenuCommand.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
-				{
-					this.OptionsMenuCommand
-				});
-			this.ToolsMenuCommand.Text = "&Tools";
-			// 
-			// OptionsMenuCommand
-			// 
-			this.OptionsMenuCommand.Description = "MenuCommand";
-			this.OptionsMenuCommand.Text = "&Options";
-			this.OptionsMenuCommand.Click += new System.EventHandler(this.OptionsMenuCommand_Click);
-			// 
-			// HelpMenuCommand
-			// 
-			this.HelpMenuCommand.Description = "MenuCommand";
-			this.HelpMenuCommand.MenuCommands.AddRange(new Crownwood.Magic.Menus.MenuCommand[]
-				{
-					this.NAntHelpMenuCommand,
-					this.NAntSDKMenuCommand,
-					this.NAntContribMenuCommand,
-					this.MenuCommand1,
-					this.AboutMenuCommand
-				});
-			this.HelpMenuCommand.Text = "&Help";
-			// 
-			// NAntHelpMenuCommand
-			// 
-			this.NAntHelpMenuCommand.Description = "MenuCommand";
-			this.NAntHelpMenuCommand.Text = "NAnt &Help";
-			this.NAntHelpMenuCommand.Click += new System.EventHandler(this.NAntHelpMenuCommand_Click);
-			// 
-			// NAntSDKMenuCommand
-			// 
-			this.NAntSDKMenuCommand.Description = "MenuCommand";
-			this.NAntSDKMenuCommand.Text = "NAnt &SDK Help";
-			this.NAntSDKMenuCommand.Click += new System.EventHandler(this.NAntSDKMenuCommand_Click);
-			// 
-			// NAntContribMenuCommand
-			// 
-			this.NAntContribMenuCommand.Description = "MenuCommand";
-			this.NAntContribMenuCommand.Text = "NAnt-&Contrib Help";
-			this.NAntContribMenuCommand.Click += new System.EventHandler(this.NAntContribMenuCommand_Click);
-			// 
-			// MenuCommand1
-			// 
-			this.MenuCommand1.Description = "MenuCommand";
-			this.MenuCommand1.Text = "-";
-			// 
-			// AboutMenuCommand
-			// 
-			this.AboutMenuCommand.Description = "MenuCommand";
-			this.AboutMenuCommand.Text = "&About NAnt-Gui";
-			this.AboutMenuCommand.Click += new System.EventHandler(this.AboutMenuCommand_Click);
+
 			// 
 			// OutputTextBox
 			// 
@@ -769,7 +495,7 @@ namespace NAntGui.Core
 			this.Close();
 		}
 
-		private void BrowseButton_Click(object sender, EventArgs e)
+		private void OpenMenuCommand_Click(object sender, EventArgs e)
 		{
 			this.BrowseForBuildFile();
 		}
@@ -917,7 +643,7 @@ namespace NAntGui.Core
 			this.Update();
 		}
 
-		private void CopyText(object sender, EventArgs e)
+		private void CopyMenuCommand_Click(object sender, EventArgs e)
 		{
 			if (this.TabControl.SelectedTab == this.OutputTabPage)
 			{
@@ -929,7 +655,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void SelectAllText(object sender, EventArgs e)
+		private void SelectAllMenuCommand_Click(object sender, EventArgs e)
 		{
 			if (this.TabControl.SelectedTab == this.OutputTabPage)
 			{
@@ -984,28 +710,22 @@ namespace NAntGui.Core
 
 		private void DisableMenuCommandsAndButtons()
 		{
-			this.ReloadMenuCommand.Enabled		= false;
+			this.MainMenu.Disable();
+
 			this.ReloadToolBarButton.Enabled	= false;
-			this.SaveMenuCommand.Enabled		= false;
 			this.SaveToolBarButton.Enabled		= false;
 			this.StopToolBarButton.Enabled		= false;
-			this.SaveAsMenuCommand.Enabled		= false;
-			this.BuildMenuCommand.Enabled		= false;
 			this.BuildToolBarButton.Enabled		= false;
-			this.CloseMenuCommand.Enabled		= false;
 		}
 
 		private void EnableMenuCommandsAndButtons()
 		{
-			this.ReloadMenuCommand.Enabled		= true;
+			this.MainMenu.Enable();
+
 			this.ReloadToolBarButton.Enabled	= true;
-			this.SaveMenuCommand.Enabled		= true;
 			this.SaveToolBarButton.Enabled		= true;
 			this.StopToolBarButton.Enabled		= true;
-			this.SaveAsMenuCommand.Enabled		= true;
-			this.BuildMenuCommand.Enabled		= true;
 			this.BuildToolBarButton.Enabled		= true;
-			this.CloseMenuCommand.Enabled		= true;
 		}
 
 		private void OptionsMenuCommand_Click(object sender, EventArgs e)
@@ -1204,14 +924,14 @@ namespace NAntGui.Core
 
 		private void UpdateRecentItemsMenu()
 		{
-			int count = 1;
-			this.RecentMenuCommand.MenuCommands.Clear();
+			this.MainMenu.ClearRecentItems();
 
-			foreach (string lItem in this._recentItems)
+			int count = 1;
+			foreach (string item in _recentItems)
 			{
-				EventHandler lOnClick = new EventHandler(this.RecentFile_Clicked);
-				MenuCommand lMenuCommand = new MenuCommand(count++ + " " + lItem, lOnClick);
-				this.RecentMenuCommand.MenuCommands.Add(lMenuCommand);
+				EventHandler onClick = new EventHandler(this.RecentFile_Clicked);
+				MenuCommand command = new MenuCommand(count++ + " " + item, onClick);
+				this.MainMenu.AddRecentItem(command);
 			}
 		}
 
@@ -1319,12 +1039,12 @@ namespace NAntGui.Core
 		{
 			if (this.TabControl.SelectedTab == this.OutputTabPage)
 			{
-				this.WordWrapMenuCommand.Checked = this.OutputTextBox.WordWrap =
+				this.MainMenu.WordWrapChecked = this.OutputTextBox.WordWrap =
 					!this.OutputTextBox.WordWrap;
 			}
 			else if (this.TabControl.SelectedTab == this.XMLTabPage)
 			{
-				this.WordWrapMenuCommand.Checked = this.XMLRichTextBox.WordWrap =
+				this.MainMenu.WordWrapChecked = this.XMLRichTextBox.WordWrap =
 					!this.XMLRichTextBox.WordWrap;
 			}
 		}
@@ -1333,11 +1053,11 @@ namespace NAntGui.Core
 		{
 			if (this.TabControl.SelectedTab == this.OutputTabPage)
 			{
-				this.WordWrapMenuCommand.Checked = this.OutputTextBox.WordWrap;
+				this.MainMenu.WordWrapChecked = this.OutputTextBox.WordWrap;
 			}
 			else if (this.TabControl.SelectedTab == this.XMLTabPage)
 			{
-				this.WordWrapMenuCommand.Checked = this.XMLRichTextBox.WordWrap;
+				this.MainMenu.WordWrapChecked = this.XMLRichTextBox.WordWrap;
 			}
 		}
 
