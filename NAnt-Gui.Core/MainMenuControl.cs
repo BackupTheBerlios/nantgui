@@ -40,6 +40,7 @@ namespace NAntGui.Core
 		private MenuCommand MenuCommand4 = new MenuCommand();
 		private MenuCommand MenuCommand5 = new MenuCommand();
 		private MenuCommand FileMenuCommand = new MenuCommand();
+		private MenuCommand NewMenuCommand = new MenuCommand();
 		private MenuCommand OpenMenuCommand = new MenuCommand();
 		private MenuCommand SaveMenuCommand = new MenuCommand();
 		private MenuCommand SaveAsMenuCommand = new MenuCommand();
@@ -118,6 +119,7 @@ namespace NAntGui.Core
 			this.FileMenuCommand.Description = "MenuCommand";
 			this.FileMenuCommand.MenuCommands.AddRange(new MenuCommand[]
 				{
+					this.NewMenuCommand, 
 					this.OpenMenuCommand,
 					this.SaveMenuCommand,
 					this.SaveAsMenuCommand,
@@ -130,6 +132,13 @@ namespace NAntGui.Core
 					this.ExitMenuCommand
 				});
 			this.FileMenuCommand.Text = "&File";
+			// 
+			// NewMenuCommand
+			// 
+			this.NewMenuCommand.Description = "MenuCommand";
+			this.NewMenuCommand.ImageIndex = 8;
+			this.NewMenuCommand.Shortcut = Shortcut.CtrlN;
+			this.NewMenuCommand.Text = "&New";
 			// 
 			// OpenMenuCommand
 			// 
@@ -313,6 +322,7 @@ namespace NAntGui.Core
 
 		private void AssignImages()
 		{
+			this.NewMenuCommand.ImageList			= _imageList;
 			this.OpenMenuCommand.ImageList			= _imageList;
 			this.SaveMenuCommand.ImageList			= _imageList;
 			this.ReloadMenuCommand.ImageList		= _imageList;
@@ -349,6 +359,11 @@ namespace NAntGui.Core
 		}
 
 		#region Events
+
+		public EventHandler New_Click
+		{
+			set { this.NewMenuCommand.Click += value; }
+		}
 
 		public EventHandler Open_Click
 		{

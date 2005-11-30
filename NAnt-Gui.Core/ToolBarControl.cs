@@ -32,12 +32,14 @@ namespace NAntGui.Core
 	/// </summary>
 	public class ToolBarControl : ToolBar
 	{
+		public event VoidVoid New_Click;
 		public event VoidVoid Build_Click;
 		public event VoidVoid Open_Click;
 		public event VoidVoid Save_Click;
 		public event VoidVoid Reload_Click;
 		public event VoidVoid Stop_Click;
 
+		private ToolBarButton NewToolBarButton		= new ToolBarButton();
 		private ToolBarButton OpenToolBarButton		= new ToolBarButton();
 		private ToolBarButton SaveToolBarButton		= new ToolBarButton();
 		private ToolBarButton BuildToolBarButton	= new ToolBarButton();
@@ -65,6 +67,7 @@ namespace NAntGui.Core
 			this.Appearance = ToolBarAppearance.Flat;
 			this.Buttons.AddRange(new ToolBarButton[]
 				{
+					this.NewToolBarButton,
 					this.OpenToolBarButton,
 					this.SaveToolBarButton,
 					this.ReloadToolBarButton,
@@ -78,6 +81,11 @@ namespace NAntGui.Core
 			this.Size = new Size(824, 28);
 			this.TabIndex = 4;
 			this.ButtonClick += new ToolBarButtonClickEventHandler(this.Button_Click);
+			// 
+			// NewToolBarButton
+			// 
+			this.NewToolBarButton.ImageIndex = 8;
+			this.NewToolBarButton.ToolTipText = "New Build File";
 			// 
 			// OpenToolBarButton
 			// 
@@ -107,7 +115,11 @@ namespace NAntGui.Core
 
 		private void Button_Click(object sender, ToolBarButtonClickEventArgs e)
 		{
-			if (e.Button == this.BuildToolBarButton && this.Build_Click != null)
+			if (e.Button == this.NewToolBarButton && this.New_Click != null)
+			{
+				this.New_Click();
+			}
+			else if (e.Button == this.BuildToolBarButton && this.Build_Click != null)
 			{
 				this.Build_Click();
 			}
