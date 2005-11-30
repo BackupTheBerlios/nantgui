@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -59,16 +59,17 @@ namespace NAntGui.Core
 
 		#region GUI Items
 		private PopupMenu _outputContextMenu = new PopupMenu();
+		private RichTextBox OutputTextBox;
+
 		private PopupMenu _xmlContextMenu = new PopupMenu();
+		private RichTextBox XMLRichTextBox;
 
 		private StatusBarPanel FileStatusBarPanel;
 		private OpenFileDialog OpenFileDialog;
 		private StatusBar MainStatusBar;
-		private RichTextBox OutputTextBox;
-		private RichTextBox XMLRichTextBox;
-
-		private ToolBar MainToolBar;
-		private ImageList ToolBarImageList;
+		
+		private ToolBarControl MainToolBar;
+		private ImageList _imageList;
 		private TreeView TargetsTreeView;
 		public PropertyGrid ProjectPropertyGrid;
 		private StatusBarPanel ProgressPanel;
@@ -79,11 +80,11 @@ namespace NAntGui.Core
 		
 		private MainMenuControl MainMenu;
 
-		private ToolBarButton OpenToolBarButton;
-		private ToolBarButton SaveToolBarButton;
-		private ToolBarButton BuildToolBarButton;
-		private ToolBarButton ReloadToolBarButton;
-		private ToolBarButton StopToolBarButton;
+//		private ToolBarButton OpenToolBarButton;
+//		private ToolBarButton SaveToolBarButton;
+//		private ToolBarButton BuildToolBarButton;
+//		private ToolBarButton ReloadToolBarButton;
+//		private ToolBarButton StopToolBarButton;
 
 		private TabControl TabControl;
 		private TabPage XMLTabPage;
@@ -101,14 +102,12 @@ namespace NAntGui.Core
 		{
 			_options = options;
 
-			this.ToolBarImageList = ResourceHelper.LoadBitmapStrip(
-				this.GetType(), "NAntGui.Core.Images.MenuItems.bmp", new Size(16, 16), new Point(0, 0));
+			_imageList = ResourceHelper.LoadBitmapStrip(
+				this.GetType(), "NAntGui.Core.Images.MenuItems.bmp",
+				new Size(16, 16), new Point(0, 0));
 
 			InitializeComponent();
 
-			this.MainToolBar.ImageList = this.ToolBarImageList;
-
-			this.AssignMenuCommands();
 			// Reduce the amount of flicker that occurs when windows are redocked within
 			// the container. As this prevents unsightly backcolors being drawn in the
 			// WM_ERASEBACKGROUND that seems to occur.
@@ -126,8 +125,19 @@ namespace NAntGui.Core
 			_nantBuildRunner.BuildFileLoaded += new BuildFileChangedEH(this.BuildFileLoaded);
 			_nantBuildRunner.BuildFinished += new NC.BuildEventHandler(this.Build_Finished);
 
+			this.AssignMenuCommands();
+			this.AssignToolBarButtons();
 			this.UpdateRecentItemsMenu();
 			this.LoadInitialBuildFile();
+		}
+
+		private void AssignToolBarButtons()
+		{
+			this.MainToolBar.Build_Click += new VoidVoid(this.Build);
+			this.MainToolBar.Build_Click += new VoidVoid(this.BrowseForBuildFile);
+			this.MainToolBar.Build_Click += new VoidVoid(this.Save);
+			this.MainToolBar.Build_Click += new VoidVoid(this.Reload);
+			this.MainToolBar.Build_Click += new VoidVoid(_nantBuildRunner.Stop);
 		}
 
 		private void AssignMenuCommands()
@@ -165,7 +175,7 @@ namespace NAntGui.Core
 			_targetsContent = _dockManager.Contents.Add(this.TargetsTreeView, "Targets");
 
 			_propertiesContent = _dockManager.Contents.Add(this.ProjectPropertyGrid, "Properties");
-			_propertiesContent.ImageList = this.ToolBarImageList;
+			_propertiesContent.ImageList = this._imageList;
 			_propertiesContent.ImageIndex = 0;
 
 			// Request a new Docking window be created for the above Content on the left edge
@@ -246,12 +256,12 @@ namespace NAntGui.Core
 			this.ProgressPanel = new System.Windows.Forms.StatusBarPanel();
 			this.MainMenu = new MainMenuControl();
 			this.OutputTextBox = new System.Windows.Forms.RichTextBox();
-			this.MainToolBar = new System.Windows.Forms.ToolBar();
-			this.OpenToolBarButton = new System.Windows.Forms.ToolBarButton();
-			this.SaveToolBarButton = new System.Windows.Forms.ToolBarButton();
-			this.ReloadToolBarButton = new System.Windows.Forms.ToolBarButton();
-			this.BuildToolBarButton = new System.Windows.Forms.ToolBarButton();
-			this.StopToolBarButton = new System.Windows.Forms.ToolBarButton();
+			this.MainToolBar = new ToolBarControl();
+//			this.OpenToolBarButton = new System.Windows.Forms.ToolBarButton();
+//			this.SaveToolBarButton = new System.Windows.Forms.ToolBarButton();
+//			this.ReloadToolBarButton = new System.Windows.Forms.ToolBarButton();
+//			this.BuildToolBarButton = new System.Windows.Forms.ToolBarButton();
+//			this.StopToolBarButton = new System.Windows.Forms.ToolBarButton();
 			this.TargetsTreeView = new System.Windows.Forms.TreeView();
 			this.XMLRichTextBox = new System.Windows.Forms.RichTextBox();
 			this.ProjectPropertyGrid = new System.Windows.Forms.PropertyGrid();
@@ -322,50 +332,50 @@ namespace NAntGui.Core
 			this.OutputTextBox.Text = "";
 			this.OutputTextBox.WordWrap = false;
 			this.OutputTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OutputTextBox_MouseUp);
-			// 
-			// MainToolBar
-			// 
-			this.MainToolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
-			this.MainToolBar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[]
-				{
-					this.OpenToolBarButton,
-					this.SaveToolBarButton,
-					this.ReloadToolBarButton,
-					this.BuildToolBarButton,
-					this.StopToolBarButton
-				});
-			this.MainToolBar.DropDownArrows = true;
-			this.MainToolBar.Location = new System.Drawing.Point(0, 25);
-			this.MainToolBar.Name = "MainToolBar";
-			this.MainToolBar.ShowToolTips = true;
-			this.MainToolBar.Size = new System.Drawing.Size(824, 28);
-			this.MainToolBar.TabIndex = 4;
-			this.MainToolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.MainToolBar_ButtonClick);
-			// 
-			// OpenToolBarButton
-			// 
-			this.OpenToolBarButton.ImageIndex = 5;
-			this.OpenToolBarButton.ToolTipText = "Open Build File";
-			// 
-			// SaveToolBarButton
-			// 
-			this.SaveToolBarButton.ImageIndex = 2;
-			this.SaveToolBarButton.ToolTipText = "Save Build File";
-			// 
-			// ReloadToolBarButton
-			// 
-			this.ReloadToolBarButton.ImageIndex = 4;
-			this.ReloadToolBarButton.ToolTipText = "Reload Build File";
-			// 
-			// BuildToolBarButton
-			// 
-			this.BuildToolBarButton.ImageIndex = 7;
-			this.BuildToolBarButton.ToolTipText = "Build Default Target";
-			// 
-			// StopToolBarButton
-			// 
-			this.StopToolBarButton.ImageIndex = 3;
-			this.StopToolBarButton.ToolTipText = "Abort the Current Build";
+//			// 
+//			// MainToolBar
+//			// 
+//			this.MainToolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+//			this.MainToolBar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[]
+//				{
+//					this.OpenToolBarButton,
+//					this.SaveToolBarButton,
+//					this.ReloadToolBarButton,
+//					this.BuildToolBarButton,
+//					this.StopToolBarButton
+//				});
+//			this.MainToolBar.DropDownArrows = true;
+//			this.MainToolBar.Location = new System.Drawing.Point(0, 25);
+//			this.MainToolBar.Name = "MainToolBar";
+//			this.MainToolBar.ShowToolTips = true;
+//			this.MainToolBar.Size = new System.Drawing.Size(824, 28);
+//			this.MainToolBar.TabIndex = 4;
+//			this.MainToolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.MainToolBar_ButtonClick);
+//			// 
+//			// OpenToolBarButton
+//			// 
+//			this.OpenToolBarButton.ImageIndex = 5;
+//			this.OpenToolBarButton.ToolTipText = "Open Build File";
+//			// 
+//			// SaveToolBarButton
+//			// 
+//			this.SaveToolBarButton.ImageIndex = 2;
+//			this.SaveToolBarButton.ToolTipText = "Save Build File";
+//			// 
+//			// ReloadToolBarButton
+//			// 
+//			this.ReloadToolBarButton.ImageIndex = 4;
+//			this.ReloadToolBarButton.ToolTipText = "Reload Build File";
+//			// 
+//			// BuildToolBarButton
+//			// 
+//			this.BuildToolBarButton.ImageIndex = 7;
+//			this.BuildToolBarButton.ToolTipText = "Build Default Target";
+//			// 
+//			// StopToolBarButton
+//			// 
+//			this.StopToolBarButton.ImageIndex = 3;
+//			this.StopToolBarButton.ToolTipText = "Abort the Current Build";
 			// 
 			// TargetsTreeView
 			// 
@@ -529,29 +539,29 @@ namespace NAntGui.Core
 			this.CloseBuildFile();
 		}
 
-		private void MainToolBar_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
-		{
-			if (e.Button == this.BuildToolBarButton)
-			{
-				this.Build();
-			}
-			else if (e.Button == this.OpenToolBarButton)
-			{
-				this.BrowseForBuildFile();
-			}
-			else if (e.Button == this.SaveToolBarButton)
-			{
-				this.Save();
-			}
-			else if (e.Button == this.ReloadToolBarButton)
-			{
-				this.Reload();
-			}
-			else if (e.Button == this.StopToolBarButton)
-			{
-				_nantBuildRunner.Stop();
-			}
-		}
+//		private void MainToolBar_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
+//		{
+//			if (e.Button == this.BuildToolBarButton)
+//			{
+//				this.Build();
+//			}
+//			else if (e.Button == this.OpenToolBarButton)
+//			{
+//				this.BrowseForBuildFile();
+//			}
+//			else if (e.Button == this.SaveToolBarButton)
+//			{
+//				this.Save();
+//			}
+//			else if (e.Button == this.ReloadToolBarButton)
+//			{
+//				this.Reload();
+//			}
+//			else if (e.Button == this.StopToolBarButton)
+//			{
+//				_nantBuildRunner.Stop();
+//			}
+//		}
 
 		private void BrowseForBuildFile()
 		{
@@ -711,21 +721,21 @@ namespace NAntGui.Core
 		private void DisableMenuCommandsAndButtons()
 		{
 			this.MainMenu.Disable();
-
-			this.ReloadToolBarButton.Enabled	= false;
-			this.SaveToolBarButton.Enabled		= false;
-			this.StopToolBarButton.Enabled		= false;
-			this.BuildToolBarButton.Enabled		= false;
+			this.MainToolBar.Disable();
+//			this.ReloadToolBarButton.Enabled	= false;
+//			this.SaveToolBarButton.Enabled		= false;
+//			this.StopToolBarButton.Enabled		= false;
+//			this.BuildToolBarButton.Enabled		= false;
 		}
 
 		private void EnableMenuCommandsAndButtons()
 		{
 			this.MainMenu.Enable();
-
-			this.ReloadToolBarButton.Enabled	= true;
-			this.SaveToolBarButton.Enabled		= true;
-			this.StopToolBarButton.Enabled		= true;
-			this.BuildToolBarButton.Enabled		= true;
+			this.MainToolBar.Enable();
+//			this.ReloadToolBarButton.Enabled	= true;
+//			this.SaveToolBarButton.Enabled		= true;
+//			this.StopToolBarButton.Enabled		= true;
+//			this.BuildToolBarButton.Enabled		= true;
 		}
 
 		private void OptionsMenuCommand_Click(object sender, EventArgs e)
@@ -1101,7 +1111,7 @@ namespace NAntGui.Core
 		private void CreateTargetTreeViewMenu()
 		{
 			MenuCommand build = new MenuCommand("&Build", new EventHandler(this.BuildMenuCommand_Click));
-			build.ImageList = this.ToolBarImageList;
+			build.ImageList = this._imageList;
 			build.ImageIndex = 7;
 			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {build});
 		}

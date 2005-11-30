@@ -270,6 +270,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ToolBarControl.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "VoidVoidDelegate.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
