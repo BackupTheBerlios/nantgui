@@ -63,10 +63,10 @@ namespace NAntGui.Core
 
 		private void LoadStateFromReg(RegistryKey key)
 		{
-			int left = Convert.ToInt32(key.GetValue("Left", _nantForm.Left));
-			int top = Convert.ToInt32(key.GetValue("Top", _nantForm.Top));
-			int width = Convert.ToInt32(key.GetValue("Width", _nantForm.Width));
-			int height = Convert.ToInt32(key.GetValue("Height", _nantForm.Height));
+			int left	= Convert.ToInt32(key.GetValue("Left", _nantForm.Left));
+			int top		= Convert.ToInt32(key.GetValue("Top", _nantForm.Top));
+			int width	= Convert.ToInt32(key.GetValue("Width", _nantForm.Width));
+			int height	= Convert.ToInt32(key.GetValue("Height", _nantForm.Height));
 
 			FormWindowState windowState = (FormWindowState) key.GetValue("WindowState", (int) _nantForm.WindowState);
 			PropertySort propertySort = (PropertySort) key.GetValue("PropertySort", (int) _nantForm.ProjectPropertyGrid.PropertySort);

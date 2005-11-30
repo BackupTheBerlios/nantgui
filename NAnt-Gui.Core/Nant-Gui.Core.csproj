@@ -156,6 +156,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Delegates.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DependsCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -172,6 +177,11 @@
                 />
                 <File
                     RelPath = "Main.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MainFormMediator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -270,13 +280,13 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ToolBarControl.cs"
+                    RelPath = "SourceTabControl.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "VoidVoidDelegate.cs"
-                    SubType = "Code"
+                    RelPath = "ToolBarControl.cs"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
