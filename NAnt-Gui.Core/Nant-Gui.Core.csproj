@@ -106,10 +106,14 @@
                     HintPath = "..\..\..\..\..\..\Program Files\NAnt\bin\NAnt.Core.dll"
                 />
                 <Reference
+                    Name = "ICSharpCode.TextEditor"
+                    AssemblyName = "ICSharpCode.TextEditor"
+                    HintPath = "..\ThirdParty Libraries\ICSharpCode.TextEditor.dll"
+                />
+                <Reference
                     Name = "MagicLibrary"
                     AssemblyName = "MagicLibrary"
-                    HintPath = "..\..\..\..\..\..\Program Files\Crownwood Consulting Ltd\Magic Library 1.7.4\Bin\MagicLibrary.DLL"
-                    AssemblyFolderKey = "hklm\dn\magic library"
+                    HintPath = "..\ThirdParty Libraries\MagicLibrary.DLL"
                 />
             </References>
         </Build>
