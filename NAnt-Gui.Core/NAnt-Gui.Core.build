@@ -37,12 +37,13 @@
       debug="${debug}"
       define="${define}"
       warninglevel="${warninglevel}"
+	verbose="true"
       >
       <sources>
-        <include name="*.cs" />
+        <include name="**\*.cs" />
       </sources>
       <resources>
-        <include name="*.resx" />
+        <include name="**\*.resx" />
       </resources>
       <references>
         <include name="C:\Program Files\${nant.dir}\bin\NAnt.Core.dll" />
@@ -57,6 +58,5 @@
     <delete file="${build.basedir}\Debug\NAnt-Gui.Core.dll" failonerror="false" />
     <delete file="${build.basedir}\Debug\NAnt-Gui.Core.pdb" failonerror="false" />
     <delete file="${build.basedir}\Release\NAnt-Gui.Core.dll" failonerror="false" />
-    <delete file="${build.basedir}\Release\NAnt-Gui.Core.pdb" failonerror="false" />
   </target>
 </project>

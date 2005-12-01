@@ -59,8 +59,15 @@
   </target>
 
   <target name="Clean">
-    <delete file="${build.basedir}\Debug\*" failonerror="false" />
-    <delete file="${build.basedir}\Release\*" failonerror="false" />
-  </target>
+    <delete>
+      <fileset>
+        <include name="${build.basedir}\Debug\NAnt-Gui.exe" />
+        <include name="${build.basedir}\Debug\NAnt-Gui.Core.dll" />
+        <include name="${build.basedir}\Debug\NAnt-Gui.pdb" />
+        <include name="${build.basedir}\Debug\NAnt-Gui.Core.pdb" />
 
+	  <include name="${build.basedir}\Release\*" />
+	</fileset>
+    </delete>
+  </target>
 </project>

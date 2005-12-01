@@ -70,6 +70,7 @@ namespace NAntGui.Core
 			_sourceTabPage.Size = new Size(824, 453);
 			_sourceTabPage.TabIndex = 4;
 			_sourceTabPage.Title = "Source";
+			_sourceTabPage.Enter += new EventHandler(this.SourceTabPage_Enter);
 			// 
 			// OutputTabPage
 			// 
@@ -113,8 +114,8 @@ namespace NAntGui.Core
 			_sourceRichTextBox.TabIndex = 4;
 			_sourceRichTextBox.Text = "";
 			_sourceRichTextBox.WordWrap = false;
-			_sourceRichTextBox.TextChanged += new EventHandler(this.XMLRichTextBox_TextChanged);
-			_sourceRichTextBox.MouseUp += new MouseEventHandler(this.XMLTextBox_MouseUp);
+			_sourceRichTextBox.TextChanged += new EventHandler(this.SourceRichTextBox_TextChanged);
+			_sourceRichTextBox.MouseUp += new MouseEventHandler(this.SourceTextBox_MouseUp);
 
 
 			this.ResumeLayout(false);
@@ -145,16 +146,15 @@ namespace NAntGui.Core
 
 		private void SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (this.WordWrapChanged != null)
+			if (this.SelectedTab == _outputTabPage)
 			{
-				if (this.SelectedTab == _outputTabPage)
-				{
+				if (this.WordWrapChanged != null)
 					this.WordWrapChanged(_outputRichTextBox.WordWrap);
-				}
-				else if (this.SelectedTab == _sourceTabPage)
-				{
+			}
+			else if (this.SelectedTab == _sourceTabPage)
+			{
+				if (this.WordWrapChanged != null)
 					this.WordWrapChanged(_sourceRichTextBox.WordWrap);
-				}
 			}
 		}
 
@@ -167,7 +167,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void XMLTextBox_MouseUp(object sender, MouseEventArgs e)
+		private void SourceTextBox_MouseUp(object sender, MouseEventArgs e)
 		{
 			RichTextBox box = sender as RichTextBox;
 			if (e.Button == MouseButtons.Right)
@@ -176,7 +176,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void XMLRichTextBox_TextChanged(object sender, EventArgs e)
+		private void SourceRichTextBox_TextChanged(object sender, EventArgs e)
 		{
 			if (this.SourceHasChanged)
 			{
@@ -312,6 +312,11 @@ namespace NAntGui.Core
 		{
 			get { return (_sourceRichTextBox.Text != _source && 
 					  _sourceRichTextBox.Text != _source.Replace("\r", "")); }
+		}
+
+		private void SourceTabPage_Enter(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

@@ -5,19 +5,22 @@
     <innosetup script="NAnt-Gui.iss" />
   </target>
   
-  <target name="Debug" description="Build Debug App">
+  <target name="Debug" description="Build Debug App">    
     <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Debug" />
     <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Debug" />    
+    <nant buildfile="NAnt-Gui.Unittests/NAnt-Gui.Unittests.build" target="Debug" />
   </target>
 
-  <target name="Release" description="Build Release App">    
+  <target name="Release" description="Build Release App">        
     <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Release" />
     <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Release" />
+    <nant buildfile="NAnt-Gui.Unittests/NAnt-Gui.Unittests.build" target="Release" />
   </target>
 
   <target name="Clean">
     <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Clean" />
     <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Clean" />
+    <nant buildfile="NAnt-Gui.Unittests/NAnt-Gui.Unittests.build" target="Debug" />
   </target>
 
 </project>
