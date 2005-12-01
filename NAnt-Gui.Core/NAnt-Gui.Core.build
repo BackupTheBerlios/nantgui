@@ -42,6 +42,9 @@
       <sources>
         <include name="**\*.cs" />
       </sources>
+      <resources prefix="NAntGui.Core.Images">
+        <include name="Images\MenuItems.bmp" />
+      </resources>
       <resources>
         <include name="**\*.resx" />
       </resources>
@@ -49,7 +52,7 @@
         <include name="C:\Program Files\${nant.dir}\bin\NAnt.Core.dll" />
         <include name="C:\Program Files\${nant.dir}\bin\NAnt.Win32Tasks.dll" />
         <include name="C:\Program Files\${nant.dir}\bin\log4net.dll" />
-        <include name="C:\Program Files\Crownwood Consulting Ltd\Magic Library 1.7.4\Bin\MagicLibrary.dll" />
+        <include name="..\ThirdParty Libraries\MagicLibrary.dll" />
       </references>
     </csc>
   </target>

@@ -87,7 +87,7 @@ namespace NAntGui.Core
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof (NewProjectForm));
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(NewProjectForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -186,7 +186,7 @@ namespace NAntGui.Core
 			this.AcceptButton = this.OKButton;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.CloseButton;
-			this.ClientSize = new System.Drawing.Size(392, 197);
+			this.ClientSize = new System.Drawing.Size(394, 199);
 			this.Controls.Add(this.DescriptionTextBox);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.CloseButton);
@@ -198,7 +198,7 @@ namespace NAntGui.Core
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(400, 224);

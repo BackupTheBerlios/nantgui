@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "NAnt-Gui"
-#define MyAppVerName "NAnt-Gui 1.3.0"
+#define MyAppVerName "NAnt-Gui 1.3.1"
 #define MyAppPublisher "Colin Svingen"
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
@@ -21,14 +21,14 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=true
 OutputDir=installer
-OutputBaseFilename=NAnt-Gui-1.3.0
+OutputBaseFilename=NAnt-Gui-1.3.1
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 ChangesAssociations=true
 LicenseFile=License.txt
 AppCopyright=2005 Colin Svingen
-AppVersion=1.3.0
+AppVersion=1.3.1
 AppID={{5A46EB86-CC66-403A-9789-E7D7413C20D2}
 AppContact=nantgui@swoogan.com
 UninstallDisplayIcon={app}\src\Ant.ico
@@ -49,7 +49,6 @@ Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: 
 Source: NAnt-Gui.sln; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.build; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Ant.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
-Source: Ant_small.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: License.txt; DestDir: {app}; Flags: ignoreversion
 Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Core

@@ -142,24 +142,23 @@ namespace NAntGui.Core
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof (NAntForm));
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(NAntForm));
 			this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.MainStatusBar = new System.Windows.Forms.StatusBar();
 			this.FileStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
 			this.FullFileStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
 			this.ProgressPanel = new System.Windows.Forms.StatusBarPanel();
-			this.MainMenu = new MainMenuControl();
-			this.MainToolBar = new ToolBarControl();
+			this.MainMenu = new NAntGui.Core.MainMenuControl();
+			this.MainToolBar = new NAntGui.Core.ToolBarControl();
 			this.TargetsTreeView = new System.Windows.Forms.TreeView();
-
 			this.ProjectPropertyGrid = new System.Windows.Forms.PropertyGrid();
 			this.OutputSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.SourceTabs = new SourceTabControl();
+			this.SourceTabs = new NAntGui.Core.SourceTabControl();
 			this.XMLSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-			((System.ComponentModel.ISupportInitialize) (this.FileStatusBarPanel)).BeginInit();
-			((System.ComponentModel.ISupportInitialize) (this.FullFileStatusBarPanel)).BeginInit();
-			((System.ComponentModel.ISupportInitialize) (this.ProgressPanel)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.FileStatusBarPanel)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.FullFileStatusBarPanel)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.ProgressPanel)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// OpenFileDialog
@@ -171,12 +170,10 @@ namespace NAntGui.Core
 			// 
 			this.MainStatusBar.Location = new System.Drawing.Point(0, 531);
 			this.MainStatusBar.Name = "MainStatusBar";
-			this.MainStatusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[]
-				{
-					this.FileStatusBarPanel,
-					this.FullFileStatusBarPanel,
-					this.ProgressPanel
-				});
+			this.MainStatusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
+																							 this.FileStatusBarPanel,
+																							 this.FullFileStatusBarPanel,
+																							 this.ProgressPanel});
 			this.MainStatusBar.ShowPanels = true;
 			this.MainStatusBar.Size = new System.Drawing.Size(824, 22);
 			this.MainStatusBar.SizingGrip = false;
@@ -197,6 +194,33 @@ namespace NAntGui.Core
 			this.ProgressPanel.MinWidth = 0;
 			this.ProgressPanel.Style = System.Windows.Forms.StatusBarPanelStyle.OwnerDraw;
 			this.ProgressPanel.Width = 10;
+			// 
+			// MainMenu
+			// 
+			this.MainMenu.AnimateStyle = Crownwood.Magic.Menus.Animation.System;
+			this.MainMenu.AnimateTime = 100;
+			this.MainMenu.Cursor = System.Windows.Forms.Cursors.Arrow;
+			this.MainMenu.Direction = Crownwood.Magic.Common.Direction.Horizontal;
+			this.MainMenu.Dock = System.Windows.Forms.DockStyle.Top;
+			this.MainMenu.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((System.Byte)(0)));
+			this.MainMenu.HighlightTextColor = System.Drawing.SystemColors.MenuText;
+			this.MainMenu.Location = new System.Drawing.Point(0, 0);
+			this.MainMenu.Name = "MainMenu";
+			this.MainMenu.Size = new System.Drawing.Size(824, 25);
+			this.MainMenu.Style = Crownwood.Magic.Common.VisualStyle.IDE;
+			this.MainMenu.TabIndex = 13;
+			this.MainMenu.TabStop = false;
+			this.MainMenu.WordWrapChecked = false;
+			// 
+			// MainToolBar
+			// 
+			this.MainToolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+			this.MainToolBar.DropDownArrows = true;
+			this.MainToolBar.Location = new System.Drawing.Point(0, 25);
+			this.MainToolBar.Name = "MainToolBar";
+			this.MainToolBar.ShowToolTips = true;
+			this.MainToolBar.Size = new System.Drawing.Size(824, 28);
+			this.MainToolBar.TabIndex = 4;
 			// 
 			// TargetsTreeView
 			// 
@@ -226,7 +250,7 @@ namespace NAntGui.Core
 			this.ProjectPropertyGrid.ViewBackColor = System.Drawing.SystemColors.Window;
 			this.ProjectPropertyGrid.ViewForeColor = System.Drawing.SystemColors.WindowText;
 			// 
-			// OutputOutputSaveFileDialog
+			// OutputSaveFileDialog
 			// 
 			this.OutputSaveFileDialog.DefaultExt = "txt";
 			this.OutputSaveFileDialog.FileName = "Output";
@@ -234,11 +258,20 @@ namespace NAntGui.Core
 			// 
 			// SourceTabs
 			// 
-			this.SourceTabs.SourceChanged += new VoidVoid(this.Source_Changed);
-			this.SourceTabs.SourceRestored += new VoidVoid(this.Source_Restored);
-			this.SourceTabs.WordWrapChanged += new VoidBool(this.WordWrap_Changed);
+			this.SourceTabs.Appearance = Crownwood.Magic.Controls.TabControl.VisualAppearance.MultiDocument;
+			this.SourceTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SourceTabs.IDEPixelArea = true;
+			this.SourceTabs.IDEPixelBorder = false;
+			this.SourceTabs.Location = new System.Drawing.Point(0, 53);
+			this.SourceTabs.Name = "SourceTabs";
+			this.SourceTabs.SelectedIndex = 0;
+			this.SourceTabs.Size = new System.Drawing.Size(824, 478);
+			this.SourceTabs.TabIndex = 12;
+			this.SourceTabs.WordWrapChanged += new NAntGui.Core.VoidBool(this.WordWrap_Changed);
+			this.SourceTabs.SourceRestored += new NAntGui.Core.VoidVoid(this.Source_Restored);
+			this.SourceTabs.SourceChanged += new NAntGui.Core.VoidVoid(this.Source_Changed);
 			// 
-			// XMLOutputSaveFileDialog
+			// XMLSaveFileDialog
 			// 
 			this.XMLSaveFileDialog.DefaultExt = "build";
 			this.XMLSaveFileDialog.Filter = "NAnt Buildfile|*.build|NAnt Include|*.inc";
@@ -252,7 +285,7 @@ namespace NAntGui.Core
 			this.Controls.Add(this.MainStatusBar);
 			this.Controls.Add(this.MainToolBar);
 			this.Controls.Add(this.MainMenu);
-			this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(480, 344);
 			this.Name = "NAntForm";
 			this.Text = "NAnt-Gui";
@@ -260,9 +293,9 @@ namespace NAntGui.Core
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.NAnt_DragDrop);
 			this.Closed += new System.EventHandler(this.NAnt_Closed);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.NAnt_DragEnter);
-			((System.ComponentModel.ISupportInitialize) (this.FileStatusBarPanel)).EndInit();
-			((System.ComponentModel.ISupportInitialize) (this.FullFileStatusBarPanel)).EndInit();
-			((System.ComponentModel.ISupportInitialize) (this.ProgressPanel)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.FileStatusBarPanel)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.FullFileStatusBarPanel)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.ProgressPanel)).EndInit();
 			this.ResumeLayout(false);
 
 		}

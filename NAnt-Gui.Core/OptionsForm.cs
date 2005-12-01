@@ -136,7 +136,7 @@ namespace NAntGui.Core
 			this.AcceptButton = this.OKButton;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.CloseButton;
-			this.ClientSize = new System.Drawing.Size(352, 133);
+			this.ClientSize = new System.Drawing.Size(354, 135);
 			this.Controls.Add(this.MaxRecentItemsUpDown);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.CloseButton);
