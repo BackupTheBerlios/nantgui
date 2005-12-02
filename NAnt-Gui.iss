@@ -45,6 +45,9 @@ Name: envpath; GroupDescription: Set environment variables; Description: Add bin
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe.config; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+; Libraries
+Source: ThirdParty Libraries\MagicLibrary.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+
 ; Source
 Source: NAnt-Gui.sln; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.build; DestDir: {app}\src; Flags: ignoreversion; Components: src
@@ -81,8 +84,6 @@ Source: C:\Program Files\{#NAntDir}\examples\*; DestDir: {app}\examples; Flags: 
 Source: C:\Program Files\{#NAntDir}\doc\*; DestDir: {app}\nant-docs; Flags: ignoreversion recursesubdirs; Components: docs
 Source: C:\Program Files\{#NAntContribDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\contrib
 Source: C:\Program Files\{#NAntContribDir}\doc\*; DestDir: {app}\nantcontrib-docs; Flags: ignoreversion recursesubdirs; Components: docs
-; Libraries
-Source: ..\..\..\..\..\Program Files\Crownwood Consulting Ltd\Magic Library 1.7.4\Bin\MagicLibrary.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: docs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -106,14 +107,14 @@ Name: {app}\bin; Components: bin
 Root: HKCR; Subkey: .build; ValueType: string; ValueName: ; ValueData: NAntBuildFile; Flags: uninsdeletekey; Tasks: assocbuild
 Root: HKCR; Subkey: NAntBuildFile; ValueType: string; ValueName: ; ValueData: NAnt Build File; Flags: uninsdeletekey; Tasks: assocbuild
 Root: HKCR; Subkey: NAntBuildFile\DefaultIcon; ValueType: string; ValueName: ; ValueData: {app}\bin\{#MyAppExeName},0; Flags: uninsdeletevalue; Tasks: assocbuild
-Root: HKCR; Subkey: NAntBuildFile\shell\open\command; ValueType: string; ValueName: ; ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocbuild
-Root: HKCR; Subkey: NAntBuildFile\shell\edit\command; ValueType: string; ValueData: """{sys}\notepad.exe"" ""%1"""; Tasks: assocbuild
+Root: HKCR; Subkey: NAntBuildFile\shell\Open\command; ValueType: string; ValueName: ; ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocbuild
+Root: HKCR; Subkey: NAntBuildFile\shell\Edit\command; ValueType: string; ValueData: """{sys}\notepad.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocbuild
 
 Root: HKCR; Subkey: .nant; ValueType: string; ValueName: ; ValueData: NAntNAntFile; Flags: uninsdeletekey; Tasks: assocnant
 Root: HKCR; Subkey: NAntNAntFile; ValueType: string; ValueName: ; ValueData: NAnt Build File; Flags: uninsdeletekey; Tasks: assocnant
 Root: HKCR; Subkey: NAntNAntFile\DefaultIcon; ValueType: string; ValueName: ; ValueData: {app}\bin\{#MyAppExeName},0; Flags: uninsdeletevalue; Tasks: assocnant
-Root: HKCR; Subkey: NAntNAntFile\shell\open\command; ValueType: string; ValueName: ; ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocnant
-Root: HKCR; Subkey: NAntNAntFile\shell\edit\command; ValueType: string; ValueData: """{sys}\notepad.exe"" ""%1"""; Tasks: assocnant
+Root: HKCR; Subkey: NAntNAntFile\shell\Open\command; ValueType: string; ValueName: ; ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocnant
+Root: HKCR; Subkey: NAntNAntFile\shell\Edit\command; ValueType: string; ValueData: """{sys}\notepad.exe"" ""%1"""; Tasks: assocnant
 
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: Path; ValueData: "{code:GetENVPath};{app}\bin"; Tasks: envpath; Check: IfNotInPath
 
