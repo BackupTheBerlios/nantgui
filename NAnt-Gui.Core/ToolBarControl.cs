@@ -85,7 +85,8 @@ namespace NAntGui.Core
 			// NewToolBarButton
 			// 
 			this.NewToolBarButton.ImageIndex = 8;
-			this.NewToolBarButton.ToolTipText = "New Build File";
+			this.NewToolBarButton.ToolTipText = "Not built yet";
+			this.NewToolBarButton.Enabled = false;
 			// 
 			// OpenToolBarButton
 			// 

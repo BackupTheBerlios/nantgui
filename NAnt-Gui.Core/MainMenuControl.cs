@@ -139,6 +139,7 @@ namespace NAntGui.Core
 			this.NewMenuCommand.ImageIndex = 8;
 			this.NewMenuCommand.Shortcut = Shortcut.CtrlN;
 			this.NewMenuCommand.Text = "&New";
+			this.NewMenuCommand.Enabled = false;
 			// 
 			// OpenMenuCommand
 			// 
