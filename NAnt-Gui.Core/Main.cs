@@ -89,10 +89,10 @@ namespace NAntGui.Core
 				return 1;
 			}
 
-			NAntForm lNAntForm = new NAntForm(cmdLineOptions);
-			PersistWindowState.Attach(lNAntForm);
+			MainForm lMAINForm = new MainForm(cmdLineOptions);
+			PersistWindowState.Attach(lMAINForm);
 
-			Application.Run(lNAntForm);
+			Application.Run(lMAINForm);
 
 			return 0;
 		}

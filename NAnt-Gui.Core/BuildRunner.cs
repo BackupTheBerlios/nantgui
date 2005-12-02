@@ -39,13 +39,13 @@ namespace NAntGui.Core
 		public event BuildEventHandler BuildFinished;
 
 		private Watcher		_watcher;
-		private NAntForm	_nantForm;
+		private MainForm	_nantForm;
 		private Project		_myProject;
 		private Thread		_thread;
 		private string		_buildFile;
 		private CommandLineOptions _options;
 
-		public BuildRunner(NAntForm nantForm)
+		public BuildRunner(MainForm nantForm)
 		{
 			_nantForm	= nantForm;
 			_options	= nantForm.Options;

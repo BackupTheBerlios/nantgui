@@ -34,14 +34,14 @@ namespace NAntGui.Core
 		private const bool ALLOW_SAVE_MINIMIZED = false;
 		private readonly RegistryKey _currentUser = Registry.CurrentUser;
 
-		private NAntForm _nantForm;
+		private MainForm _nantForm;
 
-		public static void Attach(NAntForm form)
+		public static void Attach(MainForm form)
 		{
 			new PersistWindowState(form);
 		}
 
-		private PersistWindowState(NAntForm form)
+		private PersistWindowState(MainForm form)
 		{
 			_nantForm = form;
 			_nantForm.Load += new EventHandler(this.OnLoad);

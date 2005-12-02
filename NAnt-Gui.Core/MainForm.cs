@@ -27,20 +27,26 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
 using Flobbster.Windows.Forms;
+using NAnt.Core;
 using NAntGui.Core.NAnt;
+using Core_Project = NAnt.Core.Project;
 using NC = NAnt.Core;
+using Project = NAntGui.Core.NAnt.Project;
+using TabControl = Crownwood.Magic.Controls.TabControl;
+using Target = NAntGui.Core.NAnt.Target;
 
 namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for Form1.
 	/// </summary>
-	public class NAntForm : Form
+	public class MainForm : Form
 	{
 		private const int RICH_TEXT_INDEX = 2;
 		private const int PLAIN_TEXT_INDEX = 1;
@@ -59,13 +65,14 @@ namespace NAntGui.Core
 		private StatusBarPanel FileStatusBarPanel;
 		private OpenFileDialog OpenFileDialog;
 		private StatusBar MainStatusBar;
-		
+
 		private ImageList _imageList;
 
-		private TreeView TargetsTreeView;
-		private PopupMenu _targetsPopupMenu = new PopupMenu();
+		private OutputBox _outputBox = new OutputBox();
+		private Content _outputContent;
+
+		private TargetsTreeView _targetsTree;
 		private Content _targetsContent;
-		
 		private WindowContent _targetWindowContent;
 
 		public PropertyGrid ProjectPropertyGrid;
@@ -73,22 +80,22 @@ namespace NAntGui.Core
 		private Content _propertiesContent;
 
 		private StatusBarPanel ProgressPanel;
-		private ToolTip ToolTip;
 		private StatusBarPanel FullFileStatusBarPanel;
-		
+
 		private MainMenuControl MainMenu;
 		private ToolBarControl MainToolBar;
 
 		private SourceTabControl SourceTabs;
-		
+
 		private SaveFileDialog OutputSaveFileDialog;
 		private SaveFileDialog XMLSaveFileDialog;
 
 		private IContainer components;
+		
 
 		#endregion
 
-		public NAntForm(CommandLineOptions options)
+		public MainForm(CommandLineOptions options)
 		{
 			_options = options;
 
@@ -96,7 +103,9 @@ namespace NAntGui.Core
 				this.GetType(), "NAntGui.Core.Images.MenuItems.bmp",
 				new Size(16, 16), new Point(0, 0));
 
-			InitializeComponent();
+			_targetsTree = new TargetsTreeView(new EventHandler(this.BuildMenuCommand_Click));
+
+			this.Initialize();
 
 			// Reduce the amount of flicker that occurs when windows are redocked within
 			// the container. As this prevents unsightly backcolors being drawn in the
@@ -105,11 +114,12 @@ namespace NAntGui.Core
 //			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 
 			this.SetupDockManager();
-			this.CreateTargetTreeViewMenu();
+
+			_outputBox.WordWrapChanged += new VoidBool(this.WordWrap_Changed);
 
 			_nantBuildRunner = new NAntBuildRunner(this);
 			_nantBuildRunner.BuildFileLoaded += new BuildFileChangedEH(this.BuildFileLoaded);
-			_nantBuildRunner.BuildFinished += new NC.BuildEventHandler(this.Build_Finished);
+			_nantBuildRunner.BuildFinished += new BuildEventHandler(this.Build_Finished);
 
 			this.AssignMenuCommands();
 			this.AssignToolBarButtons();
@@ -133,32 +143,30 @@ namespace NAntGui.Core
 			base.Dispose(disposing);
 		}
 
-		#region Windows Form Designer generated code
+		#region Initialize
 
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		private void InitializeComponent()
+		private void Initialize()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(NAntForm));
-			this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-			this.MainStatusBar = new System.Windows.Forms.StatusBar();
-			this.FileStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
-			this.FullFileStatusBarPanel = new System.Windows.Forms.StatusBarPanel();
-			this.ProgressPanel = new System.Windows.Forms.StatusBarPanel();
-			this.MainMenu = new NAntGui.Core.MainMenuControl();
-			this.MainToolBar = new NAntGui.Core.ToolBarControl();
-			this.TargetsTreeView = new System.Windows.Forms.TreeView();
-			this.ProjectPropertyGrid = new System.Windows.Forms.PropertyGrid();
-			this.OutputSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-			this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.SourceTabs = new NAntGui.Core.SourceTabControl();
-			this.XMLSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-			((System.ComponentModel.ISupportInitialize)(this.FileStatusBarPanel)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.FullFileStatusBarPanel)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.ProgressPanel)).BeginInit();
+			this.components = new Container();
+			ResourceManager resources = new ResourceManager(typeof (MainForm));
+			this.OpenFileDialog = new OpenFileDialog();
+			this.MainStatusBar = new StatusBar();
+			this.FileStatusBarPanel = new StatusBarPanel();
+			this.FullFileStatusBarPanel = new StatusBarPanel();
+			this.ProgressPanel = new StatusBarPanel();
+			this.MainMenu = new MainMenuControl();
+			this.MainToolBar = new ToolBarControl();
+			this.ProjectPropertyGrid = new PropertyGrid();
+			this.OutputSaveFileDialog = new SaveFileDialog();
+			this.SourceTabs = new SourceTabControl();
+			this.XMLSaveFileDialog = new SaveFileDialog();
+			this.FileStatusBarPanel.BeginInit();
+			this.FullFileStatusBarPanel.BeginInit();
+			this.ProgressPanel.BeginInit();
 			this.SuspendLayout();
 			// 
 			// OpenFileDialog
@@ -168,87 +176,75 @@ namespace NAntGui.Core
 			// 
 			// MainStatusBar
 			// 
-			this.MainStatusBar.Location = new System.Drawing.Point(0, 531);
+			this.MainStatusBar.Location = new Point(0, 531);
 			this.MainStatusBar.Name = "MainStatusBar";
-			this.MainStatusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
-																							 this.FileStatusBarPanel,
-																							 this.FullFileStatusBarPanel,
-																							 this.ProgressPanel});
+			this.MainStatusBar.Panels.AddRange(new StatusBarPanel[]
+				{
+					this.FileStatusBarPanel,
+					this.FullFileStatusBarPanel,
+					this.ProgressPanel
+				});
 			this.MainStatusBar.ShowPanels = true;
-			this.MainStatusBar.Size = new System.Drawing.Size(824, 22);
+			this.MainStatusBar.Size = new Size(824, 22);
 			this.MainStatusBar.SizingGrip = false;
 			this.MainStatusBar.TabIndex = 2;
 			// 
 			// FileStatusBarPanel
 			// 
-			this.FileStatusBarPanel.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Contents;
+			this.FileStatusBarPanel.AutoSize = StatusBarPanelAutoSize.Contents;
 			this.FileStatusBarPanel.Width = 10;
 			// 
 			// FullFileStatusBarPanel
 			// 
-			this.FullFileStatusBarPanel.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
+			this.FullFileStatusBarPanel.AutoSize = StatusBarPanelAutoSize.Spring;
 			this.FullFileStatusBarPanel.Width = 804;
 			// 
 			// ProgressPanel
 			// 
 			this.ProgressPanel.MinWidth = 0;
-			this.ProgressPanel.Style = System.Windows.Forms.StatusBarPanelStyle.OwnerDraw;
+			this.ProgressPanel.Style = StatusBarPanelStyle.OwnerDraw;
 			this.ProgressPanel.Width = 10;
 			// 
 			// MainMenu
 			// 
-			this.MainMenu.AnimateStyle = Crownwood.Magic.Menus.Animation.System;
+			this.MainMenu.AnimateStyle = Animation.System;
 			this.MainMenu.AnimateTime = 100;
-			this.MainMenu.Cursor = System.Windows.Forms.Cursors.Arrow;
-			this.MainMenu.Direction = Crownwood.Magic.Common.Direction.Horizontal;
-			this.MainMenu.Dock = System.Windows.Forms.DockStyle.Top;
-			this.MainMenu.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((System.Byte)(0)));
-			this.MainMenu.HighlightTextColor = System.Drawing.SystemColors.MenuText;
-			this.MainMenu.Location = new System.Drawing.Point(0, 0);
+			this.MainMenu.Cursor = Cursors.Arrow;
+			this.MainMenu.Direction = Direction.Horizontal;
+			this.MainMenu.Dock = DockStyle.Top;
+			this.MainMenu.Font = new Font("Tahoma", 11F, FontStyle.Regular, GraphicsUnit.World, ((Byte) (0)));
+			this.MainMenu.HighlightTextColor = SystemColors.MenuText;
+			this.MainMenu.Location = new Point(0, 0);
 			this.MainMenu.Name = "MainMenu";
-			this.MainMenu.Size = new System.Drawing.Size(824, 25);
-			this.MainMenu.Style = Crownwood.Magic.Common.VisualStyle.IDE;
+			this.MainMenu.Size = new Size(824, 25);
+			this.MainMenu.Style = VisualStyle.IDE;
 			this.MainMenu.TabIndex = 13;
 			this.MainMenu.TabStop = false;
 			this.MainMenu.WordWrapChecked = false;
 			// 
 			// MainToolBar
 			// 
-			this.MainToolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+			this.MainToolBar.Appearance = ToolBarAppearance.Flat;
 			this.MainToolBar.DropDownArrows = true;
-			this.MainToolBar.Location = new System.Drawing.Point(0, 25);
+			this.MainToolBar.Location = new Point(0, 25);
 			this.MainToolBar.Name = "MainToolBar";
 			this.MainToolBar.ShowToolTips = true;
-			this.MainToolBar.Size = new System.Drawing.Size(824, 28);
+			this.MainToolBar.Size = new Size(824, 28);
 			this.MainToolBar.TabIndex = 4;
-			// 
-			// TargetsTreeView
-			// 
-			this.TargetsTreeView.CheckBoxes = true;
-			this.TargetsTreeView.Dock = System.Windows.Forms.DockStyle.Top;
-			this.TargetsTreeView.ImageIndex = -1;
-			this.TargetsTreeView.Location = new System.Drawing.Point(0, 0);
-			this.TargetsTreeView.Name = "TargetsTreeView";
-			this.TargetsTreeView.SelectedImageIndex = -1;
-			this.TargetsTreeView.Size = new System.Drawing.Size(175, 148);
-			this.TargetsTreeView.TabIndex = 6;
-			this.TargetsTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.BuildTreeView_AfterCheck);
-			this.TargetsTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BuildTreeView_MouseUp);
-			this.TargetsTreeView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BuildTreeView_MouseMove);
 			// 
 			// ProjectPropertyGrid
 			// 
 			this.ProjectPropertyGrid.CommandsVisibleIfAvailable = true;
-			this.ProjectPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ProjectPropertyGrid.Dock = DockStyle.Fill;
 			this.ProjectPropertyGrid.LargeButtons = false;
-			this.ProjectPropertyGrid.LineColor = System.Drawing.SystemColors.ScrollBar;
-			this.ProjectPropertyGrid.Location = new System.Drawing.Point(0, 252);
+			this.ProjectPropertyGrid.LineColor = SystemColors.ScrollBar;
+			this.ProjectPropertyGrid.Location = new Point(0, 252);
 			this.ProjectPropertyGrid.Name = "ProjectPropertyGrid";
-			this.ProjectPropertyGrid.Size = new System.Drawing.Size(175, 351);
+			this.ProjectPropertyGrid.Size = new Size(175, 351);
 			this.ProjectPropertyGrid.TabIndex = 4;
 			this.ProjectPropertyGrid.Text = "Build Properties";
-			this.ProjectPropertyGrid.ViewBackColor = System.Drawing.SystemColors.Window;
-			this.ProjectPropertyGrid.ViewForeColor = System.Drawing.SystemColors.WindowText;
+			this.ProjectPropertyGrid.ViewBackColor = SystemColors.Window;
+			this.ProjectPropertyGrid.ViewForeColor = SystemColors.WindowText;
 			// 
 			// OutputSaveFileDialog
 			// 
@@ -258,18 +254,17 @@ namespace NAntGui.Core
 			// 
 			// SourceTabs
 			// 
-			this.SourceTabs.Appearance = Crownwood.Magic.Controls.TabControl.VisualAppearance.MultiDocument;
-			this.SourceTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SourceTabs.Appearance = TabControl.VisualAppearance.MultiDocument;
+			this.SourceTabs.Dock = DockStyle.Fill;
 			this.SourceTabs.IDEPixelArea = true;
 			this.SourceTabs.IDEPixelBorder = false;
-			this.SourceTabs.Location = new System.Drawing.Point(0, 53);
+			this.SourceTabs.Location = new Point(0, 53);
 			this.SourceTabs.Name = "SourceTabs";
 			this.SourceTabs.SelectedIndex = 0;
-			this.SourceTabs.Size = new System.Drawing.Size(824, 478);
+			this.SourceTabs.Size = new Size(824, 478);
 			this.SourceTabs.TabIndex = 12;
-			this.SourceTabs.WordWrapChanged += new NAntGui.Core.VoidBool(this.WordWrap_Changed);
-			this.SourceTabs.SourceRestored += new NAntGui.Core.VoidVoid(this.Source_Restored);
-			this.SourceTabs.SourceChanged += new NAntGui.Core.VoidVoid(this.Source_Changed);
+			this.SourceTabs.SourceRestored += new VoidVoid(this.Source_Restored);
+			this.SourceTabs.SourceChanged += new VoidVoid(this.Source_Changed);
 			// 
 			// XMLSaveFileDialog
 			// 
@@ -279,23 +274,24 @@ namespace NAntGui.Core
 			// NAntForm
 			// 
 			this.AllowDrop = true;
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(824, 553);
+			this.AutoScaleBaseSize = new Size(5, 13);
+			this.ClientSize = new Size(824, 553);
 			this.Controls.Add(this.SourceTabs);
 			this.Controls.Add(this.MainStatusBar);
 			this.Controls.Add(this.MainToolBar);
 			this.Controls.Add(this.MainMenu);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(480, 344);
+			
+			this.Icon = ((Icon) (resources.GetObject("$this.Icon")));
+			this.MinimumSize = new Size(480, 344);
 			this.Name = "NAntForm";
 			this.Text = "NAnt-Gui";
-			this.Closing += new System.ComponentModel.CancelEventHandler(this.NAntForm_Closing);
-			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.NAnt_DragDrop);
-			this.Closed += new System.EventHandler(this.NAnt_Closed);
-			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.NAnt_DragEnter);
-			((System.ComponentModel.ISupportInitialize)(this.FileStatusBarPanel)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.FullFileStatusBarPanel)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.ProgressPanel)).EndInit();
+			this.Closing += new CancelEventHandler(this.MainForm_Closing);
+			this.DragDrop += new DragEventHandler(this.NAnt_DragDrop);
+			this.Closed += new EventHandler(this.NAnt_Closed);
+			this.DragEnter += new DragEventHandler(this.NAnt_DragEnter);
+			this.FileStatusBarPanel.EndInit();
+			this.FullFileStatusBarPanel.EndInit();
+			this.ProgressPanel.EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -304,33 +300,33 @@ namespace NAntGui.Core
 
 		private void AssignToolBarButtons()
 		{
-			this.MainToolBar.Build_Click	+= new VoidVoid(this.Build);
-			this.MainToolBar.Open_Click		+= new VoidVoid(this.BrowseForBuildFile);
-			this.MainToolBar.Save_Click		+= new VoidVoid(this.Save);
-			this.MainToolBar.Reload_Click	+= new VoidVoid(this.Reload);
-			this.MainToolBar.Stop_Click		+= new VoidVoid(_nantBuildRunner.Stop);
+			this.MainToolBar.Build_Click += new VoidVoid(this.Build);
+			this.MainToolBar.Open_Click += new VoidVoid(this.BrowseForBuildFile);
+			this.MainToolBar.Save_Click += new VoidVoid(this.Save);
+			this.MainToolBar.Reload_Click += new VoidVoid(this.Reload);
+			this.MainToolBar.Stop_Click += new VoidVoid(_nantBuildRunner.Stop);
 		}
 
 		private void AssignMenuCommands()
 		{
-			this.MainMenu.About_Click		= new EventHandler(this.AboutMenuCommand_Click);
-			this.MainMenu.Build_Click		= new EventHandler(this.BuildMenuCommand_Click);
-			this.MainMenu.Close_Click		= new EventHandler(this.CloseMenuCommand_Click);
-			this.MainMenu.Copy_Click		= new EventHandler(this.SourceTabs.CopyText);
-			this.MainMenu.Exit_Click		= new EventHandler(this.ExitMenuCommand_Click);
+			this.MainMenu.About_Click = new EventHandler(this.AboutMenuCommand_Click);
+			this.MainMenu.Build_Click = new EventHandler(this.BuildMenuCommand_Click);
+			this.MainMenu.Close_Click = new EventHandler(this.CloseMenuCommand_Click);
+			this.MainMenu.Copy_Click = new EventHandler(_outputBox.CopyText);
+			this.MainMenu.Exit_Click = new EventHandler(this.ExitMenuCommand_Click);
 			this.MainMenu.NAntContrib_Click = new EventHandler(this.NAntContribMenuCommand_Click);
-			this.MainMenu.NAntHelp_Click	= new EventHandler(this.NAntHelpMenuCommand_Click);
-			this.MainMenu.NAntSDK_Click		= new EventHandler(this.NAntSDKMenuCommand_Click);
-			this.MainMenu.Open_Click		= new EventHandler(this.OpenMenuCommand_Click);
-			this.MainMenu.Options_Click		= new EventHandler(this.OptionsMenuCommand_Click);
-			this.MainMenu.Properties_Click	= new EventHandler(this.PropertiesMenuCommand_Click);
-			this.MainMenu.Reload_Click		= new EventHandler(this.ReloadMenuCommand_Click);
-			this.MainMenu.SelectAll_Click	= new EventHandler(this.SourceTabs.SelectAllText);
-			this.MainMenu.SaveOutput_Click	= new EventHandler(this.SaveOutputMenuCommand_Click);
-			this.MainMenu.Save_Click		= new EventHandler(this.SaveMenuCommand_Click);
-			this.MainMenu.SaveAs_Click		= new EventHandler(this.SaveAsMenuCommand_Click);
-			this.MainMenu.Targets_Click		= new EventHandler(this.TargetsMenuCommand_Click);
-			this.MainMenu.WordWrap_Click	= new EventHandler(this.SourceTabs.WordWrap);
+			this.MainMenu.NAntHelp_Click = new EventHandler(this.NAntHelpMenuCommand_Click);
+			this.MainMenu.NAntSDK_Click = new EventHandler(this.NAntSDKMenuCommand_Click);
+			this.MainMenu.Open_Click = new EventHandler(this.OpenMenuCommand_Click);
+			this.MainMenu.Options_Click = new EventHandler(this.OptionsMenuCommand_Click);
+			this.MainMenu.Properties_Click = new EventHandler(this.PropertiesMenuCommand_Click);
+			this.MainMenu.Reload_Click = new EventHandler(this.ReloadMenuCommand_Click);
+			this.MainMenu.SelectAll_Click = new EventHandler(_outputBox.SelectAllText);
+			this.MainMenu.SaveOutput_Click = new EventHandler(this.SaveOutputMenuCommand_Click);
+			this.MainMenu.Save_Click = new EventHandler(this.SaveMenuCommand_Click);
+			this.MainMenu.SaveAs_Click = new EventHandler(this.SaveAsMenuCommand_Click);
+			this.MainMenu.Targets_Click = new EventHandler(this.TargetsMenuCommand_Click);
+			this.MainMenu.WordWrap_Click = new EventHandler(_outputBox.DoWordWrap);
 		}
 
 
@@ -342,20 +338,20 @@ namespace NAntGui.Core
 			// Ensure that the RichTextBox is always the innermost control
 			_dockManager.InnerControl = this.SourceTabs;
 
-			// Create Content which contains a RichTextBox
-			_targetsContent = _dockManager.Contents.Add(this.TargetsTreeView, "Targets");
+			_targetsContent		= _dockManager.Contents.Add(_targetsTree, "Targets");
+			_outputContent		= _dockManager.Contents.Add(_outputBox, "Output");
+			_propertiesContent	= _dockManager.Contents.Add(this.ProjectPropertyGrid, "Properties");
 
-			_propertiesContent = _dockManager.Contents.Add(this.ProjectPropertyGrid, "Properties");
 			_propertiesContent.ImageList = this._imageList;
 			_propertiesContent.ImageIndex = 0;
 
 			// Request a new Docking window be created for the above Content on the left edge
 			_targetWindowContent = _dockManager.AddContentWithState(_targetsContent, State.DockLeft) as WindowContent;
-
 			_dockManager.AddContentToZone(_propertiesContent, _targetWindowContent.ParentZone, 1);
 
-			//_dockManager.OuterControl = this.MainStatusBar;
-			_dockManager.OuterControl = this.MainToolBar;
+			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
+
+			_dockManager.OuterControl = this.MainStatusBar;
 		}
 
 		private void LoadInitialBuildFile()
@@ -376,7 +372,7 @@ namespace NAntGui.Core
 			catch (BuildFileNotFoundException)
 			{
 				MessageBox.Show("Build file: '" + _options.BuildFile + "' does not exist.",
-					"Build File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				                "Build File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return false;
 			}
 		}
@@ -457,7 +453,7 @@ namespace NAntGui.Core
 
 		private void ClearOutput()
 		{
-			this.SourceTabs.Clear();
+			_outputBox.Clear();
 			Outputter.Clear();
 		}
 
@@ -476,14 +472,6 @@ namespace NAntGui.Core
 			this.LoadBuildFile(_buildFile);
 		}
 
-		private void BuildTreeView_AfterCheck(object sender, TreeViewEventArgs e)
-		{
-			foreach (TreeNode lNode in e.Node.Nodes)
-			{
-				lNode.Checked = e.Node.Checked;
-			}
-		}
-
 		private void AboutMenuCommand_Click(object sender, EventArgs e)
 		{
 			About lAbout = new About();
@@ -495,17 +483,17 @@ namespace NAntGui.Core
 			if (this.InvokeRequired)
 			{
 				MessageEventHandler messageEH =
-					new MessageEventHandler(this.SourceTabs.WriteOutput);
+					new MessageEventHandler(_outputBox.WriteOutput);
 
 				this.BeginInvoke(messageEH, new Object[1] {message});
 			}
 			else
 			{
-				this.SourceTabs.WriteOutput(message);
+				_outputBox.WriteOutput(message);
 			}
 		}
 
-		public void Build_Finished(object sender, NC.BuildEventArgs e)
+		public void Build_Finished(object sender, BuildEventArgs e)
 		{
 			this.Update();
 		}
@@ -515,7 +503,7 @@ namespace NAntGui.Core
 //			_buildFile.Close();
 			_buildFile = "";
 			this.ClearOutput();
-			this.TargetsTreeView.Nodes.Clear();
+			_targetsTree.Nodes.Clear();
 			this.ProjectPropertyGrid.SelectedObject = null;
 
 			this.DisableMenuCommandsAndButtons();
@@ -567,8 +555,8 @@ namespace NAntGui.Core
 			this.MainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);
 			this.MainStatusBar.Panels[1].Text = _buildFile;
 
-			this.TargetsTreeView.Nodes.Clear();
-			this.TargetsTreeView.Nodes.Add(new TreeNode(projectName));
+			_targetsTree.Nodes.Clear();
+			_targetsTree.Nodes.Add(new TreeNode(projectName));
 		}
 
 
@@ -579,7 +567,7 @@ namespace NAntGui.Core
 				this.AddTargetTreeNode(target);
 			}
 
-			this.TargetsTreeView.ExpandAll();
+			_targetsTree.ExpandAll();
 		}
 
 		private void AddProperties(Project project)
@@ -620,9 +608,9 @@ namespace NAntGui.Core
 			return false;
 		}
 
-		public void AddTreeTargetsToBuild(NC.Project project)
+		public void AddTreeTargetsToBuild(Core_Project project)
 		{
-			foreach (TreeNode lItem in this.TargetsTreeView.Nodes[0].Nodes)
+			foreach (TreeNode lItem in _targetsTree.Nodes[0].Nodes)
 			{
 				if (lItem.Checked)
 				{
@@ -631,7 +619,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void AddPropertiesToProject(NC.Project project)
+		public void AddPropertiesToProject(Core_Project project)
 		{
 			foreach (PropertySpec spec in _propertyTable.Properties)
 			{
@@ -646,23 +634,23 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void LoadNonProjectProperty(PropertySpec spec, NC.Project project)
+		private void LoadNonProjectProperty(PropertySpec spec, Core_Project project)
 		{
 			string lValue = _propertyTable[GetKey(spec)].ToString();
 			string lExpandedProperty = lValue;
 			try
 			{
 				lExpandedProperty = project.ExpandProperties(lValue,
-				                                             new NC.Location(_buildFile));
+				                                             new Location(_buildFile));
 			}
-			catch (NC.BuildException)
+			catch (BuildException)
 			{ /* ignore */
 			}
 
 			project.Properties.AddReadOnly(spec.Name, lExpandedProperty);
 		}
 
-		private bool ValidTarget(string category, NC.Project project)
+		private bool ValidTarget(string category, Core_Project project)
 		{
 			return project.BuildTargets.Contains(category);
 		}
@@ -680,7 +668,7 @@ namespace NAntGui.Core
 				TreeNode node = new TreeNode(targetName);
 				node.Checked = target.Default;
 				node.Tag = target;
-				this.TargetsTreeView.Nodes[0].Nodes.Add(node);
+				this._targetsTree.Nodes[0].Nodes.Add(node);
 			}
 		}
 
@@ -696,32 +684,6 @@ namespace NAntGui.Core
 			return description.Length > 0;
 		}
 
-		private void BuildTreeView_MouseUp(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right)
-			{
-				TreeView tree = sender as TreeView;
-				TreeNode node = tree.GetNodeAt(e.X, e.Y);
-				if (node != null)
-				{
-					_targetsPopupMenu.TrackPopup(tree.PointToScreen(new Point(e.X, e.Y)));
-				}
-			}
-		}
-
-		private void BuildTreeView_MouseMove(object sender, MouseEventArgs e)
-		{
-			TreeNode node = this.TargetsTreeView.GetNodeAt(e.X, e.Y);
-			if (node == null || node.Parent == null)
-			{
-				this.ToolTip.SetToolTip(this.TargetsTreeView, "");
-			}
-			else
-			{
-				Target target = (Target) node.Tag;
-				this.ToolTip.SetToolTip(this.TargetsTreeView, target.Description);
-			}
-		}
 
 		private void UpdateRecentItemsMenu()
 		{
@@ -813,11 +775,11 @@ namespace NAntGui.Core
 
 			if (filterIndex == PLAIN_TEXT_INDEX)
 			{
-				this.SourceTabs.SavePlainTextOutput(this.OutputSaveFileDialog.FileName);
+				_outputBox.SavePlainTextOutput(this.OutputSaveFileDialog.FileName);
 			}
 			else if (filterIndex == RICH_TEXT_INDEX)
 			{
-				this.SourceTabs.SaveRichTextOutput(this.OutputSaveFileDialog.FileName);
+				_outputBox.SaveRichTextOutput(this.OutputSaveFileDialog.FileName);
 			}
 		}
 
@@ -826,13 +788,6 @@ namespace NAntGui.Core
 			this.MainMenu.WordWrapChecked = checkValue;
 		}
 
-		private void CreateTargetTreeViewMenu()
-		{
-			MenuCommand build = new MenuCommand("&Build", new EventHandler(this.BuildMenuCommand_Click));
-			build.ImageList = this._imageList;
-			build.ImageIndex = 7;
-			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {build});
-		}
 
 		private void TargetsMenuCommand_Click(object sender, EventArgs e)
 		{
@@ -858,12 +813,13 @@ namespace NAntGui.Core
 		{
 			if (this.HasUnsavedAsterisk())
 			{
-				 this.RemoveUnsavedFileAsterisk();
+				this.RemoveUnsavedFileAsterisk();
 			}
 		}
 
-		private void NAntForm_Closing(object sender, CancelEventArgs e)
+		private void MainForm_Closing(object sender, CancelEventArgs e)
 		{
+			_nantBuildRunner.Stop();
 			if (this.SourceTabs.SourceHasChanged)
 			{
 				DialogResult result =

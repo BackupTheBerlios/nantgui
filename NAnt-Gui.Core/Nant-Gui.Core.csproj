@@ -185,6 +185,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MainForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MainForm.resx"
+                    DependentUpon = "MainForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "MainFormMediator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -220,16 +230,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "NAntForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NAntForm.resx"
-                    DependentUpon = "NAntForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "NAnt-Gui.Core.build"
                     BuildAction = "None"
                 />
@@ -252,6 +252,11 @@
                     RelPath = "OptionsForm.resx"
                     DependentUpon = "OptionsForm.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "OutputBox.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "OutputHighlighter.cs"
@@ -285,6 +290,11 @@
                 />
                 <File
                     RelPath = "SourceTabControl.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TargetsTreeView.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
                 />

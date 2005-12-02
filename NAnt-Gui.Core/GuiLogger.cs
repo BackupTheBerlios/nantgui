@@ -30,16 +30,16 @@ namespace NAntGui.Core
 	/// </summary>
 	public class GuiLogger : DefaultLogger
 	{
-		public NAntForm mNAntForm;
+		public MainForm mMAINForm;
 
-		public GuiLogger(NAntForm pNAntForm) : base()
+		public GuiLogger(MainForm pMAINForm) : base()
 		{
-			this.mNAntForm = pNAntForm;
+			this.mMAINForm = pMAINForm;
 		}
 
 		protected override void Log(string pMessage)
 		{
-			this.mNAntForm.OutputMessage(pMessage);
+			this.mMAINForm.OutputMessage(pMessage);
 		}
 	}
 }

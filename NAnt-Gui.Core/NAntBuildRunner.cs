@@ -32,7 +32,7 @@ namespace NAntGui.Core
 	{
 		private Project	_myProject;
 
-		public NAntBuildRunner(NAntForm nantForm) : base(nantForm)
+		public NAntBuildRunner(MainForm nantForm) : base(nantForm)
 		{
 			//
 			// TODO: Add constructor logic here
