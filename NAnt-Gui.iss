@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "NAnt-Gui"
-#define MyAppVerName "NAnt-Gui 1.3.1"
+#define MyAppVerName "NAnt-Gui 1.3.2"
 #define MyAppPublisher "Colin Svingen"
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
@@ -21,14 +21,14 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=true
 OutputDir=installer
-OutputBaseFilename=NAnt-Gui-1.3.1
+OutputBaseFilename=NAnt-Gui-1.3.2
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 ChangesAssociations=true
 LicenseFile=License.txt
 AppCopyright=2005 Colin Svingen
-AppVersion=1.3.1
+AppVersion=1.3.2
 AppID={{5A46EB86-CC66-403A-9789-E7D7413C20D2}
 AppContact=nantgui@swoogan.com
 UninstallDisplayIcon={app}\src\Ant.ico
@@ -46,7 +46,7 @@ Source: NAnt-Gui\bin\Release\NAnt-Gui.exe; DestDir: {app}\bin; Flags: ignorevers
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe.config; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; Libraries
-Source: ThirdParty Libraries\MagicLibrary.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+Source: ThirdParty Libraries\*; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 
 ; Source
 Source: NAnt-Gui.sln; DestDir: {app}\src; Flags: ignoreversion; Components: src
