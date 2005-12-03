@@ -90,7 +90,7 @@ namespace NAntGui.Core
 			}
 
 			MainForm lMAINForm = new MainForm(cmdLineOptions);
-			PersistWindowState.Attach(lMAINForm);
+			MainFormSerializer.Attach(lMAINForm);
 
 			Application.Run(lMAINForm);
 

@@ -29,22 +29,22 @@ using Microsoft.Win32;
 
 namespace NAntGui.Core
 {
-	public class PersistWindowState
+	public class MainFormSerializer
 	{
 		private const bool ALLOW_SAVE_MINIMIZED = false;
 		private readonly RegistryKey _currentUser = Registry.CurrentUser;
 
-		private MainForm _nantForm;
+		private MainForm _mainForm;
 
 		public static void Attach(MainForm form)
 		{
-			new PersistWindowState(form);
+			new MainFormSerializer(form);
 		}
 
-		private PersistWindowState(MainForm form)
+		private MainFormSerializer(MainForm form)
 		{
-			_nantForm = form;
-			_nantForm.Load += new EventHandler(this.OnLoad);
+			_mainForm = form;
+			_mainForm.Load += new EventHandler(this.OnLoad);
 		}
 
 		private void OnLoad(object sender, EventArgs e)
@@ -63,20 +63,20 @@ namespace NAntGui.Core
 
 		private void LoadStateFromReg(RegistryKey key)
 		{
-			int left	= Convert.ToInt32(key.GetValue("Left", _nantForm.Left));
-			int top		= Convert.ToInt32(key.GetValue("Top", _nantForm.Top));
-			int width	= Convert.ToInt32(key.GetValue("Width", _nantForm.Width));
-			int height	= Convert.ToInt32(key.GetValue("Height", _nantForm.Height));
+			int left	= Convert.ToInt32(key.GetValue("Left", _mainForm.Left));
+			int top		= Convert.ToInt32(key.GetValue("Top", _mainForm.Top));
+			int width	= Convert.ToInt32(key.GetValue("Width", _mainForm.Width));
+			int height	= Convert.ToInt32(key.GetValue("Height", _mainForm.Height));
 
-			FormWindowState windowState = (FormWindowState) key.GetValue("WindowState", (int) _nantForm.WindowState);
-			PropertySort propertySort = (PropertySort) key.GetValue("PropertySort", (int) _nantForm.ProjectPropertyGrid.PropertySort);
+			FormWindowState windowState = (FormWindowState) key.GetValue("WindowState", (int) _mainForm.WindowState);
+			PropertySort propertySort = (PropertySort) key.GetValue("PropertySort", (int) _mainForm.ProjectPropertyGrid.PropertySort);
 
-			_nantForm.Location = new Point(left, top);
-			_nantForm.Size = new Size(width, height);
-			_nantForm.WindowState = windowState;
-			_nantForm.ProjectPropertyGrid.PropertySort = propertySort;
+			_mainForm.Location = new Point(left, top);
+			_mainForm.Size = new Size(width, height);
+			_mainForm.WindowState = windowState;
+			_mainForm.ProjectPropertyGrid.PropertySort = propertySort;
 
-			_nantForm.Closing += new CancelEventHandler(this.OnClosing);
+			_mainForm.Closing += new CancelEventHandler(this.OnClosing);
 		}
 
 		private void LoadStateFromOldRegKey()
@@ -94,29 +94,35 @@ namespace NAntGui.Core
 			return key != null;
 		}
 
+		/// <summary>
+		/// save position, size and state
+		/// </summary>
 		private void OnClosing(object sender, CancelEventArgs e)
 		{
-			// save position, size and state
 			RegistryKey lKey = _currentUser.CreateSubKey(Settings.WINDOW_KEY_PATH);
 
-			lKey.SetValue("Left", _nantForm.Left);
-			lKey.SetValue("Top", _nantForm.Top);
-			lKey.SetValue("Width", _nantForm.Width);
-			lKey.SetValue("Height", _nantForm.Height);
+			if (_mainForm.WindowState != FormWindowState.Maximized)
+			{
+				lKey.SetValue("Left", _mainForm.Left);
+				lKey.SetValue("Top", _mainForm.Top);
+				lKey.SetValue("Width", _mainForm.Width);
+				lKey.SetValue("Height", _mainForm.Height);
+			}
+
 			lKey.SetValue("WindowState", this.AdjustWindowState());
-			lKey.SetValue("PropertySort", (int) _nantForm.ProjectPropertyGrid.PropertySort);
+			lKey.SetValue("PropertySort", (int) _mainForm.ProjectPropertyGrid.PropertySort);
 		}
 
 		private int AdjustWindowState()
 		{
 			// check if we are allowed to save the state as minimized (not normally)
-			if (_nantForm.WindowState == FormWindowState.Minimized && !ALLOW_SAVE_MINIMIZED)
+			if (_mainForm.WindowState == FormWindowState.Minimized && !ALLOW_SAVE_MINIMIZED)
 			{
 				return (int) FormWindowState.Normal;
 			}
 			else
 			{
-				return (int) _nantForm.WindowState;
+				return (int) _mainForm.WindowState;
 			}
 		}
 	}
