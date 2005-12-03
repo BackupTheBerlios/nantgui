@@ -82,7 +82,7 @@ namespace NAntGui.Core
 			}
 			else
 			{
-				throw new BuildFileNotFoundException(buildFile + " not found.");
+				throw new BuildFileNotFoundException(buildFile + " does not exist.");
 			}
 		}
 

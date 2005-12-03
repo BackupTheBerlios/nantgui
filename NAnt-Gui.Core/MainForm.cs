@@ -369,18 +369,26 @@ namespace NAntGui.Core
 				this.LoadBuildFile(_options.BuildFile);
 				return true;
 			}
-			catch (BuildFileNotFoundException)
+			catch (BuildFileNotFoundException error)
 			{
-				MessageBox.Show("Build file: '" + _options.BuildFile + "' does not exist.",
-				                "Build File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(error.Message, "Build File Not Found", 
+					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}
 
 		private void LoadBuildFile(string buildFile)
 		{
-			_buildFile = buildFile;
-			_nantBuildRunner.LoadBuildFile(buildFile);
+			try
+			{
+				_nantBuildRunner.LoadBuildFile(buildFile);
+				_buildFile = buildFile;
+			}
+			catch (BuildFileNotFoundException error)
+			{
+				MessageBox.Show(error.Message, "Build File Not Found", 
+					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
 		}
 
 		private void LoadRecentBuildFile()
