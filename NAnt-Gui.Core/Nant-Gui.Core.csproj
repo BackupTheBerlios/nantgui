@@ -96,16 +96,6 @@
                     AssemblyFolderKey = "hklm\dn\log4net"
                 />
                 <Reference
-                    Name = "NAnt.Win32Tasks"
-                    AssemblyName = "NAnt.Win32Tasks"
-                    HintPath = "..\..\..\..\..\..\Program Files\NAnt\bin\NAnt.Win32Tasks.dll"
-                />
-                <Reference
-                    Name = "NAnt.Core"
-                    AssemblyName = "NAnt.Core"
-                    HintPath = "..\..\..\..\..\..\Program Files\NAnt\bin\NAnt.Core.dll"
-                />
-                <Reference
                     Name = "ICSharpCode.TextEditor"
                     AssemblyName = "ICSharpCode.TextEditor"
                     HintPath = "..\ThirdParty Libraries\ICSharpCode.TextEditor.dll"
@@ -114,6 +104,16 @@
                     Name = "MagicLibrary"
                     AssemblyName = "MagicLibrary"
                     HintPath = "..\ThirdParty Libraries\MagicLibrary.DLL"
+                />
+                <Reference
+                    Name = "NAnt.Win32Tasks"
+                    AssemblyName = "NAnt.Win32Tasks"
+                    HintPath = "..\ThirdParty Libraries\NAnt.Win32Tasks.dll"
+                />
+                <Reference
+                    Name = "NAnt.Core"
+                    AssemblyName = "NAnt.Core"
+                    HintPath = "..\ThirdParty Libraries\NAnt.Core.dll"
                 />
             </References>
         </Build>
