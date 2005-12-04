@@ -28,16 +28,10 @@ using Project = NAntGui.Core.NAnt.Project;
 
 namespace NAntGui.Core
 {
-	/// <summary>
-	/// Summary description for NAntBuildRunner.
-	/// </summary>
 	public class NAntBuildRunner : BuildRunner
 	{
 		public NAntBuildRunner(MainForm nantForm) : base(nantForm)
 		{
-			//
-			// TODO: Add constructor logic here
-			//
 		}
 
 		protected override IProject LoadingBuildFile(string buildFile)
