@@ -382,7 +382,16 @@ namespace NAntGui.Core
 		private void LoadBuildFile(string buildFile)
 		{
 			_buildFile = buildFile;
-			_nantBuildRunner.LoadBuildFile(buildFile);
+
+			try
+			{
+				_nantBuildRunner.LoadBuildFile(buildFile);
+			}
+			catch (BuildFileNotFoundException error)
+			{
+				MessageBox.Show(error.Message, "Build File Not Found", 
+					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
 		}
 
 		private void LoadRecentBuildFile()

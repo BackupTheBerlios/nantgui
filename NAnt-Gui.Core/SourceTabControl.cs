@@ -135,6 +135,7 @@ namespace NAntGui.Core
 
 		public string LoadSource(string buildFile)
 		{
+			Assert.NotNull(buildFile, "buildFile");
 			using (TextReader reader = File.OpenText(buildFile))
 			{
 				_source = _sourceTextEditor.Text = reader.ReadToEnd();
@@ -145,6 +146,7 @@ namespace NAntGui.Core
 
 		public void SaveSource(string buildFile)
 		{
+			Assert.NotNull(buildFile, "buildFile");
 			using (TextWriter writer = File.CreateText(buildFile))
 			{
 				writer.Write(_sourceTextEditor.Text);

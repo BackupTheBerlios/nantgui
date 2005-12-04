@@ -72,6 +72,7 @@ namespace NAntGui.Core
 				{
 					HandleErrorInBuildFile(error);
 				}
+#if RELEASE
 				catch (Exception error)
 				{
 					// all other exceptions should have been caught
@@ -79,6 +80,7 @@ namespace NAntGui.Core
 						error.StackTrace;
 					MessageBox.Show(message, "Internal Error");
 				}
+#endif
 			}
 			else
 			{
@@ -166,6 +168,7 @@ namespace NAntGui.Core
 
 		private void SetTargetFramework(NProject project)
 		{
+			Assert.NotNull(project, "project");
 			FrameworkInfo frameworkInfo = project.Frameworks[_options.TargetFramework];
 
 			if (frameworkInfo != null) 
@@ -234,6 +237,7 @@ namespace NAntGui.Core
 		/// <param name="project">The <see cref="Project" /> to add listeners to.</param>
 		private void AddBuildListeners(NProject project)
 		{
+			Assert.NotNull(project, "project");
 			BuildListenerCollection listeners = new BuildListenerCollection();
 			IBuildLogger buildLogger = new GuiLogger(_nantForm);
 
