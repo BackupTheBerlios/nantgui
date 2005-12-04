@@ -34,7 +34,7 @@ namespace NAntGui.Core.NAnt
 	/// <summary>
 	/// Contains the logic for parsing the build file.
 	/// </summary>
-	public class Project
+	public class Project : IProject
 	{
 		private static readonly ILog Logger = LogManager.GetLogger("NAnt");
 

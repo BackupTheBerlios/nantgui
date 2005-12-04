@@ -89,6 +89,16 @@ namespace NAntGui.Core
 			// 
 			_clipboardHandler = _sourceTextEditor.ActiveTextAreaControl.TextArea.ClipboardHandler;
 
+			this.Appearance = TabControl.VisualAppearance.MultiDocument;
+			this.Dock = DockStyle.Fill;
+			this.IDEPixelArea = true;
+			this.IDEPixelBorder = false;
+			this.Location = new Point(0, 53);
+			this.Name = "SourceTabs";
+			this.SelectedIndex = 0;
+			this.Size = new Size(824, 478);
+			this.TabIndex = 12;
+
 			this.ResumeLayout(false);
 			_sourceTabPage.ResumeLayout(false);
 		}

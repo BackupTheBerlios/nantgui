@@ -36,9 +36,7 @@ using Flobbster.Windows.Forms;
 using NAnt.Core;
 using NAntGui.Core.NAnt;
 using Core_Project = NAnt.Core.Project;
-using NC = NAnt.Core;
 using Project = NAntGui.Core.NAnt.Project;
-using TabControl = Crownwood.Magic.Controls.TabControl;
 using Target = NAntGui.Core.NAnt.Target;
 
 namespace NAntGui.Core
@@ -119,7 +117,7 @@ namespace NAntGui.Core
 
 			_nantBuildRunner = new NAntBuildRunner(this);
 			_nantBuildRunner.BuildFileLoaded += new BuildFileChangedEH(this.BuildFileLoaded);
-			_nantBuildRunner.BuildFinished += new BuildEventHandler(this.Build_Finished);
+			_nantBuildRunner.BuildFinished += new VoidVoid(this.Update);
 
 			_recentItems.ItemsUpdated += new VoidVoid(this.UpdateRecentItemsMenu);
 			_recentItems.Load();
@@ -256,15 +254,6 @@ namespace NAntGui.Core
 			// 
 			// SourceTabs
 			// 
-			this.SourceTabs.Appearance = TabControl.VisualAppearance.MultiDocument;
-			this.SourceTabs.Dock = DockStyle.Fill;
-			this.SourceTabs.IDEPixelArea = true;
-			this.SourceTabs.IDEPixelBorder = false;
-			this.SourceTabs.Location = new Point(0, 53);
-			this.SourceTabs.Name = "SourceTabs";
-			this.SourceTabs.SelectedIndex = 0;
-			this.SourceTabs.Size = new Size(824, 478);
-			this.SourceTabs.TabIndex = 12;
 			this.SourceTabs.SourceRestored += new VoidVoid(this.Source_Restored);
 			this.SourceTabs.SourceChanged += new VoidVoid(this.Source_Changed);
 			// 
@@ -494,8 +483,8 @@ namespace NAntGui.Core
 
 		private void AboutMenuCommand_Click(object sender, EventArgs e)
 		{
-			About lAbout = new About();
-			lAbout.ShowDialog();
+			About about = new About();
+			about.ShowDialog();
 		}
 
 		public void OutputMessage(string message)
@@ -513,10 +502,10 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void Build_Finished(object sender, BuildEventArgs e)
-		{
-			this.Update();
-		}
+//		public void Build_Finished()
+//		{
+//			this.Update();
+//		}
 
 		public void CloseBuildFile()
 		{
@@ -547,7 +536,7 @@ namespace NAntGui.Core
 			lOptionsForm.ShowDialog();
 		}
 
-		private void BuildFileLoaded(Project project)
+		private void BuildFileLoaded(IProject project)
 		{
 			this.ClearOutput();
 			this.EnableMenuCommandsAndButtons();
@@ -558,7 +547,7 @@ namespace NAntGui.Core
 			_firstLoad = false;
 		}
 
-		private void UpdateDisplay(Project project)
+		private void UpdateDisplay(IProject project)
 		{
 			this.SourceTabs.LoadSource(_buildFile);
 
@@ -580,7 +569,7 @@ namespace NAntGui.Core
 		}
 
 
-		private void AddTargets(Project project)
+		private void AddTargets(IProject project)
 		{
 			foreach (Target target in project.Targets)
 			{
@@ -590,7 +579,7 @@ namespace NAntGui.Core
 			_targetsTree.ExpandAll();
 		}
 
-		private void AddProperties(Project project)
+		private void AddProperties(IProject project)
 		{
 			_propertyTable.Properties.Clear();
 

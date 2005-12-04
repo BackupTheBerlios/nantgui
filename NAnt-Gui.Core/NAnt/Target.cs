@@ -29,7 +29,7 @@ namespace NAntGui.Core.NAnt
 	/// <summary>
 	/// Summary description for Target.
 	/// </summary>
-	public class Target : IComparable
+	public class Target : ITarget, IComparable
 	{
 		private string _name = "";
 		private string _description = "";

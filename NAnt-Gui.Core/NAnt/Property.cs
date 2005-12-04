@@ -29,7 +29,7 @@ namespace NAntGui.Core.NAnt
 	/// <summary>
 	/// Summary description for Property.
 	/// </summary>
-	public class Property
+	public class Property : IProperty
 	{
 		private string _name = "";
 		private string _value = "";

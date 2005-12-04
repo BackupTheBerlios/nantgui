@@ -180,6 +180,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "IProject.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IProperty.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ITarget.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Main.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -279,6 +294,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "PropertyCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "RecentItems.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -291,6 +311,11 @@
                 <File
                     RelPath = "SourceTabControl.cs"
                     SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TargetCollection.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -331,17 +356,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "NAnt\PropertyCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "NAnt\Target.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NAnt\TargetCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
