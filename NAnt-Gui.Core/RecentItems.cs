@@ -31,10 +31,14 @@ namespace NAntGui.Core
 	/// </summary>
 	public class RecentItems : IEnumerable
 	{
+		public event VoidVoid ItemsUpdated;
+
 		private const string LOOP_ESCAPE = "DONE";
 		private ArrayList _items = new ArrayList(Settings.MaxRecentItems);
 
-		public RecentItems()
+		public RecentItems(){ }
+
+		public void Load()
 		{
 			RegistryKey key = GetRegKey(Settings.RECENT_ITEMS_KEY_PATH);
 
@@ -46,6 +50,16 @@ namespace NAntGui.Core
 			{
 				this.LoadRecentItemsFromOldRegKey();
 			}
+
+			this.FireItemsUpdated();
+		}
+
+		private void FireItemsUpdated()
+		{
+			if (ItemsUpdated != null)
+			{
+				this.ItemsUpdated();
+			}
 		}
 
 		public void Save()
@@ -56,6 +70,11 @@ namespace NAntGui.Core
 			foreach (string item in _items)
 			{
 				key.SetValue("Recent" + count++, item);
+			}
+
+			for (int i = count; i < Settings.MaxRecentItems; i++)
+			{
+				key.DeleteValue("Recent" + i, false);
 			}
 		}
 
@@ -71,7 +90,7 @@ namespace NAntGui.Core
 
 		public IEnumerator GetEnumerator()
 		{
-			return this._items.GetEnumerator();
+			return _items.GetEnumerator();
 		}
 
 		public void Add(string item)
@@ -83,6 +102,17 @@ namespace NAntGui.Core
 			else
 			{
 				this.AddItem(item);
+			}
+
+			this.FireItemsUpdated();
+		}
+
+		public void Remove(string item)
+		{
+			if (Exists(item))
+			{
+				_items.Remove(item);
+				this.FireItemsUpdated();
 			}
 		}
 
@@ -146,7 +176,12 @@ namespace NAntGui.Core
 
 		private bool Exists(string item)
 		{
-			return _items.Contains(item);
+			foreach (string recentItem in _items)
+			{
+				if (recentItem == item) return true;
+			}
+
+			return false;
 		}
 
 		private void ReplaceItem(string pItem)

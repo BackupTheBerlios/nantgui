@@ -121,9 +121,11 @@ namespace NAntGui.Core
 			_nantBuildRunner.BuildFileLoaded += new BuildFileChangedEH(this.BuildFileLoaded);
 			_nantBuildRunner.BuildFinished += new BuildEventHandler(this.Build_Finished);
 
+			_recentItems.ItemsUpdated += new VoidVoid(this.UpdateRecentItemsMenu);
+			_recentItems.Load();
+
 			this.AssignMenuCommands();
 			this.AssignToolBarButtons();
-			this.UpdateRecentItemsMenu();
 			this.LoadInitialBuildFile();
 		}
 
@@ -379,23 +381,24 @@ namespace NAntGui.Core
 
 		private void LoadBuildFile(string buildFile)
 		{
-			try
-			{
-				_nantBuildRunner.LoadBuildFile(buildFile);
-				_buildFile = buildFile;
-			}
-			catch (BuildFileNotFoundException error)
-			{
-				MessageBox.Show(error.Message, "Build File Not Found", 
-					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
+			_buildFile = buildFile;
+			_nantBuildRunner.LoadBuildFile(buildFile);
 		}
 
 		private void LoadRecentBuildFile()
 		{
 			if (_recentItems.HasRecentItems)
 			{
-				this.LoadBuildFile(_recentItems[0]);
+				try
+				{	
+					this.LoadBuildFile(_recentItems[0]);
+				}
+				catch (BuildFileNotFoundException error)
+				{
+					_recentItems.Remove(_recentItems[0]);
+					MessageBox.Show(error.Message, "Build File Not Found", 
+						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
 			}
 		}
 
@@ -692,7 +695,6 @@ namespace NAntGui.Core
 			return description.Length > 0;
 		}
 
-
 		private void UpdateRecentItemsMenu()
 		{
 			this.MainMenu.ClearRecentItems();
@@ -708,8 +710,19 @@ namespace NAntGui.Core
 
 		private void RecentFile_Clicked(object sender, EventArgs e)
 		{
-			MenuCommand lItem = (MenuCommand) sender;
-			this.LoadBuildFile(lItem.Text.Substring(2));
+			MenuCommand item = (MenuCommand) sender;
+			string recentItem = item.Text.Substring(2);
+
+			try
+			{	
+				this.LoadBuildFile(recentItem);
+			}
+			catch (BuildFileNotFoundException error)
+			{
+				_recentItems.Remove(recentItem);
+				MessageBox.Show(error.Message, "Build File Not Found", 
+					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
 		}
 
 		private void NAntSDKMenuCommand_Click(object sender, EventArgs e)
