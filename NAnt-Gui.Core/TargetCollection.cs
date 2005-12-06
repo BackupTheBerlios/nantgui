@@ -47,6 +47,11 @@ namespace NAntGui.Core
 			_targets.Add(target);
 		}
 
+		public void AddRange(TargetCollection targets)
+		{
+			_targets.AddRange(targets._targets);
+		}
+
 		public IEnumerator GetEnumerator()
 		{
 			return _targets.GetEnumerator();

@@ -21,10 +21,17 @@
 
 #endregion
 
+using System;
+
 namespace NAntGui.Core
 {
 	public interface IProperty
 	{
 		string Name { get; }
+		string Value { get; }
+		string Category { get; }
+		bool IsReadOnly { get; }
+		Type Type { get; }
+		string ExpandedValue { get; }
 	}
 }

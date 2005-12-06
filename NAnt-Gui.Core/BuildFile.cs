@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using System.IO;
 
 namespace NAntGui.Core
@@ -29,7 +28,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Abstract class for deriving build files types from.
 	/// </summary>
-	public abstract class BuildFile
+	public abstract class SourceFile
 	{
 		protected const string UNTITLED_FILE = "Untitled";
 
@@ -48,7 +47,7 @@ namespace NAntGui.Core
 		/// <summary>
 		/// Create a new build file.
 		/// </summary>
-		public BuildFile()
+		public SourceFile()
 		{
 			_name = UNTITLED_FILE + "." + Extension;
 			_fullPath = ".\\";
@@ -58,7 +57,7 @@ namespace NAntGui.Core
 		/// Create a build file from the given contents.
 		/// </summary>
 		/// <param name="buildFileContents">Text contents of a build file</param>
-		public BuildFile(string buildFileContents) : this()
+		public SourceFile(string buildFileContents) : this()
 		{
 			_contents = buildFileContents;
 		}
@@ -67,7 +66,7 @@ namespace NAntGui.Core
 		/// Create a build file with the path to the file.
 		/// </summary>
 		/// <param name="buildFile">Path to the file</param>
-		public BuildFile(FileInfo buildFile)
+		public SourceFile(FileInfo buildFile)
 		{
 			this.Load(buildFile);
 		}
@@ -109,7 +108,10 @@ namespace NAntGui.Core
 
 		public virtual void ReLoad()
 		{
-			
+			using (TextReader reader = File.OpenText(_fullPath))
+			{
+				_contents = reader.ReadToEnd();
+			}
 		}
 
 //		public virtual void Save(string text)

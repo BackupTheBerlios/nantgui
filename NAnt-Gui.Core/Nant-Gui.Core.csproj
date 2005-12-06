@@ -180,6 +180,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ILogsMessage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "IProject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -225,22 +230,17 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "MainPropertyGrid.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "MSBuildBuildFile.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "nant.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NAntBuildFile.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NAntBuildRunner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -346,12 +346,27 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "NAnt\NAntBuildFile.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\NAntBuildRunner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NAnt\Project.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "NAnt\Property.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\ScriptParser.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

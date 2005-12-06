@@ -21,20 +21,12 @@
 
 #endregion
 
-using System;
-
 namespace NAntGui.Core
 {
-	/// <summary>
-	/// Summary description for ITarget.
-	/// </summary>
-	public class ITarget
+	public interface ITarget
 	{
-		public ITarget()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
+		string Name { get; }
+		string Description { get; }
+		bool Default { get; }
 	}
 }

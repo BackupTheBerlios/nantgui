@@ -21,24 +21,37 @@
 
 #endregion
 
-namespace NAntGui.Core
+using NAnt.Core;
+
+namespace NAntGui.Core.NAnt
 {
-	/// <summary>
-	/// Summary description for MSBuildBuildFile.
-	/// </summary>
-	public class MSBuildBuildFile : SourceFile
+	public class NAntBuildRunner : BuildRunner
 	{
-		public MSBuildBuildFile()
+		private NAntBuildScript _script;
+
+		public NAntBuildRunner(MainForm mainForm) : base(mainForm) {}
+
+		protected override IProject LoadingBuildFile(string buildFile)
 		{
-			//
-			// TODO: Add constructor logic here
-			//
+			_script = new NAntBuildScript(buildFile, _options, _messageLogger);
+			return _script;
 		}
 
-		protected override string Extension
+		protected override void DoRun()
 		{
-			get { return "proj"; }
-		}
+			try
+			{
+				_script.BuildFinished += base.OnBuildFinished;
 
+//				ArrayList targets = _nantForm.GetTreeTargets();
+//				Hashtable properties = _nantForm.GetProjectProperties();
+
+				_script.Run();
+			}
+			catch (BuildException error)
+			{
+				_messageLogger.LogMessage(error.Message);
+			}
+		}
 	}
 }

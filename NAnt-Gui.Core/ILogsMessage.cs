@@ -24,21 +24,10 @@
 namespace NAntGui.Core
 {
 	/// <summary>
-	/// Summary description for MSBuildBuildFile.
+	/// Summary description for ILogsMessage.
 	/// </summary>
-	public class MSBuildBuildFile : SourceFile
+	public interface ILogsMessage
 	{
-		public MSBuildBuildFile()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		protected override string Extension
-		{
-			get { return "proj"; }
-		}
-
+		void LogMessage(string message);
 	}
 }

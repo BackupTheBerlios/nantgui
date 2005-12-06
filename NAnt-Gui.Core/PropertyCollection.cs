@@ -47,6 +47,14 @@ namespace NAntGui.Core
 			_properties.Add(property.Name, property);
 		}
 
+		public void AddRange(PropertyCollection properties)
+		{
+			foreach (IProperty property in properties)
+			{
+				_properties.Add(property.Name, property);
+			}
+		}
+
 		public IEnumerator GetEnumerator()
 		{
 			return _properties.Values.GetEnumerator();

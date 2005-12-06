@@ -21,160 +21,182 @@
 
 #endregion
 
-using System.IO;
-using System.Xml;
-using log4net;
-using NProject = NAnt.Core.Project;
+using System;
+using Flobbster.Windows.Forms;
+using NAnt.Core.Util;
 using NAnt.Core;
-using NAnt.Core.Tasks;
-using NAnt.Win32.Tasks;
 
 namespace NAntGui.Core.NAnt
 {
 	/// <summary>
 	/// Contains the logic for parsing the build file.
 	/// </summary>
-	public class Project : IProject
+	public class NAntBuildScript : IProject
 	{
-		private static readonly ILog Logger = LogManager.GetLogger("NAnt");
+		public event VoidVoid BuildFinished;
 
 		private string _description = "";
+		private Project _project;
+		private string _buildFile;
+		private CommandLineOptions _options;
+		private ILogsMessage _messageLogger;
 
-		private TargetCollection _targets = new TargetCollection();
-		private PropertyCollection _properties = new PropertyCollection();
-		private DependsCollection _depends = new DependsCollection();
-		private NProject _project;
+		private TargetCollection _targets		= new TargetCollection();
+		private PropertyCollection _properties	= new PropertyCollection();
+		private DependsCollection _depends		= new DependsCollection();
 
 		/// <summary>
 		/// Create a new project parser.
 		/// </summary>
-		/// <param name="project">NAnt Project to add information to</param>
-		public Project(NProject project)
+		public NAntBuildScript(string buildFile, CommandLineOptions options, ILogsMessage messageLogger)
 		{
-			_project = project;
+			_buildFile = buildFile;
+			_options = options;
+			_messageLogger = messageLogger;
+			_project = new Project(buildFile, this.GetThreshold(), 0);
 
-			this.AddTargets(_project.Document);
-			this.AddDescription();
-			this.AddBaseDir();
-			this.AddProperties(_project.Document);
-			this.AddNonPropertyProperties(_project);
-			this.FollowIncludes();
-
-			_targets.Sort();
+			this.ParseBuildScript();
 		}
 
-		private void AddTargets(XmlDocument doc)
+		private void ParseBuildScript()
 		{
-			foreach (XmlElement element in doc.GetElementsByTagName("target"))
-			{
-				Target target = new Target(element);
-				if (target.Name == this.DefaultTarget) target.Default = true;
-				_targets.Add(target);
-				_depends.Add(target.Depends);
-			}
+			ScriptParser parser = new ScriptParser(_project);
+			parser.Parse();
+
+			_description	= parser.Description;
+			_targets		= parser.Targets;
+			_depends		= parser.Depends;
+			_properties		= parser.Properties;
 		}
 
-		private void FollowIncludes()
+
+		public void SetProjectProperties(PropertySpecCollection properties)
 		{
-			foreach (XmlElement element in _project.Document.GetElementsByTagName("include"))
+			foreach (PropertySpec spec in properties)
 			{
-				string buildFile = element.GetAttribute("buildfile");
-				string filename = _project.ExpandProperties(buildFile, new Location("Buildfile"));
-				if (File.Exists(filename))
+				if (spec.Category == "Project")
 				{
-					try
-					{
-						XmlDocument document = new XmlDocument();
-						document.Load(filename);
-						this.AddTargets(document);
-						this.AddProperties(document);
-						this.AddNonPropertyProperties(this._project);
-					}
-					catch (IOException error)
-					{
-						Logger.Error("", error);
-					}
+					_project.BaseDirectory = spec.ToString();
+				}
+				else if (spec.Category == "Global" || ValidTarget(spec.Category))
+				{
+					this.LoadNonProjectProperty(spec, properties);
 				}
 			}
 		}
 
-		private void AddBaseDir()
+		private void LoadNonProjectProperty(PropertySpec spec, PropertySpecCollection properties)
 		{
-			Property property = new Property("BaseDir", this._project.BaseDirectory, "Project", false);
-			_project.Properties.AddReadOnly(property.Name, this._project.BaseDirectory);
-			_properties.Add(property);
+			string lValue = properties.ToString();
+			string lExpandedProperty = lValue;
+			try
+			{
+				lExpandedProperty = _project.ExpandProperties(lValue,
+					new Location(_buildFile));
+			}
+			catch (BuildException)
+			{ /* ignore */
+			}
+
+			_project.Properties.AddReadOnly(spec.Name, lExpandedProperty);
 		}
 
-		private void AddProperties(XmlDocument doc)
+		private bool ValidTarget(string category)
 		{
-			foreach (XmlElement element in doc.GetElementsByTagName("property"))
+			return _project.BuildTargets.Contains(category);
+		}
+
+		/// <summary>
+		/// Add the listeners specified in the command line arguments,
+		/// along with the default listener, to the specified project.
+		/// </summary>
+		private void AddBuildListeners()
+		{
+			Assert.NotNull(_project, "project");
+			BuildListenerCollection listeners = new BuildListenerCollection();
+			IBuildLogger buildLogger = new GuiLogger(_messageLogger);
+
+			// set threshold of build logger equal to threshold of project
+			buildLogger.Threshold = _project.Threshold;
+
+			// add build logger to listeners collection
+			listeners.Add(buildLogger);
+
+			// attach listeners to project
+			_project.AttachBuildListeners(listeners);
+		}
+
+		private Level GetThreshold()
+		{
+			Level projectThreshold = Level.Info;
+			// determine the project message threshold
+			if (_options.Debug) 
 			{
-				Property property = new Property(element);
-				try
+				projectThreshold = Level.Debug;
+			} 
+			else if (_options.Verbose) 
+			{
+				projectThreshold = Level.Verbose;
+			} 
+			else if (_options.Quiet) 
+			{
+				projectThreshold = Level.Warning;
+			}
+			return projectThreshold;
+		}
+
+		public void Run()
+		{
+			try
+			{
+				_project.BuildFinished += new BuildEventHandler(this.Build_Finished);
+
+				if (_options.TargetFramework != null) 
 				{
-					property.ExpandedValue = _project.ExpandProperties(property.Value, new Location("Buildfile"));
-				}
-				catch (BuildException)
-				{ /* ignore */
+					this.SetTargetFramework();
 				}
 
-				if (!_project.Properties.Contains(property.Name))
+//				ArrayList targets = _nantForm.GetTreeTargets();
+//				Hashtable properties = _nantForm.GetProjectProperties();
+				this.AddBuildListeners();
+
+				_project.Run();
+			}
+			catch (BuildException error)
+			{
+				_messageLogger.LogMessage(error.Message);
+			}
+		}
+
+		private void SetTargetFramework()
+		{
+			if (_project.Frameworks.Count == 0) 
+			{
+				const string message = "There are no supported frameworks available on your system.";
+				throw new ApplicationException(message);
+			} 
+			else
+			{
+				FrameworkInfo frameworkInfo = _project.Frameworks[_options.TargetFramework];
+
+				if (frameworkInfo != null) 
 				{
-					_project.Properties.AddReadOnly(property.Name, property.ExpandedValue);
-					_properties.Add(property);
+					_project.TargetFramework = frameworkInfo; 
+				} 
+				else 
+				{
+					const string format = "Invalid framework '{0}' specified.";
+					string message = string.Format(format, _options.TargetFramework);
+					throw new CommandLineArgumentException(message);
 				}
 			}
 		}
 
-		private void AddNonPropertyProperties(NProject pProject)
+		private void Build_Finished(object sender, BuildEventArgs e)
 		{
-			this.AddTstamps(pProject);
-			this.AddReadRegistrys(pProject);
-		}
-
-		private void AddTstamps(NProject pProject)
-		{
-			foreach (XmlElement lElement in pProject.Document.GetElementsByTagName("tstamp"))
+			if (this.BuildFinished != null)
 			{
-				if (TypeFactory.TaskBuilders.Contains(lElement.Name))
-				{
-					TStampTask task = (TStampTask) pProject.CreateTask(lElement);
-					if (task != null)
-					{
-						task.Execute();
-
-						Property lProperty = new Property(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value, false);
-						lProperty.ExpandedValue = lProperty.Value;
-						_properties.Add(lProperty);
-					}
-				}
-			}
-		}
-
-		private void AddReadRegistrys(NProject pProject)
-		{
-			foreach (XmlElement lElement in pProject.Document.GetElementsByTagName("readregistry"))
-			{
-				if (TypeFactory.TaskBuilders.Contains(lElement.Name))
-				{
-					ReadRegistryTask task = (ReadRegistryTask) pProject.CreateTask(lElement);
-					if (task != null && task.PropertyName != null)
-					{
-						task.Execute();
-
-						Property lProperty = new Property(task.PropertyName, task.Properties[task.PropertyName], lElement.ParentNode.Attributes["name"].Value, false);
-						lProperty.ExpandedValue = lProperty.Value;
-						_properties.Add(lProperty);
-					}
-				}
-			}
-		}
-
-		private void AddDescription()
-		{
-			foreach (XmlElement lElement in _project.Document.GetElementsByTagName("description"))
-			{
-				_description = lElement.InnerText;
+				this.BuildFinished();
 			}
 		}
 
@@ -217,5 +239,4 @@ namespace NAntGui.Core.NAnt
 
 		#endregion
 	}
-
 }

@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -32,25 +33,24 @@ namespace NAntGui.Core
 
 	public abstract class BuildRunner
 	{
-		public event BuildFileChangedEH BuildFileLoaded;
-		public event VoidVoid BuildFinished;
+		public event BuildFileChangedEH BuildFileChanged;
+		public VoidVoid OnBuildFinished;
 
 		private Watcher		_watcher;
 		private Thread		_thread;
-		private IProject	_project;
 		
-		protected MainForm _nantForm;
+		protected ILogsMessage _messageLogger;
 		protected string _buildFile;
 		protected CommandLineOptions _options;
 
-		public BuildRunner(MainForm nantForm)
+		public BuildRunner(MainForm mainForm)
 		{
-			_nantForm	= nantForm;
-			_options	= nantForm.Options;
+			_messageLogger	= mainForm;
+			_options	= mainForm.Options;
 
 			_watcher	= new Watcher();
 			_watcher.BuildFileChanged += new VoidVoid(this.ReloadBuildFile);
-			_watcher.BuildFileDeleted += new VoidVoid(_nantForm.CloseBuildFile);
+			_watcher.BuildFileDeleted += new VoidVoid(mainForm.CloseBuildFile);
 		}
 
 		private void ReloadBuildFile()
@@ -69,18 +69,18 @@ namespace NAntGui.Core
 
 					_watcher.WatchBuildFile(buildFileInfo);
 
-					_project = this.LoadingBuildFile(buildFile);
+					IProject _project = this.LoadingBuildFile(buildFile);
 
-					if (this.BuildFileLoaded != null)
+					if (this.BuildFileChanged != null)
 					{
-						if (_nantForm.InvokeRequired)
-						{
-							_nantForm.Invoke(this.BuildFileLoaded, new object[] {_project});
-						}
-						else
-						{
-							this.BuildFileLoaded(_project);
-						}
+//						if (_nantForm.InvokeRequired)
+//						{
+//							_nantForm.Invoke(this.BuildFileChanged, new object[] {_project});
+//						}
+//						else
+//						{
+							this.BuildFileChanged(_project);
+//						}
 					}
 				}
 				catch (ApplicationException error)
@@ -144,12 +144,12 @@ namespace NAntGui.Core
 			}
 		}
 
-		protected void FireBuildFinished()
-		{
-			if (this.BuildFinished != null)
-			{
-				this.BuildFinished();
-			}
-		}
+//		protected void FireBuildFinished()
+//		{
+//			if (this.BuildFinished != null)
+//			{
+//				this.BuildFinished();
+//			}
+//		}
 	}
 }

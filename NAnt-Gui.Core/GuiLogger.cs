@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,16 +30,16 @@ namespace NAntGui.Core
 	/// </summary>
 	public class GuiLogger : DefaultLogger
 	{
-		public MainForm mMAINForm;
+		public ILogsMessage _messageLogger;
 
-		public GuiLogger(MainForm pMAINForm) : base()
+		public GuiLogger(ILogsMessage messageLogger) : base()
 		{
-			this.mMAINForm = pMAINForm;
+			_messageLogger = messageLogger;
 		}
 
-		protected override void Log(string pMessage)
+		protected override void Log(string message)
 		{
-			this.mMAINForm.OutputMessage(pMessage);
+			_messageLogger.LogMessage(message);
 		}
 	}
 }
