@@ -31,9 +31,9 @@ namespace NAntGui.Core.NAnt
 
 		public NAntBuildRunner(MainForm mainForm) : base(mainForm) {}
 
-		protected override IProject LoadingBuildFile(string buildFile)
+		protected override IProject LoadingBuildFile(SourceFile sourceFile)
 		{
-			_script = new NAntBuildScript(buildFile, _options, _messageLogger);
+			_script = new NAntBuildScript(sourceFile, _options, _messageLogger);
 			return _script;
 		}
 

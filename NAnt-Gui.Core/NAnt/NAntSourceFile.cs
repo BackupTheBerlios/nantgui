@@ -37,9 +37,9 @@ namespace NAntGui.Core.NAnt
 		/// extension for NAnt.  ".nant" would be better.
 		/// Alternatively, the option should be given.
 		/// </summary>
-		protected override string Extension
-		{
-			get { return "build"; }
-		}
+//		protected override string Extension
+//		{
+//			get { return "build"; }
+//		}
 	}
 }

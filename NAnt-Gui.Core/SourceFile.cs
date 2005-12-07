@@ -28,7 +28,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Abstract class for deriving build files types from.
 	/// </summary>
-	public abstract class SourceFile
+	public class SourceFile
 	{
 		protected const string UNTITLED_FILE = "Untitled";
 
@@ -49,7 +49,7 @@ namespace NAntGui.Core
 		/// </summary>
 		public SourceFile()
 		{
-			_name = UNTITLED_FILE + "." + Extension;
+			_name = UNTITLED_FILE; // + "." + Extension;
 			_fullPath = ".\\";
 		}
 
@@ -114,26 +114,26 @@ namespace NAntGui.Core
 			}
 		}
 
-//		public virtual void Save(string text)
-//		{
-//			using (TextWriter writer = File.CreateText(_fullPath))
-//			{
-//				writer.Write(text);
-//			}
-//		}
-
-		public virtual void Save()
+		public virtual void Save(string text)
 		{
 			using (TextWriter writer = File.CreateText(_fullPath))
 			{
-				writer.Write(_contents);
+				writer.Write(text);
 			}
 		}
 
-		public virtual void SaveAs(string fileName)
+//		public virtual void Save()
+//		{
+//			using (TextWriter writer = File.CreateText(_fullPath))
+//			{
+//				writer.Write(_contents);
+//			}
+//		}
+
+		public virtual void Save(string text, string fileName)
 		{
 			_fullPath = fileName;
-			this.Save();
+			this.Save(text);
 		}
 
 		public virtual void Close()
@@ -146,7 +146,7 @@ namespace NAntGui.Core
 			get{ return _isDirty; }
 		}
 
-		protected abstract string Extension { get; }
+		//protected abstract string Extension { get; }
 
 		#region Properties
 
@@ -154,6 +154,16 @@ namespace NAntGui.Core
 		{
 			get { return _contents; }
 			set { _contents = value; }
+		}
+
+		public string FullPath
+		{
+			get { return _fullPath; }
+		}
+
+		public string Name
+		{
+			get { return _name; }
 		}
 
 		#endregion

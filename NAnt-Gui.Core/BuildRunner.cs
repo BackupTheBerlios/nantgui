@@ -22,8 +22,6 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -36,40 +34,24 @@ namespace NAntGui.Core
 		public event BuildFileChangedEH BuildFileChanged;
 		public VoidVoid OnBuildFinished;
 
-		private Watcher		_watcher;
 		private Thread		_thread;
 		
 		protected ILogsMessage _messageLogger;
-		protected string _buildFile;
+		protected SourceFile _sourceFile;
 		protected CommandLineOptions _options;
 
 		public BuildRunner(MainForm mainForm)
 		{
 			_messageLogger	= mainForm;
-			_options	= mainForm.Options;
-
-			_watcher	= new Watcher();
-			_watcher.BuildFileChanged += new VoidVoid(this.ReloadBuildFile);
-			_watcher.BuildFileDeleted += new VoidVoid(mainForm.CloseBuildFile);
+			_options		= mainForm.Options;
 		}
 
-		private void ReloadBuildFile()
+		public void LoadBuildFile(SourceFile sourceFile)
 		{
-			this.LoadBuildFile(_buildFile);	
-		}
-
-		public void LoadBuildFile(string buildFile)
-		{
-			if (File.Exists(buildFile))
-			{
 				try
 				{
-					FileInfo buildFileInfo = new FileInfo(buildFile);
-					Environment.CurrentDirectory = buildFileInfo.DirectoryName;
-
-					_watcher.WatchBuildFile(buildFileInfo);
-
-					IProject _project = this.LoadingBuildFile(buildFile);
+					Environment.CurrentDirectory = sourceFile.FullPath;
+					IProject _project = this.LoadingBuildFile(sourceFile);
 
 					if (this.BuildFileChanged != null)
 					{
@@ -96,14 +78,9 @@ namespace NAntGui.Core
 					MessageBox.Show(message, "Internal Error");
 				}
 #endif
-			}
-			else
-			{
-				throw new BuildFileNotFoundException(buildFile + " does not exist.");
-			}
 		}
 
-		protected abstract IProject LoadingBuildFile(string buildFile);
+		protected abstract IProject LoadingBuildFile(SourceFile sourceFile);
 
 		private static void HandleErrorInBuildFile(ApplicationException error)
 		{
@@ -125,10 +102,10 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void Run(string buildFile)
+		public void Run(SourceFile sourceFile)
 		{
-			Assert.NotNull(buildFile, "buildFile");
-			_buildFile = buildFile;
+			Assert.NotNull(sourceFile, "sourceFile");
+			_sourceFile = sourceFile;
 
 			_thread = new Thread(new ThreadStart(this.DoRun));
 			_thread.Start();

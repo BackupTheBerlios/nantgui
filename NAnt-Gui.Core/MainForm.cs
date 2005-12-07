@@ -52,7 +52,7 @@ namespace NAntGui.Core
 		private CommandLineOptions _options;
 		private RecentItems _recentItems = new RecentItems();
 		private DockingManager _dockManager;
-		private string _buildFile;
+		private SourceFile _sourceFile;
 		private bool _firstLoad = true;
 
 		#region GUI Items
@@ -324,13 +324,14 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void LoadBuildFile(string buildFile)
+		private void LoadBuildFile(string filename)
 		{
-			_buildFile = buildFile;
+			FileInfo buildFile = new FileInfo(filename);
+			_sourceFile = new SourceFile(buildFile);
 
 			try
 			{
-				_buildRunner.LoadBuildFile(buildFile);
+				_buildRunner.LoadBuildFile(_sourceFile);
 			}
 			catch (BuildFileNotFoundException error)
 			{
@@ -398,7 +399,7 @@ namespace NAntGui.Core
 
 		private void BrowseForBuildFile()
 		{
-			this.OpenFileDialog.InitialDirectory = _buildFile;
+			this.OpenFileDialog.InitialDirectory = _sourceFile.FullPath;
 			if (this.OpenFileDialog.ShowDialog() == DialogResult.OK)
 			{
 				this.LoadBuildFile(this.OpenFileDialog.FileName);
@@ -413,7 +414,7 @@ namespace NAntGui.Core
 		private void Build()
 		{
 			this.ClearOutput();
-			_buildRunner.Run(_buildFile);
+			_buildRunner.Run(_sourceFile);
 		}
 
 		private void ClearOutput()
@@ -434,7 +435,7 @@ namespace NAntGui.Core
 
 		private void Reload()
 		{
-			this.LoadBuildFile(_buildFile);
+			_sourceFile.ReLoad();
 		}
 
 		private void AboutMenuCommand_Click(object sender, EventArgs e)
@@ -460,25 +461,24 @@ namespace NAntGui.Core
 
 		public void CloseBuildFile()
 		{
-//			_buildFile.Close();
-			_buildFile = "";
-			this.ClearOutput();
+			_sourceFile.Close();
 			_targetsTree.Nodes.Clear();
-			this._propertyGrid.SelectedObject = null;
+			_propertyGrid.SelectedObject = null;
 
+			this.ClearOutput();
 			this.DisableMenuCommandsAndButtons();
 		}
 
 		private void DisableMenuCommandsAndButtons()
 		{
-			this._mainMenu.Disable();
-			this._mainToolBar.Disable();
+			_mainMenu.Disable();
+			_mainToolBar.Disable();
 		}
 
 		private void EnableMenuCommandsAndButtons()
 		{
-			this._mainMenu.Enable();
-			this._mainToolBar.Enable();
+			_mainMenu.Enable();
+			_mainToolBar.Enable();
 		}
 
 		private void OptionsMenuCommand_Click(object sender, EventArgs e)
@@ -500,20 +500,18 @@ namespace NAntGui.Core
 
 		private void UpdateDisplay(IProject project)
 		{
-			this._sourceTabs.LoadSource(_buildFile);
+			_sourceTabs.ReadSource(_sourceFile);
 
-			string filename = new FileInfo(_buildFile).Name;
+			this.Text = "NAnt-Gui" + string.Format(" - {0}", _sourceFile.Name);
 
-			this.Text = "NAnt-Gui" + string.Format(" - {0}", filename);
+			string projectName = project.HasName ? project.Name : _sourceFile.Name;
 
-			string projectName = project.HasName ? project.Name : filename;
-
-			_recentItems.Add(_buildFile);
+			_recentItems.Add(_sourceFile.FullPath);
 			_recentItems.Save();
 			this.UpdateRecentItemsMenu();
 
 			this.MainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);
-			this.MainStatusBar.Panels[1].Text = _buildFile;
+			this.MainStatusBar.Panels[1].Text = _sourceFile.Name;
 
 			_targetsTree.Nodes.Clear();
 			_targetsTree.Nodes.Add(new TreeNode(projectName));
@@ -645,7 +643,7 @@ namespace NAntGui.Core
 
 		private void SaveOutputMenuCommand_Click(object sender, EventArgs e)
 		{
-			this.OutputSaveFileDialog.InitialDirectory = _buildFile;
+			this.OutputSaveFileDialog.InitialDirectory = _sourceFile.FullPath;
 			DialogResult result = this.OutputSaveFileDialog.ShowDialog();
 
 			if (result == DialogResult.OK)
@@ -661,11 +659,8 @@ namespace NAntGui.Core
 
 		private void Save()
 		{
-			if (File.Exists(_buildFile))
-			{
-				this._sourceTabs.SaveSource(_buildFile);
-				this.Text = this.Text.TrimEnd(new char[] {'*'});
-			}
+			_sourceTabs.SaveSource(_sourceFile);
+			this.Text = this.Text.TrimEnd(new char[] {'*'});
 		}
 
 		private void SaveOutput()
@@ -719,7 +714,7 @@ namespace NAntGui.Core
 		private void MainForm_Closing(object sender, CancelEventArgs e)
 		{
 			_buildRunner.Stop();
-			if (this._sourceTabs.SourceHasChanged)
+			if (_sourceFile.SaveRequired)
 			{
 				DialogResult result =
 					MessageBox.Show("You have unsaved changes.  Save?", "Save Changes?",
@@ -727,7 +722,7 @@ namespace NAntGui.Core
 
 				if (result == DialogResult.Yes)
 				{
-					this._sourceTabs.SaveSource(_buildFile);
+					_sourceTabs.SaveSource(_sourceFile);
 				}
 				else if (result == DialogResult.Cancel)
 				{
@@ -741,7 +736,7 @@ namespace NAntGui.Core
 			DialogResult result = this.XMLSaveFileDialog.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				this._sourceTabs.SaveSource(this.XMLSaveFileDialog.FileName);
+				_sourceTabs.SaveSourceAs(_sourceFile, this.XMLSaveFileDialog.FileName);
 
 				this.RemoveUnsavedFileAsterisk();
 				this.LoadBuildFile(this.XMLSaveFileDialog.FileName);

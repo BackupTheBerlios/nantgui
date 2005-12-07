@@ -37,7 +37,7 @@ namespace NAntGui.Core.NAnt
 
 		private string _description = "";
 		private Project _project;
-		private string _buildFile;
+		private SourceFile _sourceFile;
 		private CommandLineOptions _options;
 		private ILogsMessage _messageLogger;
 
@@ -48,12 +48,12 @@ namespace NAntGui.Core.NAnt
 		/// <summary>
 		/// Create a new project parser.
 		/// </summary>
-		public NAntBuildScript(string buildFile, CommandLineOptions options, ILogsMessage messageLogger)
+		public NAntBuildScript(SourceFile sourceFile, CommandLineOptions options, ILogsMessage messageLogger)
 		{
-			_buildFile = buildFile;
+			_sourceFile = sourceFile;
 			_options = options;
 			_messageLogger = messageLogger;
-			_project = new Project(buildFile, this.GetThreshold(), 0);
+			_project = new Project(sourceFile.FullPath, this.GetThreshold(), 0);
 
 			this.ParseBuildScript();
 		}
@@ -92,7 +92,7 @@ namespace NAntGui.Core.NAnt
 			try
 			{
 				lExpandedProperty = _project.ExpandProperties(lValue,
-					new Location(_buildFile));
+					new Location(_sourceFile.FullPath));
 			}
 			catch (BuildException)
 			{ /* ignore */

@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 using TabControl = Crownwood.Magic.Controls.TabControl;
@@ -14,11 +13,9 @@ namespace NAntGui.Core
 	/// </summary>
 	public class SourceTabControl : TabControl
 	{
-		private string _source = "";
-
-		private TabPage _sourceTabPage = new TabPage();
-		private TextEditorControl _sourceTextEditor = new TextEditorControl();
-		private PopupMenu _xmlContextMenu = new PopupMenu();
+		private TabPage _sourceTabPage			= new TabPage();
+		private TextEditorControl _sourceEditor = new TextEditorControl();
+		private PopupMenu _xmlContextMenu		= new PopupMenu();
 		private TextAreaClipboardHandler _clipboardHandler;
 
 		public event VoidVoid SourceChanged;
@@ -56,7 +53,7 @@ namespace NAntGui.Core
 			// 
 			// XMLTabPage
 			// 
-			_sourceTabPage.Controls.Add(this._sourceTextEditor);
+			_sourceTabPage.Controls.Add(this._sourceEditor);
 			_sourceTabPage.Location = new Point(0, 0);
 			_sourceTabPage.Name = "_sourceTabPage";
 			_sourceTabPage.Selected = false;
@@ -66,28 +63,28 @@ namespace NAntGui.Core
 			// 
 			// _sourceRichTextBox
 			// 
-			_sourceTextEditor.Anchor = (((((AnchorStyles.Top | AnchorStyles.Bottom)
+			_sourceEditor.Anchor = (((((AnchorStyles.Top | AnchorStyles.Bottom)
 				| AnchorStyles.Left)
 				| AnchorStyles.Right)));
-			_sourceTextEditor.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point, ((Byte) (0)));
-			_sourceTextEditor.Location = new Point(0, 0);
-			_sourceTextEditor.Name = "XMLRichTextBox";
-			_sourceTextEditor.Size = new Size(824, 454);
-			_sourceTextEditor.TabIndex = 4;
-			_sourceTextEditor.Text = "";
-			_sourceTextEditor.ShowVRuler = false;
-			_sourceTextEditor.ShowEOLMarkers = false;
-			_sourceTextEditor.ShowSpaces = false;
-			_sourceTextEditor.ShowTabs = false;
-			_sourceTextEditor.EnableFolding = true;
-			_sourceTextEditor.SetHighlighting("XML");
-			_sourceTextEditor.TextChanged += new EventHandler(this.SourceRichTextBox_TextChanged);
-			_sourceTextEditor.ActiveTextAreaControl.TextArea.MouseUp += new MouseEventHandler(this.SourceTextBox_MouseUp);
+			_sourceEditor.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point, ((Byte) (0)));
+			_sourceEditor.Location = new Point(0, 0);
+			_sourceEditor.Name = "XMLRichTextBox";
+			_sourceEditor.Size = new Size(824, 454);
+			_sourceEditor.TabIndex = 4;
+			_sourceEditor.Text = "";
+			_sourceEditor.ShowVRuler = false;
+			_sourceEditor.ShowEOLMarkers = false;
+			_sourceEditor.ShowSpaces = false;
+			_sourceEditor.ShowTabs = false;
+			_sourceEditor.EnableFolding = true;
+			_sourceEditor.SetHighlighting("XML");
+			_sourceEditor.TextChanged += new EventHandler(this.SourceRichTextBox_TextChanged);
+			_sourceEditor.ActiveTextAreaControl.TextArea.MouseUp += new MouseEventHandler(this.SourceTextBox_MouseUp);
 			
 			// 
 			// _clipboardHandler
 			// 
-			_clipboardHandler = _sourceTextEditor.ActiveTextAreaControl.TextArea.ClipboardHandler;
+			_clipboardHandler = _sourceEditor.ActiveTextAreaControl.TextArea.ClipboardHandler;
 
 			this.Appearance = TabControl.VisualAppearance.MultiDocument;
 			this.Dock = DockStyle.Fill;
@@ -143,30 +140,23 @@ namespace NAntGui.Core
 			}
 		}
 
-		public string LoadSource(string buildFile)
+		public void ReadSource(SourceFile sourceFile)
 		{
-			Assert.NotNull(buildFile, "buildFile");
-			using (TextReader reader = File.OpenText(buildFile))
-			{
-				_source = _sourceTextEditor.Text = reader.ReadToEnd();
-			}
-
-			return _source;
+			Assert.NotNull(sourceFile, "sourceFile");
+			_sourceEditor.Text = sourceFile.Contents;
 		}
 
-		public void SaveSource(string buildFile)
+		public void SaveSourceAs(SourceFile sourceFile, string filename)
 		{
-			Assert.NotNull(buildFile, "buildFile");
-			using (TextWriter writer = File.CreateText(buildFile))
-			{
-				writer.Write(_sourceTextEditor.Text);
-			}
+			Assert.NotNull(sourceFile, "sourceFile");
+			sourceFile.Contents = _sourceEditor.Text;
+			sourceFile.Save(_sourceEditor.Text, filename);
 		}
 
-		public bool SourceHasChanged
+		public void SaveSource(SourceFile sourceFile)
 		{
-			get { return (_sourceTextEditor.Text != _source && 
-				_sourceTextEditor.Text != _source.Replace("\r", "")); }
+			Assert.NotNull(sourceFile, "sourceFile");
+			sourceFile.Save(_sourceEditor.Text);
 		}
 	}
 }

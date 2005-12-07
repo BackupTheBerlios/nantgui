@@ -53,6 +53,7 @@
         <include name="C:\Program Files\${nant.dir}\bin\NAnt.Win32Tasks.dll" />
         <include name="C:\Program Files\${nant.dir}\bin\log4net.dll" />
         <include name="..\ThirdParty Libraries\MagicLibrary.dll" />
+        <include name="..\ThirdParty Libraries\ICSharpCode.TextEditor.dll" />
       </references>
     </csc>
   </target>

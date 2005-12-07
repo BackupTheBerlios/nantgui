@@ -35,10 +35,10 @@ namespace NAntGui.Core
 			//
 		}
 
-		protected override string Extension
-		{
-			get { return "proj"; }
-		}
+//		protected override string Extension
+//		{
+//			get { return "proj"; }
+//		}
 
 	}
 }
