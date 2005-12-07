@@ -140,11 +140,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BuildFile.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BuildRunner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -309,6 +304,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "SourceFile.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "SourceTabControl.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
@@ -346,17 +346,17 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "NAnt\NAntBuildFile.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "NAnt\NAntBuildRunner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "NAnt\Project.cs"
+                    RelPath = "NAnt\NAntBuildScript.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\NAntSourceFile.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
