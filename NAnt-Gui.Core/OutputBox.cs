@@ -11,7 +11,12 @@ namespace NAntGui.Core
 	public class OutputBox : RichTextBox
 	{
 		public event VoidBool WordWrapChanged;
+
+		private const int RICH_TEXT_INDEX = 2;
+		private const int PLAIN_TEXT_INDEX = 1;
+		
 		private PopupMenu _outputContextMenu = new PopupMenu();
+		private SaveFileDialog OutputSaveFileDialog = new SaveFileDialog();
 
 		public OutputBox()
 		{
@@ -21,6 +26,13 @@ namespace NAntGui.Core
 
 		private void Initialize()
 		{
+			// 
+			// OutputSaveFileDialog
+			// 
+			this.OutputSaveFileDialog.DefaultExt = "txt";
+			this.OutputSaveFileDialog.FileName = "Output";
+			this.OutputSaveFileDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
+
 			this.Anchor = (((((AnchorStyles.Top | AnchorStyles.Bottom)
 				| AnchorStyles.Left)
 				| AnchorStyles.Right)));
@@ -61,6 +73,31 @@ namespace NAntGui.Core
 				this.WordWrapChanged(this.WordWrap);
 		}
 
+		public void SaveOutput(object sender, EventArgs e)
+		{
+//			this.OutputSaveFileDialog.InitialDirectory = _sourceFile.FullPath;
+			DialogResult result = this.OutputSaveFileDialog.ShowDialog();
+
+			if (result == DialogResult.OK)
+			{
+				this.DoSave();
+			}
+		}
+
+		private void DoSave()
+		{
+			int filterIndex = this.OutputSaveFileDialog.FilterIndex;
+
+			if (filterIndex == PLAIN_TEXT_INDEX)
+			{
+				this.SavePlainTextOutput(this.OutputSaveFileDialog.FileName);
+			}
+			else if (filterIndex == RICH_TEXT_INDEX)
+			{
+				this.SaveRichTextOutput(this.OutputSaveFileDialog.FileName);
+			}
+		}
+
 		public void CopyText(object sender, EventArgs e)
 		{
 			this.Copy();
@@ -71,13 +108,13 @@ namespace NAntGui.Core
 			this.SelectAll();
 		}
 
-		public void SavePlainTextOutput(string fileName)
+		private void SavePlainTextOutput(string fileName)
 		{
 			this.SaveFile(fileName,
 				RichTextBoxStreamType.PlainText);
 		}
 
-		public void SaveRichTextOutput(string fileName)
+		private void SaveRichTextOutput(string fileName)
 		{
 			this.SaveFile(fileName,
 				RichTextBoxStreamType.RichText);
@@ -102,6 +139,12 @@ namespace NAntGui.Core
 			this.WordWrap = !this.WordWrap;
 			if (this.WordWrapChanged != null)
 				this.WordWrapChanged(this.WordWrap);
+		}
+
+		public new void Clear()
+		{
+			base.Clear();
+			Outputter.Clear();
 		}
 	}
 }

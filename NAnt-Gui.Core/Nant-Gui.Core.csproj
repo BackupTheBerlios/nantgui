@@ -175,6 +175,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "IDisplayer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ILogsMessage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -186,6 +191,11 @@
                 />
                 <File
                     RelPath = "IProperty.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ISourceIO.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -226,6 +236,11 @@
                 />
                 <File
                     RelPath = "MainPropertyGrid.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MainStatusBar.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
                 />
@@ -299,6 +314,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ScriptEditor.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ScriptEditorContextMenu.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ScriptTabPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Settings.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -326,6 +356,11 @@
                 <File
                     RelPath = "ToolBarControl.cs"
                     SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utils.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File

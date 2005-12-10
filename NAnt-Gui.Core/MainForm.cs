@@ -34,7 +34,6 @@ using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
 using Flobbster.Windows.Forms;
-using NAntGui.Core.NAnt;
 
 namespace NAntGui.Core
 {
@@ -43,12 +42,9 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainForm : Form, ILogsMessage
 	{
-		private const int RICH_TEXT_INDEX = 2;
-		private const int PLAIN_TEXT_INDEX = 1;
-
 		private delegate void MessageEventHandler(string pMessage);
 
-		private BuildRunner _buildRunner;
+//		private BuildRunner _buildRunner;
 		private CommandLineOptions _options;
 		private RecentItems _recentItems = new RecentItems();
 		private DockingManager _dockManager;
@@ -56,33 +52,26 @@ namespace NAntGui.Core
 		private bool _firstLoad = true;
 
 		#region GUI Items
-
-		private StatusBarPanel FileStatusBarPanel;
 		private OpenFileDialog OpenFileDialog;
-		private StatusBar MainStatusBar;
-
+		
+		private SaveFileDialog XMLSaveFileDialog;
+		
 		private ImageList _imageList;
 
 		private OutputBox _outputBox = new OutputBox();
+		
+		private TargetsTreeView _targetsTree;
+
+		private WindowContent _targetWindowContent;
+		private Content _targetsContent;
+		private Content _propertiesContent;
 		private Content _outputContent;
 
-		private TargetsTreeView _targetsTree;
-		private Content _targetsContent;
-		private WindowContent _targetWindowContent;
-
 		public MainPropertyGrid _propertyGrid;
-		private Content _propertiesContent;
-
-		private StatusBarPanel ProgressPanel;
-		private StatusBarPanel FullFileStatusBarPanel;
-
-		private MainMenuControl _mainMenu;
-		private ToolBarControl _mainToolBar;
-
-		private SourceTabControl _sourceTabs;
-
-		private SaveFileDialog OutputSaveFileDialog;
-		private SaveFileDialog XMLSaveFileDialog;
+		private MainMenuControl _mainMenu = new MainMenuControl();
+		private ToolBarControl _mainToolBar = new ToolBarControl();
+		private SourceTabControl _sourceTabs = new SourceTabControl();
+		private MainStatusBar _mainStatusBar = new MainStatusBar();
 
 		private IContainer components;
 		
@@ -93,36 +82,19 @@ namespace NAntGui.Core
 		{
 			_options = options;
 
-			_propertyGrid = new MainPropertyGrid(_options.Properties);
-
-			_imageList = ResourceHelper.LoadBitmapStrip(
-				this.GetType(), "NAntGui.Core.Images.MenuItems.bmp",
-				new Size(16, 16), new Point(0, 0));
-
-			_targetsTree = new TargetsTreeView(new EventHandler(this.BuildMenuCommand_Click));
-
 			this.Initialize();
-
-			// Reduce the amount of flicker that occurs when windows are redocked within
-			// the container. As this prevents unsightly backcolors being drawn in the
-			// WM_ERASEBACKGROUND that seems to occur.
-			this.SetStyle(ControlStyles.DoubleBuffer, true);
-//			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-
 			this.SetupDockManager();
 
-			_outputBox.WordWrapChanged += new VoidBool(this.WordWrap_Changed);
-
-			_buildRunner = new NAntBuildRunner(this);
-			_buildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
-			_buildRunner.OnBuildFinished = new VoidVoid(this.Update);
+//			_buildRunner = new NAntBuildRunner(this);
+//			_buildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
+//			_buildRunner.OnBuildFinished = new VoidVoid(this.Update);
 
 			_recentItems.ItemsUpdated += new VoidVoid(this.UpdateRecentItemsMenu);
 			_recentItems.Load();
 
+			this.LoadInitialBuildFile();
 			this.AssignMenuCommands();
 			this.AssignToolBarButtons();
-			this.LoadInitialBuildFile();
 		}
 
 
@@ -152,130 +124,78 @@ namespace NAntGui.Core
 			this.components = new Container();
 			ResourceManager resources = new ResourceManager(typeof (MainForm));
 			this.OpenFileDialog = new OpenFileDialog();
-			this.MainStatusBar = new StatusBar();
-			this.FileStatusBarPanel = new StatusBarPanel();
-			this.FullFileStatusBarPanel = new StatusBarPanel();
-			this.ProgressPanel = new StatusBarPanel();
-			this._mainMenu = new MainMenuControl();
-			this._mainToolBar = new ToolBarControl();
-			this.OutputSaveFileDialog = new SaveFileDialog();
-			this._sourceTabs = new SourceTabControl();
 			this.XMLSaveFileDialog = new SaveFileDialog();
-			this.FileStatusBarPanel.BeginInit();
-			this.FullFileStatusBarPanel.BeginInit();
-			this.ProgressPanel.BeginInit();
+			_propertyGrid = new MainPropertyGrid(_options.Properties);
+			_imageList = ResourceHelper.LoadBitmapStrip(this.GetType(), "NAntGui.Core.Images.MenuItems.bmp",new Size(16, 16), new Point(0, 0));
+			_targetsTree = new TargetsTreeView(new EventHandler(this.BuildMenuCommand_Click));
 			this.SuspendLayout();
 			// 
 			// OpenFileDialog
 			// 
 			this.OpenFileDialog.DefaultExt = "build";
-			this.OpenFileDialog.Filter = "Build Files (*.build)|*.build";
-			// 
-			// MainStatusBar
-			// 
-			this.MainStatusBar.Location = new Point(0, 531);
-			this.MainStatusBar.Name = "MainStatusBar";
-			this.MainStatusBar.Panels.AddRange(new StatusBarPanel[]
-				{
-					this.FileStatusBarPanel,
-					this.FullFileStatusBarPanel,
-					this.ProgressPanel
-				});
-			this.MainStatusBar.ShowPanels = true;
-			this.MainStatusBar.Size = new Size(824, 22);
-			this.MainStatusBar.SizingGrip = false;
-			this.MainStatusBar.TabIndex = 2;
-			// 
-			// FileStatusBarPanel
-			// 
-			this.FileStatusBarPanel.AutoSize = StatusBarPanelAutoSize.Contents;
-			this.FileStatusBarPanel.Width = 10;
-			// 
-			// FullFileStatusBarPanel
-			// 
-			this.FullFileStatusBarPanel.AutoSize = StatusBarPanelAutoSize.Spring;
-			this.FullFileStatusBarPanel.Width = 804;
-			// 
-			// ProgressPanel
-			// 
-			this.ProgressPanel.MinWidth = 0;
-			this.ProgressPanel.Style = StatusBarPanelStyle.OwnerDraw;
-			this.ProgressPanel.Width = 10;
-			// 
-			// OutputSaveFileDialog
-			// 
-			this.OutputSaveFileDialog.DefaultExt = "txt";
-			this.OutputSaveFileDialog.FileName = "Output";
-			this.OutputSaveFileDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
-			// 
-			// SourceTabs
-			// 
-			this._sourceTabs.SourceRestored += new VoidVoid(this.Source_Restored);
-			this._sourceTabs.SourceChanged += new VoidVoid(this.Source_Changed);
+			this.OpenFileDialog.Filter = "Build Files (*.build)|*.build|NAnt Include|*.inc";
 			// 
 			// XMLSaveFileDialog
 			// 
 			this.XMLSaveFileDialog.DefaultExt = "build";
 			this.XMLSaveFileDialog.Filter = "NAnt Buildfile|*.build|NAnt Include|*.inc";
 			// 
-			// NAntForm
+			// MainForm
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleBaseSize = new Size(5, 13);
 			this.ClientSize = new Size(824, 553);
-			this.Controls.Add(this._sourceTabs);
-			this.Controls.Add(this.MainStatusBar);
-			this.Controls.Add(this._mainToolBar);
-			this.Controls.Add(this._mainMenu);
+			this.Controls.Add(_sourceTabs);
+			this.Controls.Add(this._mainStatusBar);
+			this.Controls.Add(_mainToolBar);
+			this.Controls.Add(_mainMenu);
 			
 			this.Icon = ((Icon) (resources.GetObject("$this.Icon")));
 			this.MinimumSize = new Size(480, 344);
-			this.Name = "NAntForm";
+			this.Name = "MainForm";
 			this.Text = "NAnt-Gui";
+			this.SetStyle(ControlStyles.DoubleBuffer, true);
 			this.Closing += new CancelEventHandler(this.MainForm_Closing);
 			this.DragDrop += new DragEventHandler(this.NAnt_DragDrop);
 			this.Closed += new EventHandler(this.NAnt_Closed);
 			this.DragEnter += new DragEventHandler(this.NAnt_DragEnter);
-			this.FileStatusBarPanel.EndInit();
-			this.FullFileStatusBarPanel.EndInit();
-			this.ProgressPanel.EndInit();
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion
 
 		private void AssignToolBarButtons()
 		{
-			this._mainToolBar.Build_Click += new VoidVoid(this.Build);
-			this._mainToolBar.Open_Click += new VoidVoid(this.BrowseForBuildFile);
-			this._mainToolBar.Save_Click += new VoidVoid(this.Save);
-			this._mainToolBar.Reload_Click += new VoidVoid(this.Reload);
-			this._mainToolBar.Stop_Click += new VoidVoid(_buildRunner.Stop);
+			_mainToolBar.Build_Click += new VoidVoid(this.Build);
+			_mainToolBar.Open_Click += new VoidVoid(this.BrowseForBuildFile);
+			_mainToolBar.Save_Click += new VoidVoid(this.Save);
+			_mainToolBar.Reload_Click += new VoidVoid(_sourceFile.ReLoad);
+//			_mainToolBar.Stop_Click += new VoidVoid(_buildRunner.Stop);
 		}
 
 		private void AssignMenuCommands()
 		{
-			this._mainMenu.About_Click = new EventHandler(this.AboutMenuCommand_Click);
-			this._mainMenu.Build_Click = new EventHandler(this.BuildMenuCommand_Click);
-			this._mainMenu.Close_Click = new EventHandler(this.CloseMenuCommand_Click);
-			this._mainMenu.Copy_Click = new EventHandler(_outputBox.CopyText);
-			this._mainMenu.Exit_Click = new EventHandler(this.ExitMenuCommand_Click);
-			this._mainMenu.NAntContrib_Click = new EventHandler(this.NAntContribMenuCommand_Click);
-			this._mainMenu.NAntHelp_Click = new EventHandler(this.NAntHelpMenuCommand_Click);
-			this._mainMenu.NAntSDK_Click = new EventHandler(this.NAntSDKMenuCommand_Click);
-			this._mainMenu.Open_Click = new EventHandler(this.OpenMenuCommand_Click);
-			this._mainMenu.Options_Click = new EventHandler(this.OptionsMenuCommand_Click);
-			this._mainMenu.Properties_Click = new EventHandler(this.PropertiesMenuCommand_Click);
-			this._mainMenu.Reload_Click = new EventHandler(this.ReloadMenuCommand_Click);
-			this._mainMenu.SelectAll_Click = new EventHandler(_outputBox.SelectAllText);
-			this._mainMenu.SaveOutput_Click = new EventHandler(this.SaveOutputMenuCommand_Click);
-			this._mainMenu.Save_Click = new EventHandler(this.SaveMenuCommand_Click);
-			this._mainMenu.SaveAs_Click = new EventHandler(this.SaveAsMenuCommand_Click);
-			this._mainMenu.Targets_Click = new EventHandler(this.TargetsMenuCommand_Click);
-			this._mainMenu.WordWrap_Click = new EventHandler(_outputBox.DoWordWrap);
-		}
+			_mainMenu.Copy_Click = new EventHandler(_outputBox.CopyText);
+			_mainMenu.SelectAll_Click = new EventHandler(_outputBox.SelectAllText);
+			_mainMenu.SaveOutput_Click = new EventHandler(_outputBox.SaveOutput);
+			_mainMenu.WordWrap_Click = new EventHandler(_outputBox.DoWordWrap);
 
+			_mainMenu.About_Click = new EventHandler(this.AboutMenuCommand_Click);
+			_mainMenu.Build_Click = new EventHandler(this.BuildMenuCommand_Click);
+			_mainMenu.Close_Click = new EventHandler(this.CloseMenuCommand_Click);
+			_mainMenu.Exit_Click = new EventHandler(this.ExitMenuCommand_Click);
+			_mainMenu.NAntContrib_Click = new EventHandler(this.NAntContribMenuCommand_Click);
+			_mainMenu.NAntHelp_Click = new EventHandler(this.NAntHelpMenuCommand_Click);
+			_mainMenu.NAntSDK_Click = new EventHandler(this.NAntSDKMenuCommand_Click);
+			_mainMenu.Open_Click = new EventHandler(this.OpenMenuCommand_Click);
+			_mainMenu.Options_Click = new EventHandler(this.OptionsMenuCommand_Click);
+			_mainMenu.Properties_Click = new EventHandler(this.PropertiesMenuCommand_Click);
+			_mainMenu.Reload_Click = new EventHandler(this.ReloadMenuCommand_Click);
+			_mainMenu.Save_Click = new EventHandler(this.SaveMenuCommand_Click);
+			_mainMenu.SaveAs_Click = new EventHandler(this.SaveAsMenuCommand_Click);
+			_mainMenu.Targets_Click = new EventHandler(this.TargetsMenuCommand_Click);
+			
+		}
 
 		private void SetupDockManager()
 		{
@@ -283,13 +203,13 @@ namespace NAntGui.Core
 			_dockManager = new DockingManager(this, VisualStyle.IDE);
 
 			// Ensure that the RichTextBox is always the innermost control
-			_dockManager.InnerControl = this._sourceTabs;
+			_dockManager.InnerControl = _sourceTabs;
 
 			_targetsContent		= _dockManager.Contents.Add(_targetsTree, "Targets");
 			_outputContent		= _dockManager.Contents.Add(_outputBox, "Output");
-			_propertiesContent	= _dockManager.Contents.Add(this._propertyGrid, "Properties");
+			_propertiesContent	= _dockManager.Contents.Add(_propertyGrid, "Properties");
 
-			_propertiesContent.ImageList = this._imageList;
+			_propertiesContent.ImageList = _imageList;
 			_propertiesContent.ImageIndex = 0;
 
 			// Request a new Docking window be created for the above Content on the left edge
@@ -298,22 +218,30 @@ namespace NAntGui.Core
 
 			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
 
-			_dockManager.OuterControl = this.MainStatusBar;
+			_dockManager.OuterControl = _mainStatusBar;
 		}
 
 		private void LoadInitialBuildFile()
 		{
-			if (_options.BuildFile == null || !this.LoadCmdLineBuildFile())
+			if (_options.BuildFile == null || !this.LoadBuildFile(_options.BuildFile))
 			{
-				this.LoadRecentBuildFile();
+				if (!_recentItems.HasRecentItems || !this.LoadBuildFile(_recentItems[0]))
+				{
+					ScriptTabPage page = new ScriptTabPage();
+					_sourceFile = page.File;
+					_sourceTabs.AddTab(page.ScriptTab);
+				}
 			}
 		}
 
-		private bool LoadCmdLineBuildFile()
+		private bool LoadBuildFile(string filename)
 		{
 			try
 			{
-				this.LoadBuildFile(_options.BuildFile);
+				ScriptTabPage page = new ScriptTabPage(filename);
+				_sourceFile = page.File;
+				_sourceTabs.AddTab(page.ScriptTab);
+				//_buildRunner.LoadBuildFile(_sourceFile);
 				return true;
 			}
 			catch (BuildFileNotFoundException error)
@@ -323,40 +251,6 @@ namespace NAntGui.Core
 				return false;
 			}
 		}
-
-		private void LoadBuildFile(string filename)
-		{
-			FileInfo buildFile = new FileInfo(filename);
-			_sourceFile = new SourceFile(buildFile);
-
-			try
-			{
-				_buildRunner.LoadBuildFile(_sourceFile);
-			}
-			catch (BuildFileNotFoundException error)
-			{
-				MessageBox.Show(error.Message, "Build File Not Found", 
-					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
-		}
-
-		private void LoadRecentBuildFile()
-		{
-			if (_recentItems.HasRecentItems)
-			{
-				try
-				{	
-					this.LoadBuildFile(_recentItems[0]);
-				}
-				catch (BuildFileNotFoundException error)
-				{
-					_recentItems.Remove(_recentItems[0]);
-					MessageBox.Show(error.Message, "Build File Not Found", 
-						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				}
-			}
-		}
-
 
 		private void ExitMenuCommand_Click(object sender, EventArgs e)
 		{
@@ -394,7 +288,12 @@ namespace NAntGui.Core
 
 		private void CloseMenuCommand_Click(object sender, EventArgs e)
 		{
-			this.CloseBuildFile();
+			_sourceFile.Close();
+			_targetsTree.Nodes.Clear();
+			_propertyGrid.SelectedObject = null;
+
+			_outputBox.Clear();
+			this.DisableMenuCommandsAndButtons();
 		}
 
 		private void BrowseForBuildFile()
@@ -413,14 +312,8 @@ namespace NAntGui.Core
 
 		private void Build()
 		{
-			this.ClearOutput();
-			_buildRunner.Run(_sourceFile);
-		}
-
-		private void ClearOutput()
-		{
 			_outputBox.Clear();
-			Outputter.Clear();
+//			_buildRunner.Run(_sourceFile);
 		}
 
 		private void NAnt_Closed(object sender, EventArgs e)
@@ -429,11 +322,6 @@ namespace NAntGui.Core
 		}
 
 		private void ReloadMenuCommand_Click(object sender, EventArgs e)
-		{
-			this.Reload();
-		}
-
-		private void Reload()
 		{
 			_sourceFile.ReLoad();
 		}
@@ -459,16 +347,6 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void CloseBuildFile()
-		{
-			_sourceFile.Close();
-			_targetsTree.Nodes.Clear();
-			_propertyGrid.SelectedObject = null;
-
-			this.ClearOutput();
-			this.DisableMenuCommandsAndButtons();
-		}
-
 		private void DisableMenuCommandsAndButtons()
 		{
 			_mainMenu.Disable();
@@ -489,7 +367,7 @@ namespace NAntGui.Core
 
 		private void BuildFileLoaded(IProject project)
 		{
-			this.ClearOutput();
+			_outputBox.Clear();
 			this.EnableMenuCommandsAndButtons();
 			this.UpdateDisplay(project);
 			this.AddTargets(project.Targets);
@@ -500,7 +378,7 @@ namespace NAntGui.Core
 
 		private void UpdateDisplay(IProject project)
 		{
-			_sourceTabs.ReadSource(_sourceFile);
+//			_sourceTabs.ReadSource(_sourceFile);
 
 			this.Text = "NAnt-Gui" + string.Format(" - {0}", _sourceFile.Name);
 
@@ -510,8 +388,8 @@ namespace NAntGui.Core
 			_recentItems.Save();
 			this.UpdateRecentItemsMenu();
 
-			this.MainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);
-			this.MainStatusBar.Panels[1].Text = _sourceFile.Name;
+			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);
+			_mainStatusBar.Panels[1].Text = _sourceFile.Name;
 
 			_targetsTree.Nodes.Clear();
 			_targetsTree.Nodes.Add(new TreeNode(projectName));
@@ -573,14 +451,14 @@ namespace NAntGui.Core
 
 		private void UpdateRecentItemsMenu()
 		{
-			this._mainMenu.ClearRecentItems();
+			_mainMenu.ClearRecentItems();
 
 			int count = 1;
 			foreach (string item in _recentItems)
 			{
 				EventHandler onClick = new EventHandler(this.RecentFile_Clicked);
 				MenuCommand command = new MenuCommand(count++ + " " + item, onClick);
-				this._mainMenu.AddRecentItem(command);
+				_mainMenu.AddRecentItem(command);
 			}
 		}
 
@@ -641,17 +519,6 @@ namespace NAntGui.Core
 			return info.DirectoryName;
 		}
 
-		private void SaveOutputMenuCommand_Click(object sender, EventArgs e)
-		{
-			this.OutputSaveFileDialog.InitialDirectory = _sourceFile.FullPath;
-			DialogResult result = this.OutputSaveFileDialog.ShowDialog();
-
-			if (result == DialogResult.OK)
-			{
-				this.SaveOutput();
-			}
-		}
-
 		private void SaveMenuCommand_Click(object sender, EventArgs e)
 		{
 			this.Save();
@@ -659,28 +526,14 @@ namespace NAntGui.Core
 
 		private void Save()
 		{
-			_sourceTabs.SaveSource(_sourceFile);
-			this.Text = this.Text.TrimEnd(new char[] {'*'});
+			_sourceFile.Save();
+			this.Text = Utils.RemoveAsterisk(this.Text);
 		}
 
-		private void SaveOutput()
-		{
-			int filterIndex = this.OutputSaveFileDialog.FilterIndex;
-
-			if (filterIndex == PLAIN_TEXT_INDEX)
-			{
-				_outputBox.SavePlainTextOutput(this.OutputSaveFileDialog.FileName);
-			}
-			else if (filterIndex == RICH_TEXT_INDEX)
-			{
-				_outputBox.SaveRichTextOutput(this.OutputSaveFileDialog.FileName);
-			}
-		}
-
-		private void WordWrap_Changed(bool checkValue)
-		{
-			this._mainMenu.WordWrapChecked = checkValue;
-		}
+//		private void WordWrap_Changed(bool checkValue)
+//		{
+//			_mainMenu.WordWrapChecked = checkValue;
+//		}
 
 
 		private void TargetsMenuCommand_Click(object sender, EventArgs e)
@@ -695,26 +548,22 @@ namespace NAntGui.Core
 			_dockManager.ShowContent(_propertiesContent);
 		}
 
-		private void Source_Changed()
+		private void Source_Changed(bool isChanged)
 		{
-			if (!this.HasUnsavedAsterisk())
+			if (isChanged && !Utils.HasAsterisk(this.Text))
 			{
-				this.Text += "*";
+				this.Text = Utils.AddAsterisk(this.Text);
 			}
-		}
-
-		private void Source_Restored()
-		{
-			if (this.HasUnsavedAsterisk())
+			else if (!isChanged && Utils.HasAsterisk(this.Text))
 			{
-				this.RemoveUnsavedFileAsterisk();
+				this.Text = Utils.RemoveAsterisk(this.Text);
 			}
 		}
 
 		private void MainForm_Closing(object sender, CancelEventArgs e)
 		{
-			_buildRunner.Stop();
-			if (_sourceFile.SaveRequired)
+//			_buildRunner.Stop();
+			if (_sourceFile.IsDirty)
 			{
 				DialogResult result =
 					MessageBox.Show("You have unsaved changes.  Save?", "Save Changes?",
@@ -722,7 +571,7 @@ namespace NAntGui.Core
 
 				if (result == DialogResult.Yes)
 				{
-					_sourceTabs.SaveSource(_sourceFile);
+					_sourceFile.Save();
 				}
 				else if (result == DialogResult.Cancel)
 				{
@@ -736,23 +585,15 @@ namespace NAntGui.Core
 			DialogResult result = this.XMLSaveFileDialog.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				_sourceTabs.SaveSourceAs(_sourceFile, this.XMLSaveFileDialog.FileName);
+				_sourceFile.SaveAs(this.XMLSaveFileDialog.FileName);
 
-				this.RemoveUnsavedFileAsterisk();
+				this.Text = Utils.RemoveAsterisk(this.Text);
 				this.LoadBuildFile(this.XMLSaveFileDialog.FileName);
 //				_buildFile = this.XMLSaveFileDialog.FileName;
 			}
 		}
 
-		private void RemoveUnsavedFileAsterisk()
-		{
-			this.Text = this.Text.TrimEnd(new char[] {'*'});
-		}
 
-		private bool HasUnsavedAsterisk()
-		{
-			return this.Text.EndsWith("*");
-		}
 
 		public CommandLineOptions Options
 		{

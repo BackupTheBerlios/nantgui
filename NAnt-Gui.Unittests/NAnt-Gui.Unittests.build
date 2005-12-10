@@ -1,4 +1,4 @@
-<project name="NAnt-Gui.Unittests" default="Release">
+<project name="NAnt-Gui.Unittests" default="Release" xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
   <description>Builds NAnt-Gui.Unittests.dll</description>
   <property name="build.basedir" value="bin" unless="${property::exists('build.basedir')}"/>
   <property name="nant.dir" value="nant-0.85-rc3" unless="${property::exists('nant.dir')}"/>

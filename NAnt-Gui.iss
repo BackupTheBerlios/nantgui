@@ -107,13 +107,13 @@ Name: {app}\bin; Components: bin
 Root: HKCR; Subkey: .build; ValueType: string; ValueName: ; ValueData: NAntBuildFile; Flags: uninsdeletekey; Tasks: assocbuild
 Root: HKCR; Subkey: NAntBuildFile; ValueType: string; ValueName: ; ValueData: NAnt Build File; Flags: uninsdeletekey; Tasks: assocbuild
 Root: HKCR; Subkey: NAntBuildFile\DefaultIcon; ValueType: string; ValueName: ; ValueData: {app}\bin\{#MyAppExeName},0; Flags: uninsdeletevalue; Tasks: assocbuild
-Root: HKCR; Subkey: NAntBuildFile\shell\Open\command; ValueType: string; ValueName: ; ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocbuild
+Root: HKCR; Subkey: NAntBuildFile\shell\Open\command; ValueType: string; ValueData: """{app}\bin\{#MyAppExeName}"" -f:""%1"""; Flags: uninsdeletevalue; Tasks: assocbuild
 Root: HKCR; Subkey: NAntBuildFile\shell\Edit\command; ValueType: string; ValueData: """{sys}\notepad.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocbuild
 
 Root: HKCR; Subkey: .nant; ValueType: string; ValueName: ; ValueData: NAntNAntFile; Flags: uninsdeletekey; Tasks: assocnant
 Root: HKCR; Subkey: NAntNAntFile; ValueType: string; ValueName: ; ValueData: NAnt Build File; Flags: uninsdeletekey; Tasks: assocnant
 Root: HKCR; Subkey: NAntNAntFile\DefaultIcon; ValueType: string; ValueName: ; ValueData: {app}\bin\{#MyAppExeName},0; Flags: uninsdeletevalue; Tasks: assocnant
-Root: HKCR; Subkey: NAntNAntFile\shell\Open\command; ValueType: string; ValueName: ; ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue; Tasks: assocnant
+Root: HKCR; Subkey: NAntNAntFile\shell\Open\command; ValueType: string; ValueData: """{app}\bin\{#MyAppExeName}"" -f:""%1"""; Flags: uninsdeletevalue; Tasks: assocnant
 Root: HKCR; Subkey: NAntNAntFile\shell\Edit\command; ValueType: string; ValueData: """{sys}\notepad.exe"" ""%1"""; Tasks: assocnant
 
 Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: Path; ValueData: "{code:GetENVPath};{app}\bin"; Tasks: envpath; Check: IfNotInPath

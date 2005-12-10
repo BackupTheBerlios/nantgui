@@ -7,7 +7,7 @@ using System.Reflection;
 [assembly : AssemblyTitle("NAnt-Gui")]
 [assembly : AssemblyDescription("Gui frontend for the NAnt build tool")]
 [assembly : AssemblyConfiguration("")]
-[assembly : AssemblyCompany("Business Watch International")]
+[assembly : AssemblyCompany("Swoogan Enterprises")]
 [assembly : AssemblyProduct("NAnt-Gui")]
 [assembly : AssemblyCopyright("Copyright (C) 2005 Colin Svingen")]
 [assembly : AssemblyTrademark("")]

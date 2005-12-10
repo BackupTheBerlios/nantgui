@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.IO;
 
 namespace NAntGui.Core
@@ -30,56 +31,48 @@ namespace NAntGui.Core
 	/// </summary>
 	public class SourceFile
 	{
+		public event VoidBool SourceChanged;
+
 		protected const string UNTITLED_FILE = "Untitled";
 
-		protected string _name;
-		protected string _fullPath;
-		protected string _contents;
+		protected string _name = UNTITLED_FILE;
+		protected string _fullName = ".\\";
+		protected string _contents = "";
 
 		private Watcher	_watcher = new Watcher();
 
-		/// <summary>
-		/// Flag used to determine if the file has been
-		/// modified since the last save.
-		/// </summary>
-		protected bool _isDirty = false;
+		private IDisplayer _displayer;
+		private ISourceIO _io;
 
 		/// <summary>
 		/// Create a new build file.
 		/// </summary>
 		public SourceFile()
 		{
-			_name = UNTITLED_FILE; // + "." + Extension;
-			_fullPath = ".\\";
 		}
 
-		/// <summary>
-		/// Create a build file from the given contents.
-		/// </summary>
-		/// <param name="buildFileContents">Text contents of a build file</param>
-		public SourceFile(string buildFileContents) : this()
-		{
-			_contents = buildFileContents;
-		}
-
-		/// <summary>
-		/// Create a build file with the path to the file.
-		/// </summary>
-		/// <param name="buildFile">Path to the file</param>
-		public SourceFile(FileInfo buildFile)
-		{
-			this.Load(buildFile);
-		}
-
-		public virtual void Load(string buildFile)
+		public virtual void Load(string buildFile, ISourceIO io, IDisplayer displayer)
 		{
 			Assert.NotNull(buildFile, "buildFile");
+			Assert.NotNull(displayer, "displayer");
+			Assert.NotNull(io, "io");
+
 			Assert.FileExists(buildFile);
-			
+            			
+			_fullName	= buildFile;
+			_io			= io;
+			_displayer	= displayer;
+
+			_io.LoadFile(_fullName);
+			_contents = _displayer.Text;
+			_displayer.TextChanged += new EventHandler(this.Editor_TextChanged);
+
+			FileInfo info = new FileInfo(_fullName);
+			_name = info.Name;
+			_watcher.WatchBuildFile(info);
+
 //			try
 //			{
-				FileInfo info = new FileInfo(buildFile);
-				this.Load(info);
 //			}
 //			catch (ApplicationException error)
 //			{
@@ -94,46 +87,23 @@ namespace NAntGui.Core
 //			}
 		}
 
-		public virtual void Load(FileInfo buildFile)
-		{
-			using (TextReader reader = buildFile.OpenText())
-			{
-				_contents = reader.ReadToEnd();
-			}
-
-			_fullPath = buildFile.FullName;
-			_name = buildFile.Name;
-			_watcher.WatchBuildFile(buildFile);
-		}
-
 		public virtual void ReLoad()
 		{
-			using (TextReader reader = File.OpenText(_fullPath))
-			{
-				_contents = reader.ReadToEnd();
-			}
+			Assert.NotNull(_io, "_io");
+			_io.LoadFile(_fullName);
 		}
 
-		public virtual void Save(string text)
+		public virtual void SaveAs(string fileName)
 		{
-			using (TextWriter writer = File.CreateText(_fullPath))
-			{
-				writer.Write(text);
-			}
+			Assert.NotNull(_io, "_io");
+			_fullName = fileName;
+			_io.SaveFile(_fullName);
 		}
 
-//		public virtual void Save()
-//		{
-//			using (TextWriter writer = File.CreateText(_fullPath))
-//			{
-//				writer.Write(_contents);
-//			}
-//		}
-
-		public virtual void Save(string text, string fileName)
+		public virtual void Save()
 		{
-			_fullPath = fileName;
-			this.Save(text);
+			Assert.NotNull(_io, "_io");
+			_io.SaveFile(_fullName);
 		}
 
 		public virtual void Close()
@@ -141,12 +111,13 @@ namespace NAntGui.Core
 			_watcher.DisableEvents();
 		}
 
-		public virtual bool SaveRequired
+		private void Editor_TextChanged(object sender, EventArgs e)
 		{
-			get{ return _isDirty; }
+			if (this.SourceChanged != null)
+			{
+				this.SourceChanged(this.IsDirty);
+			}
 		}
-
-		//protected abstract string Extension { get; }
 
 		#region Properties
 
@@ -158,12 +129,17 @@ namespace NAntGui.Core
 
 		public string FullPath
 		{
-			get { return _fullPath; }
+			get { return _fullName; }
 		}
 
 		public string Name
 		{
 			get { return _name; }
+		}
+
+		public bool IsDirty
+		{
+			get{ return _contents != _displayer.Text; }
 		}
 
 		#endregion

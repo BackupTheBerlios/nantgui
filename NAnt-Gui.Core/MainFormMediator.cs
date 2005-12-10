@@ -1,4 +1,3 @@
-using System;
 
 namespace NAntGui.Core
 {
@@ -7,11 +6,15 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainFormMediator
 	{
+		private MainForm _mainForm;
+
 		public MainFormMediator()
 		{
-			//
-			// TODO: Add constructor logic here
-			//
+		}
+
+		public void Attach(MainForm mainForm)
+		{
+			_mainForm = mainForm;
 		}
 	}
 }
