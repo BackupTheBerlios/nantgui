@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using TabControl = Crownwood.Magic.Controls.TabControl;
@@ -30,6 +31,8 @@ namespace NAntGui.Core
 			this.IDEPixelBorder = false;
 			this.Name = "SourceTabs";
 
+			this.ClosePressed += new EventHandler(this.Close_Pressed);
+
 			this.ResumeLayout(false);
 		}
 
@@ -40,6 +43,11 @@ namespace NAntGui.Core
 			Assert.NotNull(tab, "tab");
             this.TabPages.Add(tab);
 			this.SelectedTab = tab;
+		}
+
+		public void Close_Pressed(object sender, EventArgs e)
+		{
+			this.TabPages.Remove(this.SelectedTab);
 		}
 	}
 }

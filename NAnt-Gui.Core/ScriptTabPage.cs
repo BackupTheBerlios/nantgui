@@ -8,9 +8,9 @@ namespace NAntGui.Core
 	/// </summary>
 	public class ScriptTabPage
 	{
-		private TabPage _scriptTab = new TabPage();
-		private ScriptEditor _sourceEditor = new ScriptEditor();
-		private SourceFile _file = new SourceFile();
+		private TabPage _scriptTab			= new TabPage();
+		private ScriptEditor _sourceEditor	= new ScriptEditor();
+		private SourceFile _file			= new SourceFile();
 
 		public ScriptTabPage()
 		{
