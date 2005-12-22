@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
@@ -21,20 +23,18 @@
 
 #endregion
 
-using System.Windows.Forms;
-
 
 namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for AppEntry.
 	/// </summary>
-	public class Main
+	public class CoreApp
 	{
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
-		public static void Run(CommandLineOptions cmdLineOptions)
+		public CoreApp(CommandLineOptions cmdLineOptions)
 		{
 			MainForm mainForm = new MainForm(cmdLineOptions);
 			MainFormSerializer.Attach(mainForm);

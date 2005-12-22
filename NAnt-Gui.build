@@ -1,4 +1,4 @@
-<project name="NAnt-Gui" default="Installer">
+<project name="NAnt-Gui" default="Installer" xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
   <description>Builds NAnt-Gui</description>
 
   <target name="Installer" description="Create InnoSetup Installer" depends="Release">
@@ -6,21 +6,20 @@
   </target>
   
   <target name="Debug" description="Build Debug App">    
-    <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Debug" />
-    <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Debug" />    
-    <nant buildfile="NAnt-Gui.Unittests/NAnt-Gui.Unittests.build" target="Debug" />
+	<solution configuration="debug" solutionfile="NAnt-Gui.sln" />
   </target>
 
-  <target name="Release" description="Build Release App">        
-    <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Release" />
-    <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Release" />
-    <nant buildfile="NAnt-Gui.Unittests/NAnt-Gui.Unittests.build" target="Release" />
+  <target name="Release" description="Build Release App">
+	<solution configuration="release" solutionfile="NAnt-Gui.sln" />
   </target>
 
-  <target name="Clean">
-    <nant buildfile="NAnt-Gui/NAnt-Gui.build" target="Clean" />
-    <nant buildfile="NAnt-Gui.Core/NAnt-Gui.Core.build" target="Clean" />
-    <nant buildfile="NAnt-Gui.Unittests/NAnt-Gui.Unittests.build" target="Debug" />
+  <target name="Clean" description="Delete all the binaries">
+    <delete>
+      <fileset>
+        <include name="**\Debug\NAnt-Gui.*" />
+	    <include name="**\Release\NAnt-Gui.*" />
+	  </fileset>
+    </delete>
   </target>
 
 </project>

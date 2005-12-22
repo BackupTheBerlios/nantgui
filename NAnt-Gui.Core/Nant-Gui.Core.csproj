@@ -130,6 +130,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Application.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -205,11 +210,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Main.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "MainForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -253,10 +253,6 @@
                     RelPath = "nant.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NAnt-Gui.Core.build"
-                    BuildAction = "None"
                 />
                 <File
                     RelPath = "NewProjectForm.cs"

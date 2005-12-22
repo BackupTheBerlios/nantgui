@@ -94,6 +94,11 @@
                     Project = "{DEE131EE-4233-4ED3-8F31-956532A29E8F}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "NAnt.Core"
+                    AssemblyName = "NAnt.Core"
+                    HintPath = "..\ThirdParty Libraries\NAnt.Core.dll"
+                />
             </References>
         </Build>
         <Files>
