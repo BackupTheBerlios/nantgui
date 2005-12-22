@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Windows.Forms;
 using Microsoft.Win32;
 
 namespace NAntGui.Core
@@ -38,22 +39,44 @@ namespace NAntGui.Core
 		public const string WINDOW_KEY_PATH = @"Software\NAnt-Gui\Window";
 		public const string KEY_PATH = @"Software\NAnt-Gui";
 
-//		public class Window
-//		{
-//			public static int Left
-//			{
-//				int	left	= Convert.ToInt32(key.GetValue("Left", _nantForm.Left));
-//			}
-//			int	top		= Convert.ToInt32(key.GetValue("Top", _nantForm.Top));
-//			int	width	= Convert.ToInt32(key.GetValue("Width", _nantForm.Width));
-//			int	height	= Convert.ToInt32(key.GetValue("Height", _nantForm.Height));
-//
-//			int	horzSplitter = (int)key.GetValue("HorzSplitter", _nantForm.BuildTreeView.Height);
-//			int	vertSplitter = (int)key.GetValue("VertSplitter", _nantForm.LeftPanel.Width);
-//
-//			FormWindowState	windowState	= (FormWindowState)key.GetValue("WindowState", (int)_nantForm.WindowState);
-//			PropertySort propertySort	= (PropertySort)key.GetValue("PropertySort", (int)_nantForm.ProjectPropertyGrid.PropertySort);
-//		}
+		public class Window
+		{
+			public static int Left
+			{
+				get { return GetRegKeyIntValue("Left", 100); }
+				set { SetRegKeyValue("Left", value); }
+			}
+
+			public static int Top
+			{
+				get { return GetRegKeyIntValue("Top", 100); }
+				set { SetRegKeyValue("Top", value); }
+			}
+
+			public static int Width
+			{
+				get { return GetRegKeyIntValue("Width", 800); }
+				set { SetRegKeyValue("Width", value); }
+			}
+
+			public static int Height
+			{
+				get { return GetRegKeyIntValue("Height", 600); }
+				set { SetRegKeyValue("Height", value); }
+			}
+
+			public static PropertySort PropertySort
+			{
+				get { return GetRegKeyPropertySortValue("PropertySort", PropertySort.Categorized); }
+				set { SetRegKeyValue("PropertySort", value); }
+			}
+
+			public static FormWindowState WindowState
+			{
+				get { return GetRegKeyWindowStateValue("WindowState", FormWindowState.Normal); }
+				set { SetRegKeyValue("WindowState", value); }
+			}
+		}
 
 		public static int MaxRecentItems
 		{
@@ -67,30 +90,41 @@ namespace NAntGui.Core
 			set { SetRegKeyValue("HideTargets", value); }
 		}
 
+		public static string OpenInitialDirectory
+		{
+			get { return GetRegKeyStringValue("OpenInitialDirectory", "C:\\"); }
+			set { SetRegKeyValue("OpenInitialDirectory", value); }
+		}
+
 		private static bool GetRegKeyBoolValue(string keyName)
 		{
 			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
-
-//			if (KeyExists(key))
-//			{
 			return Convert.ToBoolean(key.GetValue(keyName, false));
-//			}
+		}
+
+		private static string GetRegKeyStringValue(string keyName, string defaultValue)
+		{
+			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
+			return key.GetValue(keyName, defaultValue).ToString();
 		}
 
 		private static int GetRegKeyIntValue(string keyName, int defaultValue)
 		{
 			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
-//
-//			if (KeyExists(key))
-//			{
 			return Convert.ToInt32(key.GetValue(keyName, defaultValue));
-//			}
 		}
 
-//		private static bool KeyExists(RegistryKey key)
-//		{
-//			return key != null;
-//		}
+		private static PropertySort GetRegKeyPropertySortValue(string keyName, PropertySort defaultValue)
+		{
+			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
+			return (PropertySort)Enum.Parse(typeof(PropertySort), regKeyStringValue);
+		}		
+		
+		private static FormWindowState GetRegKeyWindowStateValue(string keyName, FormWindowState defaultValue)
+		{
+			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
+			return (FormWindowState)Enum.Parse(typeof(FormWindowState), regKeyStringValue);
+		}
 
 		private static void SetRegKeyValue(string keyName, object value)
 		{

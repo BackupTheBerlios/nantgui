@@ -8,7 +8,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for ScriptEditor.
 	/// </summary>
-	public class ScriptEditor : TextEditorControl, IDisplayer, ISourceIO
+	public class ScriptEditor : TextEditorControl
 	{
 		private ScriptEditorContextMenu _xmlContextMenu;
 

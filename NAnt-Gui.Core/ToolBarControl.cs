@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
@@ -35,8 +36,8 @@ namespace NAntGui.Core
 		public event VoidVoid New_Click;
 		public event VoidVoid Build_Click;
 		public event VoidVoid Open_Click;
-		public event VoidVoid Save_Click;
-		public event VoidVoid Reload_Click;
+		public event EventHandler Save_Click;
+		public event EventHandler Reload_Click;
 		public event VoidVoid Stop_Click;
 
 		private ToolBarButton NewToolBarButton		= new ToolBarButton();
@@ -130,11 +131,11 @@ namespace NAntGui.Core
 			}
 			else if (e.Button == this.SaveToolBarButton && this.Save_Click != null)
 			{
-				this.Save_Click();
+				this.Save_Click(this, new EventArgs());
 			}
 			else if (e.Button == this.ReloadToolBarButton && this.Reload_Click != null)
 			{
-				this.Reload_Click();
+				this.Reload_Click(this, new EventArgs());
 			}
 			else if (e.Button == this.StopToolBarButton && this.Stop_Click != null)
 			{

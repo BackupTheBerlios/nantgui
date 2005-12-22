@@ -74,7 +74,7 @@ namespace NAntGui.Core
 			_mainForm.Location = new Point(left, top);
 			_mainForm.Size = new Size(width, height);
 			_mainForm.WindowState = windowState;
-			_mainForm._propertyGrid.PropertySort = propertySort;
+			_mainForm.PropertySort = propertySort;
 
 			_mainForm.Closing += new CancelEventHandler(this.OnClosing);
 		}
@@ -110,7 +110,7 @@ namespace NAntGui.Core
 			}
 
 			lKey.SetValue("WindowState", this.AdjustWindowState());
-			lKey.SetValue("PropertySort", (int) _mainForm._propertyGrid.PropertySort);
+			lKey.SetValue("PropertySort", (int) _mainForm.PropertySort);
 		}
 
 		private int AdjustWindowState()

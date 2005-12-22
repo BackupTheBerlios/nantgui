@@ -63,7 +63,6 @@ Source: ThirdParty Libraries\*; DestDir: {app}\src\ThirdParty Libraries; Flags: 
 ; NAnt-Gui.Unittests
 Source: NAnt-Gui.Unittests\*.cs; DestDir: {app}\src\Nant-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\*.resx; DestDir: {app}\src\Nant-Gui.Unittests; Flags: ignoreversion skipifsourcedoesntexist; Components: src
-Source: NAnt-Gui.Unittests\NAnt-Gui.Unittests.build; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\Nant-Gui.Unittests.csproj; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Core
 Source: NAnt-Gui.Core\Images\*; DestDir: {app}\src\Nant-Gui.Core\Images; Flags: ignoreversion; Components: src
@@ -71,12 +70,10 @@ Source: NAnt-Gui.Core\*.cs; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversi
 Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\NAnt\*.cs; DestDir: {app}\src\Nant-Gui.Core\NAnt; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\NAnt\*.resx; DestDir: {app}\src\Nant-Gui.Core\NAnt; Flags: ignoreversion skipifsourcedoesntexist; Components: src
-Source: NAnt-Gui.Core\NAnt-Gui.Core.build; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\Nant-Gui.Core.csproj; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
 ; NAnt-Gui
 Source: NAnt-Gui\app.config; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\*.cs; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
-Source: NAnt-Gui\NAnt-Gui.build; DestDir: {app}\src\NAnt-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\NAnt-Gui.csproj; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 ; NAnt/NAnt-Contrib
 Source: C:\Program Files\{#NAntDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nant

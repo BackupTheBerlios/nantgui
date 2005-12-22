@@ -34,6 +34,7 @@ using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
 using Flobbster.Windows.Forms;
+using NAntGui.Core.NAnt;
 
 namespace NAntGui.Core
 {
@@ -44,11 +45,10 @@ namespace NAntGui.Core
 	{
 		private delegate void MessageEventHandler(string pMessage);
 
-//		private BuildRunner _buildRunner;
+		private BuildRunner _buildRunner;
 		private CommandLineOptions _options;
 		private RecentItems _recentItems = new RecentItems();
 		private DockingManager _dockManager;
-		private SourceFile _sourceFile;
 		private bool _firstLoad = true;
 
 		#region GUI Items
@@ -74,7 +74,6 @@ namespace NAntGui.Core
 		private MainStatusBar _mainStatusBar = new MainStatusBar();
 
 		private IContainer components;
-		
 
 		#endregion
 
@@ -85,9 +84,9 @@ namespace NAntGui.Core
 			this.Initialize();
 			this.SetupDockManager();
 
-//			_buildRunner = new NAntBuildRunner(this);
-//			_buildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
-//			_buildRunner.OnBuildFinished = new VoidVoid(this.Update);
+			_buildRunner = new NAntBuildRunner(this);
+			_buildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
+			_buildRunner.OnBuildFinished = new VoidVoid(this.Update);
 
 			_recentItems.ItemsUpdated += new VoidVoid(this.UpdateRecentItemsMenu);
 			_recentItems.Load();
@@ -145,8 +144,8 @@ namespace NAntGui.Core
 			this.AllowDrop = true;
 			this.AutoScaleBaseSize = new Size(5, 13);
 			this.ClientSize = new Size(824, 553);
-			this.Controls.Add(_sourceTabs);
-			this.Controls.Add(this._mainStatusBar);
+			this.Controls.Add(_sourceTabs.Tabs);
+			this.Controls.Add(_mainStatusBar);
 			this.Controls.Add(_mainToolBar);
 			this.Controls.Add(_mainMenu);
 			
@@ -168,9 +167,9 @@ namespace NAntGui.Core
 		{
 			_mainToolBar.Build_Click += new VoidVoid(this.Build);
 			_mainToolBar.Open_Click += new VoidVoid(this.BrowseForBuildFile);
-			_mainToolBar.Save_Click += new VoidVoid(this.Save);
-			_mainToolBar.Reload_Click += new VoidVoid(_sourceFile.ReLoad);
-//			_mainToolBar.Stop_Click += new VoidVoid(_buildRunner.Stop);
+			_mainToolBar.Stop_Click += new VoidVoid(_buildRunner.Stop);
+			_mainToolBar.Save_Click += new EventHandler(this.SaveMenuCommand_Click);
+			_mainToolBar.Reload_Click += new EventHandler(this.Reload_Click);
 		}
 
 		private void AssignMenuCommands()
@@ -179,7 +178,7 @@ namespace NAntGui.Core
 			_mainMenu.SelectAll_Click = new EventHandler(_outputBox.SelectAllText);
 			_mainMenu.SaveOutput_Click = new EventHandler(_outputBox.SaveOutput);
 			_mainMenu.WordWrap_Click = new EventHandler(_outputBox.DoWordWrap);
-
+			_mainMenu.Reload_Click = new EventHandler(this.Reload_Click);
 			_mainMenu.About_Click = new EventHandler(this.AboutMenuCommand_Click);
 			_mainMenu.Build_Click = new EventHandler(this.BuildMenuCommand_Click);
 			_mainMenu.Close_Click = new EventHandler(this.CloseMenuCommand_Click);
@@ -190,7 +189,6 @@ namespace NAntGui.Core
 			_mainMenu.Open_Click = new EventHandler(this.OpenMenuCommand_Click);
 			_mainMenu.Options_Click = new EventHandler(this.OptionsMenuCommand_Click);
 			_mainMenu.Properties_Click = new EventHandler(this.PropertiesMenuCommand_Click);
-			_mainMenu.Reload_Click = new EventHandler(this.ReloadMenuCommand_Click);
 			_mainMenu.Save_Click = new EventHandler(this.SaveMenuCommand_Click);
 			_mainMenu.SaveAs_Click = new EventHandler(this.SaveAsMenuCommand_Click);
 			_mainMenu.Targets_Click = new EventHandler(this.TargetsMenuCommand_Click);
@@ -203,7 +201,7 @@ namespace NAntGui.Core
 			_dockManager = new DockingManager(this, VisualStyle.IDE);
 
 			// Ensure that the RichTextBox is always the innermost control
-			_dockManager.InnerControl = _sourceTabs;
+			_dockManager.InnerControl = _sourceTabs.Tabs;
 
 			_targetsContent		= _dockManager.Contents.Add(_targetsTree, "Targets");
 			_outputContent		= _dockManager.Contents.Add(_outputBox, "Output");
@@ -227,9 +225,8 @@ namespace NAntGui.Core
 			{
 				if (!_recentItems.HasRecentItems || !this.LoadBuildFile(_recentItems[0]))
 				{
-					ScriptTabPage page = new ScriptTabPage();
-					_sourceFile = page.File;
-					_sourceTabs.AddTab(page.ScriptTab);
+					_sourceTabs.Clear();
+					_sourceTabs.AddTab(new ScriptTabPage());
 				}
 			}
 		}
@@ -239,9 +236,9 @@ namespace NAntGui.Core
 			try
 			{
 				ScriptTabPage page = new ScriptTabPage(filename);
-				_sourceFile = page.File;
-				_sourceTabs.AddTab(page.ScriptTab);
-				//_buildRunner.LoadBuildFile(_sourceFile);
+				_sourceTabs.Clear();
+				_sourceTabs.AddTab(page);
+				_buildRunner.LoadBuildFile(page.File);
 				return true;
 			}
 			catch (BuildFileNotFoundException error)
@@ -288,7 +285,7 @@ namespace NAntGui.Core
 
 		private void CloseMenuCommand_Click(object sender, EventArgs e)
 		{
-			_sourceFile.Close();
+			_sourceTabs.SelectedTab.File.Close();
 			_targetsTree.Nodes.Clear();
 			_propertyGrid.SelectedObject = null;
 
@@ -298,10 +295,15 @@ namespace NAntGui.Core
 
 		private void BrowseForBuildFile()
 		{
-			this.OpenFileDialog.InitialDirectory = _sourceFile.FullPath;
+			this.OpenFileDialog.InitialDirectory = Settings.OpenInitialDirectory;
 			if (this.OpenFileDialog.ShowDialog() == DialogResult.OK)
 			{
-				this.LoadBuildFile(this.OpenFileDialog.FileName);
+				Settings.OpenInitialDirectory = this.OpenFileDialog.InitialDirectory;
+
+				foreach (string filename in this.OpenFileDialog.FileNames)
+				{
+					this.LoadBuildFile(filename);	
+				}
 			}
 		}
 
@@ -313,7 +315,7 @@ namespace NAntGui.Core
 		private void Build()
 		{
 			_outputBox.Clear();
-//			_buildRunner.Run(_sourceFile);
+			_buildRunner.Run(_sourceTabs.SelectedTab.File);
 		}
 
 		private void NAnt_Closed(object sender, EventArgs e)
@@ -321,10 +323,6 @@ namespace NAntGui.Core
 			_recentItems.Save();
 		}
 
-		private void ReloadMenuCommand_Click(object sender, EventArgs e)
-		{
-			_sourceFile.ReLoad();
-		}
 
 		private void AboutMenuCommand_Click(object sender, EventArgs e)
 		{
@@ -378,18 +376,19 @@ namespace NAntGui.Core
 
 		private void UpdateDisplay(IProject project)
 		{
+
 //			_sourceTabs.ReadSource(_sourceFile);
 
-			this.Text = "NAnt-Gui" + string.Format(" - {0}", _sourceFile.Name);
+			this.Text = "NAnt-Gui" + string.Format(" - {0}", _sourceTabs.SelectedTab.File.Name);
 
-			string projectName = project.HasName ? project.Name : _sourceFile.Name;
+			string projectName = project.HasName ? project.Name : _sourceTabs.SelectedTab.File.Name;
 
-			_recentItems.Add(_sourceFile.FullPath);
+			_recentItems.Add(_sourceTabs.SelectedTab.File.FullPath);
 			_recentItems.Save();
 			this.UpdateRecentItemsMenu();
 
 			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);
-			_mainStatusBar.Panels[1].Text = _sourceFile.Name;
+			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.Name;
 
 			_targetsTree.Nodes.Clear();
 			_targetsTree.Nodes.Add(new TreeNode(projectName));
@@ -521,12 +520,7 @@ namespace NAntGui.Core
 
 		private void SaveMenuCommand_Click(object sender, EventArgs e)
 		{
-			this.Save();
-		}
-
-		private void Save()
-		{
-			_sourceFile.Save();
+			_sourceTabs.SelectedTab.Save();
 			this.Text = Utils.RemoveAsterisk(this.Text);
 		}
 
@@ -562,22 +556,9 @@ namespace NAntGui.Core
 
 		private void MainForm_Closing(object sender, CancelEventArgs e)
 		{
-//			_buildRunner.Stop();
-			if (_sourceFile.IsDirty)
-			{
-				DialogResult result =
-					MessageBox.Show("You have unsaved changes.  Save?", "Save Changes?",
-					                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+			_buildRunner.Stop();
+			_sourceTabs.CloseTabs(e);
 
-				if (result == DialogResult.Yes)
-				{
-					_sourceFile.Save();
-				}
-				else if (result == DialogResult.Cancel)
-				{
-					e.Cancel = true;
-				}
-			}
 		}
 
 		private void SaveAsMenuCommand_Click(object sender, EventArgs e)
@@ -585,20 +566,28 @@ namespace NAntGui.Core
 			DialogResult result = this.XMLSaveFileDialog.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				_sourceFile.SaveAs(this.XMLSaveFileDialog.FileName);
+				_sourceTabs.SelectedTab.SaveAs(this.XMLSaveFileDialog.FileName);
 
 				this.Text = Utils.RemoveAsterisk(this.Text);
 				this.LoadBuildFile(this.XMLSaveFileDialog.FileName);
-//				_buildFile = this.XMLSaveFileDialog.FileName;
 			}
 		}
-
-
 
 		public CommandLineOptions Options
 		{
 			set { _options = value; }
 			get { return _options; }
+		}
+
+		public PropertySort PropertySort
+		{
+			get { return _propertyGrid.PropertySort; }
+			set { _propertyGrid.PropertySort = value; }
+		}
+
+		public void Reload_Click(object sender, EventArgs e)
+		{
+			_sourceTabs.SelectedTab.ReLoad();
 		}
 	}
 }

@@ -21,13 +21,12 @@
 
 #endregion
 
-using System;
 using System.IO;
 
 namespace NAntGui.Core
 {
 	/// <summary>
-	/// Abstract class for deriving build files types from.
+	/// Source file.
 	/// </summary>
 	public class SourceFile
 	{
@@ -35,41 +34,35 @@ namespace NAntGui.Core
 
 		protected const string UNTITLED_FILE = "Untitled";
 
-		protected string _name = UNTITLED_FILE;
-		protected string _fullName = ".\\";
-		protected string _contents = "";
+		protected string _name;
+		protected string _fullName;
+		protected string _contents;
 
 		private Watcher	_watcher = new Watcher();
 
-		private IDisplayer _displayer;
-		private ISourceIO _io;
+		public SourceFile()
+		{
+			_name = UNTITLED_FILE;
+			_fullName = ".\\";
+			_contents = "";
+		}
 
 		/// <summary>
 		/// Create a new build file.
 		/// </summary>
-		public SourceFile()
-		{
-		}
-
-		public virtual void Load(string buildFile, ISourceIO io, IDisplayer displayer)
+		public SourceFile(string buildFile, string contents)
 		{
 			Assert.NotNull(buildFile, "buildFile");
-			Assert.NotNull(displayer, "displayer");
-			Assert.NotNull(io, "io");
-
+			Assert.NotNull(contents, "contents");
 			Assert.FileExists(buildFile);
             			
-			_fullName	= buildFile;
-			_io			= io;
-			_displayer	= displayer;
-
-			_io.LoadFile(_fullName);
-			_contents = _displayer.Text;
-			_displayer.TextChanged += new EventHandler(this.Editor_TextChanged);
+			_fullName = buildFile;
+			_contents = contents;
 
 			FileInfo info = new FileInfo(_fullName);
 			_name = info.Name;
 			_watcher.WatchBuildFile(info);
+		}
 
 //			try
 //			{
@@ -85,38 +78,10 @@ namespace NAntGui.Core
 //					error.StackTrace;
 //				MessageBox.Show(message, "Internal Error");
 //			}
-		}
-
-		public virtual void ReLoad()
-		{
-			Assert.NotNull(_io, "_io");
-			_io.LoadFile(_fullName);
-		}
-
-		public virtual void SaveAs(string fileName)
-		{
-			Assert.NotNull(_io, "_io");
-			_fullName = fileName;
-			_io.SaveFile(_fullName);
-		}
-
-		public virtual void Save()
-		{
-			Assert.NotNull(_io, "_io");
-			_io.SaveFile(_fullName);
-		}
 
 		public virtual void Close()
 		{
 			_watcher.DisableEvents();
-		}
-
-		private void Editor_TextChanged(object sender, EventArgs e)
-		{
-			if (this.SourceChanged != null)
-			{
-				this.SourceChanged(this.IsDirty);
-			}
 		}
 
 		#region Properties
@@ -135,11 +100,6 @@ namespace NAntGui.Core
 		public string Name
 		{
 			get { return _name; }
-		}
-
-		public bool IsDirty
-		{
-			get{ return _contents != _displayer.Text; }
 		}
 
 		#endregion

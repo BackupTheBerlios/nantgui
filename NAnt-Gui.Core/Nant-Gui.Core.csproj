@@ -180,11 +180,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "IDisplayer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ILogsMessage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -196,11 +191,6 @@
                 />
                 <File
                     RelPath = "IProperty.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ISourceIO.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -242,16 +232,6 @@
                 <File
                     RelPath = "MainStatusBar.cs"
                     SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MSBuildBuildFile.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "nant.cs"
-                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -336,8 +316,13 @@
                 />
                 <File
                     RelPath = "SourceTabControl.cs"
-                    SubType = "Component"
+                    SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SourceTabControl.resx"
+                    DependentUpon = "SourceTabControl.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "TargetCollection.cs"
@@ -375,6 +360,16 @@
                 <File
                     RelPath = "Images\nantgui-1.2.5beta2.png"
                     BuildAction = "Content"
+                />
+                <File
+                    RelPath = "MSBuild\MSBuildBuildFile.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt\nant.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "NAnt\NAntBuildRunner.cs"

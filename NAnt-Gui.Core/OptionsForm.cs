@@ -90,13 +90,13 @@ namespace NAntGui.Core
 			this.HideTargetsCheckBox.Name = "HideTargetsCheckBox";
 			this.HideTargetsCheckBox.Size = new System.Drawing.Size(320, 24);
 			this.HideTargetsCheckBox.TabIndex = 1;
-			this.HideTargetsCheckBox.Text = "Hide targets when they do not contain a description?";
+			this.HideTargetsCheckBox.Text = "Hide targets that do not contain a description?";
 			// 
 			// OKButton
 			// 
 			this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OKButton.Location = new System.Drawing.Point(184, 96);
+			this.OKButton.Location = new System.Drawing.Point(192, 88);
 			this.OKButton.Name = "OKButton";
 			this.OKButton.TabIndex = 2;
 			this.OKButton.Text = "&OK";
@@ -106,7 +106,7 @@ namespace NAntGui.Core
 			// 
 			this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CloseButton.Location = new System.Drawing.Point(264, 96);
+			this.CloseButton.Location = new System.Drawing.Point(272, 88);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.TabIndex = 3;
 			this.CloseButton.Text = "&Cancel";
@@ -136,7 +136,7 @@ namespace NAntGui.Core
 			this.AcceptButton = this.OKButton;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.CloseButton;
-			this.ClientSize = new System.Drawing.Size(354, 135);
+			this.ClientSize = new System.Drawing.Size(354, 119);
 			this.Controls.Add(this.MaxRecentItemsUpDown);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.CloseButton);

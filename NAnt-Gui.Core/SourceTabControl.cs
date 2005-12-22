@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using TabControl = Crownwood.Magic.Controls.TabControl;
@@ -6,8 +8,11 @@ using TabPage = Crownwood.Magic.Controls.TabPage;
 
 namespace NAntGui.Core
 {
-	public class SourceTabControl : TabControl
+	public class SourceTabControl
 	{
+		private ArrayList _tabs = new ArrayList();
+		private TabControl _tabControl = new TabControl();
+
 		public SourceTabControl()
 		{
 			this.Initialize();
@@ -17,37 +22,81 @@ namespace NAntGui.Core
 
 		private void Initialize()
 		{
-			this.SuspendLayout();
+			_tabControl.SuspendLayout();
 
 			// 
 			// TabControl
 			// 
-			this.Appearance = VisualAppearance.MultiDocument;
-			this.Dock = DockStyle.Fill;
-			this.IDEPixelArea = true;
-			this.Location = new Point(0, 53);
-			this.SelectedIndex = 0;
-			this.Size = new Size(824, 478);
-			this.IDEPixelBorder = false;
-			this.Name = "SourceTabs";
+			_tabControl.Appearance = TabControl.VisualAppearance.MultiDocument;
+			_tabControl.Dock = DockStyle.Fill;
+			_tabControl.IDEPixelArea = true;
+			_tabControl.Location = new Point(0, 53);
+			_tabControl.SelectedIndex = 0;
+			_tabControl.Size = new Size(824, 478);
+			_tabControl.IDEPixelBorder = false;
+			_tabControl.Name = "SourceTabs";
 
-			this.ClosePressed += new EventHandler(this.Close_Pressed);
+			_tabControl.ClosePressed += new EventHandler(this.Close_Pressed);
 
-			this.ResumeLayout(false);
+			_tabControl.ResumeLayout(false);
 		}
 
 		#endregion
 
-		public void AddTab(TabPage tab)
+		public void AddTab(ScriptTabPage tab)
 		{
 			Assert.NotNull(tab, "tab");
-            this.TabPages.Add(tab);
-			this.SelectedTab = tab;
+			_tabs.Add(tab);
+			_tabControl.TabPages.Add(tab.ScriptTab);
+			//_tabControl.SelectedTab = tab.ScriptTab;
+		}
+
+		public ScriptTabPage SelectedTab
+		{
+			get
+			{
+				foreach (ScriptTabPage page in _tabs)
+					if (page.ScriptTab == _tabControl.SelectedTab) return page;
+
+				return null;
+			}
 		}
 
 		public void Close_Pressed(object sender, EventArgs e)
 		{
-			this.TabPages.Remove(this.SelectedTab);
+//			this.TabPages.Remove(this.SelectedTab);
+		}
+
+		public TabControl Tabs
+		{
+			get { return _tabControl; }
+		}
+
+		public void Clear()
+		{
+			_tabControl.TabPages.Clear();
+		}
+
+		public void CloseTabs(CancelEventArgs e)
+		{
+			foreach (ScriptTabPage page in _tabs)
+			{
+				if (page.IsDirty)
+				{
+					DialogResult result =
+						MessageBox.Show("You have unsaved changes to" + page.File.Name + ".  Save?", "Save Changes?",
+						MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+
+					if (result == DialogResult.Yes)
+					{
+						page.Save();
+					}
+					else if (result == DialogResult.Cancel)
+					{
+						e.Cancel = true;
+					}
+				}
+			}
 		}
 	}
 }
