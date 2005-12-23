@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using ICSharpCode.TextEditor.Document;
 using TabPage = Crownwood.Magic.Controls.TabPage;
 
 namespace NAntGui.Core
@@ -28,7 +29,7 @@ namespace NAntGui.Core
 
         private void Initialize()
 		{
-			_sourceEditor.ActiveTextAreaControl.TextArea.KeyPress += new KeyPressEventHandler(this.Editor_TextChanged);
+			_sourceEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
 
 			_scriptTab.Controls.Add(_sourceEditor);
 			_scriptTab.Location = new Point(0, 0);
@@ -46,7 +47,7 @@ namespace NAntGui.Core
 			_scriptTab.Title = _file.Name;
 		}
 
-		private void Editor_TextChanged(object sender, KeyPressEventArgs e)
+		private void Editor_TextChanged(object sender, DocumentEventArgs e)
 		{
 			if (this.IsDirty && !Utils.HasAsterisk(_scriptTab.Title))
 			{

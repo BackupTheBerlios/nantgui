@@ -30,8 +30,6 @@ namespace NAntGui.Core
 	/// </summary>
 	public class SourceFile
 	{
-		public event VoidBool SourceChanged;
-
 		protected const string UNTITLED_FILE = "Untitled";
 
 		protected string _name;

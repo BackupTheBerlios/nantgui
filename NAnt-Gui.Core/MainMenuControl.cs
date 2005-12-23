@@ -352,19 +352,19 @@ namespace NAntGui.Core
 
 		public void Enable()
 		{
-			this.ReloadMenuCommand.Enabled	= true;
-			this.SaveMenuCommand.Enabled	= true;
-			this.SaveAsMenuCommand.Enabled	= true;
-			this.BuildMenuCommand.Enabled	= true;
+			this.ReloadMenuCommand.Enabled	= 
+			this.SaveMenuCommand.Enabled	= 
+			this.SaveAsMenuCommand.Enabled	= 
+			this.BuildMenuCommand.Enabled	= 
 			this.CloseMenuCommand.Enabled	= true;
 		}
 
 		public void Disable()
 		{
-			this.ReloadMenuCommand.Enabled	= false;
-			this.SaveMenuCommand.Enabled	= false;
-			this.SaveAsMenuCommand.Enabled	= false;
-			this.BuildMenuCommand.Enabled	= false;
+			this.ReloadMenuCommand.Enabled	= 
+			this.SaveMenuCommand.Enabled	= 
+			this.SaveAsMenuCommand.Enabled	= 
+			this.BuildMenuCommand.Enabled	= 
 			this.CloseMenuCommand.Enabled	= false;
 		}
 
