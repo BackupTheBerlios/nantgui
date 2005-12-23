@@ -90,12 +90,6 @@
                     HintPath = "..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\..\..\..\..\..\..\Program Files\log4net\log4net.dll"
-                    AssemblyFolderKey = "hklm\dn\log4net"
-                />
-                <Reference
                     Name = "ICSharpCode.TextEditor"
                     AssemblyName = "ICSharpCode.TextEditor"
                     HintPath = "..\ThirdParty Libraries\ICSharpCode.TextEditor.dll"
@@ -108,12 +102,12 @@
                 <Reference
                     Name = "NAnt.Win32Tasks"
                     AssemblyName = "NAnt.Win32Tasks"
-                    HintPath = "..\ThirdParty Libraries\NAnt.Win32Tasks.dll"
+                    HintPath = "..\Tools\nant-0.85-rc3\bin\NAnt.Win32Tasks.dll"
                 />
                 <Reference
                     Name = "NAnt.Core"
                     AssemblyName = "NAnt.Core"
-                    HintPath = "..\ThirdParty Libraries\NAnt.Core.dll"
+                    HintPath = "..\Tools\nant-0.85-rc3\bin\NAnt.Core.dll"
                 />
             </References>
         </Build>

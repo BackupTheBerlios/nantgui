@@ -7,8 +7,10 @@
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
 
-#define NAntDir = "nant-0.85-rc3"
-#define NAntContribDir = "nantcontrib-0.85-rc3"
+#define NAnt = "Tools\nant"
+#define NAntContrib = "Tools\nantcontrib"
+#define NUnit2Report = "Tools\NUnit2Report-1.2.3"
+
 
 [Setup]
 AppName={#MyAppName}
@@ -41,25 +43,41 @@ Name: assocnant; GroupDescription: Associate with file types; Description: Assoc
 Name: envpath; GroupDescription: Set environment variables; Description: Add bin directory to path
 
 [Files]
-; Binary
+; ### Binary ###
+; Documents
+Source: License.txt; DestDir: {app}; Flags: ignoreversion
+Source: Todo.txt; DestDir: {app}; Flags: ignoreversion
+Source: Bugs.txt; DestDir: {app}; Flags: ignoreversion
+; NAnt-Gui
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe.config; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; Libraries
 Source: ThirdParty Libraries\*; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+; NAnt/NAnt-Contrib
+Source: {#NAntDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nant
+Source: {#NAntDir}\examples\*; DestDir: {app}\examples; Flags: ignoreversion recursesubdirs; Components: examples
+Source: {#NAntDir}\doc\*; DestDir: {app}\nant-docs; Flags: ignoreversion recursesubdirs; Components: docs
+Source: {#NAntContribDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\contrib
+Source: {#NAntContribDir}\doc\*; DestDir: {app}\nantcontrib-docs; Flags: ignoreversion recursesubdirs; Components: docs
+; NUnit2Report
+Source: {#NUnit2Report}\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nunit2report
+; InnoSetupTask
+Source: Nant.InnoSetup\bin\Release\NAnt.InnoSetupTasks.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin\innosetup
 
-; Source
+; ### Source ###
 Source: NAnt-Gui.sln; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.build; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Ant.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
-Source: License.txt; DestDir: {app}; Flags: ignoreversion
 Source: License.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
-Source: Bugs.txt; DestDir: {app}; Flags: ignoreversion
 Source: Bugs.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
-Source: Todo.txt; DestDir: {app}; Flags: ignoreversion
 Source: Todo.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: ThirdParty Libraries\*; DestDir: {app}\src\ThirdParty Libraries; Flags: ignoreversion; Components: src
+; NAnt-Gui
+Source: NAnt-Gui\app.config; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui\*.cs; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui\NAnt-Gui.csproj; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Unittests
 Source: NAnt-Gui.Unittests\*.cs; DestDir: {app}\src\Nant-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\*.resx; DestDir: {app}\src\Nant-Gui.Unittests; Flags: ignoreversion skipifsourcedoesntexist; Components: src
@@ -71,16 +89,8 @@ Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignorever
 Source: NAnt-Gui.Core\NAnt\*.cs; DestDir: {app}\src\Nant-Gui.Core\NAnt; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\NAnt\*.resx; DestDir: {app}\src\Nant-Gui.Core\NAnt; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.Core\Nant-Gui.Core.csproj; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
-; NAnt-Gui
-Source: NAnt-Gui\app.config; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
-Source: NAnt-Gui\*.cs; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
-Source: NAnt-Gui\NAnt-Gui.csproj; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
-; NAnt/NAnt-Contrib
-Source: C:\Program Files\{#NAntDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nant
-Source: C:\Program Files\{#NAntDir}\examples\*; DestDir: {app}\examples; Flags: ignoreversion recursesubdirs; Components: examples
-Source: C:\Program Files\{#NAntDir}\doc\*; DestDir: {app}\nant-docs; Flags: ignoreversion recursesubdirs; Components: docs
-Source: C:\Program Files\{#NAntContribDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\contrib
-Source: C:\Program Files\{#NAntContribDir}\doc\*; DestDir: {app}\nantcontrib-docs; Flags: ignoreversion recursesubdirs; Components: docs
+; Tools
+Source: Tools\*; DestDir: {app}\src\Tools; Flags: ignoreversion recursesubdirs; Components: src
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -119,6 +129,8 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 Name: bin; Description: Executable files; Types: custom compact full
 Name: bin\nant; Description: NAnt 0.85-rc3; Types: custom compact full
 Name: bin\contrib; Description: NAnt Contrib 0.85-rc3; Types: full custom compact
+Name: bin\innosetup; Description: NAnt InnoSetup Task; Types: full
+Name: bin\nunit2report; Description: NAnt NUnit2 Report Task; Types: full
 Name: examples; Description: Example NAnt build files; Types: full
 Name: docs; Description: NAnt documentation files; Types: custom full
 Name: src; Description: Source code files; Types: full
