@@ -259,6 +259,7 @@ namespace NAntGui.Core
 			// TargetsMenuCommand
 			// 
 			this.TargetsMenuCommand.Description = "MenuCommand";
+			this.TargetsMenuCommand.ImageIndex = 9;
 			this.TargetsMenuCommand.Text = "&Targets";
 			// 
 			// PropertiesMenuCommand
@@ -340,11 +341,12 @@ namespace NAntGui.Core
 
 		private void AssignImages()
 		{
-			this.NewMenuCommand.ImageList			= _imageList;
-			this.OpenMenuCommand.ImageList			= _imageList;
-			this.SaveMenuCommand.ImageList			= _imageList;
-			this.ReloadMenuCommand.ImageList		= _imageList;
-			this.PropertiesMenuCommand.ImageList	= _imageList;
+			this.NewMenuCommand.ImageList			= 
+			this.OpenMenuCommand.ImageList			= 
+			this.SaveMenuCommand.ImageList			= 
+			this.ReloadMenuCommand.ImageList		= 
+			this.PropertiesMenuCommand.ImageList	= 
+			this.TargetsMenuCommand.ImageList		= 
 			this.BuildMenuCommand.ImageList			= _imageList;
 		}
 

@@ -209,6 +209,9 @@ namespace NAntGui.Core
 			_outputContent		= _dockManager.Contents.Add(_outputBox, "Output");
 			_propertiesContent	= _dockManager.Contents.Add(_propertyGrid, "Properties");
 
+			_targetsContent.ImageList = _imageList;
+			_targetsContent.ImageIndex = 9;
+
 			_propertiesContent.ImageList = _imageList;
 			_propertiesContent.ImageIndex = 0;
 
