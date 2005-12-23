@@ -42,10 +42,10 @@ namespace NAntGui.NAnt
 		{
 			foreach (XmlElement element in doc.GetElementsByTagName("target"))
 			{
-				Target target = new Target(element);
-				if (target.Name == _project.DefaultTargetName) target.Default = true;
-				_targets.Add(target);
-				_depends.Add(target.Depends);
+				NAntTarget nantTarget = new NAntTarget(element);
+				if (nantTarget.Name == _project.DefaultTargetName) nantTarget.Default = true;
+				_targets.Add(nantTarget);
+				_depends.Add(nantTarget.Depends);
 			}
 
 			_targets.Sort();

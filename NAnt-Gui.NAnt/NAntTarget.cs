@@ -30,11 +30,11 @@ namespace NAntGui.NAnt
 	/// <summary>
 	/// Summary description for Target.
 	/// </summary>
-	public class Target : BuildTarget, IComparable
+	public class NAntTarget : BuildTarget, IComparable
 	{
 		private string[] _depends;
 
-		public Target(XmlElement element)
+		public NAntTarget(XmlElement element)
 		{
 			this.ParseAttributes(element);
 		}
@@ -54,9 +54,9 @@ namespace NAntGui.NAnt
 
 		public int CompareTo(object obj)
 		{
-			if (obj.GetType() == typeof (Target))
+			if (obj.GetType() == typeof (NAntTarget))
 			{
-				return _name.CompareTo(((Target) obj).Name);
+				return _name.CompareTo(((NAntTarget) obj).Name);
 			}
 			else
 			{

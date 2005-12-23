@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.Framework", "NAnt-
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.MSBuild", "NAnt-Gui.MSBuild\NAnt-Gui.MSBuild.csproj", "{CE9DB1E7-8666-4F42-8817-C7A6F1117A99}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -53,6 +57,10 @@ Global
 		{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}.Debug.Build.0 = Debug|.NET
 		{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}.Release.ActiveCfg = Release|.NET
 		{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}.Release.Build.0 = Release|.NET
+		{CE9DB1E7-8666-4F42-8817-C7A6F1117A99}.Debug.ActiveCfg = Debug|.NET
+		{CE9DB1E7-8666-4F42-8817-C7A6F1117A99}.Debug.Build.0 = Debug|.NET
+		{CE9DB1E7-8666-4F42-8817-C7A6F1117A99}.Release.ActiveCfg = Release|.NET
+		{CE9DB1E7-8666-4F42-8817-C7A6F1117A99}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		Ant.ico = Ant.ico
