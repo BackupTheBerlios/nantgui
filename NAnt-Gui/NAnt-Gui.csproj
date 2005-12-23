@@ -97,7 +97,7 @@
                 <Reference
                     Name = "NAnt.Core"
                     AssemblyName = "NAnt.Core"
-                    HintPath = "..\ThirdParty Libraries\NAnt.Core.dll"
+                    HintPath = "..\Tools\nant-0.85-rc3\bin\NAnt.Core.dll"
                 />
             </References>
         </Build>

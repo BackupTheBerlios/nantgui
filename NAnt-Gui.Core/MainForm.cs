@@ -392,7 +392,7 @@ namespace NAntGui.Core
 			this.UpdateRecentItemsMenu();
 
 			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);
-			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.Name;
+			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullPath;
 
 			_targetsTree.Nodes.Clear();
 			_targetsTree.Nodes.Add(new TreeNode(projectName));

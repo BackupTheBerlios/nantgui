@@ -7,8 +7,8 @@
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
 
-#define NAnt = "Tools\nant"
-#define NAntContrib = "Tools\nantcontrib"
+#define NAnt = "Tools\nant-0.85-rc3"
+#define NAntContrib = "Tools\nantcontrib-0.85-rc3"
 #define NUnit2Report = "Tools\NUnit2Report-1.2.3"
 
 
@@ -55,11 +55,11 @@ Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: 
 ; Libraries
 Source: ThirdParty Libraries\*; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; NAnt/NAnt-Contrib
-Source: {#NAntDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nant
-Source: {#NAntDir}\examples\*; DestDir: {app}\examples; Flags: ignoreversion recursesubdirs; Components: examples
-Source: {#NAntDir}\doc\*; DestDir: {app}\nant-docs; Flags: ignoreversion recursesubdirs; Components: docs
-Source: {#NAntContribDir}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\contrib
-Source: {#NAntContribDir}\doc\*; DestDir: {app}\nantcontrib-docs; Flags: ignoreversion recursesubdirs; Components: docs
+Source: {#NAnt}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nant
+Source: {#NAnt}\examples\*; DestDir: {app}\examples; Flags: ignoreversion recursesubdirs; Components: examples
+Source: {#NAnt}\doc\*; DestDir: {app}\nant-docs; Flags: ignoreversion recursesubdirs; Components: docs
+Source: {#NAntContrib}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\contrib
+Source: {#NAntContrib}\doc\*; DestDir: {app}\nantcontrib-docs; Flags: ignoreversion recursesubdirs; Components: docs
 ; NUnit2Report
 Source: {#NUnit2Report}\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nunit2report
 ; InnoSetupTask
