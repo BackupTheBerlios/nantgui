@@ -44,7 +44,7 @@ namespace NAntGui
 			AppDomain.CurrentDomain.AssemblyResolve +=
 				new ResolveEventHandler(ResolveHandler);
 
-			CoreApp app = new CoreApp(ParseCommandLine(args));
+			new CoreApp(ParseCommandLine(args));
 		}
 
 		private static CommandLineOptions ParseCommandLine(string[] args)

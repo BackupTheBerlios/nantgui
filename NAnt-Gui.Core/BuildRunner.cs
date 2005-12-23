@@ -50,7 +50,7 @@ namespace NAntGui.Core
 		{
 				try
 				{
-					Environment.CurrentDirectory = sourceFile.FullPath;
+					Environment.CurrentDirectory = sourceFile.Path;
 					IProject _project = this.LoadingBuildFile(sourceFile);
 
 					if (this.BuildFileChanged != null)

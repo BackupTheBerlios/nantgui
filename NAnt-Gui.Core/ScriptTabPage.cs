@@ -15,13 +15,14 @@ namespace NAntGui.Core
 
 		public ScriptTabPage()
 		{
-			Initialize();
+			_file = new SourceFile();
+			this.Initialize();
 		}
 
 		public ScriptTabPage(string filename)
 		{
-			Initialize();
 			this.Load(filename);
+			this.Initialize();
 		}
 
         private void Initialize()
@@ -39,6 +40,8 @@ namespace NAntGui.Core
 
 		private void Load(string filename)
 		{
+			Assert.FileExists(filename);
+			_sourceEditor.LoadFile(filename);
 			_file = new SourceFile(filename, _sourceEditor.Text);
 			_sourceEditor.TextChanged += new EventHandler(this.Editor_TextChanged);
 			_scriptTab.Title = _file.Name;

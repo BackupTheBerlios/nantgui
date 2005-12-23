@@ -36,6 +36,7 @@ namespace NAntGui.Core
 
 		protected string _name;
 		protected string _fullName;
+		protected string _path;
 		protected string _contents;
 
 		private Watcher	_watcher = new Watcher();
@@ -61,6 +62,7 @@ namespace NAntGui.Core
 
 			FileInfo info = new FileInfo(_fullName);
 			_name = info.Name;
+			_path = info.DirectoryName;
 			_watcher.WatchBuildFile(info);
 		}
 
@@ -100,6 +102,11 @@ namespace NAntGui.Core
 		public string Name
 		{
 			get { return _name; }
+		}
+
+		public string Path
+		{
+			get { return _path; }
 		}
 
 		#endregion
