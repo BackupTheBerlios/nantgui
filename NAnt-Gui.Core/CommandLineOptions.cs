@@ -16,6 +16,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 // Gert Driesen (gert.driesen@ardatis.com)
+// Colin Svingen (nantgui@swoogan.com)
 
 using System.Collections.Specialized;
 using System.IO;
@@ -221,37 +222,6 @@ namespace NAntGui.Core
 //		public StringCollection ExtensionAssemblies 
 //		{
 //			get { return _extensionAssemblies; }
-//		}
-//
-//		/// <summary>
-//		/// Gets or sets a value indicating whether <see cref="Project" /> help 
-//		/// should be printed.
-//		/// </summary>
-//		/// <value>
-//		/// <see langword="true" /> if <see cref="Project" /> help should be 
-//		/// printed; otherwise, <see langword="false" />. The default is
-//		/// <see langword="false" />.
-//		/// </value>
-//		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "projecthelp", Description = "Prints project help information")]
-//		public bool ShowProjectHelp 
-//		{
-//			get { return _showProjectHelp; }
-//			set { _showProjectHelp = value; }
-//		}
-//
-//		/// <summary>
-//		/// Gets or sets a value indicating whether the logo banner should be
-//		/// printed.
-//		/// </summary>
-//		/// <value>
-//		/// <see langword="true" /> if the logo banner should be printed; otherwise, 
-//		/// <see langword="false" />. The default is <see langword="false" />.
-//		/// </value>
-//		[CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "nologo", Description = "Suppresses display of the logo banner")]
-//		public bool NoLogo 
-//		{
-//			get { return _noLogo; }
-//			set { _noLogo = value; }
 //		}
 
 //		/// <summary>

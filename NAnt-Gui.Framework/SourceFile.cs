@@ -23,7 +23,7 @@
 
 using System.IO;
 
-namespace NAntGui.Core
+namespace NAntGui.Framework
 {
 	/// <summary>
 	/// Source file.

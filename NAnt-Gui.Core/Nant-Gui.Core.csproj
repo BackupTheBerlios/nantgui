@@ -139,11 +139,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BuildRunner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BuildRunnerFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -264,11 +259,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "SourceFile.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "SourceTabControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -290,11 +280,6 @@
                 />
                 <File
                     RelPath = "Utils.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Watcher.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -23,7 +23,7 @@
 
 namespace NAntGui.Framework
 {
-	public interface IProject
+	public interface IBuildScript
 	{
 		TargetCollection Targets { get; }
 		PropertyCollection Properties { get; }

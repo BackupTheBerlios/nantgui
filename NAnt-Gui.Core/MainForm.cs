@@ -373,31 +373,31 @@ namespace NAntGui.Core
 			lOptionsForm.ShowDialog();
 		}
 
-		private void BuildFileLoaded(IProject project)
+		private void BuildFileLoaded(IBuildScript buildScript)
 		{
 			_outputBox.Clear();
 			this.EnableMenuCommandsAndButtons();
-			this.UpdateDisplay(project);
-			this.AddTargets(project.Targets);
-			_propertyGrid.AddProperties(project.Properties, _firstLoad);
+			this.UpdateDisplay(buildScript);
+			this.AddTargets(buildScript.Targets);
+			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
 
 			_firstLoad = false;
 		}
 
-		private void UpdateDisplay(IProject project)
+		private void UpdateDisplay(IBuildScript buildScript)
 		{
 
 //			_sourceTabs.ReadSource(_sourceFile);
 
 			this.Text = "NAnt-Gui" + string.Format(" - {0}", _sourceTabs.SelectedTab.File.Name);
 
-			string projectName = project.HasName ? project.Name : _sourceTabs.SelectedTab.File.Name;
+			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
 
 			_recentItems.Add(_sourceTabs.SelectedTab.File.FullPath);
 			_recentItems.Save();
 			this.UpdateRecentItemsMenu();
 
-			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, project.Description);
+			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
 			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullPath;
 
 			_targetsTree.Nodes.Clear();

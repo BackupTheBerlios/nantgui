@@ -32,14 +32,14 @@ namespace NAntGui.NAnt
 		private NAntBuildScript _script;
 		private ILogsMessage _messageLogger;
 
-		public NAntBuildRunner(string sourceFilePath, ILogsMessage messageLogger, 
+		public NAntBuildRunner(SourceFile sourceFile, ILogsMessage messageLogger, 
 			CommandLineOptions options)
 		{
 			_messageLogger = messageLogger;
 
 			try
 			{
-				_script = new NAntBuildScript(sourceFilePath, options, _messageLogger);
+				_script = new NAntBuildScript(sourceFile, options, _messageLogger);
 			}
 			catch (ApplicationException error)
 			{
@@ -78,10 +78,11 @@ namespace NAntGui.NAnt
 			return message;
 		}
 
-		public void Run()
+		protected override void DoRun()
 		{
 			try
 			{
+				Environment.CurrentDirectory = _script.SourceFile.Path;
 //				ArrayList targets = _nantForm.GetTreeTargets();
 //				Hashtable properties = _nantForm.GetProjectProperties();
 
@@ -93,12 +94,12 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		public VoidVoid BuildFinished
+		public override VoidVoid BuildFinished
 		{
 			set { _script.BuildFinished += value; }
 		}
 
-		public IProject BuildScript
+		public override IBuildScript BuildScript
 		{
 			get { return _script; }
 		}

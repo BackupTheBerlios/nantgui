@@ -25,7 +25,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace NAntGui.Core
+namespace NAntGui.Framework
 {
 	/// <summary>
 	/// Summary description for Watcher.

@@ -33,13 +33,13 @@ namespace NAntGui.NAnt
 	/// <summary>
 	/// Contains the logic for parsing the build file.
 	/// </summary>
-	public class NAntBuildScript : IProject
+	public class NAntBuildScript : IBuildScript
 	{
 		public event VoidVoid BuildFinished;
 
 		private string _description = "";
 		private Project _project;
-		private string _sourceFilePath;
+		private SourceFile _sourceFile;
 		private CommandLineOptions _options;
 		private ILogsMessage _messageLogger;
 
@@ -50,9 +50,9 @@ namespace NAntGui.NAnt
 		/// <summary>
 		/// Create a new project parser.
 		/// </summary>
-		public NAntBuildScript(string sourceFilePath, CommandLineOptions options, ILogsMessage messageLogger)
+		public NAntBuildScript(SourceFile sourceFile, CommandLineOptions options, ILogsMessage messageLogger)
 		{
-			_sourceFilePath	= sourceFilePath;
+			_sourceFile		= sourceFile;
 			_options		= options;
 			_messageLogger	= messageLogger;
 			_project		= new Project(_sourceFilePath, this.GetThreshold(), 0);
@@ -203,6 +203,11 @@ namespace NAntGui.NAnt
 		}
 
 		#region Properties
+
+		public SourceFile SourceFile
+		{
+			get { return _sourceFile; }
+		}
 
 		public string DefaultTarget
 		{
