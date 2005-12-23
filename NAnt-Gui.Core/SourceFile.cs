@@ -30,19 +30,20 @@ namespace NAntGui.Core
 	/// </summary>
 	public class SourceFile
 	{
-		protected const string UNTITLED_FILE = "Untitled";
-
 		protected string _name;
 		protected string _fullName;
 		protected string _path;
+		protected string _extension;
 		protected string _contents;
 
 		private Watcher	_watcher = new Watcher();
 
 		public SourceFile()
 		{
-			_name = UNTITLED_FILE;
-			_fullName = ".\\";
+			_name = "Untitled";
+			_path = ".\\";
+			_fullName = _path + _name;
+			_extension = "";
 			_contents = "";
 		}
 
@@ -55,12 +56,13 @@ namespace NAntGui.Core
 			Assert.NotNull(contents, "contents");
 			Assert.FileExists(buildFile);
             			
-			_fullName = buildFile;
-			_contents = contents;
+			_fullName		= buildFile;
+			_contents		= contents;
+			FileInfo info	= new FileInfo(_fullName);
+			_name			= info.Name;
+			_path			= info.DirectoryName;
+			_extension		= info.Extension;
 
-			FileInfo info = new FileInfo(_fullName);
-			_name = info.Name;
-			_path = info.DirectoryName;
 			_watcher.WatchBuildFile(info);
 		}
 

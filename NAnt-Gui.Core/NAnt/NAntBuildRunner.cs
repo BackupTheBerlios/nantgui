@@ -29,7 +29,7 @@ namespace NAntGui.Core.NAnt
 	{
 		private NAntBuildScript _script;
 
-		public NAntBuildRunner(MainForm mainForm) : base(mainForm) {}
+		public NAntBuildRunner(ILogsMessage messageLogger, CommandLineOptions options) : base(messageLogger, options) {}
 
 		protected override IProject LoadingBuildFile(SourceFile sourceFile)
 		{

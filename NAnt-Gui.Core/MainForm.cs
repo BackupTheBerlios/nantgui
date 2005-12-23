@@ -84,10 +84,6 @@ namespace NAntGui.Core
 			this.Initialize();
 			this.SetupDockManager();
 
-			_buildRunner = new NAntBuildRunner(this);
-			_buildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
-			_buildRunner.OnBuildFinished = new VoidVoid(this.Update);
-
 			_recentItems.ItemsUpdated += new VoidVoid(this.UpdateRecentItemsMenu);
 			_recentItems.Load();
 
@@ -243,6 +239,9 @@ namespace NAntGui.Core
 				ScriptTabPage page = new ScriptTabPage(filename);
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);
+				_buildRunner = BuildRunnerFactory.Create("", this, _options);
+				_buildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
+				_buildRunner.OnBuildFinished = new VoidVoid(this.Update);
 				_buildRunner.LoadBuildFile(page.File);
 				return true;
 			}

@@ -40,10 +40,10 @@ namespace NAntGui.Core
 		protected SourceFile _sourceFile;
 		protected CommandLineOptions _options;
 
-		public BuildRunner(MainForm mainForm)
+		public BuildRunner(ILogsMessage messageLogger, CommandLineOptions options)
 		{
-			_messageLogger	= mainForm;
-			_options		= mainForm.Options;
+			_messageLogger	= messageLogger;
+			_options		= options;
 		}
 
 		public void LoadBuildFile(SourceFile sourceFile)
