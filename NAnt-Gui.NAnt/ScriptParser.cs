@@ -4,7 +4,7 @@ using NAnt.Core;
 using NAnt.Core.Tasks;
 using NAnt.Win32.Tasks;
 
-namespace NAntGui.Core.NAnt
+namespace NAntGui.NAnt
 {
 	/// <summary>
 	/// Summary description for ScriptParser.

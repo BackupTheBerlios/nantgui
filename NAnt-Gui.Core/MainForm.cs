@@ -35,6 +35,7 @@ using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
 using Flobbster.Windows.Forms;
 using NAntGui.Core.NAnt;
+using NAntGui.Framework;
 
 namespace NAntGui.Core
 {

@@ -15,6 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt.InnoSetup.Tasks", "Nan
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.NAnt", "NAnt-Gui.NAnt\NAnt-Gui.NAnt.csproj", "{B42F3791-EDD7-494A-9229-A565588F2EF0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.Framework", "NAnt-Gui.Framework\NAnt-Gui.Framework.csproj", "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -37,6 +45,14 @@ Global
 		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Debug.Build.0 = Debug|.NET
 		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Release.ActiveCfg = Release|.NET
 		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Release.Build.0 = Release|.NET
+		{B42F3791-EDD7-494A-9229-A565588F2EF0}.Debug.ActiveCfg = Debug|.NET
+		{B42F3791-EDD7-494A-9229-A565588F2EF0}.Debug.Build.0 = Debug|.NET
+		{B42F3791-EDD7-494A-9229-A565588F2EF0}.Release.ActiveCfg = Release|.NET
+		{B42F3791-EDD7-494A-9229-A565588F2EF0}.Release.Build.0 = Release|.NET
+		{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}.Debug.ActiveCfg = Debug|.NET
+		{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}.Debug.Build.0 = Debug|.NET
+		{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}.Release.ActiveCfg = Release|.NET
+		{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		Ant.ico = Ant.ico

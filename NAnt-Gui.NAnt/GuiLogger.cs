@@ -22,36 +22,25 @@
 #endregion
 
 using NAnt.Core;
+using NAntGui.Framework;
 
-namespace NAntGui.Core.NAnt
+namespace NAntGui.NAnt
 {
-	public class NAntBuildRunner : BuildRunner
+	/// <summary>
+	/// Summary description for GuiLogger.
+	/// </summary>
+	public class GuiLogger : DefaultLogger
 	{
-		private NAntBuildScript _script;
+		public ILogsMessage _messageLogger;
 
-		public NAntBuildRunner(ILogsMessage messageLogger, CommandLineOptions options) : base(messageLogger, options) {}
-
-		protected override IProject LoadingBuildFile(SourceFile sourceFile)
+		public GuiLogger(ILogsMessage messageLogger) : base()
 		{
-			_script = new NAntBuildScript(sourceFile, _options, _messageLogger);
-			return _script;
+			_messageLogger = messageLogger;
 		}
 
-		protected override void DoRun()
+		protected override void Log(string message)
 		{
-			try
-			{
-				_script.BuildFinished += base.OnBuildFinished;
-
-//				ArrayList targets = _nantForm.GetTreeTargets();
-//				Hashtable properties = _nantForm.GetProjectProperties();
-
-				_script.Run();
-			}
-			catch (BuildException error)
-			{
-				_messageLogger.LogMessage(error.Message);
-			}
+			_messageLogger.LogMessage(message);
 		}
 	}
 }

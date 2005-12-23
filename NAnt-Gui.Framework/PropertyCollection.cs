@@ -23,35 +23,52 @@
 
 using System.Collections;
 
-namespace NAntGui.Core
+namespace NAntGui.Framework
 {
-	public class DependsCollection
+	/// <summary>
+	/// Summary description for PropertyCollection.
+	/// </summary>
+	public class PropertyCollection : IEnumerable
 	{
-		private ArrayList mDepends;
+		private Hashtable _properties;
 
-		public DependsCollection()
+		public PropertyCollection()
 		{
-			this.mDepends = new ArrayList();
+			_properties = new Hashtable();
 		}
 
-		public DependsCollection(int pSize)
+		public PropertyCollection(int size)
 		{
-			this.mDepends = new ArrayList(pSize);
+			_properties = new Hashtable(size);
 		}
 
-		public void Add(string[] pDepends)
+		public void Add(IProperty property)
 		{
-			this.mDepends.AddRange(pDepends);
+			_properties.Add(property.Name, property);
+		}
+
+		public void AddRange(PropertyCollection properties)
+		{
+			foreach (IProperty property in properties)
+			{
+				_properties.Add(property.Name, property);
+			}
 		}
 
 		public IEnumerator GetEnumerator()
 		{
-			return this.mDepends.GetEnumerator();
+			return _properties.Values.GetEnumerator();
 		}
 
-		public bool Contains(string pTarget)
+		public bool Contains(string key)
 		{
-			return this.mDepends.Contains(pTarget);
+			return _properties.Contains(key);
+		}
+
+		public IProperty this[string key]
+		{
+			get { return (IProperty) _properties[key]; }
+			set { _properties[key] = value; }
 		}
 	}
 }

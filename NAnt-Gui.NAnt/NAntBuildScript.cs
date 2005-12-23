@@ -25,8 +25,10 @@ using System;
 using Flobbster.Windows.Forms;
 using NAnt.Core.Util;
 using NAnt.Core;
+using NAntGui.Framework;
+using TargetCollection = NAntGui.Framework.TargetCollection;
 
-namespace NAntGui.Core.NAnt
+namespace NAntGui.NAnt
 {
 	/// <summary>
 	/// Contains the logic for parsing the build file.
@@ -37,7 +39,7 @@ namespace NAntGui.Core.NAnt
 
 		private string _description = "";
 		private Project _project;
-		private SourceFile _sourceFile;
+		private string _sourceFilePath;
 		private CommandLineOptions _options;
 		private ILogsMessage _messageLogger;
 
@@ -48,12 +50,12 @@ namespace NAntGui.Core.NAnt
 		/// <summary>
 		/// Create a new project parser.
 		/// </summary>
-		public NAntBuildScript(SourceFile sourceFile, CommandLineOptions options, ILogsMessage messageLogger)
+		public NAntBuildScript(string sourceFilePath, CommandLineOptions options, ILogsMessage messageLogger)
 		{
-			_sourceFile = sourceFile;
+			_sourceFilePath = sourceFilePath;
 			_options = options;
 			_messageLogger = messageLogger;
-			_project = new Project(sourceFile.FullPath, this.GetThreshold(), 0);
+			_project = new Project(_sourceFilePath, this.GetThreshold(), 0);
 
 			this.ParseBuildScript();
 		}

@@ -24,6 +24,7 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
+using NAntGui.Framework;
 
 namespace NAntGui.Core
 {

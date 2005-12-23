@@ -21,25 +21,38 @@
 
 #endregion
 
-namespace NAntGui.Core.NAnt
+using NAnt.Core;
+using NAntGui.Framework;
+
+namespace NAntGui.NAnt
 {
-	/// <summary>
-	/// Summary description for NantBuildFile.
-	/// </summary>
-	public class NantBuildFile : SourceFile
+	public class NAntBuildRunner : BuildRunner
 	{
-		public NantBuildFile()
+		private NAntBuildScript _script;
+
+		public NAntBuildRunner(ILogsMessage messageLogger, CommandLineOptions options) : base(messageLogger, options) {}
+
+		protected override IProject LoadingBuildFile(SourceFile sourceFile)
 		{
+			_script = new NAntBuildScript(sourceFile, _options, _messageLogger);
+			return _script;
 		}
 
-		/// <summary>
-		/// This may be an issue.  ".build" is a bad
-		/// extension for NAnt.  ".nant" would be better.
-		/// Alternatively, the option should be given.
-		/// </summary>
-//		protected override string Extension
-//		{
-//			get { return "build"; }
-//		}
+		protected override void DoRun()
+		{
+			try
+			{
+				_script.BuildFinished += base.OnBuildFinished;
+
+//				ArrayList targets = _nantForm.GetTreeTargets();
+//				Hashtable properties = _nantForm.GetProjectProperties();
+
+				_script.Run();
+			}
+			catch (BuildException error)
+			{
+				_messageLogger.LogMessage(error.Message);
+			}
+		}
 	}
 }

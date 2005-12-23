@@ -21,25 +21,17 @@
 
 #endregion
 
-using NAnt.Core;
+using System;
 
-namespace NAntGui.Core
+namespace NAntGui.Framework
 {
-	/// <summary>
-	/// Summary description for GuiLogger.
-	/// </summary>
-	public class GuiLogger : DefaultLogger
+	public interface IProperty
 	{
-		public ILogsMessage _messageLogger;
-
-		public GuiLogger(ILogsMessage messageLogger) : base()
-		{
-			_messageLogger = messageLogger;
-		}
-
-		protected override void Log(string message)
-		{
-			_messageLogger.LogMessage(message);
-		}
+		string Name { get; }
+		string Value { get; }
+		string Category { get; }
+		bool IsReadOnly { get; }
+		Type Type { get; }
+		string ExpandedValue { get; }
 	}
 }

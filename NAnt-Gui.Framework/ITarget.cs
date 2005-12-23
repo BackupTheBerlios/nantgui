@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,24 +21,12 @@
 
 #endregion
 
-using System;
-using System.IO;
-
-namespace NAntGui.Core
+namespace NAntGui.Framework
 {
-	/// <summary>
-	/// Summary description for Assert.
-	/// </summary>
-	public class Assert
+	public interface ITarget
 	{
-		public static void NotNull(object item, string param)
-		{
-			if (item == null) throw new ArgumentNullException(param);
-		}
-
-		public static void FileExists(string buildFile)
-		{
-			if (!File.Exists(buildFile)) throw new BuildFileNotFoundException(buildFile + " not found.");
-		}
+		string Name { get; }
+		string Description { get; }
+		bool Default { get; }
 	}
 }

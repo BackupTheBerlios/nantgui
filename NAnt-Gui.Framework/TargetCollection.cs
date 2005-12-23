@@ -23,7 +23,7 @@
 
 using System.Collections;
 
-namespace NAntGui.Core
+namespace NAntGui.Framework
 {
 	/// <summary>
 	/// Summary description for TargetCollection.

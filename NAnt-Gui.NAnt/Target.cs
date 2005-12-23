@@ -23,8 +23,9 @@
 
 using System;
 using System.Xml;
+using NAntGui.Framework;
 
-namespace NAntGui.Core.NAnt
+namespace NAntGui.NAnt
 {
 	/// <summary>
 	/// Summary description for Target.

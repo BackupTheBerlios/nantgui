@@ -21,12 +21,13 @@
 
 #endregion
 
-namespace NAntGui.Core
+namespace NAntGui.Framework
 {
-	public interface ITarget
+	/// <summary>
+	/// Summary description for ILogsMessage.
+	/// </summary>
+	public interface ILogsMessage
 	{
-		string Name { get; }
-		string Description { get; }
-		bool Default { get; }
+		void LogMessage(string message);
 	}
 }
