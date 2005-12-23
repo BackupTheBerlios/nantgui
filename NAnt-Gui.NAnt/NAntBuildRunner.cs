@@ -21,29 +21,67 @@
 
 #endregion
 
+using System;
 using NAnt.Core;
 using NAntGui.Framework;
 
 namespace NAntGui.NAnt
 {
-	public class NAntBuildRunner : BuildRunner
+	public class NAntBuildRunner : IBuildRunner
 	{
 		private NAntBuildScript _script;
+		private ILogsMessage _messageLogger;
 
-		public NAntBuildRunner(ILogsMessage messageLogger, CommandLineOptions options) : base(messageLogger, options) {}
-
-		protected override IProject LoadingBuildFile(SourceFile sourceFile)
+		public NAntBuildRunner(string sourceFilePath, ILogsMessage messageLogger, 
+			CommandLineOptions options)
 		{
-			_script = new NAntBuildScript(sourceFile, _options, _messageLogger);
-			return _script;
+			_messageLogger = messageLogger;
+
+			try
+			{
+				_script = new NAntBuildScript(sourceFilePath, options, _messageLogger);
+			}
+			catch (ApplicationException error)
+			{
+				throw new BuildFileLoadException(GetErrorMessage(error));
+			}
+#if RELEASE
+			catch (Exception error)
+			{
+				// all other exceptions should have been caught
+				string message = error.Message + Environment.NewLine + 
+					error.StackTrace;
+				throw new BuildFileLoadException(message);
+			}
+#endif
 		}
 
-		protected override void DoRun()
+		private static string GetErrorMessage(ApplicationException error)
+		{
+			string message = "";
+#if DEBUG
+			string errorType = error.GetType().ToString() 
+				+ Environment.NewLine + error.StackTrace;
+
+			message += errorType;
+#endif
+
+			if (error.InnerException != null && error.InnerException.Message != null)
+			{
+				message += error.Message + Environment.NewLine + error.InnerException.Message;
+			}
+			else
+			{
+				message += error.Message;
+			}
+
+			return message;
+		}
+
+		public void Run()
 		{
 			try
 			{
-				_script.BuildFinished += base.OnBuildFinished;
-
 //				ArrayList targets = _nantForm.GetTreeTargets();
 //				Hashtable properties = _nantForm.GetProjectProperties();
 
@@ -53,6 +91,16 @@ namespace NAntGui.NAnt
 			{
 				_messageLogger.LogMessage(error.Message);
 			}
+		}
+
+		public VoidVoid BuildFinished
+		{
+			set { _script.BuildFinished += value; }
+		}
+
+		public IProject BuildScript
+		{
+			get { return _script; }
 		}
 	}
 }

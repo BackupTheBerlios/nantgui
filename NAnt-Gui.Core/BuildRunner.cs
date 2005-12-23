@@ -23,96 +23,22 @@
 
 using System;
 using System.Threading;
-using System.Windows.Forms;
 using NAntGui.Framework;
 
 namespace NAntGui.Core
 {
-	public delegate void BuildFileChangedEH(IProject project);
-
-	public abstract class BuildRunner
+	public class BuildRunner
 	{
-		public event BuildFileChangedEH BuildFileChanged;
-		public VoidVoid OnBuildFinished;
-
-		private Thread		_thread;
+		private Thread _thread;
 		
-		protected ILogsMessage _messageLogger;
-		protected SourceFile _sourceFile;
-		protected CommandLineOptions _options;
-
-		public BuildRunner(ILogsMessage messageLogger, CommandLineOptions options)
+		public void Run(IBuildRunner runner)
 		{
-			_messageLogger	= messageLogger;
-			_options		= options;
-		}
+			Assert.NotNull(runner, "runner");
+			Environment.CurrentDirectory = runner.BuildScript.Path;
 
-		public void LoadBuildFile(SourceFile sourceFile)
-		{
-				try
-				{
-					Environment.CurrentDirectory = sourceFile.Path;
-					IProject _project = this.LoadingBuildFile(sourceFile);
-
-					if (this.BuildFileChanged != null)
-					{
-//						if (_nantForm.InvokeRequired)
-//						{
-//							_nantForm.Invoke(this.BuildFileChanged, new object[] {_project});
-//						}
-//						else
-//						{
-							this.BuildFileChanged(_project);
-//						}
-					}
-				}
-				catch (ApplicationException error)
-				{
-					HandleErrorInBuildFile(error);
-				}
-#if RELEASE
-				catch (Exception error)
-				{
-					// all other exceptions should have been caught
-					string message = error.Message + Environment.NewLine + 
-						error.StackTrace;
-					MessageBox.Show(message, "Internal Error");
-				}
-#endif
-		}
-
-		protected abstract IProject LoadingBuildFile(SourceFile sourceFile);
-
-		private static void HandleErrorInBuildFile(ApplicationException error)
-		{
-#if DEBUG
-			string errorType = error.GetType().ToString() 
-				+ Environment.NewLine + error.StackTrace;
-
-			MessageBox.Show(errorType);
-#endif
-
-			if (error.InnerException != null && error.InnerException.Message != null)
-			{
-				string message = error.Message + Environment.NewLine + error.InnerException.Message;
-				MessageBox.Show(message , "Error Loading Build File");
-			}
-			else
-			{
-				MessageBox.Show(error.Message, "Error Loading Build File");
-			}
-		}
-
-		public void Run(SourceFile sourceFile)
-		{
-			Assert.NotNull(sourceFile, "sourceFile");
-			_sourceFile = sourceFile;
-
-			_thread = new Thread(new ThreadStart(this.DoRun));
+			_thread = new Thread(new ThreadStart(runner.Run));
 			_thread.Start();
 		}
-
-		protected abstract void DoRun();
 
 		public void Stop()
 		{
@@ -121,13 +47,5 @@ namespace NAntGui.Core
 				_thread.Abort();
 			}
 		}
-
-//		protected void FireBuildFinished()
-//		{
-//			if (this.BuildFinished != null)
-//			{
-//				this.BuildFinished();
-//			}
-//		}
 	}
 }

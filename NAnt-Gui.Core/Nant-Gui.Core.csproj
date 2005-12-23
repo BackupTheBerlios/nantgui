@@ -139,11 +139,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Assert.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BuildRunner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -160,21 +155,6 @@
                 />
                 <File
                     RelPath = "CommandLineOptions.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Delegates.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Exceptions.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "GuiLogger.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

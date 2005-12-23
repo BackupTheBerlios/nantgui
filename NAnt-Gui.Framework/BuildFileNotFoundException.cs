@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,9 +23,9 @@
 
 using System;
 
-namespace NAntGui.Core
+namespace NAntGui
 {
-	internal class BuildFileNotFoundException : ApplicationException
+	public class BuildFileNotFoundException : ApplicationException
 	{
 		public BuildFileNotFoundException(string s) : base(s)
 		{

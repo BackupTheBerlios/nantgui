@@ -3,6 +3,8 @@ using System.Xml;
 using NAnt.Core;
 using NAnt.Core.Tasks;
 using NAnt.Win32.Tasks;
+using NAntGui.Framework;
+using TargetCollection = NAntGui.Framework.TargetCollection;
 
 namespace NAntGui.NAnt
 {

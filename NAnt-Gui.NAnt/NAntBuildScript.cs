@@ -52,10 +52,10 @@ namespace NAntGui.NAnt
 		/// </summary>
 		public NAntBuildScript(string sourceFilePath, CommandLineOptions options, ILogsMessage messageLogger)
 		{
-			_sourceFilePath = sourceFilePath;
-			_options = options;
-			_messageLogger = messageLogger;
-			_project = new Project(_sourceFilePath, this.GetThreshold(), 0);
+			_sourceFilePath	= sourceFilePath;
+			_options		= options;
+			_messageLogger	= messageLogger;
+			_project		= new Project(_sourceFilePath, this.GetThreshold(), 0);
 
 			this.ParseBuildScript();
 		}
@@ -94,7 +94,7 @@ namespace NAntGui.NAnt
 			try
 			{
 				lExpandedProperty = _project.ExpandProperties(lValue,
-					new Location(_sourceFile.FullPath));
+					new Location(_sourceFilePath));
 			}
 			catch (BuildException)
 			{ /* ignore */

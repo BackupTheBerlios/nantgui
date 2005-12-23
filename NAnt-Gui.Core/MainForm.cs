@@ -34,7 +34,6 @@ using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
 using Flobbster.Windows.Forms;
-using NAntGui.Core.NAnt;
 using NAntGui.Framework;
 
 namespace NAntGui.Core
@@ -46,7 +45,7 @@ namespace NAntGui.Core
 	{
 		private delegate void MessageEventHandler(string pMessage);
 
-		private BuildRunner _buildRunner;
+		private BuildRunner _buildRunner = new BuildRunner();
 		private CommandLineOptions _options;
 		private RecentItems _recentItems = new RecentItems();
 		private DockingManager _dockManager;
@@ -240,16 +239,22 @@ namespace NAntGui.Core
 				ScriptTabPage page = new ScriptTabPage(filename);
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);
-				_buildRunner = BuildRunnerFactory.Create("", this, _options);
-				_buildRunner.BuildFileChanged += new BuildFileChangedEH(this.BuildFileLoaded);
-				_buildRunner.OnBuildFinished = new VoidVoid(this.Update);
-				_buildRunner.LoadBuildFile(page.File);
+				IBuildRunner buildRunner = BuildRunnerFactory.Create(page.File, this, _options);
+				this.BuildFileLoaded(buildRunner.BuildScript);
+				buildRunner.BuildFinished = new VoidVoid(this.Update);
 				return true;
 			}
 			catch (BuildFileNotFoundException error)
 			{
 				MessageBox.Show(error.Message, "Build File Not Found", 
 					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return false;
+			}
+			catch(BuildFileLoadException error)
+			{
+				MessageBox.Show(error.Message, "Error Loading Build File", 
+					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
 				return false;
 			}
 		}

@@ -66,21 +66,6 @@ namespace NAntGui.Core
 			_watcher.WatchBuildFile(info);
 		}
 
-//			try
-//			{
-//			}
-//			catch (ApplicationException error)
-//			{
-//				HandleErrorInBuildFile(error);
-//			}
-//			catch (Exception error)
-//			{
-//				// all other exceptions should have been caught
-//				string message = error.Message + Environment.NewLine + 
-//					error.StackTrace;
-//				MessageBox.Show(message, "Internal Error");
-//			}
-
 		public virtual void Close()
 		{
 			_watcher.DisableEvents();
@@ -107,6 +92,11 @@ namespace NAntGui.Core
 		public string Path
 		{
 			get { return _path; }
+		}
+
+		public string Extension
+		{
+			get { return _extension; }
 		}
 
 		#endregion

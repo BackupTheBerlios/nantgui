@@ -1,4 +1,5 @@
 using System;
+using NAntGui.Framework;
 
 namespace NAntGui.Core
 {
@@ -7,14 +8,15 @@ namespace NAntGui.Core
 	/// </summary>
 	public class BuildRunnerFactory
 	{
-		public static BuildRunner Create(string extension, ILogsMessage messageLogger, CommandLineOptions options)
+		public static IBuildRunner Create(SourceFile sourceFile, 
+			ILogsMessage messageLogger, CommandLineOptions options)
 		{
-			switch (extension)
+			switch (sourceFile.Extension)
 			{
 				default:
 				case "nant":
 				case "build":
-					return new NAnt.NAntBuildRunner(messageLogger, options);
+					return new NAnt.NAntBuildRunner(sourceFile.FullPath, messageLogger, options);
 				case "proj":
 					throw new NotImplementedException("Pete's code goes here :)");
 			}
