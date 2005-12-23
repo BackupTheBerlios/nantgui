@@ -52,6 +52,8 @@ namespace NAntGui.Core
 		private MenuCommand NAntMenuCommand = new MenuCommand();
 		private MenuCommand BuildMenuCommand = new MenuCommand();
 		private MenuCommand EditMainMenuCommand = new MenuCommand();
+		private MenuCommand UndoMenuCommand = new MenuCommand();
+		private MenuCommand RedoMenuCommand = new MenuCommand();
 		private MenuCommand CopyMenuCommand = new MenuCommand();
 		private MenuCommand SelectAllMenuCommand = new MenuCommand();
 		private MenuCommand ToolsMenuCommand = new MenuCommand();
@@ -206,11 +208,26 @@ namespace NAntGui.Core
 			this.EditMainMenuCommand.Description = "MenuCommand";
 			this.EditMainMenuCommand.MenuCommands.AddRange(new MenuCommand[]
 				{
+					this.UndoMenuCommand,
+					this.RedoMenuCommand,
+					new MenuCommand("-"), 
 					this.CopyMenuCommand,
 					this.SelectAllMenuCommand,
 					this.WordWrapMenuCommand
 				});
 			this.EditMainMenuCommand.Text = "&Edit";
+			// 
+			// UndoMenuCommand
+			// 
+			this.UndoMenuCommand.Description = "MenuCommand";
+			this.UndoMenuCommand.Shortcut = Shortcut.CtrlZ;
+			this.UndoMenuCommand.Text = "&Undo";
+			// 
+			// RedoMenuCommand
+			// 
+			this.RedoMenuCommand.Description = "MenuCommand";
+			this.RedoMenuCommand.Shortcut = Shortcut.CtrlY;
+			this.RedoMenuCommand.Text = "&Redo";
 			// 
 			// CopyMenuCommand
 			// 
@@ -399,6 +416,16 @@ namespace NAntGui.Core
 		public EventHandler Exit_Click
 		{
 			set { this.ExitMenuCommand.Click += value; }
+		}
+
+		public EventHandler Undo_Click
+		{
+			set { this.UndoMenuCommand.Click += value; }
+		}
+
+		public EventHandler Redo_Click
+		{
+			set { this.RedoMenuCommand.Click += value; }
 		}
 
 		public EventHandler Copy_Click

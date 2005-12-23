@@ -83,7 +83,7 @@ namespace NAntGui.Core
 				if (page.IsDirty)
 				{
 					DialogResult result =
-						MessageBox.Show("You have unsaved changes to" + page.File.Name + ".  Save?", "Save Changes?",
+						MessageBox.Show("You have unsaved changes to " + page.File.Name + ".  Save?", "Save Changes?",
 						MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
 
 					if (result == DialogResult.Yes)

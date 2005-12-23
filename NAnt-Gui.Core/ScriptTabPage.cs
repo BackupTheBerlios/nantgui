@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
-using Crownwood.Magic.Controls;
+using System.Windows.Forms;
+using TabPage = Crownwood.Magic.Controls.TabPage;
 
 namespace NAntGui.Core
 {
@@ -27,9 +28,8 @@ namespace NAntGui.Core
 
         private void Initialize()
 		{
-			// 
-			// ScriptTabPage
-			// 
+			_sourceEditor.ActiveTextAreaControl.TextArea.KeyPress += new KeyPressEventHandler(this.Editor_TextChanged);
+
 			_scriptTab.Controls.Add(_sourceEditor);
 			_scriptTab.Location = new Point(0, 0);
 			_scriptTab.Selected = true;
@@ -43,11 +43,10 @@ namespace NAntGui.Core
 			Assert.FileExists(filename);
 			_sourceEditor.LoadFile(filename);
 			_file = new SourceFile(filename, _sourceEditor.Text);
-			_sourceEditor.TextChanged += new EventHandler(this.Editor_TextChanged);
 			_scriptTab.Title = _file.Name;
 		}
 
-		private void Editor_TextChanged(object sender, EventArgs e)
+		private void Editor_TextChanged(object sender, KeyPressEventArgs e)
 		{
 			if (this.IsDirty && !Utils.HasAsterisk(_scriptTab.Title))
 			{
@@ -72,6 +71,7 @@ namespace NAntGui.Core
 		public void ReLoad()
 		{
 			_sourceEditor.LoadFile(_file.FullPath);
+			_scriptTab.Title = _file.Name;
 		}
 
 		public void SaveAs(string fileName)
@@ -88,6 +88,16 @@ namespace NAntGui.Core
 		public bool IsDirty
 		{
 			get{ return _file.Contents != _sourceEditor.Text; }
+		}
+
+		public void Undo()
+		{
+			_sourceEditor.Undo();
+		}
+
+		public void Redo()
+		{
+			_sourceEditor.Redo();
 		}
 	}
 }

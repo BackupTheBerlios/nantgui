@@ -10,7 +10,7 @@ namespace NAntGui.Core
 	/// </summary>
 	public class ScriptEditor : TextEditorControl
 	{
-		private ScriptEditorContextMenu _xmlContextMenu;
+		private ScriptEditorContextMenu _sourceContextMenu;
 
 		public ScriptEditor()
 		{
@@ -21,7 +21,7 @@ namespace NAntGui.Core
 
 		private void Initialize()
 		{
-			_xmlContextMenu = new ScriptEditorContextMenu(this.ActiveTextAreaControl.TextArea.ClipboardHandler);
+			_sourceContextMenu = new ScriptEditorContextMenu(this.ActiveTextAreaControl.TextArea.ClipboardHandler);
 	
 			// 
 			// ScriptEditor
@@ -48,10 +48,13 @@ namespace NAntGui.Core
 
 		private void PopupMenu(object sender, MouseEventArgs e)
 		{
+			Assert.NotNull(sender, "sender");
+			Assert.NotNull(e, "e");
+
 			if (sender is TextArea && e.Button == MouseButtons.Right)
 			{
 				TextArea area = sender as TextArea;
-				_xmlContextMenu.TrackPopup(area.PointToScreen(new Point(e.X, e.Y)));
+				_sourceContextMenu.TrackPopup(area.PointToScreen(new Point(e.X, e.Y)));
 			}
 		}
 	}

@@ -174,6 +174,8 @@ namespace NAntGui.Core
 
 		private void AssignMenuCommands()
 		{
+			_mainMenu.Undo_Click = new EventHandler(this.Undo_Click);
+			_mainMenu.Redo_Click = new EventHandler(this.Redo_Click);
 			_mainMenu.Copy_Click = new EventHandler(_outputBox.CopyText);
 			_mainMenu.SelectAll_Click = new EventHandler(_outputBox.SelectAllText);
 			_mainMenu.SaveOutput_Click = new EventHandler(_outputBox.SaveOutput);
@@ -585,9 +587,19 @@ namespace NAntGui.Core
 			set { _propertyGrid.PropertySort = value; }
 		}
 
-		public void Reload_Click(object sender, EventArgs e)
+		private void Reload_Click(object sender, EventArgs e)
 		{
 			_sourceTabs.SelectedTab.ReLoad();
+		}
+
+		private void Undo_Click(object sender, EventArgs e)
+		{
+			_sourceTabs.SelectedTab.Undo();
+		}
+
+		private void Redo_Click(object sender, EventArgs e)
+		{
+			_sourceTabs.SelectedTab.Redo();
 		}
 	}
 }
