@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using Flobbster.Windows.Forms;
 using NAnt.Core.Util;
 using NAnt.Core;
 using NAntGui.Framework;
@@ -55,7 +54,7 @@ namespace NAntGui.NAnt
 			_sourceFile		= sourceFile;
 			_options		= options;
 			_messageLogger	= messageLogger;
-			_project		= new Project(_sourceFilePath, this.GetThreshold(), 0);
+			_project		= new Project(sourceFile.FullPath, this.GetThreshold(), 0);
 
 			this.ParseBuildScript();
 		}
@@ -72,29 +71,29 @@ namespace NAntGui.NAnt
 		}
 
 
-		public void SetProjectProperties(PropertySpecCollection properties)
+		public void SetProjectProperties(PropertyCollection properties)
 		{
-			foreach (PropertySpec spec in properties)
+			foreach (BuildProperty property in properties)
 			{
-				if (spec.Category == "Project")
+				if (property.Category == "Project")
 				{
-					_project.BaseDirectory = spec.ToString();
+					_project.BaseDirectory = property.ToString();
 				}
-				else if (spec.Category == "Global" || ValidTarget(spec.Category))
+				else if (property.Category == "Global" || ValidTarget(property.Category))
 				{
-					this.LoadNonProjectProperty(spec, properties);
+					this.LoadNonProjectProperty(property, properties);
 				}
 			}
 		}
 
-		private void LoadNonProjectProperty(PropertySpec spec, PropertySpecCollection properties)
+		private void LoadNonProjectProperty(BuildProperty spec, PropertyCollection properties)
 		{
 			string lValue = properties.ToString();
 			string lExpandedProperty = lValue;
 			try
 			{
 				lExpandedProperty = _project.ExpandProperties(lValue,
-					new Location(_sourceFilePath));
+					new Location(_sourceFile.FullPath));
 			}
 			catch (BuildException)
 			{ /* ignore */

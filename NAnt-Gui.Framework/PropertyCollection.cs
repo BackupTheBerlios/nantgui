@@ -42,14 +42,14 @@ namespace NAntGui.Framework
 			_properties = new Hashtable(size);
 		}
 
-		public void Add(IProperty property)
+		public void Add(BuildProperty buildProperty)
 		{
-			_properties.Add(property.Name, property);
+			_properties.Add(buildProperty.Name, buildProperty);
 		}
 
 		public void AddRange(PropertyCollection properties)
 		{
-			foreach (IProperty property in properties)
+			foreach (BuildProperty property in properties)
 			{
 				_properties.Add(property.Name, property);
 			}
@@ -65,9 +65,9 @@ namespace NAntGui.Framework
 			return _properties.Contains(key);
 		}
 
-		public IProperty this[string key]
+		public BuildProperty this[string key]
 		{
-			get { return (IProperty) _properties[key]; }
+			get { return (BuildProperty) _properties[key]; }
 			set { _properties[key] = value; }
 		}
 	}

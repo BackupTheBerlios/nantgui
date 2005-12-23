@@ -25,13 +25,54 @@ using System;
 
 namespace NAntGui.Framework
 {
-	public interface IProperty
+	public class BuildProperty
 	{
-		string Name { get; }
-		string Value { get; }
-		string Category { get; }
-		bool IsReadOnly { get; }
-		Type Type { get; }
-		string ExpandedValue { get; }
+		protected string _name = "";
+		protected string _value = "";
+		protected string _expandedValue = "";
+		protected string _category = "Global";
+		protected bool _isReadOnly = false;
+
+		public virtual string Name
+		{
+			get { return _name; }
+		}
+
+		public virtual string Value
+		{
+			get { return _value; }
+			set { _value = value; }
+		}
+
+		public virtual string Category
+		{
+			get { return _category; }
+			set { _category = value; }
+		}
+
+		public virtual bool IsReadOnly
+		{
+			get { return _isReadOnly; }
+		}
+
+		public virtual Type Type
+		{
+			get
+			{
+				string val = _value.ToLower();
+				return (val == "true" || val == "false") ? typeof (bool) : typeof (string);
+			}
+		}
+
+		public virtual string ExpandedValue
+		{
+			get { return _expandedValue; }
+			set { _expandedValue = value; }
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{1}: {2}", _name, _value);
+		}
 	}
 }

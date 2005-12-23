@@ -84,9 +84,9 @@ namespace NAntGui.NAnt
 
 		private void ParseBaseDir()
 		{
-			Property property = new Property("BaseDir", _project.BaseDirectory, "Project", false);
-			_project.Properties.AddReadOnly(property.Name, _project.BaseDirectory);
-			_properties.Add(property);
+			NAntProperty nAntProperty = new NAntProperty("BaseDir", _project.BaseDirectory, "Project", false);
+			_project.Properties.AddReadOnly(nAntProperty.Name, _project.BaseDirectory);
+			_properties.Add(nAntProperty);
 		}
 
 		private void ParseProperties()
@@ -98,19 +98,19 @@ namespace NAntGui.NAnt
 		{
 			foreach (XmlElement element in doc.GetElementsByTagName("property"))
 			{
-				Property property = new Property(element);
+				NAntProperty nantProperty = new NAntProperty(element);
 				try
 				{
-					property.ExpandedValue = _project.ExpandProperties(property.Value, new Location("Buildfile"));
+					nantProperty.ExpandedValue = _project.ExpandProperties(nantProperty.Value, new Location("Buildfile"));
 				}
 				catch (BuildException)
 				{ /* ignore */
 				}
 
-				if (!_project.Properties.Contains(property.Name))
+				if (!_project.Properties.Contains(nantProperty.Name))
 				{
-					_project.Properties.AddReadOnly(property.Name, property.ExpandedValue);
-					_properties.Add(property);
+					_project.Properties.AddReadOnly(nantProperty.Name, nantProperty.ExpandedValue);
+					_properties.Add(nantProperty);
 				}
 			}
 		}
@@ -137,9 +137,9 @@ namespace NAntGui.NAnt
 					{
 						task.Execute();
 
-						Property lProperty = new Property(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value, false);
-						lProperty.ExpandedValue = lProperty.Value;
-						_properties.Add(lProperty);
+						NAntProperty lNAntProperty = new NAntProperty(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value, false);
+						lNAntProperty.ExpandedValue = lNAntProperty.Value;
+						_properties.Add(lNAntProperty);
 					}
 				}
 			}
@@ -156,9 +156,9 @@ namespace NAntGui.NAnt
 					{
 						task.Execute();
 
-						Property lProperty = new Property(task.PropertyName, task.Properties[task.PropertyName], lElement.ParentNode.Attributes["name"].Value, false);
-						lProperty.ExpandedValue = lProperty.Value;
-						_properties.Add(lProperty);
+						NAntProperty lNAntProperty = new NAntProperty(task.PropertyName, task.Properties[task.PropertyName], lElement.ParentNode.Attributes["name"].Value, false);
+						lNAntProperty.ExpandedValue = lNAntProperty.Value;
+						_properties.Add(lNAntProperty);
 					}
 				}
 			}
