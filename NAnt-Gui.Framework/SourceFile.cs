@@ -35,22 +35,28 @@ namespace NAntGui.Framework
 		protected string _path;
 		protected string _extension;
 		protected string _contents;
+		protected ILogsMessage _messageLogger;
+		protected CommandLineOptions _options;
 
 		private Watcher	_watcher = new Watcher();
+		
 
-		public SourceFile()
+		public SourceFile(ILogsMessage messageLogger, CommandLineOptions options)
 		{
-			_name = "Untitled";
-			_path = ".\\";
-			_fullName = _path + _name;
-			_extension = "";
-			_contents = "";
+			_name			= "Untitled";
+			_path			= ".\\";
+			_fullName		= _path + _name;
+			_extension		= "";
+			_contents		= "";
+			_messageLogger	= messageLogger;
+			_options		= options;
 		}
 
 		/// <summary>
 		/// Create a new build file.
 		/// </summary>
-		public SourceFile(string buildFile, string contents)
+		public SourceFile(string buildFile, string contents, 
+			ILogsMessage messageLogger, CommandLineOptions options)
 		{
 			Assert.NotNull(buildFile, "buildFile");
 			Assert.NotNull(contents, "contents");
@@ -62,6 +68,8 @@ namespace NAntGui.Framework
 			_name			= info.Name;
 			_path			= info.DirectoryName;
 			_extension		= info.Extension;
+			_messageLogger	= messageLogger;
+			_options		= options;
 
 			_watcher.WatchBuildFile(info);
 		}
@@ -79,7 +87,7 @@ namespace NAntGui.Framework
 			set { _contents = value; }
 		}
 
-		public string FullPath
+		public string FullName
 		{
 			get { return _fullName; }
 		}
@@ -97,6 +105,16 @@ namespace NAntGui.Framework
 		public string Extension
 		{
 			get { return _extension; }
+		}
+
+		public ILogsMessage MessageLogger
+		{
+			get { return _messageLogger; }
+		}
+
+		public CommandLineOptions Options
+		{
+			get { return _options; }
 		}
 
 		#endregion

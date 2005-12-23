@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Menus;
-using NAntGui.Core.NAnt;
+using NAntGui.Framework;
 
 namespace NAntGui.Core
 {
@@ -76,7 +76,7 @@ namespace NAntGui.Core
 			}
 			else
 			{
-				Target target = (Target) node.Tag;
+				BuildTarget target = node.Tag as BuildTarget;
 				this.ToolTip.SetToolTip(this, target.Description);
 			}
 		}

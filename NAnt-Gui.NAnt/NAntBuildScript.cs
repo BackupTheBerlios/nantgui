@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using NAnt.Core.Util;
 using NAnt.Core;
+using NAnt.Core.Util;
 using NAntGui.Framework;
 using TargetCollection = NAntGui.Framework.TargetCollection;
 
@@ -39,8 +39,6 @@ namespace NAntGui.NAnt
 		private string _description = "";
 		private Project _project;
 		private SourceFile _sourceFile;
-		private CommandLineOptions _options;
-		private ILogsMessage _messageLogger;
 
 		private TargetCollection _targets		= new TargetCollection();
 		private PropertyCollection _properties	= new PropertyCollection();
@@ -49,12 +47,10 @@ namespace NAntGui.NAnt
 		/// <summary>
 		/// Create a new project parser.
 		/// </summary>
-		public NAntBuildScript(SourceFile sourceFile, CommandLineOptions options, ILogsMessage messageLogger)
+		public NAntBuildScript(SourceFile sourceFile)
 		{
 			_sourceFile		= sourceFile;
-			_options		= options;
-			_messageLogger	= messageLogger;
-			_project		= new Project(sourceFile.FullPath, this.GetThreshold(), 0);
+			_project		= new Project(sourceFile.FullName, this.GetThreshold(), 0);
 
 			this.ParseBuildScript();
 		}
@@ -93,7 +89,7 @@ namespace NAntGui.NAnt
 			try
 			{
 				lExpandedProperty = _project.ExpandProperties(lValue,
-					new Location(_sourceFile.FullPath));
+					new Location(_sourceFile.FullName));
 			}
 			catch (BuildException)
 			{ /* ignore */
@@ -115,7 +111,7 @@ namespace NAntGui.NAnt
 		{
 			Assert.NotNull(_project, "project");
 			BuildListenerCollection listeners = new BuildListenerCollection();
-			IBuildLogger buildLogger = new GuiLogger(_messageLogger);
+			IBuildLogger buildLogger = new GuiLogger(_sourceFile.MessageLogger);
 
 			// set threshold of build logger equal to threshold of project
 			buildLogger.Threshold = _project.Threshold;
@@ -131,15 +127,15 @@ namespace NAntGui.NAnt
 		{
 			Level projectThreshold = Level.Info;
 			// determine the project message threshold
-			if (_options.Debug) 
+			if (_sourceFile.Options.Debug) 
 			{
 				projectThreshold = Level.Debug;
 			} 
-			else if (_options.Verbose) 
+			else if (_sourceFile.Options.Verbose) 
 			{
 				projectThreshold = Level.Verbose;
 			} 
-			else if (_options.Quiet) 
+			else if (_sourceFile.Options.Quiet) 
 			{
 				projectThreshold = Level.Warning;
 			}
@@ -152,7 +148,7 @@ namespace NAntGui.NAnt
 			{
 				_project.BuildFinished += new BuildEventHandler(this.Build_Finished);
 
-				if (_options.TargetFramework != null) 
+				if (_sourceFile.Options.TargetFramework != null) 
 				{
 					this.SetTargetFramework();
 				}
@@ -165,7 +161,7 @@ namespace NAntGui.NAnt
 			}
 			catch (BuildException error)
 			{
-				_messageLogger.LogMessage(error.Message);
+				_sourceFile.MessageLogger.LogMessage(error.Message);
 			}
 		}
 
@@ -178,7 +174,7 @@ namespace NAntGui.NAnt
 			} 
 			else
 			{
-				FrameworkInfo frameworkInfo = _project.Frameworks[_options.TargetFramework];
+				FrameworkInfo frameworkInfo = _project.Frameworks[_sourceFile.Options.TargetFramework];
 
 				if (frameworkInfo != null) 
 				{
@@ -187,7 +183,7 @@ namespace NAntGui.NAnt
 				else 
 				{
 					const string format = "Invalid framework '{0}' specified.";
-					string message = string.Format(format, _options.TargetFramework);
+					string message = string.Format(format, _sourceFile.Options.TargetFramework);
 					throw new CommandLineArgumentException(message);
 				}
 			}

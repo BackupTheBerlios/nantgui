@@ -32,14 +32,13 @@ namespace NAntGui.NAnt
 		private NAntBuildScript _script;
 		private ILogsMessage _messageLogger;
 
-		public NAntBuildRunner(SourceFile sourceFile, ILogsMessage messageLogger, 
-			CommandLineOptions options)
+		public NAntBuildRunner(SourceFile sourceFile)
 		{
-			_messageLogger = messageLogger;
+			_messageLogger = sourceFile.MessageLogger;
 
 			try
 			{
-				_script = new NAntBuildScript(sourceFile, options, _messageLogger);
+				_script = new NAntBuildScript(sourceFile);
 			}
 			catch (ApplicationException error)
 			{

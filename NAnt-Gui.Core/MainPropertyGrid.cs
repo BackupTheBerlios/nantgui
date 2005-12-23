@@ -27,6 +27,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Flobbster.Windows.Forms;
+using NAntGui.Framework;
 
 namespace NAntGui.Core
 {
@@ -59,7 +60,7 @@ namespace NAntGui.Core
 		{
 			_propertyTable.Properties.Clear();
 
-			foreach (IProperty property in properties)
+			foreach (BuildProperty property in properties)
 			{
 				PropertySpec spec = new PropertySpec(property.Name, property.Type,
 					property.Category, property.ExpandedValue, property.Value);

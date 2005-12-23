@@ -14,7 +14,7 @@ namespace NAntGui.NAnt
 	public class ScriptParser
 	{
 		Project _project;
-		private TargetCollection _targets = new TargetCollection();
+		private Framework.TargetCollection _targets = new Framework.TargetCollection();
 		private DependsCollection _depends = new DependsCollection();
 		private PropertyCollection _properties = new PropertyCollection();
 

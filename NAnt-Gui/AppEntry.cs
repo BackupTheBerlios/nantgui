@@ -23,8 +23,8 @@
 
 using System;
 using System.Reflection;
-using NAntGui.Core;
 using NAnt.Core.Util;
+using NAntGui.Core;
 
 namespace NAntGui
 {

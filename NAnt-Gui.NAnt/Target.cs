@@ -30,12 +30,9 @@ namespace NAntGui.NAnt
 	/// <summary>
 	/// Summary description for Target.
 	/// </summary>
-	public class Target : ITarget, IComparable
+	public class Target : BuildTarget, IComparable
 	{
-		private string _name = "";
-		private string _description = "";
 		private string[] _depends;
-		private bool _default = false;
 
 		public Target(XmlElement element)
 		{
@@ -69,25 +66,9 @@ namespace NAntGui.NAnt
 
 		#region Properties
 
-		public string Name
-		{
-			get { return _name; }
-		}
-
-		public string Description
-		{
-			get { return _description; }
-		}
-
 		public string[] Depends
 		{
 			get { return _depends; }
-		}
-
-		public bool Default
-		{
-			get { return _default; }
-			set { _default = value; }
 		}
 
 		#endregion

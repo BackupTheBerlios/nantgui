@@ -149,11 +149,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "CommandLineOptions.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "MainForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -294,11 +289,6 @@
                 <File
                     RelPath = "Images\nantgui-1.2.5beta2.png"
                     BuildAction = "Content"
-                />
-                <File
-                    RelPath = "MSBuild\MSBuildBuildFile.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
             </Include>
         </Files>

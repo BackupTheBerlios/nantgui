@@ -23,10 +23,26 @@
 
 namespace NAntGui.Framework
 {
-	public interface ITarget
+	public class BuildTarget
 	{
-		string Name { get; }
-		string Description { get; }
-		bool Default { get; }
+		protected string _name = "";
+		protected string _description = "";
+		protected bool _default = false;
+
+		public virtual string Name
+		{
+			get { return _name; }
+		}
+
+		public virtual string Description
+		{
+			get { return _description; }
+		}
+
+		public virtual bool Default
+		{
+			get { return _default; }
+			set { _default = value; }
+		}
 	}
 }

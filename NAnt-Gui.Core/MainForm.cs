@@ -45,7 +45,6 @@ namespace NAntGui.Core
 	{
 		private delegate void MessageEventHandler(string pMessage);
 
-		private BuildRunner _buildRunner = new BuildRunner();
 		private CommandLineOptions _options;
 		private RecentItems _recentItems = new RecentItems();
 		private DockingManager _dockManager;
@@ -163,7 +162,7 @@ namespace NAntGui.Core
 		{
 			_mainToolBar.Build_Click += new VoidVoid(this.Build);
 			_mainToolBar.Open_Click += new VoidVoid(this.BrowseForBuildFile);
-			_mainToolBar.Stop_Click += new VoidVoid(_buildRunner.Stop);
+			_mainToolBar.Stop_Click += new VoidVoid(this.Stop_Click);
 			_mainToolBar.Save_Click += new EventHandler(this.SaveMenuCommand_Click);
 			_mainToolBar.Reload_Click += new EventHandler(this.Reload_Click);
 		}
@@ -227,7 +226,7 @@ namespace NAntGui.Core
 				if (!_recentItems.HasRecentItems || !this.LoadBuildFile(_recentItems[0]))
 				{
 					_sourceTabs.Clear();
-					_sourceTabs.AddTab(new ScriptTabPage());
+					_sourceTabs.AddTab(new ScriptTabPage(this, _options));
 				}
 			}
 		}
@@ -236,12 +235,11 @@ namespace NAntGui.Core
 		{
 			try
 			{
-				ScriptTabPage page = new ScriptTabPage(filename);
+				ScriptTabPage page = new ScriptTabPage(filename, this, _options);
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);
-				IBuildRunner buildRunner = BuildRunnerFactory.Create(page.File, this, _options);
-				this.BuildFileLoaded(buildRunner.BuildScript);
-				buildRunner.BuildFinished = new VoidVoid(this.Update);
+				this.BuildFileLoaded(page.BuildScript);
+				page.BuildFinished = new VoidVoid(this.Update);
 				return true;
 			}
 			catch (BuildFileNotFoundException error)
@@ -325,7 +323,7 @@ namespace NAntGui.Core
 		private void Build()
 		{
 			_outputBox.Clear();
-			_buildRunner.Run(_sourceTabs.SelectedTab.File);
+			_sourceTabs.SelectedTab.Run();
 		}
 
 		private void NAnt_Closed(object sender, EventArgs e)
@@ -393,12 +391,12 @@ namespace NAntGui.Core
 
 			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
 
-			_recentItems.Add(_sourceTabs.SelectedTab.File.FullPath);
+			_recentItems.Add(_sourceTabs.SelectedTab.File.FullName);
 			_recentItems.Save();
 			this.UpdateRecentItemsMenu();
 
 			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
-			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullPath;
+			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullName;
 
 			_targetsTree.Nodes.Clear();
 			_targetsTree.Nodes.Add(new TreeNode(projectName));
@@ -407,7 +405,7 @@ namespace NAntGui.Core
 
 		private void AddTargets(TargetCollection targets)
 		{
-			foreach (ITarget target in targets)
+			foreach (BuildTarget target in targets)
 			{
 				this.AddTargetTreeNode(target);
 			}
@@ -434,14 +432,14 @@ namespace NAntGui.Core
 			return _propertyGrid.GetProjectProperties();
 		}
 
-		private void AddTargetTreeNode(ITarget target)
+		private void AddTargetTreeNode(BuildTarget buildTarget)
 		{
-			if (!(Settings.HideTargetsWithoutDescription && !HasDescription(target.Description)))
+			if (!(Settings.HideTargetsWithoutDescription && !HasDescription(buildTarget.Description)))
 			{
-				string targetName = FormatTargetName(target.Name, target.Description);
+				string targetName = FormatTargetName(buildTarget.Name, buildTarget.Description);
 				TreeNode node = new TreeNode(targetName);
-				node.Checked = target.Default;
-				node.Tag = target;
+				node.Checked = buildTarget.Default;
+				node.Tag = buildTarget;
 				this._targetsTree.Nodes[0].Nodes.Add(node);
 			}
 		}
@@ -566,9 +564,8 @@ namespace NAntGui.Core
 
 		private void MainForm_Closing(object sender, CancelEventArgs e)
 		{
-			_buildRunner.Stop();
+			_sourceTabs.SelectedTab.Stop();
 			_sourceTabs.CloseTabs(e);
-
 		}
 
 		private void SaveAsMenuCommand_Click(object sender, EventArgs e)
@@ -608,6 +605,11 @@ namespace NAntGui.Core
 		private void Redo_Click(object sender, EventArgs e)
 		{
 			_sourceTabs.SelectedTab.Redo();
+		}
+
+		private void Stop_Click()
+		{
+			_sourceTabs.SelectedTab.Stop();
 		}
 	}
 }

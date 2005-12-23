@@ -42,9 +42,9 @@ namespace NAntGui.Framework
 			_targets = new ArrayList(size);
 		}
 
-		public void Add(ITarget target)
+		public void Add(BuildTarget buildTarget)
 		{
-			_targets.Add(target);
+			_targets.Add(buildTarget);
 		}
 
 		public void AddRange(TargetCollection targets)

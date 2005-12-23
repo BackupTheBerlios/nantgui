@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using ICSharpCode.TextEditor.Document;
+using NAntGui.Framework;
 using TabPage = Crownwood.Magic.Controls.TabPage;
 
 namespace NAntGui.Core
@@ -14,16 +14,17 @@ namespace NAntGui.Core
 		private TabPage _scriptTab			= new TabPage();
 		private ScriptEditor _sourceEditor	= new ScriptEditor();
 		private SourceFile _file;
+		private IBuildRunner _buildRunner;
 
-		public ScriptTabPage()
+		public ScriptTabPage(ILogsMessage logger, CommandLineOptions options)
 		{
-			_file = new SourceFile();
+			_file = new SourceFile(logger, options);
 			this.Initialize();
 		}
 
-		public ScriptTabPage(string filename)
+		public ScriptTabPage(string filename, ILogsMessage logger, CommandLineOptions options)
 		{
-			this.Load(filename);
+			this.Load(filename, logger, options);
 			this.Initialize();
 		}
 
@@ -39,11 +40,12 @@ namespace NAntGui.Core
 		}
 
 
-		private void Load(string filename)
+		private void Load(string filename, ILogsMessage logger, CommandLineOptions options)
 		{
 			Assert.FileExists(filename);
 			_sourceEditor.LoadFile(filename);
-			_file = new SourceFile(filename, _sourceEditor.Text);
+			_file = new SourceFile(filename, _sourceEditor.Text, logger, options);
+			_buildRunner = BuildRunnerFactory.Create(_file);
 			_scriptTab.Title = _file.Name;
 		}
 
@@ -71,19 +73,20 @@ namespace NAntGui.Core
 
 		public void ReLoad()
 		{
-			_sourceEditor.LoadFile(_file.FullPath);
+			_sourceEditor.LoadFile(_file.FullName);
 			_scriptTab.Title = _file.Name;
 		}
 
 		public void SaveAs(string fileName)
 		{
 			_sourceEditor.SaveFile(fileName);
-			_file = new SourceFile(fileName, _sourceEditor.Text);
+			_file = new SourceFile(fileName, _sourceEditor.Text, 
+				_file.MessageLogger, _file.Options);
 		}
 
 		public void Save()
 		{
-			_sourceEditor.SaveFile(_file.FullPath);
+			_sourceEditor.SaveFile(_file.FullName);
 		}
 
 		public bool IsDirty
@@ -99,6 +102,26 @@ namespace NAntGui.Core
 		public void Redo()
 		{
 			_sourceEditor.Redo();
+		}
+
+		public void Stop()
+		{
+			_buildRunner.Stop();
+		}
+
+		public void Run()
+		{
+			_buildRunner.Run();
+		}
+
+		public IBuildScript BuildScript
+		{
+			get { return _buildRunner.BuildScript; }
+		}
+
+		public VoidVoid BuildFinished
+		{
+			set { _buildRunner.BuildFinished = value; }
 		}
 	}
 }
