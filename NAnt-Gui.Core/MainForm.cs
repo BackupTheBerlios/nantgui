@@ -240,6 +240,7 @@ namespace NAntGui.Core
 				_sourceTabs.AddTab(page);
 				this.BuildFileLoaded(page.BuildScript);
 				page.BuildFinished = new VoidVoid(this.Update);
+				page.SourceChanged += new VoidVoid(this.Source_Changed);
 				return true;
 			}
 			catch (BuildFileNotFoundException error)
@@ -550,16 +551,9 @@ namespace NAntGui.Core
 			_dockManager.ShowContent(_propertiesContent);
 		}
 
-		private void Source_Changed(bool isChanged)
+		private void Source_Changed()
 		{
-			if (isChanged && !Utils.HasAsterisk(this.Text))
-			{
-				this.Text = Utils.AddAsterisk(this.Text);
-			}
-			else if (!isChanged && Utils.HasAsterisk(this.Text))
-			{
-				this.Text = Utils.RemoveAsterisk(this.Text);
-			}
+			this.Text = "NAnt-Gui - " + _sourceTabs.SelectedTab.Title;
 		}
 
 		private void MainForm_Closing(object sender, CancelEventArgs e)

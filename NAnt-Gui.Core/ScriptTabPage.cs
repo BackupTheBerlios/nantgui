@@ -1,4 +1,3 @@
-using System;
 using System.Drawing;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Framework;
@@ -11,6 +10,8 @@ namespace NAntGui.Core
 	/// </summary>
 	public class ScriptTabPage
 	{
+		public event VoidVoid SourceChanged;
+
 		private TabPage _scriptTab			= new TabPage();
 		private ScriptEditor _sourceEditor	= new ScriptEditor();
 		private SourceFile _file;
@@ -58,6 +59,11 @@ namespace NAntGui.Core
 			else if (!this.IsDirty && Utils.HasAsterisk(_scriptTab.Title))
 			{
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
+			}
+
+			if (this.SourceChanged != null)
+			{
+				this.SourceChanged();
 			}
 		}
 
@@ -122,6 +128,11 @@ namespace NAntGui.Core
 		public VoidVoid BuildFinished
 		{
 			set { _buildRunner.BuildFinished = value; }
+		}
+
+		public string Title
+		{
+			get { return _scriptTab.Title; }
 		}
 	}
 }
