@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
+using NAntGui.Framework;
 
 namespace Flobbster.Windows.Forms
 {
@@ -43,6 +44,7 @@ namespace Flobbster.Windows.Forms
 		private string name;
 		private string type;
 		private string typeConverter;
+		private object tag;
 
 		/// <summary>
 		/// Initializes a new instance of the PropertySpec class.
@@ -325,6 +327,17 @@ namespace Flobbster.Windows.Forms
 		}
 
 
+		public PropertySpec(BuildProperty property) : this(property.Name, property.Type,
+			property.Category, property.ExpandedValue, property.Value)
+		{
+			tag = property;
+
+			if (property.IsReadOnly)
+			{
+				attributes = new Attribute[] {ReadOnlyAttribute.Yes};
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets a collection of additional Attributes for this property.  This can
 		/// be used to specify attributes beyond those supported intrinsically by the
@@ -402,21 +415,16 @@ namespace Flobbster.Windows.Forms
 			set { type = value; }
 		}
 
-		#region IComparable Members
+		public object Tag
+		{
+			get { return tag; }
+			set { tag = value; }
+		}
 
-//		public int CompareTo(object obj)
-//		{
-//			if (obj.GetType() == typeof (PropertySpec))
-//			{
-//					return ((PropertySpec) obj).Rank.CompareTo(this.Rank);
-//			}
-//			else
-//			{
-//				throw new ArgumentException("Wasn't a PropertySpec.", "obj");
-//			}
-//		}
-
-		#endregion
+		public string Key
+		{
+			get { return string.Format("{0}.{1}", category, name); }
+		}
 	}
 
 	/// <summary>
@@ -1084,7 +1092,7 @@ namespace Flobbster.Windows.Forms
 		/// </summary>
 		protected override void OnGetValue(PropertySpecEventArgs e)
 		{
-			e.Value = propValues[GetKey(e)];
+			e.Value = propValues[e.Property.Key];
 			base.OnGetValue(e);
 		}
 
@@ -1093,14 +1101,8 @@ namespace Flobbster.Windows.Forms
 		/// </summary>
 		protected override void OnSetValue(PropertySpecEventArgs e)
 		{
-			propValues[GetKey(e)] = e.Value;
+			propValues[e.Property.Key] = e.Value;
 			base.OnSetValue(e);
 		}
-
-		private static string GetKey(PropertySpecEventArgs e)
-		{
-			return string.Format("{0}.{1}", e.Property.Category, e.Property.Name);
-		}
-
 	}
 }

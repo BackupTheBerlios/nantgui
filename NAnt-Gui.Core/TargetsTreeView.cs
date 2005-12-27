@@ -48,9 +48,9 @@ namespace NAntGui.Core
 
 		private void BuildTreeView_AfterCheck(object sender, TreeViewEventArgs e)
 		{
-			foreach (TreeNode lNode in e.Node.Nodes)
+			foreach (TreeNode node in e.Node.Nodes)
 			{
-				lNode.Checked = e.Node.Checked;
+				node.Checked = e.Node.Checked;
 			}
 		}
 
@@ -89,5 +89,19 @@ namespace NAntGui.Core
 			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {build});
 		}
 
+		public TargetCollection GetTargets()
+		{
+			TargetCollection targets = new TargetCollection();
+			foreach (TreeNode node in this.Nodes[0].Nodes)
+			{
+				if (node.Checked)
+				{
+					BuildTarget target = node.Tag as BuildTarget;
+					targets.Add(target);
+				}
+			}
+
+			return targets;
+		}
 	}
 }

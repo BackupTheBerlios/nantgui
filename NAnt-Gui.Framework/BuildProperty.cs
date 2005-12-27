@@ -33,6 +33,39 @@ namespace NAntGui.Framework
 		protected string _category = "Global";
 		protected bool _isReadOnly = false;
 
+		public BuildProperty(){}
+
+		public BuildProperty(string name)
+		{
+			Assert.NotNull(name, "name");
+			_name = name;
+		}
+
+		public BuildProperty(string name, string value) : this(name)
+		{
+			Assert.NotNull(value, "value");
+			_value = value;
+		}
+
+		public BuildProperty(string name, string value, string expandedValue) : this(name, value)
+		{
+			Assert.NotNull(expandedValue, "expandedValue");
+			_expandedValue = expandedValue;
+		}
+
+		public BuildProperty(string name, string value, string expandedValue, 
+			string category) : this(name, value, expandedValue)
+		{
+			Assert.NotNull(category, "category");
+			_category = category;
+		}
+
+		public BuildProperty(string name, string value, string expandedValue, 
+			string category, bool isReadOnly) : this(name, value, expandedValue, category)
+		{
+			_isReadOnly = isReadOnly;
+		}
+
 		public virtual string Name
 		{
 			get { return _name; }
@@ -72,7 +105,7 @@ namespace NAntGui.Framework
 
 		public override string ToString()
 		{
-			return string.Format("{1}: {2}", _name, _value);
+			return string.Format("{0}: {1}", _name, _value);
 		}
 	}
 }

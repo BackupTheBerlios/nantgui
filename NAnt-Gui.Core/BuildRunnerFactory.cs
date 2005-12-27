@@ -1,5 +1,6 @@
 using System;
 using NAntGui.Framework;
+using NAntGui.NAnt;
 
 namespace NAntGui.Core
 {
@@ -15,7 +16,7 @@ namespace NAntGui.Core
 				default:
 				case "nant":
 				case "build":
-					return new NAnt.NAntBuildRunner(sourceFile);
+					return new NAntBuildRunner(sourceFile);
 				case "proj":
 					throw new NotImplementedException("Pete's code goes here :)");
 			}

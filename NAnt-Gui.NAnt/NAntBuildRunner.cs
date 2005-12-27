@@ -24,6 +24,7 @@
 using System;
 using NAnt.Core;
 using NAntGui.Framework;
+using TargetCollection = NAntGui.Framework.TargetCollection;
 
 namespace NAntGui.NAnt
 {
@@ -82,15 +83,24 @@ namespace NAntGui.NAnt
 			try
 			{
 				Environment.CurrentDirectory = _script.SourceFile.Path;
-//				ArrayList targets = _nantForm.GetTreeTargets();
-//				Hashtable properties = _nantForm.GetProjectProperties();
-
 				_script.Run();
 			}
 			catch (BuildException error)
 			{
 				_messageLogger.LogMessage(error.Message);
 			}
+		}
+
+		public override void SetProperties(PropertyCollection properties)
+		{
+			Assert.NotNull(properties, "properties");
+			_script.Properties = properties;
+		}
+
+		public override void SetTargets(TargetCollection targets)
+		{
+			Assert.NotNull(targets, "targets");
+			_script.Targets = targets;
 		}
 
 		public override VoidVoid BuildFinished

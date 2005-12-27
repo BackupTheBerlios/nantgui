@@ -49,9 +49,11 @@ namespace NAntGui.NAnt
 		/// </summary>
 		public NAntBuildScript(SourceFile sourceFile)
 		{
-			_sourceFile		= sourceFile;
-			_project		= new Project(sourceFile.FullName, this.GetThreshold(), 0);
+			Assert.NotNull(sourceFile, "sourceFile");
 
+			_sourceFile	= sourceFile;
+			_project	= new Project(sourceFile.FullName, this.GetThreshold(), 0);
+			
 			this.ParseBuildScript();
 		}
 
@@ -67,35 +69,63 @@ namespace NAntGui.NAnt
 		}
 
 
-		public void SetProjectProperties(PropertyCollection properties)
+		public void AddProperties()
 		{
-			foreach (BuildProperty property in properties)
+			foreach (BuildProperty property in _properties)
 			{
 				if (property.Category == "Project")
 				{
-					_project.BaseDirectory = property.ToString();
+					_project.BaseDirectory = property.Value;
 				}
 				else if (property.Category == "Global" || ValidTarget(property.Category))
 				{
-					this.LoadNonProjectProperty(property, properties);
+					this.LoadNonProjectProperty(property);
 				}
 			}
 		}
 
-		private void LoadNonProjectProperty(BuildProperty spec, PropertyCollection properties)
+		public void AddTargets()
 		{
-			string lValue = properties.ToString();
-			string lExpandedProperty = lValue;
+			foreach (BuildTarget target in _targets)
+			{
+				_project.BuildTargets.Add(target.Name);
+			}
+		}
+
+		public void Run()
+		{
 			try
 			{
-				lExpandedProperty = _project.ExpandProperties(lValue,
+				_project = new Project(_sourceFile.FullName, this.GetThreshold(), 0);
+				_project.BuildFinished += new BuildEventHandler(this.Build_Finished);
+				this.SetTargetFramework();
+				this.AddBuildListeners();
+				this.AddTargets();
+				this.AddProperties();
+
+				_project.Run();
+			}
+			catch (BuildException error)
+			{
+				_sourceFile.MessageLogger.LogMessage(error.Message);
+			}
+		}
+
+
+		private void LoadNonProjectProperty(BuildProperty property)
+		{
+			string expandedValue = property.Value;
+
+			try
+			{
+				expandedValue = _project.ExpandProperties(property.Value,
 					new Location(_sourceFile.FullName));
 			}
 			catch (BuildException)
 			{ /* ignore */
 			}
 
-			_project.Properties.AddReadOnly(spec.Name, lExpandedProperty);
+			_project.Properties.AddReadOnly(property.Name, expandedValue);
 		}
 
 		private bool ValidTarget(string category)
@@ -142,49 +172,29 @@ namespace NAntGui.NAnt
 			return projectThreshold;
 		}
 
-		public void Run()
-		{
-			try
-			{
-				_project.BuildFinished += new BuildEventHandler(this.Build_Finished);
-
-				if (_sourceFile.Options.TargetFramework != null) 
-				{
-					this.SetTargetFramework();
-				}
-
-//				ArrayList targets = _nantForm.GetTreeTargets();
-//				Hashtable properties = _nantForm.GetProjectProperties();
-				this.AddBuildListeners();
-
-				_project.Run();
-			}
-			catch (BuildException error)
-			{
-				_sourceFile.MessageLogger.LogMessage(error.Message);
-			}
-		}
-
 		private void SetTargetFramework()
 		{
-			if (_project.Frameworks.Count == 0) 
+			if (_sourceFile.Options.TargetFramework != null) 
 			{
-				const string message = "There are no supported frameworks available on your system.";
-				throw new ApplicationException(message);
-			} 
-			else
-			{
-				FrameworkInfo frameworkInfo = _project.Frameworks[_sourceFile.Options.TargetFramework];
-
-				if (frameworkInfo != null) 
+				if (_project.Frameworks.Count == 0) 
 				{
-					_project.TargetFramework = frameworkInfo; 
+					const string message = "There are no supported frameworks available on your system.";
+					throw new ApplicationException(message);
 				} 
-				else 
+				else
 				{
-					const string format = "Invalid framework '{0}' specified.";
-					string message = string.Format(format, _sourceFile.Options.TargetFramework);
-					throw new CommandLineArgumentException(message);
+					FrameworkInfo frameworkInfo = _project.Frameworks[_sourceFile.Options.TargetFramework];
+
+					if (frameworkInfo != null) 
+					{
+						_project.TargetFramework = frameworkInfo; 
+					} 
+					else 
+					{
+						const string format = "Invalid framework '{0}' specified.";
+						string message = string.Format(format, _sourceFile.Options.TargetFramework);
+						throw new CommandLineArgumentException(message);
+					}
 				}
 			}
 		}
@@ -217,11 +227,13 @@ namespace NAntGui.NAnt
 		public TargetCollection Targets
 		{
 			get { return _targets; }
+			set { _targets = value; }
 		}
 
 		public PropertyCollection Properties
 		{
 			get { return _properties; }
+			set { _properties = value; }
 		}
 
 		public DependsCollection Depends

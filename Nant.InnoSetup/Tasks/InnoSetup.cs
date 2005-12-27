@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Xml;
@@ -188,7 +189,7 @@ namespace NAnt.Contrib.InnoSetup.Tasks
 			}
 		}
 
-		protected override void PrepareProcess(System.Diagnostics.Process process)
+		protected override void PrepareProcess(Process process)
 		{
 			base.PrepareProcess(process);
 

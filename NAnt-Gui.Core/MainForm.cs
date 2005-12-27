@@ -33,7 +33,6 @@ using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
-using Flobbster.Windows.Forms;
 using NAntGui.Framework;
 
 namespace NAntGui.Core
@@ -324,7 +323,12 @@ namespace NAntGui.Core
 		private void Build()
 		{
 			_outputBox.Clear();
-			_sourceTabs.SelectedTab.Run();
+
+			ScriptTabPage selectedTab = _sourceTabs.SelectedTab;
+
+			selectedTab.SetProperties(_propertyGrid.GetProperties());
+			selectedTab.SetTargets(_targetsTree.GetTargets());
+			selectedTab.Run();
 		}
 
 		private void NAnt_Closed(object sender, EventArgs e)
@@ -385,10 +389,7 @@ namespace NAntGui.Core
 
 		private void UpdateDisplay(IBuildScript buildScript)
 		{
-
-//			_sourceTabs.ReadSource(_sourceFile);
-
-			this.Text = "NAnt-Gui" + string.Format(" - {0}", _sourceTabs.SelectedTab.File.Name);
+			this.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.File.Name);
 
 			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
 
@@ -426,11 +427,6 @@ namespace NAntGui.Core
 			}
 
 			return targets;
-		}
-
-		public PropertySpecCollection GetProjectProperties()
-		{
-			return _propertyGrid.GetProjectProperties();
 		}
 
 		private void AddTargetTreeNode(BuildTarget buildTarget)

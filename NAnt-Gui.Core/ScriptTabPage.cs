@@ -1,7 +1,7 @@
 using System.Drawing;
+using Crownwood.Magic.Controls;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Framework;
-using TabPage = Crownwood.Magic.Controls.TabPage;
 
 namespace NAntGui.Core
 {
@@ -133,6 +133,16 @@ namespace NAntGui.Core
 		public string Title
 		{
 			get { return _scriptTab.Title; }
+		}
+
+		public void SetProperties(PropertyCollection properties)
+		{
+			_buildRunner.SetProperties(properties);
+		}
+
+		public void SetTargets(TargetCollection targets)
+		{
+			_buildRunner.SetTargets(targets);
 		}
 	}
 }

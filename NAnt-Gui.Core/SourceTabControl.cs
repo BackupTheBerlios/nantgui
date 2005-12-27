@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using TabControl = Crownwood.Magic.Controls.TabControl;
+using VisualAppearance = Crownwood.Magic.Controls.TabControl.VisualAppearance;
 
 namespace NAntGui.Core
 {

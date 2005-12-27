@@ -29,6 +29,26 @@ namespace NAntGui.Framework
 		protected string _description = "";
 		protected bool _default = false;
 
+		public BuildTarget(){}
+
+		public BuildTarget(string name)
+		{
+			Assert.NotNull(name, "name");
+			_name = name;
+		}
+
+		public BuildTarget(string name, string description) : this(name)
+		{
+			Assert.NotNull(description, "description");
+			_description = description;
+		}
+
+		public BuildTarget(string name, string description, bool @default) : this(name, description)
+		{
+			Assert.NotNull(@default, "@default");
+			_default = @default;
+		}
+
 		public virtual string Name
 		{
 			get { return _name; }

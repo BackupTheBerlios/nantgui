@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using System.Threading;
 
 namespace NAntGui.Framework
@@ -32,7 +31,10 @@ namespace NAntGui.Framework
 
 		public abstract VoidVoid BuildFinished { set; }
 		public abstract IBuildScript BuildScript { get; }
+
 		protected abstract void DoRun();
+		public abstract void SetProperties(PropertyCollection properties);
+		public abstract void SetTargets(TargetCollection targets);
 		
 		public void Run()
 		{

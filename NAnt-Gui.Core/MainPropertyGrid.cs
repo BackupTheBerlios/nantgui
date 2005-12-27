@@ -21,9 +21,7 @@
 
 #endregion
 
-using System;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Flobbster.Windows.Forms;
@@ -62,32 +60,32 @@ namespace NAntGui.Core
 
 			foreach (BuildProperty property in properties)
 			{
-				PropertySpec spec = new PropertySpec(property.Name, property.Type,
-					property.Category, property.ExpandedValue, property.Value);
-
-				if (property.IsReadOnly)
-				{
-					spec.Attributes = new Attribute[] {ReadOnlyAttribute.Yes};
-				}
-
+				PropertySpec spec = new PropertySpec(property);
 				_propertyTable.Properties.Add(spec);
 
 				if (firstLoad && this.CommandLinePropertiesContains(spec.Name))
 				{
-					_propertyTable[GetKey(spec)] = _commandLineProperties[spec.Name];
+					_propertyTable[spec.Key] = _commandLineProperties[spec.Name];
 				}
 				else
 				{
-					_propertyTable[GetKey(spec)] = property.Value;
+					_propertyTable[spec.Key] = property.Value;
 				}
 			}
 
 			this.SelectedObject = _propertyTable;
 		}
 
-		public PropertySpecCollection GetProjectProperties()
+		public PropertyCollection GetProperties()
 		{
-			return _propertyTable.Properties;
+			PropertyCollection properties = new PropertyCollection();
+
+			foreach (PropertySpec spec in _propertyTable.Properties)
+			{
+				properties.Add((BuildProperty)spec.Tag);
+			}
+
+			return properties;
 		}
 
 		private bool CommandLinePropertiesContains(string name)
@@ -97,10 +95,6 @@ namespace NAntGui.Core
 					return true;
 
 			return false;
-		}
-		private static string GetKey(PropertySpec propertySpec)
-		{
-			return string.Format("{0}.{1}", propertySpec.Category, propertySpec.Name);
 		}
 	}
 }
