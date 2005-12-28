@@ -367,6 +367,7 @@ namespace NAntGui.Core
 
 			ScriptTabPage selectedTab = _sourceTabs.SelectedTab;
 
+			selectedTab.Save();
 			selectedTab.SetProperties(_propertyGrid.GetProperties());
 			selectedTab.SetTargets(_targetsTree.GetTargets());
 			selectedTab.Run();
@@ -544,22 +545,6 @@ namespace NAntGui.Core
 			}
 		}
 
-		public CommandLineOptions Options
-		{
-			set { _options = value; }
-			get { return _options; }
-		}
-
-		public PropertySort PropertySort
-		{
-			get { return _propertyGrid.PropertySort; }
-			set
-			{
-				try	{ _propertyGrid.PropertySort = value; }
-				catch (ArgumentException) { /* ignore */ }
-			}
-		}
-
 		private void Reload_Click(object sender, EventArgs e)
 		{
 			_sourceTabs.SelectedTab.ReLoad();
@@ -580,6 +565,16 @@ namespace NAntGui.Core
 			_mainToolBar.DisableStop();
 			_sourceTabs.SelectedTab.Stop();
 			_mainToolBar.EnableRun();
+		}
+
+		public PropertySort PropertySort
+		{
+			get { return _propertyGrid.PropertySort; }
+			set
+			{
+				try	{ _propertyGrid.PropertySort = value; }
+				catch (ArgumentException) { /* ignore */ }
+			}
 		}
 	}
 }

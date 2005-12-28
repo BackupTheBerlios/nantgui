@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "WinExe"
-                PreBuildEvent = ""
+                PreBuildEvent = "nant -f:..\..\AssemblyInfo.build"
                 PostBuildEvent = "copy ..\..\MainFormDocking.config ."
                 RootNamespace = "NAnt_Gui"
                 RunPostBuildEvent = "OnBuildSuccess"
