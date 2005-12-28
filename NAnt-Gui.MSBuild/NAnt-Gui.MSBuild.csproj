@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = ""
+                PreBuildEvent = "nant -f:..\..\AssemblyInfo.build"
                 PostBuildEvent = ""
                 RootNamespace = "NAnt_Gui.MSBuild"
                 RunPostBuildEvent = "OnBuildSuccess"
@@ -76,7 +76,7 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
@@ -88,6 +88,10 @@
         </Build>
         <Files>
             <Include>
+                <File
+                    RelPath = "AssemblyInfo.build"
+                    BuildAction = "None"
+                />
                 <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"

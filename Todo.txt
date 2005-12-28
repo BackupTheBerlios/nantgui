@@ -1,0 +1,4 @@
+Relatively reference nant for the prebuild step so it doesn't have to be in the path
+Fix copy and paste menu items (they don't work at all)
+Put scroll bars on the editor window
+Enable drag and drop on the editor and tabs

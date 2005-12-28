@@ -37,11 +37,11 @@ using NAntGui.Framework;
 namespace NAntGui.Core
 {
 	/// <summary>
-	/// Summary description for Form1.
+	/// Summary description for MainForm.
 	/// </summary>
 	public class MainForm : Form, ILogsMessage
 	{
-		private const string DOCKING_CONFIG = "MainFormDocking.config";
+		private static readonly string DOCKING_CONFIG = Application.StartupPath + "\\MainFormDocking.config";
 
 		private delegate void MessageEventHandler(string pMessage);
 

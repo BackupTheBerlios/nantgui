@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = ""
+                PreBuildEvent = "nant -f:..\..\AssemblyInfo.build"
                 PostBuildEvent = ""
                 RootNamespace = "NAntGui.NAnt"
                 RunPostBuildEvent = "OnBuildSuccess"
@@ -98,6 +98,10 @@
         </Build>
         <Files>
             <Include>
+                <File
+                    RelPath = "AssemblyInfo.build"
+                    BuildAction = "None"
+                />
                 <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"

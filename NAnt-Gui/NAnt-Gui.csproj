@@ -118,6 +118,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfo.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
