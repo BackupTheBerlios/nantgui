@@ -60,7 +60,6 @@ namespace NAntGui.Framework
 		{
 			Assert.NotNull(buildFile, "buildFile");
 			Assert.NotNull(contents, "contents");
-			Assert.FileExists(buildFile);
             			
 			_fullName		= buildFile;
 			_contents		= contents;

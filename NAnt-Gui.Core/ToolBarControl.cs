@@ -113,6 +113,7 @@ namespace NAntGui.Core
 			// 
 			this.StopToolBarButton.ImageIndex = 3;
 			this.StopToolBarButton.ToolTipText = "Abort the Current Build";
+			this.StopToolBarButton.Enabled = false;
 		}
 
 		private void Button_Click(object sender, ToolBarButtonClickEventArgs e)
@@ -155,7 +156,26 @@ namespace NAntGui.Core
 		{
 			this.ReloadToolBarButton.Enabled = true;
 			this.SaveToolBarButton.Enabled = true;
+			this.BuildToolBarButton.Enabled = true;
+		}
+
+		public void EnableStop()
+		{
 			this.StopToolBarButton.Enabled = true;
+		}
+
+		public void DisableStop()
+		{
+			this.StopToolBarButton.Enabled = false;
+		}
+
+		public void DisableRun()
+		{
+			this.BuildToolBarButton.Enabled = false;
+		}
+
+		public void EnableRun()
+		{
 			this.BuildToolBarButton.Enabled = true;
 		}
 	}

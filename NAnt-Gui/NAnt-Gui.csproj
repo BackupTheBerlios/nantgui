@@ -17,7 +17,7 @@
                 DelaySign = "false"
                 OutputType = "WinExe"
                 PreBuildEvent = ""
-                PostBuildEvent = ""
+                PostBuildEvent = "copy ..\..\MainFormDocking.config ."
                 RootNamespace = "NAnt_Gui"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = "NAntGui.AppEntry"
@@ -121,6 +121,10 @@
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MainFormDocking.config"
+                    BuildAction = "None"
                 />
             </Include>
         </Files>

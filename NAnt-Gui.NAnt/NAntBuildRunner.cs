@@ -35,11 +35,16 @@ namespace NAntGui.NAnt
 
 		public NAntBuildRunner(SourceFile sourceFile)
 		{
+			Assert.NotNull(sourceFile,  "sourceFile");
 			_messageLogger = sourceFile.MessageLogger;
+			_script = new NAntBuildScript(sourceFile);
+		}
 
+		public override void ParseBuildFile()
+		{
 			try
 			{
-				_script = new NAntBuildScript(sourceFile);
+				_script.ParseBuildScript();
 			}
 			catch (ApplicationException error)
 			{

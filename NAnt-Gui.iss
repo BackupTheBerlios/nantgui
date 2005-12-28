@@ -2,7 +2,6 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "NAnt-Gui"
-#define MyAppVerName "NAnt-Gui 1.3.2"
 #define MyAppPublisher "Colin Svingen"
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
@@ -11,10 +10,12 @@
 #define NAntContrib = "Tools\nantcontrib-0.85-rc3"
 #define NUnit2Report = "Tools\NUnit2Report-1.2.3"
 
+#define AppVersion = GetStringFileInfo("NAnt-Gui\bin\Release\NAnt-Gui.exe", "FileVersion")
+
 
 [Setup]
 AppName={#MyAppName}
-AppVerName={#MyAppVerName}
+AppVerName={#MyAppName} {#AppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -23,14 +24,14 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=true
 OutputDir=installer
-OutputBaseFilename=NAnt-Gui-1.3.2
+OutputBaseFilename={#MyAppName}-{#AppVersion}
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 ChangesAssociations=true
 LicenseFile=License.txt
 AppCopyright=2005 Colin Svingen
-AppVersion=1.3.2
+AppVersion={#AppVersion}
 AppID={{5A46EB86-CC66-403A-9789-E7D7413C20D2}
 AppContact=nantgui@swoogan.com
 UninstallDisplayIcon={app}\src\Ant.ico
@@ -51,7 +52,11 @@ Source: Bugs.txt; DestDir: {app}; Flags: ignoreversion
 ; NAnt-Gui
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe.config; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+Source: NAnt-Gui\MainFormDocking.config; DestDir: {app}\bin; Flags: ignoreversion onlyifdoesntexist; Components: bin
 Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+Source: NAnt-Gui.Framework\bin\Release\NAnt-Gui.Framework.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+Source: NAnt-Gui.NAnt\bin\Release\NAnt-Gui.NAnt.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+
 ; Libraries
 Source: ThirdParty Libraries\*; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; NAnt/NAnt-Contrib
@@ -73,6 +78,7 @@ Source: License.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Bugs.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Todo.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
+; Libraries
 Source: ThirdParty Libraries\*; DestDir: {app}\src\ThirdParty Libraries; Flags: ignoreversion; Components: src
 ; NAnt-Gui
 Source: NAnt-Gui\app.config; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
@@ -85,10 +91,16 @@ Source: NAnt-Gui.Unittests\Nant-Gui.Unittests.csproj; DestDir: {app}\src\NAnt-Gu
 ; NAnt-Gui.Core
 Source: NAnt-Gui.Core\Images\*; DestDir: {app}\src\Nant-Gui.Core\Images; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.cs; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
-Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion; Components: src
-Source: NAnt-Gui.Core\NAnt\*.cs; DestDir: {app}\src\Nant-Gui.Core\NAnt; Flags: ignoreversion; Components: src
-Source: NAnt-Gui.Core\NAnt\*.resx; DestDir: {app}\src\Nant-Gui.Core\NAnt; Flags: ignoreversion skipifsourcedoesntexist; Components: src
+Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.Core\Nant-Gui.Core.csproj; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
+; NAnt-Gui.Framework
+Source: NAnt-Gui.Framework\*.cs; DestDir: {app}\src\Nant-Gui.Framework; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Framework\*.resx; DestDir: {app}\src\Nant-Gui.Framework; Flags: ignoreversion skipifsourcedoesntexist; Components: src
+Source: NAnt-Gui.Framework\Nant-Gui.Framework.csproj; DestDir: {app}\src\NAnt-Gui.Framework; Flags: ignoreversion; Components: src
+; NAnt-Gui.NAnt
+Source: NAnt-Gui.NAnt\*.cs; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.NAnt\*.resx; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversion skipifsourcedoesntexist; Components: src
+Source: NAnt-Gui.NAnt\Nant-Gui.NAnt.csproj; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
 ; Tools
 Source: Tools\*; DestDir: {app}\src\Tools; Flags: ignoreversion recursesubdirs; Components: src
 

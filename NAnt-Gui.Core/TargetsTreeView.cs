@@ -103,5 +103,43 @@ namespace NAntGui.Core
 
 			return targets;
 		}
+
+		public void AddTargets(string projectName, TargetCollection targets)
+		{
+			this.Nodes.Clear();
+
+			this.Nodes.Add(new TreeNode(projectName));
+
+			foreach (BuildTarget target in targets)
+			{
+				this.AddTargetTreeNode(target);
+			}
+
+			this.ExpandAll();
+		}
+
+		private void AddTargetTreeNode(BuildTarget buildTarget)
+		{
+			if (!(Settings.HideTargetsWithoutDescription && !HasDescription(buildTarget.Description)))
+			{
+				string targetName = FormatTargetName(buildTarget.Name, buildTarget.Description);
+				TreeNode node = new TreeNode(targetName);
+				node.Checked = buildTarget.Default;
+				node.Tag = buildTarget;
+				this.Nodes[0].Nodes.Add(node);
+			}
+		}
+
+		private static string FormatTargetName(string name, string description)
+		{
+			//const string format = "{0} - {1}";
+			const string format = "{0}";
+			return HasDescription(description) ? string.Format(format, name, description) : name;
+		}
+
+		private static bool HasDescription(string description)
+		{
+			return description.Length > 0;
+		}
 	}
 }

@@ -50,15 +50,12 @@ namespace NAntGui.NAnt
 		public NAntBuildScript(SourceFile sourceFile)
 		{
 			Assert.NotNull(sourceFile, "sourceFile");
-
 			_sourceFile	= sourceFile;
-			_project	= new Project(sourceFile.FullName, this.GetThreshold(), 0);
-			
-			this.ParseBuildScript();
 		}
 
-		private void ParseBuildScript()
+		public void ParseBuildScript()
 		{
+			_project = new Project(_sourceFile.FullName, this.GetThreshold(), 0);
 			ScriptParser parser = new ScriptParser(_project);
 			parser.Parse();
 
@@ -248,7 +245,7 @@ namespace NAntGui.NAnt
 
 		public bool HasName
 		{
-			get { return _project.ProjectName.Length > 0; }
+			get { return _project != null && _project.ProjectName.Length > 0; }
 		}
 
 		#endregion

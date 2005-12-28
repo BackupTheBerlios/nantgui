@@ -25,6 +25,8 @@ namespace NAntGui.Framework
 {
 	public interface IBuildScript
 	{
+		void ParseBuildScript();
+
 		TargetCollection Targets { get; set; }
 		PropertyCollection Properties { get; set; }
 		

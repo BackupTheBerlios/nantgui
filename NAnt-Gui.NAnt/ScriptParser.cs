@@ -60,15 +60,7 @@ namespace NAntGui.NAnt
 
 				if (File.Exists(filename))
 				{
-					try
-					{
-						this.ParseIncludeFile(filename);
-					}
-					catch (IOException error)
-					{
-						// Might not be a not found exception.  SHould fix.
-						throw new BuildFileNotFoundException(error.Message);
-					}
+					this.ParseIncludeFile(filename);
 				}
 			}
 		}

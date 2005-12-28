@@ -109,11 +109,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BuildFileNotFoundException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BuildProperty.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

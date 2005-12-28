@@ -19,17 +19,32 @@ namespace NAntGui.Core
 
 		public ScriptTabPage(ILogsMessage logger, CommandLineOptions options)
 		{
+			Assert.NotNull(logger, "logger");
+			Assert.NotNull(options, "options");
 			_file = new SourceFile(logger, options);
 			this.Initialize();
 		}
 
 		public ScriptTabPage(string filename, ILogsMessage logger, CommandLineOptions options)
 		{
-			this.Load(filename, logger, options);
+			Assert.NotNull(filename, "filename");
+			Assert.NotNull(logger, "logger");
+			Assert.NotNull(options, "options");
+
+			_sourceEditor.LoadFile(filename);
+			_file = new SourceFile(filename, _sourceEditor.Text, logger, options);
+
 			this.Initialize();
+
+			_buildRunner = BuildRunnerFactory.Create(_file);
 		}
 
-        private void Initialize()
+		public void ParseBuildFile()
+		{
+			_buildRunner.ParseBuildFile();
+		}
+
+		private void Initialize()
 		{
 			_sourceEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
 
@@ -37,16 +52,6 @@ namespace NAntGui.Core
 			_scriptTab.Location = new Point(0, 0);
 			_scriptTab.Selected = true;
 			_scriptTab.Size = new Size(824, 453);
-			_scriptTab.Title = _file.Name;
-		}
-
-
-		private void Load(string filename, ILogsMessage logger, CommandLineOptions options)
-		{
-			Assert.FileExists(filename);
-			_sourceEditor.LoadFile(filename);
-			_file = new SourceFile(filename, _sourceEditor.Text, logger, options);
-			_buildRunner = BuildRunnerFactory.Create(_file);
 			_scriptTab.Title = _file.Name;
 		}
 
@@ -95,11 +100,6 @@ namespace NAntGui.Core
 			_sourceEditor.SaveFile(_file.FullName);
 		}
 
-		public bool IsDirty
-		{
-			get{ return _file.Contents != _sourceEditor.Text; }
-		}
-
 		public void Undo()
 		{
 			_sourceEditor.Undo();
@@ -112,22 +112,46 @@ namespace NAntGui.Core
 
 		public void Stop()
 		{
-			_buildRunner.Stop();
+			if (_buildRunner != null)
+			{
+				_buildRunner.Stop();
+			}
 		}
 
 		public void Run()
 		{
+			Assert.NotNull(_buildRunner, "_buildRunner");
 			_buildRunner.Run();
+		}
+
+		public void SetProperties(PropertyCollection properties)
+		{
+			Assert.NotNull(properties, "properties");
+			_buildRunner.SetProperties(properties);
+		}
+
+		public void SetTargets(TargetCollection targets)
+		{
+			Assert.NotNull(targets, "targets");
+			_buildRunner.SetTargets(targets);
 		}
 
 		public IBuildScript BuildScript
 		{
-			get { return _buildRunner.BuildScript; }
+			get
+			{
+				Assert.NotNull(_buildRunner, "_buildRunner");
+				return _buildRunner.BuildScript;
+			}
 		}
 
 		public VoidVoid BuildFinished
 		{
-			set { _buildRunner.BuildFinished = value; }
+			set
+			{
+				Assert.NotNull(_buildRunner, "_buildRunner");
+				_buildRunner.BuildFinished = value;
+			}
 		}
 
 		public string Title
@@ -135,14 +159,9 @@ namespace NAntGui.Core
 			get { return _scriptTab.Title; }
 		}
 
-		public void SetProperties(PropertyCollection properties)
+		public bool IsDirty
 		{
-			_buildRunner.SetProperties(properties);
-		}
-
-		public void SetTargets(TargetCollection targets)
-		{
-			_buildRunner.SetTargets(targets);
+			get{ return _file.Contents != _sourceEditor.Text; }
 		}
 	}
 }

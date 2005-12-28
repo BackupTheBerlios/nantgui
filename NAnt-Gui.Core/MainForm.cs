@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -42,6 +41,8 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainForm : Form, ILogsMessage
 	{
+		private const string DOCKING_CONFIG = "MainFormDocking.config";
+
 		private delegate void MessageEventHandler(string pMessage);
 
 		private CommandLineOptions _options;
@@ -216,6 +217,8 @@ namespace NAntGui.Core
 			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
 
 			_dockManager.OuterControl = _mainStatusBar;
+
+			_dockManager.LoadConfigFromFile(DOCKING_CONFIG);	
 		}
 
 		private void LoadInitialBuildFile()
@@ -232,29 +235,42 @@ namespace NAntGui.Core
 
 		private bool LoadBuildFile(string filename)
 		{
-			try
+			if (File.Exists(filename))
 			{
 				ScriptTabPage page = new ScriptTabPage(filename, this, _options);
+				page.SourceChanged += new VoidVoid(this.Source_Changed);
+				page.BuildFinished = new VoidVoid(this.Update);
+
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);
-				this.BuildFileLoaded(page.BuildScript);
-				page.BuildFinished = new VoidVoid(this.Update);
-				page.SourceChanged += new VoidVoid(this.Source_Changed);
+				
+				this.AddRecentItem();
+				this.UpdateDisplay(page.BuildScript);
+
+				try
+				{
+					page.ParseBuildFile();	
+				}
+				catch (BuildFileLoadException error)
+				{
+					MessageBox.Show(error.Message, "Error Loading Build File", 
+						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+
 				return true;
 			}
-			catch (BuildFileNotFoundException error)
+			else
 			{
-				MessageBox.Show(error.Message, "Build File Not Found", 
-					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				ShowFileNotFoundError(filename);
 				return false;
 			}
-			catch(BuildFileLoadException error)
-			{
-				MessageBox.Show(error.Message, "Error Loading Build File", 
-					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		}
 
-				return false;
-			}
+		private void AddRecentItem()
+		{
+			_recentItems.Add(_sourceTabs.SelectedTab.File.FullName);
+			_recentItems.Save();
+			this.UpdateRecentItemsMenu();
 		}
 
 		private void ExitMenuCommand_Click(object sender, EventArgs e)
@@ -306,11 +322,11 @@ namespace NAntGui.Core
 			this.OpenFileDialog.InitialDirectory = Settings.OpenInitialDirectory;
 			if (this.OpenFileDialog.ShowDialog() == DialogResult.OK)
 			{
-				Settings.OpenInitialDirectory = this.OpenFileDialog.InitialDirectory;
-
 				foreach (string filename in this.OpenFileDialog.FileNames)
 				{
-					this.LoadBuildFile(filename);	
+					this.LoadBuildFile(filename);
+					FileInfo info = new FileInfo(filename);
+					Settings.OpenInitialDirectory = info.DirectoryName;
 				}
 			}
 		}
@@ -322,13 +338,19 @@ namespace NAntGui.Core
 
 		private void Build()
 		{
+			_mainToolBar.DisableRun();
+			_mainToolBar.EnableStop();
 			_outputBox.Clear();
+			_outputContent.BringToFront();
 
 			ScriptTabPage selectedTab = _sourceTabs.SelectedTab;
 
 			selectedTab.SetProperties(_propertyGrid.GetProperties());
 			selectedTab.SetTargets(_targetsTree.GetTargets());
 			selectedTab.Run();
+
+			_mainToolBar.DisableStop();
+			_mainToolBar.EnableRun();
 		}
 
 		private void NAnt_Closed(object sender, EventArgs e)
@@ -376,81 +398,22 @@ namespace NAntGui.Core
 			lOptionsForm.ShowDialog();
 		}
 
-		private void BuildFileLoaded(IBuildScript buildScript)
-		{
-			_outputBox.Clear();
-			this.EnableMenuCommandsAndButtons();
-			this.UpdateDisplay(buildScript);
-			this.AddTargets(buildScript.Targets);
-			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
-
-			_firstLoad = false;
-		}
-
 		private void UpdateDisplay(IBuildScript buildScript)
 		{
+			_outputBox.Clear();
 			this.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.File.Name);
 
 			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
 
-			_recentItems.Add(_sourceTabs.SelectedTab.File.FullName);
-			_recentItems.Save();
-			this.UpdateRecentItemsMenu();
-
 			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
 			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullName;
 
-			_targetsTree.Nodes.Clear();
-			_targetsTree.Nodes.Add(new TreeNode(projectName));
-		}
+			this.EnableMenuCommandsAndButtons();
 
+			_targetsTree.AddTargets(projectName, buildScript.Targets);
+			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
 
-		private void AddTargets(TargetCollection targets)
-		{
-			foreach (BuildTarget target in targets)
-			{
-				this.AddTargetTreeNode(target);
-			}
-
-			_targetsTree.ExpandAll();
-		}
-
-		public ArrayList GetTreeTargets()
-		{
-			ArrayList targets = new ArrayList();
-			foreach (TreeNode node in _targetsTree.Nodes[0].Nodes)
-			{
-				if (node.Checked)
-				{
-					targets.Add(node.Text);
-				}
-			}
-
-			return targets;
-		}
-
-		private void AddTargetTreeNode(BuildTarget buildTarget)
-		{
-			if (!(Settings.HideTargetsWithoutDescription && !HasDescription(buildTarget.Description)))
-			{
-				string targetName = FormatTargetName(buildTarget.Name, buildTarget.Description);
-				TreeNode node = new TreeNode(targetName);
-				node.Checked = buildTarget.Default;
-				node.Tag = buildTarget;
-				this._targetsTree.Nodes[0].Nodes.Add(node);
-			}
-		}
-
-		private static string FormatTargetName(string name, string description)
-		{
-			//const string format = "{0} - {1}";
-			const string format = "{0}";
-			return HasDescription(description) ? string.Format(format, name, description) : name;
-		}
-
-		private static bool HasDescription(string description)
-		{
-			return description.Length > 0;
+			_firstLoad = false;
 		}
 
 		private void UpdateRecentItemsMenu()
@@ -471,16 +434,21 @@ namespace NAntGui.Core
 			MenuCommand item = (MenuCommand) sender;
 			string recentItem = item.Text.Substring(2);
 
-			try
-			{	
+			if (File.Exists(recentItem))
+			{
 				this.LoadBuildFile(recentItem);
 			}
-			catch (BuildFileNotFoundException error)
+			else
 			{
 				_recentItems.Remove(recentItem);
-				MessageBox.Show(error.Message, "Build File Not Found", 
-					MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				ShowFileNotFoundError(recentItem);
 			}
+		}
+
+		private static void ShowFileNotFoundError(string recentItem)
+		{
+			MessageBox.Show(recentItem + " was not found.", "Build File Not Found", 
+			                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		private void NAntSDKMenuCommand_Click(object sender, EventArgs e)
@@ -556,6 +524,7 @@ namespace NAntGui.Core
 		{
 			_sourceTabs.SelectedTab.Stop();
 			_sourceTabs.CloseTabs(e);
+			_dockManager.SaveConfigToFile(DOCKING_CONFIG);	
 		}
 
 		private void SaveAsMenuCommand_Click(object sender, EventArgs e)
@@ -579,7 +548,11 @@ namespace NAntGui.Core
 		public PropertySort PropertySort
 		{
 			get { return _propertyGrid.PropertySort; }
-			set { _propertyGrid.PropertySort = value; }
+			set
+			{
+				try	{ _propertyGrid.PropertySort = value; }
+				catch (ArgumentException) { /* ignore */ }
+			}
 		}
 
 		private void Reload_Click(object sender, EventArgs e)
@@ -599,7 +572,9 @@ namespace NAntGui.Core
 
 		private void Stop_Click()
 		{
+			_mainToolBar.DisableStop();
 			_sourceTabs.SelectedTab.Stop();
+			_mainToolBar.EnableRun();
 		}
 	}
 }

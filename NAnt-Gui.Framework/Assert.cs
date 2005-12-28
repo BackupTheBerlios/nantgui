@@ -35,10 +35,5 @@ namespace NAntGui
 		{
 			if (item == null) throw new ArgumentNullException(param);
 		}
-
-		public static void FileExists(string buildFile)
-		{
-			if (!File.Exists(buildFile)) throw new BuildFileNotFoundException(buildFile + " not found.");
-		}
 	}
 }
