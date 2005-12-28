@@ -35,7 +35,7 @@ namespace NAntGui.Framework
 		protected abstract void DoRun();
 		public abstract void SetProperties(PropertyCollection properties);
 		public abstract void SetTargets(TargetCollection targets);
-		public abstract void ParseBuildFile();
+		public abstract void ParseBuildScript();
 		
 		public void Run()
 		{

@@ -39,9 +39,9 @@ namespace NAntGui.Core
 			_buildRunner = BuildRunnerFactory.Create(_file);
 		}
 
-		public void ParseBuildFile()
+		public void ParseBuildScript()
 		{
-			_buildRunner.ParseBuildFile();
+			_buildRunner.ParseBuildScript();
 		}
 
 		private void Initialize()
@@ -86,6 +86,8 @@ namespace NAntGui.Core
 		{
 			_sourceEditor.LoadFile(_file.FullName);
 			_scriptTab.Title = _file.Name;
+			try{ _buildRunner.ParseBuildScript(); }
+			catch { /* ignore */ }
 		}
 
 		public void SaveAs(string fileName)
@@ -98,6 +100,16 @@ namespace NAntGui.Core
 		public void Save()
 		{
 			_sourceEditor.SaveFile(_file.FullName);
+			_file.Contents = _sourceEditor.Text;
+			_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
+
+			try{ _buildRunner.ParseBuildScript(); }
+			catch { /* ignore */ }
+
+			if (this.SourceChanged != null)
+			{
+				this.SourceChanged();
+			}
 		}
 
 		public void Undo()

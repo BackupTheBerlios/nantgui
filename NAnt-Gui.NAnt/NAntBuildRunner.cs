@@ -40,7 +40,7 @@ namespace NAntGui.NAnt
 			_script = new NAntBuildScript(sourceFile);
 		}
 
-		public override void ParseBuildFile()
+		public override void ParseBuildScript()
 		{
 			try
 			{

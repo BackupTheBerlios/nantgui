@@ -241,21 +241,24 @@ namespace NAntGui.Core
 				page.SourceChanged += new VoidVoid(this.Source_Changed);
 				page.BuildFinished = new VoidVoid(this.Update);
 
+				Settings.OpenInitialDirectory = page.File.Path;
+
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);
 				
 				this.AddRecentItem();
-				this.UpdateDisplay(page.BuildScript);
 
 				try
 				{
-					page.ParseBuildFile();	
+					page.ParseBuildScript();	
 				}
 				catch (BuildFileLoadException error)
 				{
 					MessageBox.Show(error.Message, "Error Loading Build File", 
 						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
+				
+				this.UpdateDisplay();
 
 				return true;
 			}
@@ -271,6 +274,27 @@ namespace NAntGui.Core
 			_recentItems.Add(_sourceTabs.SelectedTab.File.FullName);
 			_recentItems.Save();
 			this.UpdateRecentItemsMenu();
+		}
+
+		private void UpdateDisplay()
+		{
+			_outputBox.Clear();
+
+			IBuildScript buildScript = _sourceTabs.SelectedTab.BuildScript;
+
+			this.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
+
+			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
+
+			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
+			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullName;
+
+			this.EnableMenuCommandsAndButtons();
+
+			_targetsTree.AddTargets(projectName, buildScript.Targets);
+			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
+
+			_firstLoad = false;
 		}
 
 		private void ExitMenuCommand_Click(object sender, EventArgs e)
@@ -325,8 +349,6 @@ namespace NAntGui.Core
 				foreach (string filename in this.OpenFileDialog.FileNames)
 				{
 					this.LoadBuildFile(filename);
-					FileInfo info = new FileInfo(filename);
-					Settings.OpenInitialDirectory = info.DirectoryName;
 				}
 			}
 		}
@@ -398,23 +420,7 @@ namespace NAntGui.Core
 			lOptionsForm.ShowDialog();
 		}
 
-		private void UpdateDisplay(IBuildScript buildScript)
-		{
-			_outputBox.Clear();
-			this.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.File.Name);
 
-			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
-
-			_mainStatusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
-			_mainStatusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullName;
-
-			this.EnableMenuCommandsAndButtons();
-
-			_targetsTree.AddTargets(projectName, buildScript.Targets);
-			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
-
-			_firstLoad = false;
-		}
 
 		private void UpdateRecentItemsMenu()
 		{
@@ -494,7 +500,6 @@ namespace NAntGui.Core
 		private void SaveMenuCommand_Click(object sender, EventArgs e)
 		{
 			_sourceTabs.SelectedTab.Save();
-			this.Text = Utils.RemoveAsterisk(this.Text);
 		}
 
 //		private void WordWrap_Changed(bool checkValue)
@@ -517,7 +522,7 @@ namespace NAntGui.Core
 
 		private void Source_Changed()
 		{
-			this.Text = "NAnt-Gui - " + _sourceTabs.SelectedTab.Title;
+			this.UpdateDisplay();
 		}
 
 		private void MainForm_Closing(object sender, CancelEventArgs e)
