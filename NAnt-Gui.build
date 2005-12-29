@@ -1,11 +1,14 @@
 <project name="NAnt-Gui" default="Installer" xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
   <description>Builds NAnt-Gui</description>
-  
+
+  <loadtasks assembly="Tools\nantcontrib-0.85-rc3\bin\NAnt.Contrib.Tasks.dll" />
+  <loadtasks assembly="Nant.InnoSetup\bin\Release\NAnt.InnoSetupTasks.dll" />
+
   <target name="Installer" description="Create InnoSetup Installer" depends="Release">
     <innosetup script="NAnt-Gui.iss" />
   </target>
-  
-  <target name="Debug" description="Build Debug App">  	
+
+  <target name="Debug" description="Build Debug App">
 	<solution configuration="debug" solutionfile="NAnt-Gui.sln" />
   </target>
 

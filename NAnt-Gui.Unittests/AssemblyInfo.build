@@ -1,12 +1,14 @@
 <project name="CreateAssemblyInfo" default="main" basedir="." xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
-	<target name="main" description="main">		
+  <loadtasks assembly="..\Tools\nantcontrib-0.85-rc3\bin\NAnt.Contrib.Tasks.dll" />
+
+	<target name="main" description="main">
 		<loadfile file="..\build_number.txt" property="nantgui.version" />
-		
+
 		<asminfo output="AssemblyInfo.cs" language="CSharp">
-		    <imports>		        
+		    <imports>
 		        <import namespace="System.Reflection" />
 		    </imports>
-		    <attributes>		        
+		    <attributes>
 		        <attribute type="AssemblyVersionAttribute" value="${nantgui.version}" />
 		        <attribute type="AssemblyTitleAttribute" value="NAnt-Gui.Unittests" />
 		        <attribute type="AssemblyDescriptionAttribute" value="Executes and edits NAnt build scripts" />

@@ -1,0 +1,1 @@
+Tools\nant-0.85-rc3\bin\nant.exe -f:NAnt-Gui.build
