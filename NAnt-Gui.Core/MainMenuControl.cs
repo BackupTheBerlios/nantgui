@@ -67,6 +67,7 @@ namespace NAntGui.Core
 		private MenuCommand ViewMenuCommand = new MenuCommand();
 		private MenuCommand TargetsMenuCommand = new MenuCommand();
 		private MenuCommand PropertiesMenuCommand = new MenuCommand();
+		private MenuCommand OutputMenuCommand = new MenuCommand();
 
 		#endregion
 
@@ -252,7 +253,8 @@ namespace NAntGui.Core
 			this.ViewMenuCommand.MenuCommands.AddRange(new MenuCommand[]
 				{
 					this.TargetsMenuCommand,
-					this.PropertiesMenuCommand
+					this.PropertiesMenuCommand,
+					this.OutputMenuCommand
 				});
 			this.ViewMenuCommand.Text = "&View";
 			// 
@@ -267,6 +269,12 @@ namespace NAntGui.Core
 			this.PropertiesMenuCommand.Description = "MenuCommand";
 			this.PropertiesMenuCommand.ImageIndex = 0;
 			this.PropertiesMenuCommand.Text = "&Properties";
+			// 
+			// OutputMenuCommand
+			// 
+			this.OutputMenuCommand.Description = "MenuCommand";
+			this.OutputMenuCommand.ImageIndex = 6;
+			this.OutputMenuCommand.Text = "&Output";
 			// 
 			// NAntMenuCommand
 			// 
@@ -347,6 +355,7 @@ namespace NAntGui.Core
 			this.ReloadMenuCommand.ImageList		= 
 			this.PropertiesMenuCommand.ImageList	= 
 			this.TargetsMenuCommand.ImageList		= 
+			this.OutputMenuCommand.ImageList		= 
 			this.BuildMenuCommand.ImageList			= _imageList;
 		}
 
@@ -455,6 +464,11 @@ namespace NAntGui.Core
 			set { this.PropertiesMenuCommand.Click += value; }
 		}
 
+		public EventHandler Output_Click
+		{
+			set { this.OutputMenuCommand.Click += value; }
+		}
+
 		public EventHandler Build_Click
 		{
 			set { this.BuildMenuCommand.Click += value; }
@@ -492,5 +506,6 @@ namespace NAntGui.Core
 			get { return this.WordWrapMenuCommand.Checked; }
 			set { this.WordWrapMenuCommand.Checked = value; }
 		}
+
 	}
 }
