@@ -6,17 +6,15 @@ namespace NAntGui.Core.Menu.FileMenu
 	/// <summary>
 	/// Summary description for RecentMenuCommand.
 	/// </summary>
-	public class RecentMenuCommand : MenuCommand, Command
+	public class RecentItemMenuCommand : MenuCommand, Command
 	{
-		private RecentItems _recentItems = new RecentItems();
 		MainFormMediator _mediator;
 
-		public RecentMenuCommand()
+		public RecentItemMenuCommand(string text, EventHandler clickHandler) 
+			: base(text, clickHandler)
 		{
 			this.Description = "MenuCommand";
 			this.Text = "Recent &Files";
-
-			_recentItems.Load();
 		}
 
 		public MainFormMediator Mediator
@@ -26,12 +24,7 @@ namespace NAntGui.Core.Menu.FileMenu
 
 		public void Execute()
 		{
-			_mediator.RecentItemAdded();
-		}
-
-		public EventHandler ItemAdded
-		{
-			set { _recentItems.ItemsUpdated += value; }
+			_mediator.RecentItemClicked(this.Text.Substring(2));
 		}
 	}
 }

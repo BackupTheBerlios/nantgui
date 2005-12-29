@@ -1,7 +1,10 @@
 using System;
 using System.ComponentModel;
+using System.IO;
+using System.Windows.Forms;
 using NAntGui.Core.Menu;
 using NAntGui.Core.ToolBar;
+using NAntGui.Framework;
 
 namespace NAntGui.Core
 {
@@ -10,6 +13,8 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainFormMediator
 	{
+		private bool _firstLoad = true;
+
 		private MainDockManager _dockManager;
 		private SourceTabControl _sourceTabs;
 		private TargetsTreeView _targetsTree;
@@ -37,11 +42,8 @@ namespace NAntGui.Core
 				_outputBox, _propertyGrid, _statusBar);
 
 			_toolBar.SetMediator(this);
-//			_targetsTree.SetMediator(this);
-//			_outputBox.SetMediator(this);
-//			_propertyGrid.SetMediator(this);
-//			_statusBar.SetMediator(this);
 			_mainMenu.SetMediator(this);
+			_targetsTree.Mediator = this;
 
 			this.AssignEventHandler();
 		}
@@ -65,6 +67,7 @@ namespace NAntGui.Core
 			_mainMenu.Reload_Click = eventHandler;
 			_mainMenu.About_Click = eventHandler;
 			_mainMenu.Build_Click = eventHandler;
+			_mainMenu.Recent_Click = eventHandler;
 			_mainMenu.Close_Click = eventHandler;
 			_mainMenu.Exit_Click = eventHandler;
 			_mainMenu.NAntContrib_Click = eventHandler;
@@ -79,6 +82,8 @@ namespace NAntGui.Core
 			_targetsTree.BuildClick = eventHandler;
 
 			_mainForm.Closing += new CancelEventHandler(this.MainForm_Closing);
+			_mainForm.DragDrop += new DragEventHandler(this.MainForm_DragDrop);
+			_mainForm.DragEnter += new DragEventHandler(this.MainForm_DragEnter);
 		}
 
 		private void ClickHandler(object sender, EventArgs e)
@@ -88,16 +93,6 @@ namespace NAntGui.Core
 				Command cmd = sender as Command;
 				cmd.Execute();
 			}
-		}
-
-		public void ShowTargetsClicked(object sender, EventArgs e)
-		{
-			_dockManager.ShowTargets();
-		}
-
-		public void ShowPropertiesClicked(object sender, EventArgs e)
-		{
-			_dockManager.ShowProperties();
 		}
 
 		public void NewClicked()
@@ -142,7 +137,10 @@ namespace NAntGui.Core
 
 		public void OpenClicked()
 		{
-			_mainForm.BrowseForBuildFile();
+			foreach (string filename in BuildFileBrowser.BrowseForLoad())
+			{
+				this.LoadBuildFile(filename);
+			}
 		}
 
 		public void ExitClicked()
@@ -190,9 +188,17 @@ namespace NAntGui.Core
 			_outputBox.SaveOutput();
 		}
 
-		public void RecentClicked()
+		public void RecentItemClicked(string file)
 		{
-			throw new NotImplementedException();
+			if (File.Exists(file))
+			{
+				this.LoadBuildFile(file);
+			}
+			else
+			{
+				_mainMenu.RemoveRecentItem(file);
+				Utils.ShowFileNotFoundError(file);
+			}
 		}
 
 		public void WordWrapClicked()
@@ -223,24 +229,151 @@ namespace NAntGui.Core
 		public void NAntHelpClicked()
 		{
 			const string nantHelp = @"\..\nant-docs\help\index.html";
-			Utils.LoadHelpFile(Utils.GetRunDirectory() + nantHelp);
+			Utils.LoadHelpFile(Utils.RunDirectory + nantHelp);
 		}
 
 		public void NAntContribClicked()
 		{
 			const string nantContribHelp = @"\..\nantcontrib-docs\help\index.html";
-			Utils.LoadHelpFile(Utils.GetRunDirectory() + nantContribHelp);
+			Utils.LoadHelpFile(Utils.RunDirectory + nantContribHelp);
 		}
 
 		public void NAntSDKClicked()
 		{
 			const string nantHelpPath = @"\..\nant-docs\sdk\";
 			const string nantSDKHelp = "NAnt-SDK.chm";
-			string filename = Utils.GetRunDirectory() + nantHelpPath + nantSDKHelp;
+			string filename = Utils.RunDirectory + nantHelpPath + nantSDKHelp;
 
 			Utils.LoadHelpFile(filename);
 		}
 
+		public void OutputClicked()
+		{
+			_dockManager.ShowOutput();
+		}
 
+		public void TargetsClicked()
+		{
+			_dockManager.ShowTargets();
+		}
+
+		public void PropertiesClicked()
+		{
+			_dockManager.ShowProperties();
+		}
+
+		public void RunClicked()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void OptionsClicked()
+		{
+			OptionsForm optionsForm = new OptionsForm();
+			optionsForm.ShowDialog();
+		}
+
+		public void LoadInitialBuildFile()
+		{
+			if (NAntGuiApp.Options.BuildFile == null || !this.LoadBuildFile(NAntGuiApp.Options.BuildFile))
+			{
+				if (!_mainMenu.HasRecentItems || !this.LoadBuildFile(_mainMenu.FirstRecentItem))
+				{
+					_sourceTabs.Clear();
+					_sourceTabs.AddTab(new ScriptTabPage(_mainForm));
+				}
+			}
+		}
+
+		private bool LoadBuildFile(string filename)
+		{
+			if (File.Exists(filename))
+			{
+				ScriptTabPage page = new ScriptTabPage(filename, _mainForm, NAntGuiApp.Options);
+				page.SourceChanged += new VoidVoid(this.Source_Changed);
+				page.BuildFinished = new VoidVoid(_mainForm.Update);
+
+				Settings.OpenInitialDirectory = page.File.Path;
+
+				_sourceTabs.Clear();
+				_sourceTabs.AddTab(page);
+				
+				string file = _sourceTabs.SelectedTab.File.FullName;
+				_mainMenu.AddRecentItem(file);
+
+				try
+				{
+					page.ParseBuildScript();	
+				}
+				catch (BuildFileLoadException error)
+				{
+					MessageBox.Show(error.Message, "Error Loading Build File", 
+						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+				
+				this.UpdateDisplay();
+
+				return true;
+			}
+			else
+			{
+				Utils.ShowFileNotFoundError(filename);
+				return false;
+			}
+		}
+
+		private void UpdateDisplay()
+		{
+			_outputBox.Clear();
+
+			IBuildScript buildScript = _sourceTabs.SelectedTab.BuildScript;
+
+			_mainForm.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
+
+			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
+
+			_statusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
+			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullName;
+
+			this.EnableMenuCommandsAndButtons();
+
+			_targetsTree.AddTargets(projectName, buildScript.Targets);
+			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
+
+			_firstLoad = false;
+		}
+
+		private void MainForm_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				e.Effect = DragDropEffects.Copy;
+			}
+			else
+			{
+				e.Effect = DragDropEffects.None;
+			}
+		}
+
+		private void MainForm_DragDrop(object sender, DragEventArgs e)
+		{
+			this.LoadBuildFile(Utils.GetDragFilename(e));
+		}
+
+		private void EnableMenuCommandsAndButtons()
+		{
+			_mainMenu.Enable();
+			_toolBar.Enable();
+		}
+
+		private void Source_Changed()
+		{
+			this.UpdateDisplay();
+		}
+
+		//		private void WordWrap_Changed(bool checkValue)
+		//		{
+		//			_mainMenu.WordWrapChecked = checkValue;
+		//		}
 	}
 }

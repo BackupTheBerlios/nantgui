@@ -36,26 +36,13 @@ namespace NAntGui.Core.Menu
 	{
 		private FileMenu.FileMenu _fileMenu = new FileMenu.FileMenu();
 		private EditMenu.EditMenu _editMenu = new EditMenu.EditMenu();
-		private HelpMenu.HelpMenu _helpMenu = new HelpMenu.HelpMenu();
 		private ViewMenu.ViewMenu _viewMenu = new ViewMenu.ViewMenu();
-		
-		private MenuCommand NAntMenuCommand = new MenuCommand();
-		private MenuCommand BuildMenuCommand = new MenuCommand();
-		private MenuCommand ToolsMenuCommand = new MenuCommand();
-		private MenuCommand OptionsMenuCommand = new MenuCommand();
+		private BuildMenu.BuildMenu _buildMenu = new BuildMenu.BuildMenu();
+		private ToolsMenu.ToolsMenu _toolsMenu = new ToolsMenu.ToolsMenu();
+		private HelpMenu.HelpMenu _helpMenu = new HelpMenu.HelpMenu();
 		
 		public MainMenuControl()
 		{
-			this.Initialize();
-		}
-
-		#region Initialize
-
-		private void Initialize()
-		{
-			// 
-			// MainMenu
-			// 
 			this.AnimateStyle = Animation.System;
 			this.AnimateTime = 100;
 			this.Cursor = Cursors.Arrow;
@@ -68,9 +55,9 @@ namespace NAntGui.Core.Menu
 				{
 					_fileMenu,
 					_editMenu,
-					this._viewMenu,
-					this.NAntMenuCommand,
-					this.ToolsMenuCommand,
+					_viewMenu,
+					_buildMenu,
+					this._toolsMenu,
 					_helpMenu
 				});
 			this.Name = "MainMenu";
@@ -78,69 +65,38 @@ namespace NAntGui.Core.Menu
 			this.Style = VisualStyle.IDE;
 			this.TabIndex = 13;
 			this.TabStop = false;
-			// 
-			// NAntMenuCommand
-			// 
-			this.NAntMenuCommand.Description = "MenuCommand";
-			this.NAntMenuCommand.MenuCommands.AddRange(new MenuCommand[]
-				{
-					this.BuildMenuCommand
-				});
-			this.NAntMenuCommand.Text = "&NAnt";
-			// 
-			// BuildMenuCommand
-			// 
-			this.BuildMenuCommand.Description = "Builds the current build file";
-			this.BuildMenuCommand.ImageIndex = 7;
-			this.BuildMenuCommand.Shortcut = Shortcut.F5;
-			this.BuildMenuCommand.Text = "&Build";
-			this.BuildMenuCommand.ImageList = NAntGuiApp.ImageList;
-			// 
-			// ToolsMenuCommand
-			// 
-			this.ToolsMenuCommand.Description = "MenuCommand";
-			this.ToolsMenuCommand.MenuCommands.AddRange(new MenuCommand[]
-				{
-					this.OptionsMenuCommand
-				});
-			this.ToolsMenuCommand.Text = "&Tools";
-			// 
-			// OptionsMenuCommand
-			// 
-			this.OptionsMenuCommand.Description = "MenuCommand";
-			this.OptionsMenuCommand.Text = "&Options";
 		}
-
-		#endregion
 
 		public void SetMediator(MainFormMediator mediator)
 		{
 			_fileMenu.SetMediator(mediator);
 			_editMenu.SetMediator(mediator);
-			_helpMenu.SetMediator(mediator);
 			_viewMenu.SetMediator(mediator);
+			_buildMenu.SetMediator(mediator);
+			_toolsMenu.SetMediator(mediator);
+			_helpMenu.SetMediator(mediator);
 		}
 
 		public void Enable()
 		{
 			_fileMenu.Enable();
-			this.BuildMenuCommand.Enabled = true;
+			_buildMenu.Enable();
 		}
 
 		public void Disable()
 		{
 			_fileMenu.Disable();
-			this.BuildMenuCommand.Enabled = false;
+			_buildMenu.Disable();
 		}
 
-		public void ClearRecentItems()
+		public void AddRecentItem(string file)
 		{
-			_fileMenu.ClearRecentItems();
+			_fileMenu.AddRecentItem(file);
 		}
 
-		public void AddRecentItem(MenuCommand item)
+		public void RemoveRecentItem(string file)
 		{
-			_fileMenu.AddRecentItem(item);
+			_fileMenu.RemoveRecentItem(file);
 		}
 
 		#region Events
@@ -227,12 +183,12 @@ namespace NAntGui.Core.Menu
 
 		public EventHandler Build_Click
 		{
-			set { this.BuildMenuCommand.Click += value; }
+			set { _buildMenu.Build_Click = value; }
 		}
 
 		public EventHandler Options_Click
 		{
-			set { this.OptionsMenuCommand.Click += value; }
+			set { _toolsMenu.Options_Click = value; }
 		}
 
 		public EventHandler NAntHelp_Click
@@ -255,8 +211,22 @@ namespace NAntGui.Core.Menu
 			set { _helpMenu.About_Click = value; }
 		}
 
-		#endregion
+		public EventHandler Recent_Click
+		{
+			set { _fileMenu.Recent_Click = value; }
+		}
 
+		public bool HasRecentItems
+		{
+			get { return _fileMenu.HasRecentItems; }
+		}
+
+		public string FirstRecentItem
+		{
+			get { return _fileMenu.FirstRecentItem; }
+		}
+
+		#endregion
 
 	}
 }

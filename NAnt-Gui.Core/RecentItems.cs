@@ -31,14 +31,10 @@ namespace NAntGui.Core
 	/// </summary>
 	public class RecentItems : IEnumerable
 	{
-		public event VoidVoid ItemsUpdated;
-
 		private const string LOOP_ESCAPE = "DONE";
 		private ArrayList _items = new ArrayList(Settings.MaxRecentItems);
 
-		public RecentItems(){ }
-
-		public void Load()
+		public RecentItems()
 		{
 			RegistryKey key = GetRegKey(Settings.RECENT_ITEMS_KEY_PATH);
 
@@ -49,17 +45,7 @@ namespace NAntGui.Core
 			else
 			{
 				this.LoadRecentItemsFromOldRegKey();
-			}
-
-			this.FireItemsUpdated();
-		}
-
-		private void FireItemsUpdated()
-		{
-			if (ItemsUpdated != null)
-			{
-				this.ItemsUpdated();
-			}
+			}			
 		}
 
 		public void Save()
@@ -103,8 +89,6 @@ namespace NAntGui.Core
 			{
 				this.AddItem(item);
 			}
-
-			this.FireItemsUpdated();
 		}
 
 		public void Remove(string item)
@@ -112,7 +96,6 @@ namespace NAntGui.Core
 			if (Exists(item))
 			{
 				_items.Remove(item);
-				this.FireItemsUpdated();
 			}
 		}
 

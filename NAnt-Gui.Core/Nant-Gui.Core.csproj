@@ -178,6 +178,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MainFormSerializer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "MainPropertyGrid.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
@@ -224,11 +229,6 @@
                 />
                 <File
                     RelPath = "Outputter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PersistWindowState.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -306,7 +306,12 @@
                 />
                 <File
                     RelPath = "Menu\BuildMenu\BuildMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Menu\BuildMenu\RunMenuCommand.cs"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -370,7 +375,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Menu\FileMenu\RecentMenuCommand.cs"
+                    RelPath = "Menu\FileMenu\RecentItemMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Menu\FileMenu\RecentItemsMenu.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
                 />
@@ -420,8 +430,33 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Menu\ToolsMenu\OptionsMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Menu\ToolsMenu\ToolsMenu.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Menu\ViewMenu\OutputMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Menu\ViewMenu\PropertiesMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Menu\ViewMenu\TargetsMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Menu\ViewMenu\ViewMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File

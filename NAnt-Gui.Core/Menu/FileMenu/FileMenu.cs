@@ -15,7 +15,7 @@ namespace NAntGui.Core.Menu.FileMenu
 		private ReloadMenuCommand _reload = new ReloadMenuCommand();
 		private CloseMenuCommand _close = new CloseMenuCommand();
 		private SaveOutputMenuCommand _saveOutput = new SaveOutputMenuCommand();
-		private RecentMenuCommand _recent = new RecentMenuCommand();
+		private RecentItemsMenu _recent = new RecentItemsMenu();
 		private ExitMenuCommand _exit = new ExitMenuCommand();
 
 		public FileMenu()
@@ -39,8 +39,8 @@ namespace NAntGui.Core.Menu.FileMenu
 			_reload.Mediator	 = mediator;
 			_close.Mediator		 = mediator;
 			_saveOutput.Mediator = mediator;
-			_recent.Mediator	 = mediator;
 			_exit.Mediator		 = mediator;
+			_recent.Mediator	 = mediator;
 		}
 
 		public void Enable()
@@ -59,16 +59,15 @@ namespace NAntGui.Core.Menu.FileMenu
 						_close.Enabled = false;
 		}
 
-		public void ClearRecentItems()
+
+		public void AddRecentItem(string file)
 		{
-			_recent.MenuCommands.Clear();
+			_recent.AddRecentItem(file);
 		}
 
-		public void AddRecentItem(MenuCommand item)
+		public void RemoveRecentItem(string file)
 		{
-			_recentItems.Add(_sourceTabs.SelectedTab.File.FullName);
-			_recentItems.Save();
-			_recent.MenuCommands.Add(item);
+			_recent.RemoveRecentItem(file);
 		}
 
 		#region Events
@@ -113,8 +112,22 @@ namespace NAntGui.Core.Menu.FileMenu
 			set { _exit.Click += value; }
 		}
 
+		public EventHandler Recent_Click
+		{
+			set { _recent.Recent_Click = value; }
+		}
+
+		public bool HasRecentItems
+		{
+			get { return _recent.HasRecentItems; }
+		}
+
+		public string FirstRecentItem
+		{
+			get { return _recent.FirstRecentItem; }
+		}
+
 		#endregion
 
-	
 	}
 }

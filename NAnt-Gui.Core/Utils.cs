@@ -37,11 +37,27 @@ namespace NAntGui.Core
 			}
 		}
 
-		public static string GetRunDirectory()
+		public static string RunDirectory
 		{
-			Assembly ass = Assembly.GetExecutingAssembly();
-			FileInfo info = new FileInfo(ass.Location);
-			return info.DirectoryName;
+			get
+			{
+				Assembly ass = Assembly.GetExecutingAssembly();
+				FileInfo info = new FileInfo(ass.Location);
+				return info.DirectoryName;
+			}
+		}
+
+		public static void ShowFileNotFoundError(string recentItem)
+		{
+			MessageBox.Show(recentItem + " was not found.", "Build File Not Found", 
+				MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		}
+
+		public static string GetDragFilename(DragEventArgs e)
+		{
+			object dragData = e.Data.GetData(DataFormats.FileDrop, false);
+			string[] files = dragData as string[];
+			return files[0];
 		}
 	}
 }
