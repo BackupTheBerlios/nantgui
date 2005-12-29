@@ -1,4 +1,6 @@
+using System.Drawing;
 using System.Windows.Forms;
+using Crownwood.Magic.Common;
 
 #region Copyleft and Copyright
 
@@ -29,17 +31,35 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for AppEntry.
 	/// </summary>
-	public class CoreApp
+	public class NAntGuiApp
 	{
+		private const string IMAGE_PATH = "NAntGui.Core.Images.MenuItems.bmp";
+		private static CommandLineOptions _options;
+		private static ImageList _imageList;
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
-		public CoreApp(CommandLineOptions cmdLineOptions)
+		public static void Run(CommandLineOptions options)
 		{
-			MainForm mainForm = new MainForm(cmdLineOptions);
-			MainFormSerializer.Attach(mainForm);
+			_options = options;
 
+			_imageList = ResourceHelper.LoadBitmapStrip(typeof(NAntGuiApp), 
+				IMAGE_PATH, new Size(16, 16), new Point(0, 0));
+
+			MainForm mainForm = new MainForm();
+			MainFormSerializer.Attach(mainForm);
 			Application.Run(mainForm);
+		}
+
+		public static CommandLineOptions Options
+		{
+			get { return _options; }
+		}
+
+		public static ImageList ImageList
+		{
+			get { return _imageList; }
 		}
 	}
 }

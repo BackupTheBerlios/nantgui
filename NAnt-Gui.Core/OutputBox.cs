@@ -73,18 +73,18 @@ namespace NAntGui.Core
 				this.WordWrapChanged(this.WordWrap);
 		}
 
-		public void SaveOutput(object sender, EventArgs e)
+		public void SaveOutput()
 		{
 //			this.OutputSaveFileDialog.InitialDirectory = _sourceFile.FullPath;
 			DialogResult result = this.OutputSaveFileDialog.ShowDialog();
 
 			if (result == DialogResult.OK)
 			{
-				this.DoSave();
+				this.Save();
 			}
 		}
 
-		private void DoSave()
+		private void Save()
 		{
 			int filterIndex = this.OutputSaveFileDialog.FilterIndex;
 
@@ -134,7 +134,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void DoWordWrap(object sender, EventArgs e)
+		public void DoWordWrap()
 		{
 			this.WordWrap = !this.WordWrap;
 			if (this.WordWrapChanged != null)

@@ -29,9 +29,9 @@ using System.IO;
 using System.Reflection;
 using System.Resources;
 using System.Windows.Forms;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Docking;
 using Crownwood.Magic.Menus;
+using NAntGui.Core.Menu;
+using NAntGui.Core.ToolBar;
 using NAntGui.Framework;
 
 namespace NAntGui.Core
@@ -41,54 +41,35 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainForm : Form, ILogsMessage
 	{
-		private static readonly string DOCKING_CONFIG = Application.StartupPath + "\\MainFormDocking.config";
-
 		private delegate void MessageEventHandler(string pMessage);
-
-		private CommandLineOptions _options;
-		private RecentItems _recentItems = new RecentItems();
-		private DockingManager _dockManager;
+		
 		private bool _firstLoad = true;
 
-		#region GUI Items
-		private OpenFileDialog OpenFileDialog;
-		
-		private SaveFileDialog XMLSaveFileDialog;
-		
-		private ImageList _imageList;
-
+		private RecentItems _recentItems = new RecentItems();
 		private OutputBox _outputBox = new OutputBox();
-		
-		private TargetsTreeView _targetsTree;
-
-		private WindowContent _targetWindowContent;
-		private Content _targetsContent;
-		private Content _propertiesContent;
-		private Content _outputContent;
-
-		public MainPropertyGrid _propertyGrid;
+		private TargetsTreeView _targetsTree = new TargetsTreeView();
+		public MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainMenuControl _mainMenu = new MainMenuControl();
 		private ToolBarControl _mainToolBar = new ToolBarControl();
 		private SourceTabControl _sourceTabs = new SourceTabControl();
 		private MainStatusBar _mainStatusBar = new MainStatusBar();
 
+		private MainFormMediator _mediator;
+
 		private IContainer components;
 
-		#endregion
 
-		public MainForm(CommandLineOptions options)
+		public MainForm()
 		{
-			_options = options;
-
 			this.Initialize();
-			this.SetupDockManager();
+
+			_mediator = new MainFormMediator(this, _sourceTabs, _targetsTree, 
+				_outputBox, _propertyGrid, _mainStatusBar, _mainMenu, _mainToolBar);
 
 			_recentItems.ItemsUpdated += new VoidVoid(this.UpdateRecentItemsMenu);
 			_recentItems.Load();
-
+			
 			this.LoadInitialBuildFile();
-			this.AssignMenuCommands();
-			this.AssignToolBarButtons();
 		}
 
 
@@ -117,22 +98,8 @@ namespace NAntGui.Core
 		{
 			this.components = new Container();
 			ResourceManager resources = new ResourceManager(typeof (MainForm));
-			this.OpenFileDialog = new OpenFileDialog();
-			this.XMLSaveFileDialog = new SaveFileDialog();
-			_propertyGrid = new MainPropertyGrid(_options.Properties);
-			_imageList = ResourceHelper.LoadBitmapStrip(this.GetType(), "NAntGui.Core.Images.MenuItems.bmp",new Size(16, 16), new Point(0, 0));
-			_targetsTree = new TargetsTreeView(new EventHandler(this.BuildMenuCommand_Click));
 			this.SuspendLayout();
-			// 
-			// OpenFileDialog
-			// 
-			this.OpenFileDialog.DefaultExt = "build";
-			this.OpenFileDialog.Filter = "Build Files (*.build)|*.build|NAnt Include|*.inc";
-			// 
-			// XMLSaveFileDialog
-			// 
-			this.XMLSaveFileDialog.DefaultExt = "build";
-			this.XMLSaveFileDialog.Filter = "NAnt Buildfile|*.build|NAnt Include|*.inc";
+			
 			// 
 			// MainForm
 			// 
@@ -149,7 +116,6 @@ namespace NAntGui.Core
 			this.Name = "MainForm";
 			this.Text = "NAnt-Gui";
 			this.SetStyle(ControlStyles.DoubleBuffer, true);
-			this.Closing += new CancelEventHandler(this.MainForm_Closing);
 			this.DragDrop += new DragEventHandler(this.NAnt_DragDrop);
 			this.Closed += new EventHandler(this.NAnt_Closed);
 			this.DragEnter += new DragEventHandler(this.NAnt_DragEnter);
@@ -158,77 +124,14 @@ namespace NAntGui.Core
 
 		#endregion
 
-		private void AssignToolBarButtons()
-		{
-			_mainToolBar.Build_Click += new VoidVoid(this.Build);
-			_mainToolBar.Open_Click += new VoidVoid(this.BrowseForBuildFile);
-			_mainToolBar.Stop_Click += new VoidVoid(this.Stop_Click);
-			_mainToolBar.Save_Click += new EventHandler(this.SaveMenuCommand_Click);
-			_mainToolBar.Reload_Click += new EventHandler(this.Reload_Click);
-		}
-
-		private void AssignMenuCommands()
-		{
-			_mainMenu.Undo_Click = new EventHandler(this.Undo_Click);
-			_mainMenu.Redo_Click = new EventHandler(this.Redo_Click);
-			_mainMenu.Copy_Click = new EventHandler(_outputBox.CopyText);
-			_mainMenu.SelectAll_Click = new EventHandler(_outputBox.SelectAllText);
-			_mainMenu.SaveOutput_Click = new EventHandler(_outputBox.SaveOutput);
-			_mainMenu.WordWrap_Click = new EventHandler(_outputBox.DoWordWrap);
-			_mainMenu.Reload_Click = new EventHandler(this.Reload_Click);
-			_mainMenu.About_Click = new EventHandler(this.AboutMenuCommand_Click);
-			_mainMenu.Build_Click = new EventHandler(this.BuildMenuCommand_Click);
-			_mainMenu.Close_Click = new EventHandler(this.CloseMenuCommand_Click);
-			_mainMenu.Exit_Click = new EventHandler(this.ExitMenuCommand_Click);
-			_mainMenu.NAntContrib_Click = new EventHandler(this.NAntContribMenuCommand_Click);
-			_mainMenu.NAntHelp_Click = new EventHandler(this.NAntHelpMenuCommand_Click);
-			_mainMenu.NAntSDK_Click = new EventHandler(this.NAntSDKMenuCommand_Click);
-			_mainMenu.Open_Click = new EventHandler(this.OpenMenuCommand_Click);
-			_mainMenu.Options_Click = new EventHandler(this.OptionsMenuCommand_Click);
-			_mainMenu.Properties_Click = new EventHandler(this.PropertiesMenuCommand_Click);
-			_mainMenu.Save_Click = new EventHandler(this.SaveMenuCommand_Click);
-			_mainMenu.SaveAs_Click = new EventHandler(this.SaveAsMenuCommand_Click);
-			_mainMenu.Targets_Click = new EventHandler(this.TargetsMenuCommand_Click);
-			
-		}
-
-		private void SetupDockManager()
-		{
-			// Create the object that manages the docking state
-			_dockManager = new DockingManager(this, VisualStyle.IDE);
-
-			// Ensure that the RichTextBox is always the innermost control
-			_dockManager.InnerControl = _sourceTabs.Tabs;
-
-			_targetsContent		= _dockManager.Contents.Add(_targetsTree, "Targets");
-			_outputContent		= _dockManager.Contents.Add(_outputBox, "Output");
-			_propertiesContent	= _dockManager.Contents.Add(_propertyGrid, "Properties");
-
-			_targetsContent.ImageList = _imageList;
-			_targetsContent.ImageIndex = 9;
-
-			_propertiesContent.ImageList = _imageList;
-			_propertiesContent.ImageIndex = 0;
-
-			// Request a new Docking window be created for the above Content on the left edge
-			_targetWindowContent = _dockManager.AddContentWithState(_targetsContent, State.DockLeft) as WindowContent;
-			_dockManager.AddContentToZone(_propertiesContent, _targetWindowContent.ParentZone, 1);
-
-			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
-
-			_dockManager.OuterControl = _mainStatusBar;
-
-			_dockManager.LoadConfigFromFile(DOCKING_CONFIG);	
-		}
-
 		private void LoadInitialBuildFile()
 		{
-			if (_options.BuildFile == null || !this.LoadBuildFile(_options.BuildFile))
+			if (NAntGuiApp.Options.BuildFile == null || !this.LoadBuildFile(NAntGuiApp.Options.BuildFile))
 			{
 				if (!_recentItems.HasRecentItems || !this.LoadBuildFile(_recentItems[0]))
 				{
 					_sourceTabs.Clear();
-					_sourceTabs.AddTab(new ScriptTabPage(this, _options));
+					_sourceTabs.AddTab(new ScriptTabPage(this));
 				}
 			}
 		}
@@ -237,7 +140,7 @@ namespace NAntGui.Core
 		{
 			if (File.Exists(filename))
 			{
-				ScriptTabPage page = new ScriptTabPage(filename, this, _options);
+				ScriptTabPage page = new ScriptTabPage(filename, this, NAntGuiApp.Options);
 				page.SourceChanged += new VoidVoid(this.Source_Changed);
 				page.BuildFinished = new VoidVoid(this.Update);
 
@@ -297,16 +200,6 @@ namespace NAntGui.Core
 			_firstLoad = false;
 		}
 
-		private void ExitMenuCommand_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
-
-		private void OpenMenuCommand_Click(object sender, EventArgs e)
-		{
-			this.BrowseForBuildFile();
-		}
-
 		private void NAnt_DragEnter(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -331,61 +224,17 @@ namespace NAntGui.Core
 			return files[0];
 		}
 
-		private void CloseMenuCommand_Click(object sender, EventArgs e)
+		public void BrowseForBuildFile()
 		{
-			_sourceTabs.SelectedTab.File.Close();
-			_targetsTree.Nodes.Clear();
-			_propertyGrid.SelectedObject = null;
-
-			_outputBox.Clear();
-			this.DisableMenuCommandsAndButtons();
-		}
-
-		private void BrowseForBuildFile()
-		{
-			this.OpenFileDialog.InitialDirectory = Settings.OpenInitialDirectory;
-			if (this.OpenFileDialog.ShowDialog() == DialogResult.OK)
+			foreach (string filename in BuildFileBrowser.BrowseForLoad())
 			{
-				foreach (string filename in this.OpenFileDialog.FileNames)
-				{
-					this.LoadBuildFile(filename);
-				}
+				this.LoadBuildFile(filename);
 			}
-		}
-
-		private void BuildMenuCommand_Click(object sender, EventArgs e)
-		{
-			this.Build();
-		}
-
-		private void Build()
-		{
-			_mainToolBar.DisableRun();
-			_mainToolBar.EnableStop();
-			_outputBox.Clear();
-			_outputContent.BringToFront();
-
-			ScriptTabPage selectedTab = _sourceTabs.SelectedTab;
-
-			selectedTab.Save();
-			selectedTab.SetProperties(_propertyGrid.GetProperties());
-			selectedTab.SetTargets(_targetsTree.GetTargets());
-			selectedTab.Run();
-
-			_mainToolBar.DisableStop();
-			_mainToolBar.EnableRun();
 		}
 
 		private void NAnt_Closed(object sender, EventArgs e)
 		{
 			_recentItems.Save();
-		}
-
-
-		private void AboutMenuCommand_Click(object sender, EventArgs e)
-		{
-			About about = new About();
-			about.ShowDialog();
 		}
 
 		public void LogMessage(string message)
@@ -403,12 +252,6 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void DisableMenuCommandsAndButtons()
-		{
-			_mainMenu.Disable();
-			_mainToolBar.Disable();
-		}
-
 		private void EnableMenuCommandsAndButtons()
 		{
 			_mainMenu.Enable();
@@ -417,11 +260,9 @@ namespace NAntGui.Core
 
 		private void OptionsMenuCommand_Click(object sender, EventArgs e)
 		{
-			OptionsForm lOptionsForm = new OptionsForm();
-			lOptionsForm.ShowDialog();
+			OptionsForm optionsForm = new OptionsForm();
+			optionsForm.ShowDialog();
 		}
-
-
 
 		private void UpdateRecentItemsMenu()
 		{
@@ -498,73 +339,14 @@ namespace NAntGui.Core
 			return info.DirectoryName;
 		}
 
-		private void SaveMenuCommand_Click(object sender, EventArgs e)
-		{
-			_sourceTabs.SelectedTab.Save();
-		}
-
 //		private void WordWrap_Changed(bool checkValue)
 //		{
 //			_mainMenu.WordWrapChecked = checkValue;
 //		}
 
-
-		private void TargetsMenuCommand_Click(object sender, EventArgs e)
-		{
-			_dockManager.BringAutoHideIntoView(_targetsContent);
-			_dockManager.ShowContent(_targetsContent);
-		}
-
-		private void PropertiesMenuCommand_Click(object sender, EventArgs e)
-		{
-			_dockManager.BringAutoHideIntoView(_propertiesContent);
-			_dockManager.ShowContent(_propertiesContent);
-		}
-
 		private void Source_Changed()
 		{
 			this.UpdateDisplay();
-		}
-
-		private void MainForm_Closing(object sender, CancelEventArgs e)
-		{
-			_sourceTabs.SelectedTab.Stop();
-			_sourceTabs.CloseTabs(e);
-			_dockManager.SaveConfigToFile(DOCKING_CONFIG);	
-		}
-
-		private void SaveAsMenuCommand_Click(object sender, EventArgs e)
-		{
-			DialogResult result = this.XMLSaveFileDialog.ShowDialog();
-			if (result == DialogResult.OK)
-			{
-				_sourceTabs.SelectedTab.SaveAs(this.XMLSaveFileDialog.FileName);
-
-				this.Text = Utils.RemoveAsterisk(this.Text);
-				this.LoadBuildFile(this.XMLSaveFileDialog.FileName);
-			}
-		}
-
-		private void Reload_Click(object sender, EventArgs e)
-		{
-			_sourceTabs.SelectedTab.ReLoad();
-		}
-
-		private void Undo_Click(object sender, EventArgs e)
-		{
-			_sourceTabs.SelectedTab.Undo();
-		}
-
-		private void Redo_Click(object sender, EventArgs e)
-		{
-			_sourceTabs.SelectedTab.Redo();
-		}
-
-		private void Stop_Click()
-		{
-			_mainToolBar.DisableStop();
-			_sourceTabs.SelectedTab.Stop();
-			_mainToolBar.EnableRun();
 		}
 
 		public PropertySort PropertySort

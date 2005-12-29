@@ -37,9 +37,9 @@ namespace NAntGui.Core
 		private PropertyTable _propertyTable = new PropertyTable();
 		private NameValueCollection _commandLineProperties;
 
-		public MainPropertyGrid(NameValueCollection commandLineProperties)
+		public MainPropertyGrid()
 		{
-			_commandLineProperties = commandLineProperties;
+			_commandLineProperties = NAntGuiApp.Options.Properties;
 
 			this.CommandsVisibleIfAvailable = true;
 			this.Dock = DockStyle.Fill;

@@ -36,12 +36,12 @@ namespace NAntGui.Framework
 		protected string _extension;
 		protected string _contents;
 		protected ILogsMessage _messageLogger;
-		protected CommandLineOptions _options;
 
 		private Watcher	_watcher = new Watcher();
-		
+		private CommandLineOptions _options;
 
-		public SourceFile(ILogsMessage messageLogger, CommandLineOptions options)
+
+		public SourceFile(ILogsMessage messageLogger)
 		{
 			_name			= "Untitled";
 			_path			= ".\\";
@@ -49,7 +49,6 @@ namespace NAntGui.Framework
 			_extension		= "";
 			_contents		= "";
 			_messageLogger	= messageLogger;
-			_options		= options;
 		}
 
 		/// <summary>
@@ -60,15 +59,16 @@ namespace NAntGui.Framework
 		{
 			Assert.NotNull(buildFile, "buildFile");
 			Assert.NotNull(contents, "contents");
+			Assert.NotNull(options, "options");
             			
 			_fullName		= buildFile;
 			_contents		= contents;
+			_options		= options;
 			FileInfo info	= new FileInfo(_fullName);
 			_name			= info.Name;
 			_path			= info.DirectoryName;
 			_extension		= info.Extension;
 			_messageLogger	= messageLogger;
-			_options		= options;
 
 			_watcher.WatchBuildFile(info);
 		}

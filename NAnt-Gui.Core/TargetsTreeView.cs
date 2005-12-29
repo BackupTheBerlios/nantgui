@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Common;
 using Crownwood.Magic.Menus;
 using NAntGui.Framework;
 
@@ -10,26 +9,21 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for TargetsTreeView.
 	/// </summary>
-	public class TargetsTreeView : TreeView
+	public class TargetsTreeView : TreeView, Command
 	{
-		private EventHandler _buildClick;
 		private ToolTip ToolTip = new ToolTip();
 		private PopupMenu _targetsPopupMenu = new PopupMenu();
-		private ImageList _imageList;
+		private MenuCommand _build = new MenuCommand("&Build");
+		private MainFormMediator _mediator;
 
-		public TargetsTreeView(EventHandler buildClick)
+		public TargetsTreeView()
 		{
-			_buildClick = buildClick;
 			this.Initialize();
 			this.CreateContextMenu();
 		}
 
 		private void Initialize()
 		{
-			_imageList = ResourceHelper.LoadBitmapStrip(
-				this.GetType(), "NAntGui.Core.Images.MenuItems.bmp",
-				new Size(16, 16), new Point(0, 0));
-	
 			// 
 			// TargetsTreeView
 			// 
@@ -83,10 +77,9 @@ namespace NAntGui.Core
 
 		private void CreateContextMenu()
 		{
-			MenuCommand build = new MenuCommand("&Build", new EventHandler(_buildClick));
-			build.ImageList = _imageList;
-			build.ImageIndex = 7;
-			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {build});
+			_build.ImageList = NAntGuiApp.ImageList;
+			_build.ImageIndex = 7;
+			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {_build});
 		}
 
 		public TargetCollection GetTargets()
@@ -140,6 +133,21 @@ namespace NAntGui.Core
 		private static bool HasDescription(string description)
 		{
 			return description.Length > 0;
+		}
+
+		public void Execute()
+		{
+			_mediator.BuildClicked();
+		}
+
+		public EventHandler BuildClick
+		{
+			set { _build.Click += value; }
+		}
+
+		public MainFormMediator Mediator
+		{
+			set { _mediator = value; }
 		}
 	}
 }

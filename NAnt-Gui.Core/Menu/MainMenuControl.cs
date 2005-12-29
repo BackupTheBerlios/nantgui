@@ -27,7 +27,7 @@ using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.Menu
 {
 	/// <summary>
 	/// Summary description for MainMenuCommand.
@@ -36,34 +36,19 @@ namespace NAntGui.Core
 	{
 		#region MenuCommands
 
-		private MenuCommand ExitMenuCommand = new MenuCommand();
-		private MenuCommand MenuCommand4 = new MenuCommand();
-		private MenuCommand MenuCommand5 = new MenuCommand();
-		private MenuCommand FileMenuCommand = new MenuCommand();
-		private MenuCommand NewMenuCommand = new MenuCommand();
-		private MenuCommand OpenMenuCommand = new MenuCommand();
-		private MenuCommand SaveMenuCommand = new MenuCommand();
-		private MenuCommand SaveAsMenuCommand = new MenuCommand();
-		private MenuCommand CloseMenuCommand = new MenuCommand();
-		private MenuCommand RecentMenuCommand = new MenuCommand();
-		private MenuCommand ReloadMenuCommand = new MenuCommand();
+		private FileMenu _fileMenu = new FileMenu();
+		private EditMenu _editMenu = new EditMenu();
+
 		private MenuCommand HelpMenuCommand = new MenuCommand();
 		private MenuCommand AboutMenuCommand = new MenuCommand();
 		private MenuCommand NAntMenuCommand = new MenuCommand();
 		private MenuCommand BuildMenuCommand = new MenuCommand();
-		private MenuCommand EditMainMenuCommand = new MenuCommand();
-		private MenuCommand UndoMenuCommand = new MenuCommand();
-		private MenuCommand RedoMenuCommand = new MenuCommand();
-		private MenuCommand CopyMenuCommand = new MenuCommand();
-		private MenuCommand SelectAllMenuCommand = new MenuCommand();
 		private MenuCommand ToolsMenuCommand = new MenuCommand();
 		private MenuCommand OptionsMenuCommand = new MenuCommand();
 		private MenuCommand NAntContribMenuCommand = new MenuCommand();
 		private MenuCommand NAntHelpMenuCommand = new MenuCommand();
 		private MenuCommand NAntSDKMenuCommand = new MenuCommand();
 		private MenuCommand MenuCommand1 = new MenuCommand();
-		private MenuCommand SaveOutputMenuCommand = new MenuCommand();
-		private MenuCommand WordWrapMenuCommand = new MenuCommand();
 		private MenuCommand ViewMenuCommand = new MenuCommand();
 		private MenuCommand TargetsMenuCommand = new MenuCommand();
 		private MenuCommand PropertiesMenuCommand = new MenuCommand();
@@ -71,25 +56,15 @@ namespace NAntGui.Core
 
 		#endregion
 
-		private ImageList _imageList;
-
 		public MainMenuControl()
 		{
-			this.LoadImageList();
-			this.SetProperties();
+			this.Initialize();
 			this.AssignImages();
 		}
 
-		private void LoadImageList()
-		{
-			_imageList = ResourceHelper.LoadBitmapStrip(
-				this.GetType(), "NAntGui.Core.Images.MenuItems.bmp",
-				new Size(16, 16), new Point(0, 0));
-		}
+		#region Initialize
 
-		#region Set Properties
-
-		private void SetProperties()
+		private void Initialize()
 		{
 			// 
 			// MainMenu
@@ -104,8 +79,8 @@ namespace NAntGui.Core
 			this.Location = new Point(0, 0);
 			this.MenuCommands.AddRange(new MenuCommand[]
 				{
-					this.FileMenuCommand,
-					this.EditMainMenuCommand,
+					_fileMenu,
+					_editMenu,
 					this.ViewMenuCommand,
 					this.NAntMenuCommand,
 					this.ToolsMenuCommand,
@@ -116,139 +91,7 @@ namespace NAntGui.Core
 			this.Style = VisualStyle.IDE;
 			this.TabIndex = 13;
 			this.TabStop = false;
-			// 
-			// FileMenuCommand
-			// 
-			this.FileMenuCommand.Description = "MenuCommand";
-			this.FileMenuCommand.MenuCommands.AddRange(new MenuCommand[]
-				{
-					this.NewMenuCommand, 
-					this.OpenMenuCommand,
-					this.SaveMenuCommand,
-					this.SaveAsMenuCommand,
-					this.ReloadMenuCommand,
-					this.CloseMenuCommand,
-					this.SaveOutputMenuCommand,
-					this.MenuCommand4,
-					this.RecentMenuCommand,
-					this.MenuCommand5,
-					this.ExitMenuCommand
-				});
-			this.FileMenuCommand.Text = "&File";
-			// 
-			// NewMenuCommand
-			// 
-			this.NewMenuCommand.Description = "MenuCommand";
-			this.NewMenuCommand.ImageIndex = 8;
-			this.NewMenuCommand.Shortcut = Shortcut.CtrlN;
-			this.NewMenuCommand.Text = "&New";
-			this.NewMenuCommand.Enabled = false;
-			// 
-			// OpenMenuCommand
-			// 
-			this.OpenMenuCommand.Description = "MenuCommand";
-			this.OpenMenuCommand.ImageIndex = 5;
-			this.OpenMenuCommand.Shortcut = Shortcut.CtrlO;
-			this.OpenMenuCommand.Text = "&Open";
-			// 
-			// SaveMenuCommand
-			// 
-			this.SaveMenuCommand.Description = "MenuCommand";
-			this.SaveMenuCommand.ImageIndex = 2;
-			this.SaveMenuCommand.Shortcut = Shortcut.CtrlS;
-			this.SaveMenuCommand.Text = "&Save";
-			// 
-			// SaveAsMenuCommand
-			// 
-			this.SaveAsMenuCommand.Description = "MenuCommand";
-			this.SaveAsMenuCommand.ImageIndex = 2;
-			this.SaveAsMenuCommand.Shortcut = Shortcut.F12;
-			this.SaveAsMenuCommand.Text = "Save &As";
-			// 
-			// ReloadMenuCommand
-			// 
-			this.ReloadMenuCommand.Description = "MenuCommand";
-			this.ReloadMenuCommand.ImageIndex = 4;
-			this.ReloadMenuCommand.Shortcut = Shortcut.CtrlR;
-			this.ReloadMenuCommand.Text = "&Reload";
-			// 
-			// CloseMenuCommand
-			// 
-			this.CloseMenuCommand.Description = "MenuCommand";
-			this.CloseMenuCommand.Shortcut = Shortcut.CtrlW;
-			this.CloseMenuCommand.Text = "&Close";
-			// 
-			// SaveOutputMenuCommand
-			// 
-			this.SaveOutputMenuCommand.Description = "MenuCommand";
-			this.SaveOutputMenuCommand.Shortcut = Shortcut.CtrlU;
-			this.SaveOutputMenuCommand.Text = "Save O&utput";
-			// 
-			// MenuCommand4
-			// 
-			this.MenuCommand4.Description = "MenuCommand";
-			this.MenuCommand4.Text = "-";
-			// 
-			// RecentMenuCommand
-			// 
-			this.RecentMenuCommand.Description = "MenuCommand";
-			this.RecentMenuCommand.Text = "Recent &Files";
-			// 
-			// MenuCommand5
-			// 
-			this.MenuCommand5.Description = "MenuCommand";
-			this.MenuCommand5.Text = "-";
-			// 
-			// ExitMenuCommand
-			// 
-			this.ExitMenuCommand.Description = "MenuCommand";
-			this.ExitMenuCommand.Text = "E&xit";
-			// 
-			// EditMainMenuCommand
-			// 
-			this.EditMainMenuCommand.Description = "MenuCommand";
-			this.EditMainMenuCommand.MenuCommands.AddRange(new MenuCommand[]
-				{
-					this.UndoMenuCommand,
-					this.RedoMenuCommand,
-					new MenuCommand("-"), 
-					this.CopyMenuCommand,
-					this.SelectAllMenuCommand,
-					this.WordWrapMenuCommand
-				});
-			this.EditMainMenuCommand.Text = "&Edit";
-			// 
-			// UndoMenuCommand
-			// 
-			this.UndoMenuCommand.Description = "MenuCommand";
-			this.UndoMenuCommand.Shortcut = Shortcut.CtrlZ;
-			this.UndoMenuCommand.Text = "&Undo";
-			// 
-			// RedoMenuCommand
-			// 
-			this.RedoMenuCommand.Description = "MenuCommand";
-			this.RedoMenuCommand.Shortcut = Shortcut.CtrlY;
-			this.RedoMenuCommand.Text = "&Redo";
-			// 
-			// CopyMenuCommand
-			// 
-			this.CopyMenuCommand.Description = "MenuCommand";
-			this.CopyMenuCommand.Shortcut = Shortcut.CtrlC;
-			this.CopyMenuCommand.Text = "Cop&y";
-			// 
-			// SelectAllMenuCommand
-			// 
-			this.SelectAllMenuCommand.Description = "MenuCommand";
-			this.SelectAllMenuCommand.Shortcut = Shortcut.CtrlA;
-			this.SelectAllMenuCommand.Text = "Select &All";
-			// 
-			// WordWrapMenuCommand
-			// 
-			this.WordWrapMenuCommand.Description = "MenuCommand";
-			this.WordWrapMenuCommand.Text = "&Word Wrap";
-			// 
-			// ViewMenuCommand
-			// 
+
 			this.ViewMenuCommand.Description = "MenuCommand";
 			this.ViewMenuCommand.MenuCommands.AddRange(new MenuCommand[]
 				{
@@ -349,109 +192,99 @@ namespace NAntGui.Core
 
 		private void AssignImages()
 		{
-			this.NewMenuCommand.ImageList			= 
-			this.OpenMenuCommand.ImageList			= 
-			this.SaveMenuCommand.ImageList			= 
-			this.ReloadMenuCommand.ImageList		= 
-			this.PropertiesMenuCommand.ImageList	= 
-			this.TargetsMenuCommand.ImageList		= 
-			this.OutputMenuCommand.ImageList		= 
-			this.BuildMenuCommand.ImageList			= _imageList;
+			this.PropertiesMenuCommand.ImageList =
+				this.TargetsMenuCommand.ImageList =
+					this.OutputMenuCommand.ImageList =
+						this.BuildMenuCommand.ImageList = NAntGuiApp.ImageList;
 		}
 
 		public void Enable()
 		{
-			this.ReloadMenuCommand.Enabled	= 
-			this.SaveMenuCommand.Enabled	= 
-			this.SaveAsMenuCommand.Enabled	= 
-			this.BuildMenuCommand.Enabled	= 
-			this.CloseMenuCommand.Enabled	= true;
+			_fileMenu.Enable();
+			this.BuildMenuCommand.Enabled = true;
 		}
 
 		public void Disable()
 		{
-			this.ReloadMenuCommand.Enabled	= 
-			this.SaveMenuCommand.Enabled	= 
-			this.SaveAsMenuCommand.Enabled	= 
-			this.BuildMenuCommand.Enabled	= 
-			this.CloseMenuCommand.Enabled	= false;
+			_fileMenu.Disable();
+			this.BuildMenuCommand.Enabled = false;
 		}
 
 		public void ClearRecentItems()
 		{
-			this.RecentMenuCommand.MenuCommands.Clear();
+			_fileMenu.ClearRecentItems();
 		}
 
 		public void AddRecentItem(MenuCommand item)
 		{
-			this.RecentMenuCommand.MenuCommands.Add(item);
+			_fileMenu.AddRecentItem(item);
 		}
 
 		#region Events
 
 		public EventHandler New_Click
 		{
-			set { this.NewMenuCommand.Click += value; }
+			set { _fileMenu.New_Click = value; }
 		}
 
 		public EventHandler Open_Click
 		{
-			set { this.OpenMenuCommand.Click += value; }
+			set { _fileMenu.Open_Click = value; }
 		}
 
 		public EventHandler Save_Click
 		{
-			set { this.SaveMenuCommand.Click += value; }
+			set { _fileMenu.Save_Click = value; }
 		}
 
 		public EventHandler SaveAs_Click
 		{
-			set { this.SaveAsMenuCommand.Click += value; }
+			set { _fileMenu.SaveAs_Click = value; }
 		}
 
 		public EventHandler Reload_Click
 		{
-			set { this.ReloadMenuCommand.Click += value; }
+			set { _fileMenu.Reload_Click = value; }
 		}
 
 		public EventHandler Close_Click
 		{
-			set { this.CloseMenuCommand.Click += value; }
+			set { _fileMenu.Close_Click = value; }
 		}
 
 		public EventHandler SaveOutput_Click
 		{
-			set { this.SaveOutputMenuCommand.Click += value; }
+			set { _fileMenu.SaveOutput_Click = value; }
 		}
 
 		public EventHandler Exit_Click
 		{
-			set { this.ExitMenuCommand.Click += value; }
+			set { _fileMenu.Exit_Click = value; }
 		}
 
 		public EventHandler Undo_Click
 		{
-			set { this.UndoMenuCommand.Click += value; }
+			set { _editMenu.Undo_Click = value; }
 		}
 
 		public EventHandler Redo_Click
 		{
-			set { this.RedoMenuCommand.Click += value; }
+			set { _editMenu.Redo_Click = value; }
 		}
 
 		public EventHandler Copy_Click
 		{
-			set { this.CopyMenuCommand.Click += value; }
+			set { _editMenu.Copy_Click = value; }
 		}
 
 		public EventHandler SelectAll_Click
 		{
-			set { this.SelectAllMenuCommand.Click += value; }
+			set { _editMenu.SelectAll_Click = value; }
 		}
 
 		public EventHandler WordWrap_Click
 		{
-			set { this.WordWrapMenuCommand.Click += value; }
+			set { _editMenu.WordWrap_Click = value; }
 		}
 
 		public EventHandler Targets_Click
@@ -501,11 +334,10 @@ namespace NAntGui.Core
 
 		#endregion
 
-		public bool WordWrapChecked
+		public void SetMediator(MainFormMediator mediator)
 		{
-			get { return this.WordWrapMenuCommand.Checked; }
-			set { this.WordWrapMenuCommand.Checked = value; }
+			_fileMenu.SetMediator(mediator);
+			_editMenu.SetMediator(mediator);
 		}
-
 	}
 }

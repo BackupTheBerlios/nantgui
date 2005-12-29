@@ -17,11 +17,10 @@ namespace NAntGui.Core
 		private SourceFile _file;
 		private IBuildRunner _buildRunner;
 
-		public ScriptTabPage(ILogsMessage logger, CommandLineOptions options)
+		public ScriptTabPage(ILogsMessage logger)
 		{
 			Assert.NotNull(logger, "logger");
-			Assert.NotNull(options, "options");
-			_file = new SourceFile(logger, options);
+			_file = new SourceFile(logger);
 			this.Initialize();
 		}
 
@@ -29,7 +28,6 @@ namespace NAntGui.Core
 		{
 			Assert.NotNull(filename, "filename");
 			Assert.NotNull(logger, "logger");
-			Assert.NotNull(options, "options");
 
 			_sourceEditor.LoadFile(filename);
 			_file = new SourceFile(filename, _sourceEditor.Text, logger, options);
@@ -95,17 +93,24 @@ namespace NAntGui.Core
 			_sourceEditor.SaveFile(fileName);
 			_file = new SourceFile(fileName, _sourceEditor.Text, 
 				_file.MessageLogger, _file.Options);
+
+			this.ReInitialize();
 		}
 
 		public void Save()
 		{
 			_sourceEditor.SaveFile(_file.FullName);
 			_file.Contents = _sourceEditor.Text;
-			_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
+			this.ReInitialize();
+		}
 
+		private void ReInitialize()
+		{
+			_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
+	
 			try{ _buildRunner.ParseBuildScript(); }
 			catch { /* ignore */ }
-
+	
 			if (this.SourceChanged != null)
 			{
 				this.SourceChanged();
