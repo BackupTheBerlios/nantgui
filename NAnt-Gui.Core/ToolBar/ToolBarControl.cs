@@ -51,14 +51,17 @@ namespace NAntGui.Core.ToolBar
 			this.Initialize();
 		}
 
-		public void SetMediator(MainFormMediator mediator)
+		public MainFormMediator Mediator
 		{
-			_newButton.Mediator		= mediator;
-			_openButton.Mediator	= mediator;
-			_saveButton.Mediator	= mediator;
-			_reloadButton.Mediator	= mediator;
-			_buildButton.Mediator	= mediator;
-			_stopButton.Mediator	= mediator;
+			set
+			{
+				_newButton.Mediator = value;
+				_openButton.Mediator = value;
+				_saveButton.Mediator = value;
+				_reloadButton.Mediator = value;
+				_buildButton.Mediator = value;
+				_stopButton.Mediator = value;
+			}
 		}
 
 		private void Initialize()

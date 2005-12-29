@@ -1,3 +1,26 @@
+#region Copyleft and Copyright
+
+// NAnt-Gui - Gui frontend to the NAnt .NET build tool
+// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// Colin Svingen (nantgui@swoogan.com)
+
+#endregion
+
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -41,9 +64,10 @@ namespace NAntGui.Core
 			_dockManager	= new MainDockManager(mainForm, _sourceTabs, _targetsTree, 
 				_outputBox, _propertyGrid, _statusBar);
 
-			_toolBar.SetMediator(this);
-			_mainMenu.SetMediator(this);
+			_toolBar.Mediator = this;
+			_mainMenu.Mediator = this;
 			_targetsTree.Mediator = this;
+			_sourceTabs.Mediator = this;
 
 			this.AssignEventHandler();
 		}
@@ -178,7 +202,9 @@ namespace NAntGui.Core
 			_sourceTabs.CloseSelectedTab();
 			this.AddBlankTab();
 
-			_targetsTree.Nodes.Clear();
+			_mainForm.Text = "NAnt-Gui";
+
+			_targetsTree.Clear();
 			_propertyGrid.SelectedObject = null;
 
 			_outputBox.Clear();
@@ -322,7 +348,6 @@ namespace NAntGui.Core
 			if (File.Exists(filename))
 			{
 				ScriptTabPage page = new ScriptTabPage(filename, _mainForm, NAntGuiApp.Options);
-				page.SourceChanged += new VoidVoid(this.Source_Changed);
 				page.BuildFinished = new VoidVoid(_mainForm.Update);
 
 				Settings.OpenInitialDirectory = page.FilePath;
@@ -354,7 +379,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		private void UpdateDisplay()
+		public void UpdateDisplay()
 		{
 			_outputBox.Clear();
 
@@ -384,11 +409,6 @@ namespace NAntGui.Core
 		{
 			_mainMenu.Enable();
 			_toolBar.Enable();
-		}
-
-		private void Source_Changed()
-		{
-			this.UpdateDisplay();
 		}
 
 		//		private void WordWrap_Changed(bool checkValue)

@@ -1,8 +1,30 @@
+#region Copyleft and Copyright
+
+// NAnt-Gui - Gui frontend to the NAnt .NET build tool
+// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// Colin Svingen (nantgui@swoogan.com)
+
+#endregion
+
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Crownwood.Magic.Docking;
 using TabControl = Crownwood.Magic.Controls.TabControl;
 
 namespace NAntGui.Core
@@ -12,6 +34,8 @@ namespace NAntGui.Core
 		private ArrayList _tabs = new ArrayList();
 		private TabControl _tabControl = new TabControl();
 		private MainFormMediator _mediator;
+		private DragEventHandler _dragHandler;
+		private DragEventHandler _dropHandler;
 
 		public SourceTabControl()
 		{
@@ -38,8 +62,16 @@ namespace NAntGui.Core
 		public void AddTab(ScriptTabPage tab)
 		{
 			Assert.NotNull(tab, "tab");
+			Assert.NotNull(_mediator, "_mediator");
+			Assert.NotNull(_dragHandler, "_dragHandler");
+			Assert.NotNull(_dropHandler, "_dropHandler");
+
+			tab.Mediator	= _mediator;
+			tab.DragEnter	= _dragHandler;
+			tab.DragDrop	= _dropHandler;
+
 			_tabs.Add(tab);
-			_tabControl.TabPages.Add(tab.ScriptTab);
+			tab.AddTabToControl(_tabControl.TabPages);
 			//_tabControl.SelectedTab = tab.ScriptTab;
 		}
 
@@ -48,7 +80,7 @@ namespace NAntGui.Core
 			get
 			{
 				foreach (ScriptTabPage page in _tabs)
-					if (page.ScriptTab == _tabControl.SelectedTab) return page;
+					if (page.Equals(_tabControl.SelectedTab)) return page;
 
 				return null;
 			}
@@ -86,9 +118,9 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void SetToDockManager(DockingManager dockManager)
+		public void SetToDockManager(MainDockManager dockManager)
 		{
-			dockManager.InnerControl = _tabControl;
+			dockManager.AddTabControl(_tabControl);
 		}
 
 		public void AddTabsToControls(Control.ControlCollection controls)
@@ -113,12 +145,20 @@ namespace NAntGui.Core
 
 		public DragEventHandler DragDrop
 		{
-			set { _tabControl.DragDrop += value; }
+			set
+			{
+				_tabControl.DragDrop += value;
+				_dropHandler = value;
+			}
 		}
 
 		public DragEventHandler DragEnter
 		{
-			set { _tabControl.DragEnter += value; }
+			set
+			{
+				_tabControl.DragEnter += value;
+				_dragHandler = value;
+			}
 		}
 
 		public MainFormMediator Mediator

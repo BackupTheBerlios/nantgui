@@ -149,5 +149,10 @@ namespace NAntGui.Core
 		{
 			set { _mediator = value; }
 		}
+
+		public void Clear()
+		{
+			this.Nodes.Clear();
+		}
 	}
 }

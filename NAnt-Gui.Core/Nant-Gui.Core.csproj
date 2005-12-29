@@ -198,6 +198,15 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "MainTabControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NAnt-Gui.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "NAntGuiApp.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

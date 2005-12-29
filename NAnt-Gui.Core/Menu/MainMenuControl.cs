@@ -67,14 +67,17 @@ namespace NAntGui.Core.Menu
 			this.TabStop = false;
 		}
 
-		public void SetMediator(MainFormMediator mediator)
+		public MainFormMediator Mediator
 		{
-			_fileMenu.SetMediator(mediator);
-			_editMenu.SetMediator(mediator);
-			_viewMenu.SetMediator(mediator);
-			_buildMenu.SetMediator(mediator);
-			_toolsMenu.SetMediator(mediator);
-			_helpMenu.SetMediator(mediator);
+			set
+			{
+				_fileMenu.Mediator = value;
+				_editMenu.Mediator = value;
+				_viewMenu.Mediator = value;
+				_buildMenu.Mediator = value;
+				_toolsMenu.Mediator = value;
+				_helpMenu.Mediator = value;
+			}
 		}
 
 		public void Enable()

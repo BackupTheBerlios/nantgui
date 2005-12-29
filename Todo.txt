@@ -1,5 +1,6 @@
-Enable drag and drop on the editor and tabs
+Enable drag and drop on the editor (DONE) and tabs
 Fix copy and paste menu items (they don't work at all)
+Make stop build menu item
 New build file functionality
 Multiple tabs
 Create custom commandline options that make sense for msbuild and nant

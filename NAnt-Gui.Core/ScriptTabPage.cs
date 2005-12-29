@@ -1,7 +1,33 @@
+#region Copyleft and Copyright
+
+// NAnt-Gui - Gui frontend to the NAnt .NET build tool
+// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// Colin Svingen (nantgui@swoogan.com)
+
+#endregion
+
 using System.Drawing;
-using Crownwood.Magic.Controls;
+using System.Windows.Forms;
+using Crownwood.Magic.Collections;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Framework;
+using TabPage = Crownwood.Magic.Controls.TabPage;
+using TargetCollection = NAntGui.Framework.TargetCollection;
 
 namespace NAntGui.Core
 {
@@ -10,12 +36,11 @@ namespace NAntGui.Core
 	/// </summary>
 	public class ScriptTabPage
 	{
-		public event VoidVoid SourceChanged;
-
 		private TabPage _scriptTab			= new TabPage();
 		private ScriptEditor _sourceEditor	= new ScriptEditor();
 		private SourceFile _file;
 		private IBuildRunner _buildRunner;
+		private MainFormMediator _mediator;
 
 		public ScriptTabPage(ILogsMessage logger)
 		{
@@ -28,6 +53,7 @@ namespace NAntGui.Core
 		{
 			Assert.NotNull(filename, "filename");
 			Assert.NotNull(logger, "logger");
+			Assert.NotNull(options, "options");
 
 			_sourceEditor.LoadFile(filename);
 			_file = new SourceFile(filename, _sourceEditor.Text, logger, options);
@@ -40,6 +66,16 @@ namespace NAntGui.Core
 		public void ParseBuildScript()
 		{
 			_buildRunner.ParseBuildScript();
+		}
+
+		public MainFormMediator Mediator
+		{
+			set
+			{
+				Assert.NotNull(value, "value");
+				_mediator = value;
+				_sourceEditor.Mediator = value;
+			}
 		}
 
 		private void Initialize()
@@ -64,15 +100,8 @@ namespace NAntGui.Core
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
 			}
 
-			if (this.SourceChanged != null)
-			{
-				this.SourceChanged();
-			}
-		}
-
-		public TabPage ScriptTab
-		{
-			get { return _scriptTab; }
+			Assert.NotNull(_mediator, "_mediator");
+			_mediator.UpdateDisplay();
 		}
 
 		public void ReLoad()
@@ -106,10 +135,8 @@ namespace NAntGui.Core
 			try{ _buildRunner.ParseBuildScript(); }
 			catch { /* ignore */ }
 	
-			if (this.SourceChanged != null)
-			{
-				this.SourceChanged();
-			}
+			Assert.NotNull(_mediator, "_mediator");
+			_mediator.UpdateDisplay();
 		}
 
 		public void Undo()
@@ -153,6 +180,16 @@ namespace NAntGui.Core
 			_file.Close();
 		}
 
+		public void AddTabToControl(TabPageCollection tabPages)
+		{
+			tabPages.Add(_scriptTab);
+		}
+
+		public bool Equals(TabPage page)
+		{
+			return page == _scriptTab;
+		}
+
 		public IBuildScript BuildScript
 		{
 			get
@@ -168,6 +205,22 @@ namespace NAntGui.Core
 			{
 				Assert.NotNull(_buildRunner, "_buildRunner");
 				_buildRunner.BuildFinished = value;
+			}
+		}
+
+		public DragEventHandler DragDrop
+		{
+			set 
+			{
+				_sourceEditor.DragDrop += value;
+			}
+		}
+
+		public DragEventHandler DragEnter
+		{
+			set
+			{
+				_sourceEditor.DragEnter += value;
 			}
 		}
 
