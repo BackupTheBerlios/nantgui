@@ -9,7 +9,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for TargetsTreeView.
 	/// </summary>
-	public class TargetsTreeView : TreeView, Command
+	public class TargetsTreeView : TreeView, IClicker
 	{
 		private ToolTip ToolTip = new ToolTip();
 		private PopupMenu _targetsPopupMenu = new PopupMenu();
@@ -135,7 +135,7 @@ namespace NAntGui.Core
 			return description.Length > 0;
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.BuildClicked();
 		}

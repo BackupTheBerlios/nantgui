@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.EditMenu
 	/// <summary>
 	/// Summary description for RedoMenuCommand.
 	/// </summary>
-	public class RedoMenuCommand : MenuCommand, Command
+	public class RedoMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu.EditMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.RedoClicked();
 		}

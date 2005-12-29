@@ -5,7 +5,7 @@ namespace NAntGui.Core.Menu.ViewMenu
 	/// <summary>
 	/// Summary description for OutputMenuCommand.
 	/// </summary>
-	public class OutputMenuCommand : MenuCommand, Command
+	public class OutputMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu.ViewMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.OutputClicked();
 		}

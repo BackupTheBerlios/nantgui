@@ -5,7 +5,7 @@ namespace NAntGui.Core.Menu.FileMenu
 	/// <summary>
 	/// Summary description for ExitMenuCommand.
 	/// </summary>
-	public class ExitMenuCommand : MenuCommand, Command
+	public class ExitMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace NAntGui.Core.Menu.FileMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.ExitClicked();
 		}

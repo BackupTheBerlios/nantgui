@@ -32,12 +32,12 @@ namespace NAntGui.Core.ToolBar
 	/// </summary>
 	public class ToolBarControl : System.Windows.Forms.ToolBar
 	{
-		public event EventHandler New_Click;
-		public event EventHandler Build_Click;
-		public event EventHandler Open_Click;
-		public event EventHandler Save_Click;
-		public event EventHandler Reload_Click;
-		public event EventHandler Stop_Click;
+		public event EventHandler NewClick;
+		public event EventHandler BuildClick;
+		public event EventHandler OpenClick;
+		public event EventHandler SaveClick;
+		public event EventHandler ReloadClick;
+		public event EventHandler StopClick;
 
 		private NewToolBarButton _newButton			= new NewToolBarButton();
 		private OpenToolBarButton _openButton		= new OpenToolBarButton();
@@ -88,29 +88,29 @@ namespace NAntGui.Core.ToolBar
 
 		private void Button_Click(object sender, ToolBarButtonClickEventArgs e)
 		{
-			if (e.Button == _newButton && this.New_Click != null)
+			if (e.Button == _newButton && this.NewClick != null)
 			{
-				this.New_Click(_newButton, new EventArgs());
+				this.NewClick(_newButton, new EventArgs());
 			}
-			else if (e.Button == _buildButton && this.Build_Click != null)
+			else if (e.Button == _buildButton && this.BuildClick != null)
 			{
-				this.Build_Click(_buildButton, new EventArgs());
+				this.BuildClick(_buildButton, new EventArgs());
 			}
-			else if (e.Button == _openButton && this.Open_Click != null)
+			else if (e.Button == _openButton && this.OpenClick != null)
 			{
-				this.Open_Click(_openButton, new EventArgs());
+				this.OpenClick(_openButton, new EventArgs());
 			}
-			else if (e.Button == _saveButton && this.Save_Click != null)
+			else if (e.Button == _saveButton && this.SaveClick != null)
 			{
-				this.Save_Click(_saveButton, new EventArgs());
+				this.SaveClick(_saveButton, new EventArgs());
 			}
-			else if (e.Button == _reloadButton && this.Reload_Click != null)
+			else if (e.Button == _reloadButton && this.ReloadClick != null)
 			{
-				this.Reload_Click(_reloadButton, new EventArgs());
+				this.ReloadClick(_reloadButton, new EventArgs());
 			}
-			else if (e.Button == _stopButton && this.Stop_Click != null)
+			else if (e.Button == _stopButton && this.StopClick != null)
 			{
-				this.Stop_Click(_stopButton, new EventArgs());
+				this.StopClick(_stopButton, new EventArgs());
 			}
 		}
 

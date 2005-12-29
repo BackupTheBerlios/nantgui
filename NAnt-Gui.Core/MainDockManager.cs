@@ -23,7 +23,8 @@ namespace NAntGui.Core
 			// Create the object that manages the docking state
 			_dockManager = new DockingManager(mainForm, VisualStyle.IDE);
 			// Ensure that the RichTextBox is always the innermost control
-			_dockManager.InnerControl = sourceTabs.Tabs;
+			
+			sourceTabs.SetToDockManager(_dockManager);
 
 			_targetsContent		= _dockManager.Contents.Add(targetsTree, "Targets");
 			_outputContent		= _dockManager.Contents.Add(outputBox, "Output");

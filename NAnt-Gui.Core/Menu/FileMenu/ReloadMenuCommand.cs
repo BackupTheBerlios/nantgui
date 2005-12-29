@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.FileMenu
 	/// <summary>
 	/// Summary description for ReloadMenuCommand.
 	/// </summary>
-	public class ReloadMenuCommand : MenuCommand, Command
+	public class ReloadMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -24,7 +24,7 @@ namespace NAntGui.Core.Menu.FileMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.ReloadClicked();
 		}

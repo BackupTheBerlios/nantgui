@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.EditMenu
 	/// <summary>
 	/// Summary description for CopyMenuCommand.
 	/// </summary>
-	public class CopyMenuCommand : MenuCommand, Command
+	public class CopyMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu.EditMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.CopyClicked();
 		}

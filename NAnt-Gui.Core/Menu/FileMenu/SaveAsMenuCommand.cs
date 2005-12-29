@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.FileMenu
 	/// <summary>
 	/// Summary description for SaveAsMenuCommand.
 	/// </summary>
-	public class SaveAsMenuCommand : MenuCommand, Command
+	public class SaveAsMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -23,7 +23,7 @@ namespace NAntGui.Core.Menu.FileMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.SaveAsClicked();
 		}

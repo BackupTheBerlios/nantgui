@@ -35,7 +35,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for MainForm.
 	/// </summary>
-	public class MainForm : Form, ILogsMessage
+	public class MainForm : Form, ILogsMessage, IDragDropper
 	{
 		private delegate void MessageEventHandler(string pMessage);
 		
@@ -96,7 +96,7 @@ namespace NAntGui.Core
 			this.AllowDrop = true;
 			this.AutoScaleBaseSize = new Size(5, 13);
 			this.ClientSize = new Size(824, 553);
-			this.Controls.Add(_sourceTabs.Tabs);
+			_sourceTabs.AddTabsToControls(this.Controls);
 			this.Controls.Add(_mainStatusBar);
 			this.Controls.Add(_mainToolBar);
 			this.Controls.Add(_mainMenu);
@@ -135,6 +135,21 @@ namespace NAntGui.Core
 				try	{ _propertyGrid.PropertySort = value; }
 				catch (ArgumentException) { /* ignore */ }
 			}
+		}
+
+		public MainFormMediator Mediator
+		{
+			set { throw new NotImplementedException(); }
+		}
+
+		public void ExecuteDragEnter(DragEventArgs e)
+		{
+			_mediator.DragEnter(e);
+		}
+
+		public void ExecuteDragDrop(DragEventArgs e)
+		{
+			_mediator.DragDrop(e);
 		}
 	}
 }

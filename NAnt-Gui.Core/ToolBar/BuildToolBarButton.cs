@@ -5,7 +5,7 @@ namespace NAntGui.Core.ToolBar
 	/// <summary>
 	/// Summary description for BuildToolBarButton.
 	/// </summary>
-	public class BuildToolBarButton : ToolBarButton, Command
+	public class BuildToolBarButton : ToolBarButton, IClicker
 	{
 		private MainFormMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace NAntGui.Core.ToolBar
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.BuildClicked();
 		}

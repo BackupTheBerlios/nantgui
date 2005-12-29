@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.FileMenu
 	/// <summary>
 	/// Summary description for NewMenuCommand.
 	/// </summary>
-	public class NewMenuCommand : MenuCommand, Command
+	public class NewMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -25,7 +25,7 @@ namespace NAntGui.Core.Menu.FileMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.NewClicked();
 		}

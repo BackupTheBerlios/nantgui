@@ -50,48 +50,73 @@ namespace NAntGui.Core
 
 		private void AssignEventHandler()
 		{
-			EventHandler eventHandler = new EventHandler(this.ClickHandler);
+			EventHandler clickHandler = new EventHandler(this.ClickHandler);
 
-			_toolBar.Build_Click	+= eventHandler;
-			_toolBar.Open_Click		+= eventHandler;
-			_toolBar.Stop_Click		+= eventHandler;
-			_toolBar.Save_Click		+= eventHandler;
-			_toolBar.Reload_Click	+= eventHandler;
+			_toolBar.BuildClick		+= clickHandler;
+			_toolBar.OpenClick		+= clickHandler;
+			_toolBar.StopClick		+= clickHandler;
+			_toolBar.SaveClick		+= clickHandler;
+			_toolBar.ReloadClick	+= clickHandler;
 
-			_mainMenu.Undo_Click = eventHandler;
-			_mainMenu.Redo_Click = eventHandler;
-			_mainMenu.Copy_Click = eventHandler;
-			_mainMenu.SelectAll_Click = eventHandler;
-			_mainMenu.SaveOutput_Click = eventHandler;
-			_mainMenu.WordWrap_Click = eventHandler;
-			_mainMenu.Reload_Click = eventHandler;
-			_mainMenu.About_Click = eventHandler;
-			_mainMenu.Build_Click = eventHandler;
-			_mainMenu.Recent_Click = eventHandler;
-			_mainMenu.Close_Click = eventHandler;
-			_mainMenu.Exit_Click = eventHandler;
-			_mainMenu.NAntContrib_Click = eventHandler;
-			_mainMenu.NAntHelp_Click = eventHandler;
-			_mainMenu.NAntSDK_Click = eventHandler;
-			_mainMenu.Open_Click = eventHandler;
-			_mainMenu.Options_Click = eventHandler;
-			_mainMenu.Properties_Click = eventHandler;
-			_mainMenu.Save_Click = eventHandler;
-			_mainMenu.SaveAs_Click = eventHandler;
-			_mainMenu.Targets_Click = eventHandler;
-			_targetsTree.BuildClick = eventHandler;
+			_mainMenu.Undo_Click = clickHandler;
+			_mainMenu.Redo_Click = clickHandler;
+			_mainMenu.Copy_Click = clickHandler;
+			_mainMenu.SelectAll_Click = clickHandler;
+			_mainMenu.SaveOutput_Click = clickHandler;
+			_mainMenu.WordWrap_Click = clickHandler;
+			_mainMenu.Reload_Click = clickHandler;
+			_mainMenu.About_Click = clickHandler;
+			_mainMenu.Build_Click = clickHandler;
+			_mainMenu.Recent_Click = clickHandler;
+			_mainMenu.Close_Click = clickHandler;
+			_mainMenu.Exit_Click = clickHandler;
+			_mainMenu.NAntContrib_Click = clickHandler;
+			_mainMenu.NAntHelp_Click = clickHandler;
+			_mainMenu.NAntSDK_Click = clickHandler;
+			_mainMenu.Open_Click = clickHandler;
+			_mainMenu.Options_Click = clickHandler;
+			_mainMenu.Properties_Click = clickHandler;
+			_mainMenu.Save_Click = clickHandler;
+			_mainMenu.SaveAs_Click = clickHandler;
+			_mainMenu.Targets_Click = clickHandler;
+			_mainMenu.Output_Click = clickHandler;
+			_targetsTree.BuildClick = clickHandler;
 
 			_mainForm.Closing += new CancelEventHandler(this.MainForm_Closing);
-			_mainForm.DragDrop += new DragEventHandler(this.MainForm_DragDrop);
-			_mainForm.DragEnter += new DragEventHandler(this.MainForm_DragEnter);
+
+			DragEventHandler dropHandler = new DragEventHandler(this.DropHandler);
+			_mainForm.DragDrop += dropHandler;
+			_sourceTabs.DragDrop = dropHandler;
+
+			DragEventHandler dragHandler = new DragEventHandler(this.DragHandler);
+			_mainForm.DragEnter += dragHandler;
+			_sourceTabs.DragEnter = dragHandler;
 		}
 
 		private void ClickHandler(object sender, EventArgs e)
 		{
-			if (sender is Command)
+			if (sender is IClicker)
 			{
-				Command cmd = sender as Command;
-				cmd.Execute();
+				IClicker clicker = sender as IClicker;
+				clicker.ExecuteClick();
+			}
+		}
+
+		private void DropHandler(object sender, DragEventArgs e)
+		{
+			if (sender is IDragDropper)
+			{
+				IDragDropper dropper = sender as IDragDropper;
+				dropper.ExecuteDragDrop(e);
+			}
+		}
+
+		private void DragHandler(object sender, DragEventArgs e)
+		{
+			if (sender is IDragDropper)
+			{
+				IDragDropper dropper = sender as IDragDropper;
+				dropper.ExecuteDragEnter(e);
 			}
 		}
 
@@ -150,7 +175,9 @@ namespace NAntGui.Core
 
 		public void CloseClicked()
 		{
-			_sourceTabs.SelectedTab.File.Close();
+			_sourceTabs.CloseSelectedTab();
+			this.AddBlankTab();
+
 			_targetsTree.Nodes.Clear();
 			_propertyGrid.SelectedObject = null;
 
@@ -279,10 +306,15 @@ namespace NAntGui.Core
 			{
 				if (!_mainMenu.HasRecentItems || !this.LoadBuildFile(_mainMenu.FirstRecentItem))
 				{
-					_sourceTabs.Clear();
-					_sourceTabs.AddTab(new ScriptTabPage(_mainForm));
+					this.AddBlankTab();
 				}
 			}
+		}
+
+		public void AddBlankTab()
+		{
+			_sourceTabs.Clear();
+			_sourceTabs.AddTab(new ScriptTabPage(_mainForm));
 		}
 
 		private bool LoadBuildFile(string filename)
@@ -293,12 +325,12 @@ namespace NAntGui.Core
 				page.SourceChanged += new VoidVoid(this.Source_Changed);
 				page.BuildFinished = new VoidVoid(_mainForm.Update);
 
-				Settings.OpenInitialDirectory = page.File.Path;
+				Settings.OpenInitialDirectory = page.FilePath;
 
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);
 				
-				string file = _sourceTabs.SelectedTab.File.FullName;
+				string file = _sourceTabs.SelectedTab.FileFullName;
 				_mainMenu.AddRecentItem(file);
 
 				try
@@ -330,10 +362,10 @@ namespace NAntGui.Core
 
 			_mainForm.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
 
-			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.File.Name;
+			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.FileName;
 
 			_statusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
-			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.File.FullName;
+			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.FileFullName;
 
 			this.EnableMenuCommandsAndButtons();
 
@@ -343,19 +375,7 @@ namespace NAntGui.Core
 			_firstLoad = false;
 		}
 
-		private void MainForm_DragEnter(object sender, DragEventArgs e)
-		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				e.Effect = DragDropEffects.Copy;
-			}
-			else
-			{
-				e.Effect = DragDropEffects.None;
-			}
-		}
-
-		private void MainForm_DragDrop(object sender, DragEventArgs e)
+		public void DragDrop(DragEventArgs e)
 		{
 			this.LoadBuildFile(Utils.GetDragFilename(e));
 		}
@@ -375,5 +395,18 @@ namespace NAntGui.Core
 		//		{
 		//			_mainMenu.WordWrapChecked = checkValue;
 		//		}
+
+
+		public void DragEnter(DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				e.Effect = DragDropEffects.Copy;
+			}
+			else
+			{
+				e.Effect = DragDropEffects.None;
+			}
+		}
 	}
 }

@@ -5,7 +5,7 @@ namespace NAntGui.Core.ToolBar
 	/// <summary>
 	/// Summary description for OpenToolBarButton.
 	/// </summary>
-	public class OpenToolBarButton : ToolBarButton, Command
+	public class OpenToolBarButton : ToolBarButton, IClicker
 	{
 		private MainFormMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace NAntGui.Core.ToolBar
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.OpenClicked();
 		}

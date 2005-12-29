@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.FileMenu
 	/// <summary>
 	/// Summary description for CloseMenuCommand.
 	/// </summary>
-	public class CloseMenuCommand : MenuCommand, Command
+	public class CloseMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu.FileMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.CloseClicked();
 		}

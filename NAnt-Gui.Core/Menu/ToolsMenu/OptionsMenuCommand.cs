@@ -5,7 +5,7 @@ namespace NAntGui.Core.Menu.ToolsMenu
 	/// <summary>
 	/// Summary description for OptionsMenuCommand.
 	/// </summary>
-	public class OptionsMenuCommand : MenuCommand, Command
+	public class OptionsMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace NAntGui.Core.Menu.ToolsMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.OptionsClicked();
 		}

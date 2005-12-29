@@ -153,7 +153,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Command.cs"
+                    RelPath = "IClicker.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IDragDropper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

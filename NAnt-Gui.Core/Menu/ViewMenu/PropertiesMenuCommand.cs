@@ -5,7 +5,7 @@ namespace NAntGui.Core.Menu.ViewMenu
 	/// <summary>
 	/// Summary description for PropertiesMenuCommand.
 	/// </summary>
-	public class PropertiesMenuCommand : MenuCommand, Command
+	public class PropertiesMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu.ViewMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.PropertiesClicked();
 		}

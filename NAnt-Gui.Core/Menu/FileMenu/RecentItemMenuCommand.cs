@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.FileMenu
 	/// <summary>
 	/// Summary description for RecentMenuCommand.
 	/// </summary>
-	public class RecentItemMenuCommand : MenuCommand, Command
+	public class RecentItemMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -21,7 +21,7 @@ namespace NAntGui.Core.Menu.FileMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.RecentItemClicked(this.Text.Substring(2));
 		}

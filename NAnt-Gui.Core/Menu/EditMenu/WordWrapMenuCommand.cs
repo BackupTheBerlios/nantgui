@@ -5,7 +5,7 @@ namespace NAntGui.Core.Menu.EditMenu
 	/// <summary>
 	/// Summary description for WordWrapMenuCommand.
 	/// </summary>
-	public class WordWrapMenuCommand : MenuCommand, Command
+	public class WordWrapMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace NAntGui.Core.Menu.EditMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.WordWrapClicked();
 		}

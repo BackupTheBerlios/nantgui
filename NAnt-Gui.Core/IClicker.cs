@@ -2,11 +2,11 @@
 namespace NAntGui.Core
 {
 	/// <summary>
-	/// Summary description for Command.
+	/// Summary description for IClicker.
 	/// </summary>
-	public interface Command
+	public interface IClicker
 	{
 		MainFormMediator Mediator { set; }
-		void Execute();
+		void ExecuteClick();
 	}
 }

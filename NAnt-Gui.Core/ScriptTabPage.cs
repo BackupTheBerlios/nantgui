@@ -75,11 +75,6 @@ namespace NAntGui.Core
 			get { return _scriptTab; }
 		}
 
-		public SourceFile File
-		{
-			get { return _file; }
-		}
-
 		public void ReLoad()
 		{
 			_sourceEditor.LoadFile(_file.FullName);
@@ -153,6 +148,11 @@ namespace NAntGui.Core
 			_buildRunner.SetTargets(targets);
 		}
 
+		public void CloseFile()
+		{
+			_file.Close();
+		}
+
 		public IBuildScript BuildScript
 		{
 			get
@@ -169,6 +169,21 @@ namespace NAntGui.Core
 				Assert.NotNull(_buildRunner, "_buildRunner");
 				_buildRunner.BuildFinished = value;
 			}
+		}
+
+		public string FileName
+		{
+			get { return _file.Name; }
+		}
+
+		public string FileFullName
+		{
+			get { return _file.FullName; }
+		}
+
+		public string FilePath
+		{
+			get { return _file.Path; }
 		}
 
 		public string Title

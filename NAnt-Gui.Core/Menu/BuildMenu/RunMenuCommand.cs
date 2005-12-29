@@ -6,7 +6,7 @@ namespace NAntGui.Core.Menu.BuildMenu
 	/// <summary>
 	/// Summary description for RunMenuCommand.
 	/// </summary>
-	public class RunMenuCommand : MenuCommand, Command
+	public class RunMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -24,7 +24,7 @@ namespace NAntGui.Core.Menu.BuildMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.RunClicked();
 		}

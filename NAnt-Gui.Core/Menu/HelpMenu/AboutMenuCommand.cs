@@ -5,7 +5,7 @@ namespace NAntGui.Core.Menu.HelpMenu
 	/// <summary>
 	/// Summary description for AboutMenuCommand.
 	/// </summary>
-	public class AboutMenuCommand : MenuCommand, Command
+	public class AboutMenuCommand : MenuCommand, IClicker
 	{
 		MainFormMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace NAntGui.Core.Menu.HelpMenu
 			set { _mediator = value; }
 		}
 
-		public void Execute()
+		public void ExecuteClick()
 		{
 			_mediator.AboutClicked();
 		}
