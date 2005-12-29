@@ -14,7 +14,6 @@ namespace NAntGui.Core.Menu.FileMenu
 			: base(text, clickHandler)
 		{
 			this.Description = "MenuCommand";
-			this.Text = "Recent &Files";
 		}
 
 		public MainFormMediator Mediator

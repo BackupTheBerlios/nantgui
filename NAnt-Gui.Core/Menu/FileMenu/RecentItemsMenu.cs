@@ -15,7 +15,7 @@ namespace NAntGui.Core.Menu.FileMenu
 		public RecentItemsMenu()
 		{
 			this.Description = "MenuCommand";
-			this.Text = "RecentItems &Files";
+			this.Text = "Recent &Items";
 			this.CreateMenuCommands();
 		}
 
