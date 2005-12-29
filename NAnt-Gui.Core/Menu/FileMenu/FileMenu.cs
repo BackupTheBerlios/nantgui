@@ -1,7 +1,7 @@
 using System;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.FileMenu
 {
 	/// <summary>
 	/// Summary description for FileMenu.
@@ -28,6 +28,19 @@ namespace NAntGui.Core.Menu
 					new MenuCommand("-"), _exit
 				});
 			this.Text = "&File";
+		}
+
+		public void SetMediator(MainFormMediator mediator)
+		{
+			_new.Mediator		 = mediator;
+			_open.Mediator		 = mediator;
+			_save.Mediator		 = mediator;
+			_saveAs.Mediator	 = mediator;
+			_reload.Mediator	 = mediator;
+			_close.Mediator		 = mediator;
+			_saveOutput.Mediator = mediator;
+			_recent.Mediator	 = mediator;
+			_exit.Mediator		 = mediator;
 		}
 
 		public void Enable()
@@ -100,17 +113,6 @@ namespace NAntGui.Core.Menu
 
 		#endregion
 
-		public void SetMediator(MainFormMediator mediator)
-		{
-			_new.Mediator		 = mediator;
-			_open.Mediator		 = mediator;
-			_save.Mediator		 = mediator;
-			_saveAs.Mediator	 = mediator;
-			_reload.Mediator	 = mediator;
-			_close.Mediator		 = mediator;
-			_saveOutput.Mediator = mediator;
-			_recent.Mediator	 = mediator;
-			_exit.Mediator		 = mediator;
-		}
+	
 	}
 }

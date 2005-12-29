@@ -1,21 +1,20 @@
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.FileMenu
 {
 	/// <summary>
-	/// Summary description for SaveAsMenuCommand.
+	/// Summary description for CloseMenuCommand.
 	/// </summary>
-	public class SaveAsMenuCommand : MenuCommand, Command
+	public class CloseMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public SaveAsMenuCommand()
+		public CloseMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.ImageIndex = 2;
-			this.Shortcut = Shortcut.F12;
-			this.Text = "Save &As";
+			this.Shortcut = Shortcut.CtrlW;
+			this.Text = "&Close";
 		}
 
 		public MainFormMediator Mediator
@@ -25,7 +24,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.SaveAsClicked();
+			_mediator.CloseClicked();
 		}
 	}
 }

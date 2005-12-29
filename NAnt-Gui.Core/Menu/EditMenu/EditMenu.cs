@@ -1,7 +1,7 @@
 using System;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.EditMenu
 {
 	/// <summary>
 	/// Summary description for EditMenu.

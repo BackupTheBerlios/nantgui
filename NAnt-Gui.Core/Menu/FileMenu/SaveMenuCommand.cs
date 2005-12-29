@@ -1,22 +1,21 @@
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.FileMenu
 {
 	/// <summary>
-	/// Summary description for NewMenuCommand.
+	/// Summary description for SaveMenuCommand.
 	/// </summary>
-	public class NewMenuCommand : MenuCommand, Command
+	public class SaveMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public NewMenuCommand()
+		public SaveMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.ImageIndex = 8;
-			this.Shortcut = Shortcut.CtrlN;
-			this.Text = "&New";
-			this.Enabled = false;
+			this.ImageIndex = 2;
+			this.Shortcut = Shortcut.CtrlS;
+			this.Text = "&Save";
 			this.ImageList = NAntGuiApp.ImageList;
 		}
 
@@ -27,7 +26,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.NewClicked();
+			_mediator.SaveClicked();
 		}
 	}
 }

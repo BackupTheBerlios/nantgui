@@ -1,20 +1,21 @@
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.FileMenu
 {
 	/// <summary>
-	/// Summary description for SelectAllMenuCommand.
+	/// Summary description for SaveAsMenuCommand.
 	/// </summary>
-	public class SelectAllMenuCommand : MenuCommand, Command
+	public class SaveAsMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public SelectAllMenuCommand()
+		public SaveAsMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.Shortcut = Shortcut.CtrlA;
-			this.Text = "Select &All";
+			this.ImageIndex = 2;
+			this.Shortcut = Shortcut.F12;
+			this.Text = "Save &As";
 		}
 
 		public MainFormMediator Mediator
@@ -24,7 +25,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.SelectAllClicked();
+			_mediator.SaveAsClicked();
 		}
 	}
 }

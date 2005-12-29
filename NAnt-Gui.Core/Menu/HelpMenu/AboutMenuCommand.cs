@@ -1,18 +1,18 @@
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.HelpMenu
 {
 	/// <summary>
-	/// Summary description for WordWrapMenuCommand.
+	/// Summary description for AboutMenuCommand.
 	/// </summary>
-	public class WordWrapMenuCommand : MenuCommand, Command
+	public class AboutMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public WordWrapMenuCommand()
+		public AboutMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.Text = "&Word Wrap";
+			this.Text = "&About NAnt-Gui";
 		}
 
 		public MainFormMediator Mediator
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.WordWrapClicked();
+			_mediator.AboutClicked();
 		}
 	}
 }

@@ -1,20 +1,20 @@
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.EditMenu
 {
 	/// <summary>
-	/// Summary description for CloseMenuCommand.
+	/// Summary description for SelectAllMenuCommand.
 	/// </summary>
-	public class CloseMenuCommand : MenuCommand, Command
+	public class SelectAllMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public CloseMenuCommand()
+		public SelectAllMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.Shortcut = Shortcut.CtrlW;
-			this.Text = "&Close";
+			this.Shortcut = Shortcut.CtrlA;
+			this.Text = "Select &All";
 		}
 
 		public MainFormMediator Mediator
@@ -24,7 +24,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.CloseClicked();
+			_mediator.SelectAllClicked();
 		}
 	}
 }

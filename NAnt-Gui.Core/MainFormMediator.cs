@@ -219,5 +219,28 @@ namespace NAntGui.Core
 		{
 			_sourceTabs.SelectedTab.Undo();
 		}
+
+		public void NAntHelpClicked()
+		{
+			const string nantHelp = @"\..\nant-docs\help\index.html";
+			Utils.LoadHelpFile(Utils.GetRunDirectory() + nantHelp);
+		}
+
+		public void NAntContribClicked()
+		{
+			const string nantContribHelp = @"\..\nantcontrib-docs\help\index.html";
+			Utils.LoadHelpFile(Utils.GetRunDirectory() + nantContribHelp);
+		}
+
+		public void NAntSDKClicked()
+		{
+			const string nantHelpPath = @"\..\nant-docs\sdk\";
+			const string nantSDKHelp = "NAnt-SDK.chm";
+			string filename = Utils.GetRunDirectory() + nantHelpPath + nantSDKHelp;
+
+			Utils.LoadHelpFile(filename);
+		}
+
+
 	}
 }

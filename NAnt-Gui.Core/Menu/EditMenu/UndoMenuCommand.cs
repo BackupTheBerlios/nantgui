@@ -1,20 +1,20 @@
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.EditMenu
 {
 	/// <summary>
-	/// Summary description for RedoMenuCommand.
+	/// Summary description for UndoMenuCommand.
 	/// </summary>
-	public class RedoMenuCommand : MenuCommand, Command
+	public class UndoMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public RedoMenuCommand()
+		public UndoMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.Shortcut = Shortcut.CtrlY;
-			this.Text = "&Redo";
+			this.Shortcut = Shortcut.CtrlZ;
+			this.Text = "&Undo";
 		}
 
 		public MainFormMediator Mediator
@@ -24,7 +24,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.RedoClicked();
+			_mediator.UndoClicked();
 		}
 	}
 }

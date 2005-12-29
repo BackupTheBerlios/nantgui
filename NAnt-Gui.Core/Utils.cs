@@ -1,3 +1,7 @@
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace NAntGui.Core
 {
@@ -19,6 +23,25 @@ namespace NAntGui.Core
 		public static string AddAsterisk(string text)
 		{
 			return text += "*";
+		}
+
+		public static void LoadHelpFile(string filename)
+		{
+			if (File.Exists(filename))
+			{
+				Process.Start(filename);
+			}
+			else
+			{
+				MessageBox.Show("Help not found.  It may not have been installed.", "Help Not Found");
+			}
+		}
+
+		public static string GetRunDirectory()
+		{
+			Assembly ass = Assembly.GetExecutingAssembly();
+			FileInfo info = new FileInfo(ass.Location);
+			return info.DirectoryName;
 		}
 	}
 }

@@ -23,10 +23,8 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Resources;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
@@ -297,46 +295,6 @@ namespace NAntGui.Core
 		{
 			MessageBox.Show(recentItem + " was not found.", "Build File Not Found", 
 			                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-		}
-
-		private void NAntSDKMenuCommand_Click(object sender, EventArgs e)
-		{
-			const string nantHelpPath = @"\..\nant-docs\sdk\";
-			const string nantSDKHelp = "NAnt-SDK.chm";
-			string filename = this.GetRunDirectory() + nantHelpPath + nantSDKHelp;
-
-			LoadHelpFile(filename);
-		}
-
-		private static void LoadHelpFile(string filename)
-		{
-			if (File.Exists(filename))
-			{
-				Process.Start(filename);
-			}
-			else
-			{
-				MessageBox.Show("Help not found.  It may not have been installed.", "Help Not Found");
-			}
-		}
-
-		private void NAntHelpMenuCommand_Click(object sender, EventArgs e)
-		{
-			const string nantHelp = @"\..\nant-docs\help\index.html";
-			LoadHelpFile(this.GetRunDirectory() + nantHelp);
-		}
-
-		private void NAntContribMenuCommand_Click(object sender, EventArgs e)
-		{
-			const string nantContribHelp = @"\..\nantcontrib-docs\help\index.html";
-			LoadHelpFile(this.GetRunDirectory() + nantContribHelp);
-		}
-
-		private string GetRunDirectory()
-		{
-			Assembly ass = Assembly.GetExecutingAssembly();
-			FileInfo info = new FileInfo(ass.Location);
-			return info.DirectoryName;
 		}
 
 //		private void WordWrap_Changed(bool checkValue)

@@ -34,27 +34,19 @@ namespace NAntGui.Core.Menu
 	/// </summary>
 	public class MainMenuControl : MenuControl
 	{
-		#region MenuCommands
-
-		private FileMenu _fileMenu = new FileMenu();
-		private EditMenu _editMenu = new EditMenu();
-
-		private MenuCommand HelpMenuCommand = new MenuCommand();
-		private MenuCommand AboutMenuCommand = new MenuCommand();
+		private FileMenu.FileMenu _fileMenu = new FileMenu.FileMenu();
+		private EditMenu.EditMenu _editMenu = new EditMenu.EditMenu();
+		private HelpMenu.HelpMenu _helpMenu = new HelpMenu.HelpMenu();
+		
 		private MenuCommand NAntMenuCommand = new MenuCommand();
 		private MenuCommand BuildMenuCommand = new MenuCommand();
 		private MenuCommand ToolsMenuCommand = new MenuCommand();
 		private MenuCommand OptionsMenuCommand = new MenuCommand();
-		private MenuCommand NAntContribMenuCommand = new MenuCommand();
-		private MenuCommand NAntHelpMenuCommand = new MenuCommand();
-		private MenuCommand NAntSDKMenuCommand = new MenuCommand();
-		private MenuCommand MenuCommand1 = new MenuCommand();
+		
 		private MenuCommand ViewMenuCommand = new MenuCommand();
 		private MenuCommand TargetsMenuCommand = new MenuCommand();
 		private MenuCommand PropertiesMenuCommand = new MenuCommand();
 		private MenuCommand OutputMenuCommand = new MenuCommand();
-
-		#endregion
 
 		public MainMenuControl()
 		{
@@ -84,7 +76,7 @@ namespace NAntGui.Core.Menu
 					this.ViewMenuCommand,
 					this.NAntMenuCommand,
 					this.ToolsMenuCommand,
-					this.HelpMenuCommand
+					_helpMenu
 				});
 			this.Name = "MainMenu";
 			this.Size = new Size(824, 25);
@@ -148,44 +140,6 @@ namespace NAntGui.Core.Menu
 			// 
 			this.OptionsMenuCommand.Description = "MenuCommand";
 			this.OptionsMenuCommand.Text = "&Options";
-			// 
-			// HelpMenuCommand
-			// 
-			this.HelpMenuCommand.Description = "MenuCommand";
-			this.HelpMenuCommand.MenuCommands.AddRange(new MenuCommand[]
-				{
-					this.NAntHelpMenuCommand,
-					this.NAntSDKMenuCommand,
-					this.NAntContribMenuCommand,
-					this.MenuCommand1,
-					this.AboutMenuCommand
-				});
-			this.HelpMenuCommand.Text = "&Help";
-			// 
-			// NAntHelpMenuCommand
-			// 
-			this.NAntHelpMenuCommand.Description = "MenuCommand";
-			this.NAntHelpMenuCommand.Text = "NAnt &Help";
-			// 
-			// NAntSDKMenuCommand
-			// 
-			this.NAntSDKMenuCommand.Description = "MenuCommand";
-			this.NAntSDKMenuCommand.Text = "NAnt &SDK Help";
-			// 
-			// NAntContribMenuCommand
-			// 
-			this.NAntContribMenuCommand.Description = "MenuCommand";
-			this.NAntContribMenuCommand.Text = "NAnt-&Contrib Help";
-			// 
-			// MenuCommand1
-			// 
-			this.MenuCommand1.Description = "MenuCommand";
-			this.MenuCommand1.Text = "-";
-			// 
-			// AboutMenuCommand
-			// 
-			this.AboutMenuCommand.Description = "MenuCommand";
-			this.AboutMenuCommand.Text = "&About NAnt-Gui";
 		}
 
 		#endregion
@@ -314,22 +268,22 @@ namespace NAntGui.Core.Menu
 
 		public EventHandler NAntHelp_Click
 		{
-			set { this.NAntHelpMenuCommand.Click += value; }
+			set { _helpMenu.NAntHelp_Click = value; }
 		}
 
 		public EventHandler NAntSDK_Click
 		{
-			set { this.NAntSDKMenuCommand.Click += value; }
+			set { _helpMenu.NAntSDK_Click = value; }
 		}
 
 		public EventHandler NAntContrib_Click
 		{
-			set { this.NAntContribMenuCommand.Click += value; }
+			set { _helpMenu.NAntContrib_Click = value; }
 		}
 
 		public EventHandler About_Click
 		{
-			set { this.AboutMenuCommand.Click += value; }
+			set { _helpMenu.About_Click = value; }
 		}
 
 		#endregion
@@ -338,6 +292,7 @@ namespace NAntGui.Core.Menu
 		{
 			_fileMenu.SetMediator(mediator);
 			_editMenu.SetMediator(mediator);
+			_helpMenu.SetMediator(mediator);
 		}
 	}
 }

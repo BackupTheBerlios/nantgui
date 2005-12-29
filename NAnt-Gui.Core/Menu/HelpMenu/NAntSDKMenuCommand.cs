@@ -1,18 +1,18 @@
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.HelpMenu
 {
 	/// <summary>
-	/// Summary description for ExitMenuCommand.
+	/// Summary description for NAntSDKMenuCommand.
 	/// </summary>
-	public class ExitMenuCommand : MenuCommand, Command
+	public class NAntSDKMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public ExitMenuCommand()
+		public NAntSDKMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.Text = "&Exit";
+			this.Text = "NAnt &SDK Help";
 		}
 
 		public MainFormMediator Mediator
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.ExitClicked();
+			_mediator.NAntSDKClicked();
 		}
 	}
 }

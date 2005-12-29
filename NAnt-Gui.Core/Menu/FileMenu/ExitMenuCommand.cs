@@ -1,18 +1,18 @@
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Menu
+namespace NAntGui.Core.Menu.FileMenu
 {
 	/// <summary>
-	/// Summary description for RecentMenuCommand.
+	/// Summary description for ExitMenuCommand.
 	/// </summary>
-	public class RecentMenuCommand : MenuCommand, Command
+	public class ExitMenuCommand : MenuCommand, Command
 	{
 		MainFormMediator _mediator;
 
-		public RecentMenuCommand()
+		public ExitMenuCommand()
 		{
 			this.Description = "MenuCommand";
-			this.Text = "Recent &Files";
+			this.Text = "&Exit";
 		}
 
 		public MainFormMediator Mediator
@@ -22,7 +22,7 @@ namespace NAntGui.Core.Menu
 
 		public void Execute()
 		{
-			_mediator.RecentClicked();
+			_mediator.ExitClicked();
 		}
 	}
 }
