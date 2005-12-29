@@ -30,7 +30,7 @@ namespace NAntGui.Core
 	{
 		private static string Header =
 			@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
-				+ @"{\fonttbl{\f0\fnil\fcharset0 Arial;}}"
+				+ @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
 				+ ColorTable.ColorTableRtf
 				+ @"\viewkind4\uc1\pard\cf0\fs17 ";
 
@@ -42,7 +42,7 @@ namespace NAntGui.Core
 		{
 			Header =
 				@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
-					+ @"{\fonttbl{\f0\fnil\fcharset0 Arial;}}"
+					+ @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
 					+ ColorTable.ColorTableRtf
 					+ @"\viewkind4\uc1\pard\cf0\fs17 ";
 

@@ -33,18 +33,10 @@ namespace NAntGui.Core
 			this.OutputSaveFileDialog.FileName = "Output";
 			this.OutputSaveFileDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
 
-			this.Anchor = (((((AnchorStyles.Top | AnchorStyles.Bottom)
-				| AnchorStyles.Left)
-				| AnchorStyles.Right)));
+			this.Dock = DockStyle.Fill;
 			this.BorderStyle = BorderStyle.FixedSingle;
 			this.DetectUrls = false;
-			this.Font = new Font("Arial", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((Byte) (0)));
-			this.Location = new Point(0, 0);
-			this.Name = "OutputTextBox";
 			this.ReadOnly = true;
-			this.Size = new Size(824, 454);
-			this.TabIndex = 3;
-			this.Text = "";
 			this.WordWrap = false;
 			this.MouseUp += new MouseEventHandler(this.OutputTextBox_MouseUp);
 			this.Enter += new EventHandler(this.DoEnter);

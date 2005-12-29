@@ -48,62 +48,62 @@ namespace NAntGui.Core
 			public const string SPACE = " ";
 		}
 
-		public static string Highlight(string pText)
+		public static string Highlight(string text)
 		{
-			string[] lExpressions = {BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "ERROR"};
-			string lHighlightedText = Escape(pText);
+			string[] expressions = {BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "ERROR"};
+			string highlightedText = Escape(text);
 
-			foreach (string lExpression in lExpressions)
+			foreach (string expression in expressions)
 			{
-				Regex lRegex = new Regex(lExpression, RegexOptions.IgnoreCase);
+				Regex regex = new Regex(expression, RegexOptions.IgnoreCase);
 
-				if (lRegex.IsMatch(lHighlightedText))
+				if (regex.IsMatch(highlightedText))
 				{
-					Match lMatch = lRegex.Match(lHighlightedText);
+					Match match = regex.Match(highlightedText);
 
-					switch (lExpression)
+					switch (expression)
 					{
 						case BUILD_FAILED:
-							string lOutput = ColorTable.RedTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-								+ lMatch.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+							string output = ColorTable.RedTag + Tags.BOLD + Tags.BIG + Tags.SPACE
+								+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
 
-							lHighlightedText = lHighlightedText.Replace(lMatch.Value, lOutput);
+							highlightedText = highlightedText.Replace(match.Value, output);
 							break;
 						case BUILD_SUCCEEDED:
-							lOutput = ColorTable.GreenTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-								+ lMatch.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+							output = ColorTable.GreenTag + Tags.BOLD + Tags.BIG + Tags.SPACE
+								+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
 
-							lHighlightedText = lHighlightedText.Replace(lMatch.Value, lOutput);
+							highlightedText = highlightedText.Replace(match.Value, output);
 							break;
 
 						case @"\[[^\[]+\]":
-							lOutput = ColorTable.BlueTag + Tags.SPACE
-								+ lMatch.Value + Tags.BLACK + Tags.SPACE;
+							output = ColorTable.BlueTag + Tags.SPACE
+								+ match.Value + Tags.BLACK + Tags.SPACE;
 
-							lHighlightedText = lHighlightedText.Replace(lMatch.Value, lOutput);
+							highlightedText = highlightedText.Replace(match.Value, output);
 							break;
 
 						case "error":
 						case "ERROR":
-							lOutput = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
-								+ lMatch.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
+							output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
+								+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
 
-							lHighlightedText = lHighlightedText.Replace(lMatch.Value, lOutput);
+							highlightedText = highlightedText.Replace(match.Value, output);
 							break;
 					}
 
 				}
 			}
 
-			return lHighlightedText + Tags.SPACE;
+			return highlightedText + Tags.SPACE;
 		}
 
-		private static string Escape(string pText)
+		private static string Escape(string text)
 		{
-			string lText = pText.Replace(@"\", @"\\");
-			lText = lText.Replace("{", @"\{");
-			lText = lText.Replace("}", @"\}");
-			return lText;
+			text = text.Replace(@"\", @"\\");
+			text = text.Replace("{", @"\{");
+			text = text.Replace("}", @"\}");
+			return text;
 		}
 	}
 }

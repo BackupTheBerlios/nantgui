@@ -158,6 +158,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Form1.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Form1.resx"
+                    DependentUpon = "Form1.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "MainDockManager.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

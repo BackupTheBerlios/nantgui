@@ -5,6 +5,7 @@ Multiple tabs
 Create custom commandline options that make sense for msbuild and nant
 Add SLiNgshoT tool window to tools menu
 
+(DONE) Switch output windows to fixed-width font so NAnt output displays accurrately
 (DONE) Put scroll bars on the editor window
 (DONE) Relatively reference nant for the prebuild step so it doesn't have to be in the path
 (DONE) View output menuitem
