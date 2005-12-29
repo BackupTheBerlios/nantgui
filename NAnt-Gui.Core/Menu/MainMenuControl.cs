@@ -37,21 +37,16 @@ namespace NAntGui.Core.Menu
 		private FileMenu.FileMenu _fileMenu = new FileMenu.FileMenu();
 		private EditMenu.EditMenu _editMenu = new EditMenu.EditMenu();
 		private HelpMenu.HelpMenu _helpMenu = new HelpMenu.HelpMenu();
+		private ViewMenu.ViewMenu _viewMenu = new ViewMenu.ViewMenu();
 		
 		private MenuCommand NAntMenuCommand = new MenuCommand();
 		private MenuCommand BuildMenuCommand = new MenuCommand();
 		private MenuCommand ToolsMenuCommand = new MenuCommand();
 		private MenuCommand OptionsMenuCommand = new MenuCommand();
 		
-		private MenuCommand ViewMenuCommand = new MenuCommand();
-		private MenuCommand TargetsMenuCommand = new MenuCommand();
-		private MenuCommand PropertiesMenuCommand = new MenuCommand();
-		private MenuCommand OutputMenuCommand = new MenuCommand();
-
 		public MainMenuControl()
 		{
 			this.Initialize();
-			this.AssignImages();
 		}
 
 		#region Initialize
@@ -73,7 +68,7 @@ namespace NAntGui.Core.Menu
 				{
 					_fileMenu,
 					_editMenu,
-					this.ViewMenuCommand,
+					this._viewMenu,
 					this.NAntMenuCommand,
 					this.ToolsMenuCommand,
 					_helpMenu
@@ -83,33 +78,6 @@ namespace NAntGui.Core.Menu
 			this.Style = VisualStyle.IDE;
 			this.TabIndex = 13;
 			this.TabStop = false;
-
-			this.ViewMenuCommand.Description = "MenuCommand";
-			this.ViewMenuCommand.MenuCommands.AddRange(new MenuCommand[]
-				{
-					this.TargetsMenuCommand,
-					this.PropertiesMenuCommand,
-					this.OutputMenuCommand
-				});
-			this.ViewMenuCommand.Text = "&View";
-			// 
-			// TargetsMenuCommand
-			// 
-			this.TargetsMenuCommand.Description = "MenuCommand";
-			this.TargetsMenuCommand.ImageIndex = 9;
-			this.TargetsMenuCommand.Text = "&Targets";
-			// 
-			// PropertiesMenuCommand
-			// 
-			this.PropertiesMenuCommand.Description = "MenuCommand";
-			this.PropertiesMenuCommand.ImageIndex = 0;
-			this.PropertiesMenuCommand.Text = "&Properties";
-			// 
-			// OutputMenuCommand
-			// 
-			this.OutputMenuCommand.Description = "MenuCommand";
-			this.OutputMenuCommand.ImageIndex = 6;
-			this.OutputMenuCommand.Text = "&Output";
 			// 
 			// NAntMenuCommand
 			// 
@@ -126,6 +94,7 @@ namespace NAntGui.Core.Menu
 			this.BuildMenuCommand.ImageIndex = 7;
 			this.BuildMenuCommand.Shortcut = Shortcut.F5;
 			this.BuildMenuCommand.Text = "&Build";
+			this.BuildMenuCommand.ImageList = NAntGuiApp.ImageList;
 			// 
 			// ToolsMenuCommand
 			// 
@@ -144,12 +113,12 @@ namespace NAntGui.Core.Menu
 
 		#endregion
 
-		private void AssignImages()
+		public void SetMediator(MainFormMediator mediator)
 		{
-			this.PropertiesMenuCommand.ImageList =
-				this.TargetsMenuCommand.ImageList =
-					this.OutputMenuCommand.ImageList =
-						this.BuildMenuCommand.ImageList = NAntGuiApp.ImageList;
+			_fileMenu.SetMediator(mediator);
+			_editMenu.SetMediator(mediator);
+			_helpMenu.SetMediator(mediator);
+			_viewMenu.SetMediator(mediator);
 		}
 
 		public void Enable()
@@ -243,17 +212,17 @@ namespace NAntGui.Core.Menu
 
 		public EventHandler Targets_Click
 		{
-			set { this.TargetsMenuCommand.Click += value; }
+			set { _viewMenu.Targets_Click = value; }
 		}
 
 		public EventHandler Properties_Click
 		{
-			set { this.PropertiesMenuCommand.Click += value; }
+			set { _viewMenu.Properties_Click = value; }
 		}
 
 		public EventHandler Output_Click
 		{
-			set { this.OutputMenuCommand.Click += value; }
+			set { _viewMenu.Output_Click = value; }
 		}
 
 		public EventHandler Build_Click
@@ -288,11 +257,6 @@ namespace NAntGui.Core.Menu
 
 		#endregion
 
-		public void SetMediator(MainFormMediator mediator)
-		{
-			_fileMenu.SetMediator(mediator);
-			_editMenu.SetMediator(mediator);
-			_helpMenu.SetMediator(mediator);
-		}
+
 	}
 }
