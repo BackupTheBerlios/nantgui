@@ -66,6 +66,8 @@ namespace NAntGui.Core.Menu.FileMenu
 
 		public void AddRecentItem(MenuCommand item)
 		{
+			_recentItems.Add(_sourceTabs.SelectedTab.File.FullName);
+			_recentItems.Save();
 			_recent.MenuCommands.Add(item);
 		}
 
