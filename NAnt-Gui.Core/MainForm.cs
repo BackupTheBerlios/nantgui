@@ -44,7 +44,7 @@ namespace NAntGui.Core
 		public MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainMenuControl _mainMenu = new MainMenuControl();
 		private ToolBarControl _mainToolBar = new ToolBarControl();
-		private SourceTabControl _sourceTabs = new SourceTabControl();
+		private ScriptTabs _sourceTabs = new ScriptTabs();
 		private MainStatusBar _mainStatusBar = new MainStatusBar();
 
 		private MainFormMediator _mediator;

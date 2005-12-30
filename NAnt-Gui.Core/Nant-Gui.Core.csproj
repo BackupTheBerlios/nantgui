@@ -199,7 +199,7 @@
                 />
                 <File
                     RelPath = "MainTabControl.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -272,19 +272,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ScriptTabs.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Settings.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SourceTabControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SourceTabControl.resx"
-                    DependentUpon = "SourceTabControl.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "TargetsTreeView.cs"

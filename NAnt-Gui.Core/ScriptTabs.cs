@@ -25,39 +25,21 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using TabControl = Crownwood.Magic.Controls.TabControl;
 
 namespace NAntGui.Core
 {
-	public class SourceTabControl : IDragDropper
+	public class ScriptTabs : IDragDropper
 	{
 		private ArrayList _tabs = new ArrayList();
-		private TabControl _tabControl = new TabControl();
+		private MainTabControl _tabControl = new MainTabControl();
 		private MainFormMediator _mediator;
 		private DragEventHandler _dragHandler;
 		private DragEventHandler _dropHandler;
 
-		public SourceTabControl()
+		public ScriptTabs()
 		{
-			this.Initialize();
-		}
-
-		#region Initialize
-
-		private void Initialize()
-		{
-			_tabControl.SuspendLayout();
-
-			_tabControl.Appearance = TabControl.VisualAppearance.MultiDocument;
-			_tabControl.Dock = DockStyle.Fill;
-			_tabControl.IDEPixelArea = true;
-			_tabControl.IDEPixelBorder = false;
 			_tabControl.ClosePressed += new EventHandler(this.Close_Pressed);
-
-			_tabControl.ResumeLayout(false);
 		}
-
-		#endregion
 
 		public void AddTab(ScriptTabPage tab)
 		{
@@ -163,7 +145,11 @@ namespace NAntGui.Core
 
 		public MainFormMediator Mediator
 		{
-			set { _mediator = value; }
+			set
+			{
+				_mediator = value;
+				_tabControl.Mediator = value;
+			}
 		}
 	}
 }

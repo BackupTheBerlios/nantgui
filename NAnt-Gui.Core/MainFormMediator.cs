@@ -39,7 +39,7 @@ namespace NAntGui.Core
 		private bool _firstLoad = true;
 
 		private MainDockManager _dockManager;
-		private SourceTabControl _sourceTabs;
+		private ScriptTabs _sourceTabs;
 		private TargetsTreeView _targetsTree;
 		private OutputBox _outputBox;
 		private MainPropertyGrid _propertyGrid;
@@ -48,12 +48,12 @@ namespace NAntGui.Core
 		private ToolBarControl _toolBar;
 		private MainForm _mainForm;
 
-		public MainFormMediator(MainForm mainForm, SourceTabControl sourceTabs, 
+		public MainFormMediator(MainForm mainForm, ScriptTabs scriptTabs, 
             TargetsTreeView targetsTree, OutputBox outputBox, MainPropertyGrid propertyGrid,
             MainStatusBar statusBar, MainMenuControl mainMenu, ToolBarControl toolBar)
 		{
 			_mainForm		= mainForm;
-			_sourceTabs		= sourceTabs;
+			_sourceTabs		= scriptTabs;
 			_targetsTree	= targetsTree;
 			_outputBox		= outputBox;
 			_propertyGrid	= propertyGrid;
