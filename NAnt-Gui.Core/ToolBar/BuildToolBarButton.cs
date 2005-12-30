@@ -22,7 +22,7 @@ namespace NAntGui.Core.ToolBar
 
 		public void ExecuteClick()
 		{
-			_mediator.BuildClicked();
+			_mediator.RunClicked();
 		}
 	}
 }

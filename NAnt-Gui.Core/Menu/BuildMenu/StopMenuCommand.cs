@@ -21,28 +21,25 @@
 
 #endregion
 
-using System;
+using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Menu.BuildMenu
 {
 	/// <summary>
-	/// Summary description for BuildMenu.
+	/// Summary description for StopMenuCommand.
 	/// </summary>
-	public class BuildMenu : MenuCommand
+	public class StopMenuCommand : MenuCommand, IClicker
 	{
-		private RunMenuCommand _runMenu = new RunMenuCommand();
-		private StopMenuCommand _stopMenu = new StopMenuCommand();
+		MainFormMediator _mediator;
 
-		public BuildMenu()
+		public StopMenuCommand()
 		{
-			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_runMenu,
-					_stopMenu
-				});
-			this.Text = "&Build";
+			this.Description = "Aborts the current build";
+			this.ImageIndex = 3;
+			this.Shortcut = Shortcut.CtrlDel;
+			this.Text = "&Cancel Build";
+			this.ImageList = NAntGuiApp.ImageList;
 		}
 
 		public MainFormMediator Mediator
@@ -50,31 +47,14 @@ namespace NAntGui.Core.Menu.BuildMenu
 			set
 			{
 				Assert.NotNull(value, "value");
-				_runMenu.Mediator = value;
-				_stopMenu.Mediator = value;
+				_mediator = value;
 			}
 		}
 
-		public void Enable()
+		public void ExecuteClick()
 		{
-			_runMenu.Enabled = true;
-			_stopMenu.Enabled = false;
-		}
-
-		public void Disable()
-		{
-			_runMenu.Enabled = false;
-			_stopMenu.Enabled = true;
-		}
-
-		public EventHandler RunClick
-		{
-			set { _runMenu.Click += value; }
-		}
-
-		public EventHandler StopClick
-		{
-			set { _stopMenu.Click += value; }
+			Assert.NotNull(_mediator, "_mediator");
+			_mediator.StopClicked();
 		}
 	}
 }

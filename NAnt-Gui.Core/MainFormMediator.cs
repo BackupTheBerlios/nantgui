@@ -90,7 +90,8 @@ namespace NAntGui.Core
 			_mainMenu.WordWrap_Click = clickHandler;
 			_mainMenu.Reload_Click = clickHandler;
 			_mainMenu.About_Click = clickHandler;
-			_mainMenu.Build_Click = clickHandler;
+			_mainMenu.RunClick = clickHandler;
+			_mainMenu.StopClick = clickHandler;
 			_mainMenu.Recent_Click = clickHandler;
 			_mainMenu.Close_Click = clickHandler;
 			_mainMenu.Exit_Click = clickHandler;
@@ -149,7 +150,7 @@ namespace NAntGui.Core
 			throw new NotImplementedException();
 		}
 
-		public void BuildClicked()
+		public void RunClicked()
 		{
 			_toolBar.DisableRun();
 			_toolBar.EnableStop();
@@ -327,11 +328,6 @@ namespace NAntGui.Core
 		public void PropertiesClicked()
 		{
 			_dockManager.ShowProperties();
-		}
-
-		public void RunClicked()
-		{
-			throw new NotImplementedException();
 		}
 
 		public void OptionsClicked()

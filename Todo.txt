@@ -1,9 +1,10 @@
-- Add drag and drop text into the editor
-- Make stop build menu item
-- Rename WordWrap menu item to wordwrap output
+BUG: Stop/Cancel build is never enabled (toolbar and menu)
+BUG: you can close the current build file, then stop becomes enabled
+BUG: Targets reset when you build, so selected targets are reset
 - Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab
 - Add paste menuitem
-- Hookup output and tabcontrol to mediator so it always knows which has focus for copy, selectall, paste, etc...
+- Add copy, paste, undo, redo icons
+- Hookup output and tabcontrol to mediator so it always knows which has focus for copy, wordwrap, paste, etc...
 - New build file functionality
 - Multiple tabs
 - Create custom commandline options that make sense for msbuild and nant
@@ -18,3 +19,5 @@
 (DONE) Write MainFormMediator
 (DONE) Enable drag and drop on the editor and tabs
 (DONE) Fix copy and paste menu items (they only operate on text in the output window)
+(CANCELLED: Non-standard behaviour) Add drag and drop text into the editor
+(DONE) Make stop build menu item

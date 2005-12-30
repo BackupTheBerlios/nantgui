@@ -324,6 +324,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Menu\BuildMenu\StopMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Menu\EditMenu\CopyMenuCommand.cs"
                     SubType = "Component"
                     BuildAction = "Compile"

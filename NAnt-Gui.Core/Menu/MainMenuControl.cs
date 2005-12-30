@@ -57,7 +57,7 @@ namespace NAntGui.Core.Menu
 					_editMenu,
 					_viewMenu,
 					_buildMenu,
-					this._toolsMenu,
+					_toolsMenu,
 					_helpMenu
 				});
 			this.Name = "MainMenu";
@@ -184,9 +184,14 @@ namespace NAntGui.Core.Menu
 			set { _viewMenu.Output_Click = value; }
 		}
 
-		public EventHandler Build_Click
+		public EventHandler RunClick
 		{
-			set { _buildMenu.Build_Click = value; }
+			set { _buildMenu.RunClick = value; }
+		}
+
+		public EventHandler StopClick
+		{
+			set { _buildMenu.StopClick = value; }
 		}
 
 		public EventHandler Options_Click

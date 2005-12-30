@@ -137,7 +137,7 @@ namespace NAntGui.Core
 
 		public void ExecuteClick()
 		{
-			_mediator.BuildClicked();
+			_mediator.RunClicked();
 		}
 
 		public EventHandler BuildClick

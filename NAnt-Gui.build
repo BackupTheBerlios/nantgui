@@ -8,6 +8,11 @@
     <innosetup script="NAnt-Gui.iss" />
   </target>
 
+  <target name="RunInstaller" description="Run's the InnoSetup Installer">
+  	<loadfile file="build_number.txt" property="nantgui.version" />
+    <exec program="installer\NAnt-Gui-${nantgui.version}.exe" />
+  </target>
+
   <target name="Debug" description="Build Debug App">
 	<solution configuration="debug" solutionfile="NAnt-Gui.sln" />
   </target>
