@@ -90,12 +90,12 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void CopyText(object sender, EventArgs e)
+		private void CopyText(object sender, EventArgs e)
 		{
 			this.Copy();
 		}
 
-		public void SelectAllText(object sender, EventArgs e)
+		private void SelectAllText(object sender, EventArgs e)
 		{
 			this.SelectAll();
 		}

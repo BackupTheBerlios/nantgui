@@ -261,12 +261,26 @@ namespace NAntGui.Core
 
 		public void SelectAllClicked()
 		{
-			_outputBox.SelectAll();
+			if (_outputBox.Focused)
+			{
+				_outputBox.SelectAll();	
+			}
+			else if (_sourceTabs.SelectedTab.Focused)
+			{
+				_sourceTabs.SelectedTab.SelectAll();
+			}
 		}
 
 		public void CopyClicked()
 		{
-			_outputBox.Copy();
+			if (_outputBox.Focused)
+			{
+				_outputBox.Copy();	
+			}
+			else if (_sourceTabs.SelectedTab.Focused)
+			{
+				_sourceTabs.SelectedTab.Copy();
+			}
 		}
 
 		public void RedoClicked()

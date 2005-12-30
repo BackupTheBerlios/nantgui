@@ -1,9 +1,13 @@
-Fix copy and paste menu items (they only operate on text in the output window)
-Make stop build menu item
-New build file functionality
-Multiple tabs
-Create custom commandline options that make sense for msbuild and nant
-Add SLiNgshoT tool window to tools menu
+- Add drag and drop text into the editor
+- Make stop build menu item
+- Rename WordWrap menu item to wordwrap output
+- Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab
+- Add paste menuitem
+- Hookup output and tabcontrol to mediator so it always knows which has focus for copy, selectall, paste, etc...
+- New build file functionality
+- Multiple tabs
+- Create custom commandline options that make sense for msbuild and nant
+- Add SLiNgshoT tool window to tools menu
 
 (DONE) Switch output windows to fixed-width font so NAnt output displays accurately
 (DONE) Put scroll bars on the editor window
@@ -13,3 +17,4 @@ Add SLiNgshoT tool window to tools menu
 (DONE) Move Menus into separate files
 (DONE) Write MainFormMediator
 (DONE) Enable drag and drop on the editor and tabs
+(DONE) Fix copy and paste menu items (they only operate on text in the output window)

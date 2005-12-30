@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Collections;
@@ -37,7 +38,7 @@ namespace NAntGui.Core
 	public class ScriptTabPage
 	{
 		private TabPage _scriptTab			= new TabPage();
-		private ScriptEditor _sourceEditor	= new ScriptEditor();
+		private ScriptEditor _scriptEditor	= new ScriptEditor();
 		private SourceFile _file;
 		private IBuildRunner _buildRunner;
 		private MainFormMediator _mediator;
@@ -55,8 +56,8 @@ namespace NAntGui.Core
 			Assert.NotNull(logger, "logger");
 			Assert.NotNull(options, "options");
 
-			_sourceEditor.LoadFile(filename);
-			_file = new SourceFile(filename, _sourceEditor.Text, logger, options);
+			_scriptEditor.LoadFile(filename);
+			_file = new SourceFile(filename, _scriptEditor.Text, logger, options);
 
 			this.Initialize();
 
@@ -74,15 +75,15 @@ namespace NAntGui.Core
 			{
 				Assert.NotNull(value, "value");
 				_mediator = value;
-				_sourceEditor.Mediator = value;
+				_scriptEditor.Mediator = value;
 			}
 		}
 
 		private void Initialize()
 		{
-			_sourceEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
+			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
 
-			_scriptTab.Controls.Add(_sourceEditor);
+			_scriptTab.Controls.Add(_scriptEditor);
 			_scriptTab.Location = new Point(0, 0);
 			_scriptTab.Selected = true;
 			_scriptTab.Size = new Size(824, 453);
@@ -106,7 +107,7 @@ namespace NAntGui.Core
 
 		public void ReLoad()
 		{
-			_sourceEditor.LoadFile(_file.FullName);
+			_scriptEditor.LoadFile(_file.FullName);
 			_scriptTab.Title = _file.Name;
 			try{ _buildRunner.ParseBuildScript(); }
 			catch { /* ignore */ }
@@ -114,8 +115,8 @@ namespace NAntGui.Core
 
 		public void SaveAs(string fileName)
 		{
-			_sourceEditor.SaveFile(fileName);
-			_file = new SourceFile(fileName, _sourceEditor.Text, 
+			_scriptEditor.SaveFile(fileName);
+			_file = new SourceFile(fileName, _scriptEditor.Text, 
 				_file.MessageLogger, _file.Options);
 
 			this.ReInitialize();
@@ -123,8 +124,8 @@ namespace NAntGui.Core
 
 		public void Save()
 		{
-			_sourceEditor.SaveFile(_file.FullName);
-			_file.Contents = _sourceEditor.Text;
+			_scriptEditor.SaveFile(_file.FullName);
+			_file.Contents = _scriptEditor.Text;
 			this.ReInitialize();
 		}
 
@@ -141,12 +142,12 @@ namespace NAntGui.Core
 
 		public void Undo()
 		{
-			_sourceEditor.Undo();
+			_scriptEditor.Undo();
 		}
 
 		public void Redo()
 		{
-			_sourceEditor.Redo();
+			_scriptEditor.Redo();
 		}
 
 		public void Stop()
@@ -212,7 +213,7 @@ namespace NAntGui.Core
 		{
 			set 
 			{
-				_sourceEditor.DragDrop += value;
+				_scriptEditor.DragDrop += value;
 			}
 		}
 
@@ -220,7 +221,7 @@ namespace NAntGui.Core
 		{
 			set
 			{
-				_sourceEditor.DragEnter += value;
+				_scriptEditor.DragEnter += value;
 			}
 		}
 
@@ -246,7 +247,27 @@ namespace NAntGui.Core
 
 		public bool IsDirty
 		{
-			get{ return _file.Contents != _sourceEditor.Text; }
+			get{ return _file.Contents != _scriptEditor.Text; }
+		}
+
+		public bool Focused
+		{
+			get { return _scriptEditor.ActiveTextAreaControl.TextArea.Focused; }
+		}
+
+		public void Copy()
+		{
+			_scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler.Copy(this, new EventArgs());
+		}
+
+		public void SelectAll()
+		{
+			_scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler.SelectAll(this, new EventArgs());
+		}
+
+		public void Paste()
+		{
+			_scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler.Paste(this, new EventArgs());
 		}
 	}
 }
