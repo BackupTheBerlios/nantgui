@@ -103,6 +103,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "GuiLogger.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
