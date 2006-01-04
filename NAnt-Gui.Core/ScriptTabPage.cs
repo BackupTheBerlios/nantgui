@@ -127,9 +127,15 @@ namespace NAntGui.Core
 
 		public void Save()
 		{
+			this.Save(true);
+		}
+
+		public void Save(bool reInit)
+		{
 			_scriptEditor.SaveFile(_file.FullName);
 			_file.Contents = _scriptEditor.Text;
-			this.ReInitialize();
+
+			if (reInit) this.ReInitialize();
 		}
 
 		private void ReInitialize()

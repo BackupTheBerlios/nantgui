@@ -161,7 +161,7 @@ namespace NAntGui.Core
 			
 			selectedTab.SetProperties(_propertyGrid.GetProperties());
 			selectedTab.SetTargets(_targetsTree.GetTargets());
-			selectedTab.Save();
+			selectedTab.Save(false);
 			selectedTab.Run();
 		}
 
