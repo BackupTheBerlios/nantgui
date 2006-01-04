@@ -64,7 +64,25 @@ namespace NAntGui.Core.Menu.BuildMenu
 		public void Disable()
 		{
 			_runMenu.Enabled = false;
-			_stopMenu.Enabled = true;
+			_stopMenu.Enabled = false;
+		}
+
+		public RunState State
+		{
+			set 
+			{ 
+				switch (value)
+				{
+					case RunState.Running:
+						_runMenu.Enabled = false;
+						_stopMenu.Enabled = true;
+						break;
+					case RunState.Stopped:
+						_runMenu.Enabled = true;
+						_stopMenu.Enabled = false;
+						break;
+				}
+			}
 		}
 
 		public EventHandler RunClick

@@ -102,6 +102,11 @@ namespace NAntGui.Core.Menu
 			_fileMenu.RemoveRecentItem(file);
 		}
 
+		public RunState State
+		{
+			set { _buildMenu.State = value; }
+		}
+
 		#region Events
 
 		public EventHandler New_Click

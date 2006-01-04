@@ -133,11 +133,6 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BuildFileBrowser.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -203,10 +198,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "NAnt-Gui.build"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "NAntGuiApp.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -253,6 +244,11 @@
                 />
                 <File
                     RelPath = "RecentItems.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "RunStateEnum.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

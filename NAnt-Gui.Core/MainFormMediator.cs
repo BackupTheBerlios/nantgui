@@ -152,27 +152,28 @@ namespace NAntGui.Core
 
 		public void RunClicked()
 		{
-			_toolBar.DisableRun();
-			_toolBar.EnableStop();
+			_toolBar.State = RunState.Running;
+			_mainMenu.State = RunState.Running;
 			_outputBox.Clear();
 			_dockManager.ShowOutput();
 
 			ScriptTabPage selectedTab = _sourceTabs.SelectedTab;
-
-			selectedTab.Save();
+			
 			selectedTab.SetProperties(_propertyGrid.GetProperties());
 			selectedTab.SetTargets(_targetsTree.GetTargets());
+			selectedTab.Save();
 			selectedTab.Run();
+		}
 
-			_toolBar.DisableStop();
-			_toolBar.EnableRun();
+		private void Tab_BuildFinished()
+		{
+			this.SetStateStopped();
 		}
 
 		public void StopClicked()
 		{
-			_toolBar.DisableStop();
 			_sourceTabs.SelectedTab.Stop();
-			_toolBar.EnableRun();
+			this.SetStateStopped();
 		}
 
 		public void SaveClicked()
@@ -182,7 +183,14 @@ namespace NAntGui.Core
 
 		public void ReloadClicked()
 		{
+			this.SetStateStopped();
 			_sourceTabs.SelectedTab.ReLoad();
+		}
+
+		private void SetStateStopped()
+		{
+			_toolBar.State = RunState.Stopped;
+			_mainMenu.State = RunState.Stopped;
 		}
 
 		public void OpenClicked()
@@ -358,7 +366,7 @@ namespace NAntGui.Core
 			if (File.Exists(filename))
 			{
 				ScriptTabPage page = new ScriptTabPage(filename, _mainForm, NAntGuiApp.Options);
-				page.BuildFinished = new VoidVoid(_mainForm.Update);
+				page.BuildFinished = new VoidVoid(this.Tab_BuildFinished);
 
 				Settings.OpenInitialDirectory = page.FilePath;
 
@@ -379,6 +387,8 @@ namespace NAntGui.Core
 				}
 				
 				this.UpdateDisplay();
+				_mainMenu.Enable();
+				_toolBar.Enable();
 
 				return true;
 			}
@@ -402,8 +412,6 @@ namespace NAntGui.Core
 			_statusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
 			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.FileFullName;
 
-			this.EnableMenuCommandsAndButtons();
-
 			_targetsTree.AddTargets(projectName, buildScript.Targets);
 			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
 
@@ -413,12 +421,6 @@ namespace NAntGui.Core
 		public void DragDrop(DragEventArgs e)
 		{
 			this.LoadBuildFile(Utils.GetDragFilename(e));
-		}
-
-		private void EnableMenuCommandsAndButtons()
-		{
-			_mainMenu.Enable();
-			_toolBar.Enable();
 		}
 
 		//		private void WordWrap_Changed(bool checkValue)

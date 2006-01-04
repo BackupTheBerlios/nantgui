@@ -25,6 +25,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Collections;
+using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Framework;
 using TabPage = Crownwood.Magic.Controls.TabPage;
@@ -42,6 +43,7 @@ namespace NAntGui.Core
 		private SourceFile _file;
 		private IBuildRunner _buildRunner;
 		private MainFormMediator _mediator;
+		private TextAreaClipboardHandler _clipboardHandler;
 
 		public ScriptTabPage(ILogsMessage logger)
 		{
@@ -81,6 +83,7 @@ namespace NAntGui.Core
 
 		private void Initialize()
 		{
+			_clipboardHandler = _scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler;
 			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
 
 			_scriptTab.Controls.Add(_scriptEditor);
@@ -257,17 +260,17 @@ namespace NAntGui.Core
 
 		public void Copy()
 		{
-			_scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler.Copy(this, new EventArgs());
+			_clipboardHandler.Copy(this, new EventArgs());
 		}
 
 		public void SelectAll()
 		{
-			_scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler.SelectAll(this, new EventArgs());
+			_clipboardHandler.SelectAll(this, new EventArgs());
 		}
 
 		public void Paste()
 		{
-			_scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler.Paste(this, new EventArgs());
+			_clipboardHandler.Paste(this, new EventArgs());
 		}
 	}
 }

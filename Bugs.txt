@@ -1,0 +1,3 @@
+- Targets reset when you build, so selected targets are reset
+FIXED: Stop/Cancel build is never enabled (toolbar and menu)
+FIXED: You can close the current build file, then stop becomes enabled

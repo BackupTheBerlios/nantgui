@@ -132,24 +132,22 @@ namespace NAntGui.Core.ToolBar
 			_buildButton.Enabled	= true;
 		}
 
-		public void EnableStop()
+		public RunState State
 		{
-			_stopButton.Enabled = true;
-		}
-
-		public void DisableStop()
-		{
-			_stopButton.Enabled = false;
-		}
-
-		public void DisableRun()
-		{
-			_buildButton.Enabled = false;
-		}
-
-		public void EnableRun()
-		{
-			_buildButton.Enabled = true;
+			set 
+			{ 
+				switch (value)
+				{
+					case RunState.Running:
+						_buildButton.Enabled = false;
+						_stopButton.Enabled = true;
+						break;
+					case RunState.Stopped:
+						_buildButton.Enabled = true;
+						_stopButton.Enabled = false;
+						break;
+				}
+			}
 		}
 	}
 }

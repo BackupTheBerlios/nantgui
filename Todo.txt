@@ -1,8 +1,5 @@
-BUG: Stop/Cancel build is never enabled (toolbar and menu)
-BUG: you can close the current build file, then stop becomes enabled
-BUG: Targets reset when you build, so selected targets are reset
 - Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab
-- Add paste menuitem
+- Add paste menuitem (diabled when output box has focus)
 - Add copy, paste, undo, redo icons
 - Hookup output and tabcontrol to mediator so it always knows which has focus for copy, wordwrap, paste, etc...
 - New build file functionality
