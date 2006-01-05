@@ -9,7 +9,7 @@ namespace NAntGui.Core
 	/// </summary>
 	public class ScriptEditorContextMenu : PopupMenu
 	{
-		public ScriptEditorContextMenu(TextAreaClipboardHandler clipboard)
+		public ScriptEditorContextMenu(TextAreaClipboardHandler clipboard) : base()
 		{
 			MenuCommand copy = 
 				new MenuCommand("Cop&y", new EventHandler(clipboard.Copy));

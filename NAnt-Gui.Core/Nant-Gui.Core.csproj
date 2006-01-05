@@ -183,21 +183,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MainPropertyGrid.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MainStatusBar.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MainTabControl.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "NAntGuiApp.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -221,11 +206,6 @@
                     RelPath = "OptionsForm.resx"
                     DependentUpon = "OptionsForm.cs"
                     BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "OutputBox.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "OutputHighlighter.cs"
@@ -253,21 +233,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ScriptEditor.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ScriptEditorContextMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ScriptTabPage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ScriptTabs.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -278,16 +243,50 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "TargetsTreeView.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Utils.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
-                <Folder RelPath = "Controls\" />
+                <File
+                    RelPath = "Controls\MainPropertyGrid.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\MainStatusBar.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\MainTabControl.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\OutputBox.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ScriptEditor.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ScriptEditorContextMenu.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ScriptTabPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\TargetsTreeView.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
                 <File
                     RelPath = "Images\1.3.0_screen_1.png"
                     BuildAction = "Content"
