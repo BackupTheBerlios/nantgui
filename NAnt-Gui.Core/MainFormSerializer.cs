@@ -72,7 +72,7 @@ namespace NAntGui.Core
 			int height	= Convert.ToInt32(key.GetValue("Height", _mainForm.Height));
 
 			FormWindowState windowState = (FormWindowState) key.GetValue("WindowState", (int) _mainForm.WindowState);
-			PropertySort propertySort = (PropertySort) key.GetValue("PropertySort", (int) _mainForm._propertyGrid.PropertySort);
+			PropertySort propertySort = (PropertySort) key.GetValue("PropertySort", (int) _propertyGrid.PropertySort);
 
 			_mainForm.Location = new Point(left, top);
 			_mainForm.Size = new Size(width, height);
