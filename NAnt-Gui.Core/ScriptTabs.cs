@@ -28,13 +28,11 @@ using System.Windows.Forms;
 
 namespace NAntGui.Core
 {
-	public class ScriptTabs : IDragDropper
+	public class ScriptTabs
 	{
 		private ArrayList _tabs = new ArrayList();
 		private MainTabControl _tabControl = new MainTabControl();
 		private MainFormMediator _mediator;
-		private DragEventHandler _dragHandler;
-		private DragEventHandler _dropHandler;
 
 		public ScriptTabs()
 		{
@@ -45,12 +43,8 @@ namespace NAntGui.Core
 		{
 			Assert.NotNull(tab, "tab");
 			Assert.NotNull(_mediator, "_mediator");
-			Assert.NotNull(_dragHandler, "_dragHandler");
-			Assert.NotNull(_dropHandler, "_dropHandler");
 
 			tab.Mediator	= _mediator;
-			tab.DragEnter	= _dragHandler;
-			tab.DragDrop	= _dropHandler;
 
 			_tabs.Add(tab);
 			tab.AddTabToControl(_tabControl.TabPages);
@@ -110,37 +104,9 @@ namespace NAntGui.Core
 			controls.Add(_tabControl);
 		}
 
-		public void ExecuteDragEnter(DragEventArgs e)
-		{
-			_mediator.DragEnter(e);
-		}
-
-		public void ExecuteDragDrop(DragEventArgs e)
-		{
-			_mediator.DragDrop(e);
-		}
-
 		public void CloseSelectedTab()
 		{
 			this.SelectedTab.CloseFile();
-		}
-
-		public DragEventHandler DragDrop
-		{
-			set
-			{
-				_tabControl.DragDrop += value;
-				_dropHandler = value;
-			}
-		}
-
-		public DragEventHandler DragEnter
-		{
-			set
-			{
-				_tabControl.DragEnter += value;
-				_dragHandler = value;
-			}
 		}
 
 		public MainFormMediator Mediator

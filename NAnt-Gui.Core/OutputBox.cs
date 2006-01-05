@@ -2,14 +2,16 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
+using NAntGui.Framework;
 
 namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for OutputBox.
 	/// </summary>
-	public class OutputBox : RichTextBox
+	public class OutputBox : RichTextBox, ILogsMessage
 	{
+		private delegate void MessageEventHandler(string message);
 		public event VoidBool WordWrapChanged;
 
 		private const int RICH_TEXT_INDEX = 2;
@@ -137,6 +139,21 @@ namespace NAntGui.Core
 		{
 			base.Clear();
 			Outputter.Clear();
+		}
+
+		public void LogMessage(string message)
+		{
+			if (this.InvokeRequired)
+			{
+				MessageEventHandler messageEH =
+					new MessageEventHandler(this.WriteOutput);
+
+				this.BeginInvoke(messageEH, new Object[1] {message});
+			}
+			else
+			{
+				this.WriteOutput(message);
+			}
 		}
 	}
 }

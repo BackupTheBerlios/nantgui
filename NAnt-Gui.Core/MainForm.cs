@@ -28,19 +28,15 @@ using System.Resources;
 using System.Windows.Forms;
 using NAntGui.Core.Menu;
 using NAntGui.Core.ToolBar;
-using NAntGui.Framework;
 
 namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for MainForm.
 	/// </summary>
-	public class MainForm : Form, ILogsMessage, IDragDropper
+	public class MainForm : Form
 	{
-		private delegate void MessageEventHandler(string pMessage);
-		
-		private OutputBox _outputBox = new OutputBox();
-		private TargetsTreeView _targetsTree = new TargetsTreeView();
+		private TargetsTreeView _targetsTree;
 		public MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainMenuControl _mainMenu = new MainMenuControl();
 		private ToolBarControl _mainToolBar = new ToolBarControl();
@@ -56,8 +52,8 @@ namespace NAntGui.Core
 		{
 			this.Initialize();
 
-			_mediator = new MainFormMediator(this, _sourceTabs, _targetsTree, 
-				_outputBox, _propertyGrid, _mainStatusBar, _mainMenu, _mainToolBar);
+			_mediator = new MainFormMediator(this, _sourceTabs,  
+				 _propertyGrid, _mainStatusBar, _mainMenu, _mainToolBar);
 
 			_mediator.LoadInitialBuildFile();
 		}
@@ -112,21 +108,6 @@ namespace NAntGui.Core
 		#endregion
 
 
-		public void LogMessage(string message)
-		{
-			if (this.InvokeRequired)
-			{
-				MessageEventHandler messageEH =
-					new MessageEventHandler(_outputBox.WriteOutput);
-
-				this.BeginInvoke(messageEH, new Object[1] {message});
-			}
-			else
-			{
-				_outputBox.WriteOutput(message);
-			}
-		}
-
 		public PropertySort PropertySort
 		{
 			get { return _propertyGrid.PropertySort; }
@@ -142,13 +123,15 @@ namespace NAntGui.Core
 			set { throw new NotImplementedException(); }
 		}
 
-		public void ExecuteDragEnter(DragEventArgs e)
+		protected override void OnDragEnter(DragEventArgs e)
 		{
+			base.OnDragEnter(e);
 			_mediator.DragEnter(e);
 		}
 
-		public void ExecuteDragDrop(DragEventArgs e)
+		protected override void OnDragDrop(DragEventArgs e)
 		{
+			base.OnDragDrop(e);
 			_mediator.DragDrop(e);
 		}
 	}

@@ -29,7 +29,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for MainTabControl.
 	/// </summary>
-	public class MainTabControl : TabControl, IDragDropper
+	public class MainTabControl : TabControl
 	{
 		private MainFormMediator _mediator;
 
@@ -54,17 +54,20 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void ExecuteDragEnter(DragEventArgs e)
+
+		protected override void OnDragEnter(DragEventArgs e)
 		{
 			Assert.NotNull(e, "e");
 			Assert.NotNull(_mediator, "_mediator");
+			base.OnDragEnter(e);
 			_mediator.DragEnter(e);
 		}
 
-		public void ExecuteDragDrop(DragEventArgs e)
+		protected override void OnDragDrop(DragEventArgs e)
 		{
 			Assert.NotNull(e, "e");
 			Assert.NotNull(_mediator, "_mediator");
+			base.OnDragDrop(e);
 			_mediator.DragDrop(e);
 		}
 	}

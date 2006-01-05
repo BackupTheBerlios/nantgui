@@ -1,9 +1,8 @@
-- Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab
+- Hookup output and tabcontrol to mediator so it always knows which has focus for copy, wordwrap, paste, etc...
 - Add paste menuitem (diabled when output box has focus)
 - Add copy, paste, undo, redo icons
-- Hookup output and tabcontrol to mediator so it always knows which has focus for copy, wordwrap, paste, etc...
-- New build file functionality
-- Multiple tabs
+- Multiple tabs (- Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab)
+	* New build file functionality
 - Create custom commandline options that make sense for msbuild and nant
 - Add SLiNgshoT tool window to tools menu
 

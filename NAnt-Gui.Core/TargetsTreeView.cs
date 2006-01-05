@@ -19,14 +19,10 @@ namespace NAntGui.Core
 		public TargetsTreeView()
 		{
 			this.Initialize();
-			this.CreateContextMenu();
 		}
 
 		private void Initialize()
 		{
-			// 
-			// TargetsTreeView
-			// 
 			this.CheckBoxes = true;
 			this.Dock = DockStyle.Top;
 			this.ImageIndex = -1;
@@ -38,6 +34,10 @@ namespace NAntGui.Core
 			this.AfterCheck += new TreeViewEventHandler(this.BuildTreeView_AfterCheck);
 			this.MouseUp += new MouseEventHandler(this.BuildTreeView_MouseUp);
 			this.MouseMove += new MouseEventHandler(this.BuildTreeView_MouseMove);
+
+			_build.ImageList = NAntGuiApp.ImageList;
+			_build.ImageIndex = 7;
+			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {_build});
 		}
 
 		private void BuildTreeView_AfterCheck(object sender, TreeViewEventArgs e)
@@ -73,13 +73,6 @@ namespace NAntGui.Core
 				BuildTarget target = node.Tag as BuildTarget;
 				this.ToolTip.SetToolTip(this, target.Description);
 			}
-		}
-
-		private void CreateContextMenu()
-		{
-			_build.ImageList = NAntGuiApp.ImageList;
-			_build.ImageIndex = 7;
-			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {_build});
 		}
 
 		public TargetCollection GetTargets()

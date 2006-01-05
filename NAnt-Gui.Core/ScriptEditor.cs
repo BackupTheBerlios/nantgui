@@ -31,7 +31,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for ScriptEditor.
 	/// </summary>
-	public class ScriptEditor : TextEditorControl, IDragDropper
+	public class ScriptEditor : TextEditorControl
 	{
 		private ScriptEditorContextMenu _sourceContextMenu;
 		private MainFormMediator _mediator;
@@ -83,30 +83,17 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void ExecuteDragEnter(DragEventArgs e)
-		{
-			Assert.NotNull(e, "e");
-			Assert.NotNull(_mediator, "_mediator");
-			_mediator.DragEnter(e);
-		}
-
-		public void ExecuteDragDrop(DragEventArgs e)
-		{
-			Assert.NotNull(e, "e");
-			Assert.NotNull(_mediator, "_mediator");
-			_mediator.DragDrop(e);
-		}
-
 		private void Drag_Drop(object sender, DragEventArgs e)
 		{
 			Assert.NotNull(e, "e");
-			this.OnDragDrop(e);
+			_mediator.DragDrop(e);
 		}
 
 		public void Drag_Enter(object sender, DragEventArgs e)
 		{
 			Assert.NotNull(e, "e");
-			this.OnDragEnter(e);
+			Assert.NotNull(_mediator, "_mediator");
+			_mediator.DragEnter(e);
 		}
 	}
 }

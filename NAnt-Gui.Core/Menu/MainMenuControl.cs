@@ -129,47 +129,47 @@ namespace NAntGui.Core.Menu
 			set { _fileMenu.SaveAs_Click = value; }
 		}
 
-		public EventHandler Reload_Click
+		public EventHandler ReloadClick
 		{
 			set { _fileMenu.Reload_Click = value; }
 		}
 
-		public EventHandler Close_Click
+		public EventHandler CloseClick
 		{
 			set { _fileMenu.Close_Click = value; }
 		}
 
-		public EventHandler SaveOutput_Click
+		public EventHandler SaveOutputClick
 		{
 			set { _fileMenu.SaveOutput_Click = value; }
 		}
 
-		public EventHandler Exit_Click
+		public EventHandler ExitClick
 		{
 			set { _fileMenu.Exit_Click = value; }
 		}
 
-		public EventHandler Undo_Click
+		public EventHandler UndoClick
 		{
 			set { _editMenu.Undo_Click = value; }
 		}
 
-		public EventHandler Redo_Click
+		public EventHandler RedoClick
 		{
 			set { _editMenu.Redo_Click = value; }
 		}
 
-		public EventHandler Copy_Click
+		public EventHandler CopyClick
 		{
 			set { _editMenu.Copy_Click = value; }
 		}
 
-		public EventHandler SelectAll_Click
+		public EventHandler SelectAllClick
 		{
 			set { _editMenu.SelectAll_Click = value; }
 		}
 
-		public EventHandler WordWrap_Click
+		public EventHandler WordWrapClick
 		{
 			set { _editMenu.WordWrap_Click = value; }
 		}
@@ -199,7 +199,7 @@ namespace NAntGui.Core.Menu
 			set { _buildMenu.StopClick = value; }
 		}
 
-		public EventHandler Options_Click
+		public EventHandler OptionsClick
 		{
 			set { _toolsMenu.Options_Click = value; }
 		}
@@ -219,7 +219,7 @@ namespace NAntGui.Core.Menu
 			set { _helpMenu.NAntContrib_Click = value; }
 		}
 
-		public EventHandler About_Click
+		public EventHandler AboutClick
 		{
 			set { _helpMenu.About_Click = value; }
 		}
