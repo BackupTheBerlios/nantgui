@@ -36,7 +36,7 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for ScriptTabPage.
 	/// </summary>
-	public class ScriptTabPage
+	public class ScriptTabPage : IEditCommands
 	{
 		private TabPage _scriptTab			= new TabPage();
 		private ScriptEditor _scriptEditor	= new ScriptEditor();
@@ -150,6 +150,11 @@ namespace NAntGui.Core
 			_mediator.UpdateDisplay();
 		}
 
+		private void GotFocus(object sender, EventArgs e)
+		{
+			_mediator.TabFocused();
+		}
+
 		public void Undo()
 		{
 			_scriptEditor.Undo();
@@ -201,6 +206,23 @@ namespace NAntGui.Core
 			return page == _scriptTab;
 		}
 
+
+
+		public void Copy()
+		{
+			_clipboardHandler.Copy(this, new EventArgs());
+		}
+
+		public void SelectAll()
+		{
+			_clipboardHandler.SelectAll(this, new EventArgs());
+		}
+
+		public void Paste()
+		{
+			_clipboardHandler.Paste(this, new EventArgs());
+		}
+
 		public IBuildScript BuildScript
 		{
 			get
@@ -244,24 +266,6 @@ namespace NAntGui.Core
 			get{ return _file.Contents != _scriptEditor.Text; }
 		}
 
-		private void GotFocus(object sender, EventArgs e)
-		{
-			_mediator.TabFocused();
-		}
 
-		public void Copy()
-		{
-			_clipboardHandler.Copy(this, new EventArgs());
-		}
-
-		public void SelectAll()
-		{
-			_clipboardHandler.SelectAll(this, new EventArgs());
-		}
-
-		public void Paste()
-		{
-			_clipboardHandler.Paste(this, new EventArgs());
-		}
 	}
 }

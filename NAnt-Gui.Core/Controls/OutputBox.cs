@@ -9,7 +9,7 @@ namespace NAntGui.Core.Controls
 	/// <summary>
 	/// Summary description for OutputBox.
 	/// </summary>
-	public class OutputBox : RichTextBox, ILogsMessage
+	public class OutputBox : RichTextBox, ILogsMessage, IEditCommands
 	{
 		private delegate void MessageEventHandler(string message);
 		public event VoidBool WordWrapChanged;
