@@ -26,8 +26,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 using NAntGui.Core.Controls;
-using NAntGui.Core.Menu;
-using NAntGui.Core.ToolBar;
+using NAntGui.Core.Controls.Menu;
+using NAntGui.Core.Controls.ToolBar;
 using NAntGui.Framework;
 
 namespace NAntGui.Core
@@ -39,23 +39,23 @@ namespace NAntGui.Core
 	{
 		private bool _firstLoad = true;
 
-		private MainDockManager _dockManager;
-		private ScriptTabs _sourceTabs;
 		private TargetsTreeView _targetsTree = new TargetsTreeView();
 		private OutputBox _outputBox = new OutputBox();
-		private MainPropertyGrid _propertyGrid;
+		private MainPropertyGrid _propertyGrid = new MainPropertyGrid();
+		private MainDockManager _dockManager;
+		private ScriptTabs _sourceTabs;
 		private MainStatusBar _statusBar;
 		private MainMenuControl _mainMenu;
 		private ToolBarControl _toolBar;
 		private MainForm _mainForm;
+		private bool _outputFocused = false;
+		private bool _tabFocused = false;
 
 		public MainFormMediator(MainForm mainForm, ScriptTabs scriptTabs, 
-            MainPropertyGrid propertyGrid,
             MainStatusBar statusBar, MainMenuControl mainMenu, ToolBarControl toolBar)
 		{
 			_mainForm		= mainForm;
 			_sourceTabs		= scriptTabs;
-			_propertyGrid	= propertyGrid;
 			_statusBar		= statusBar;
 			_mainMenu		= mainMenu;
 			_toolBar		= toolBar;
@@ -67,6 +67,7 @@ namespace NAntGui.Core
 			_mainMenu.Mediator		= this;
 			_targetsTree.Mediator	= this;
 			_sourceTabs.Mediator	= this;
+			_outputBox.Mediator		= this;
 
 			MainFormSerializer.Attach(_mainForm, _propertyGrid);
 			this.AssignEventHandler();
@@ -244,11 +245,11 @@ namespace NAntGui.Core
 
 		public void SelectAllClicked()
 		{
-			if (_outputBox.Focused)
+			if (_outputFocused)
 			{
 				_outputBox.SelectAll();	
 			}
-			else if (_sourceTabs.SelectedTab.Focused)
+			else if (_tabFocused)
 			{
 				_sourceTabs.SelectedTab.SelectAll();
 			}
@@ -256,11 +257,11 @@ namespace NAntGui.Core
 
 		public void CopyClicked()
 		{
-			if (_outputBox.Focused)
+			if (_outputFocused)
 			{
 				_outputBox.Copy();	
 			}
-			else if (_sourceTabs.SelectedTab.Focused)
+			else if (_tabFocused)
 			{
 				_sourceTabs.SelectedTab.Copy();
 			}
@@ -413,6 +414,20 @@ namespace NAntGui.Core
 			{
 				e.Effect = DragDropEffects.None;
 			}
+		}
+
+		public void TabFocused()
+		{
+			_mainMenu.EnablePasteAndDelete();
+			_tabFocused = true;
+			_outputFocused = false;
+		}
+
+		public void OutputFocused()
+		{
+			_mainMenu.DisablePasteAndDelete();
+			_outputFocused = true;
+			_tabFocused = false;
 		}
 	}
 }

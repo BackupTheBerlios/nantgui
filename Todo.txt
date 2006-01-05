@@ -1,7 +1,8 @@
-- Hookup output and tabcontrol to mediator so it always knows which has focus for copy, wordwrap, paste, etc...
-- Add paste menuitem (diabled when output box has focus)
+- Add paste and delete menuitems (diabled when output box has focus)
 - Add copy, paste, undo, redo icons
-- Multiple tabs (- Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab)
+- Create save output default initial dir reg key
+- Multiple tabs
+	* Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab)
 	* New build file functionality
 - Create custom commandline options that make sense for msbuild and nant
 - Add SLiNgshoT tool window to tools menu
@@ -17,3 +18,4 @@
 (DONE) Fix copy and paste menu items (they only operate on text in the output window)
 (CANCELLED: Non-standard behaviour) Add drag and drop text into the editor
 (DONE) Make stop build menu item
+(DONE) Hookup output and tabcontrol to mediator so it always knows which has focus for copy, wordwrap, paste, etc...

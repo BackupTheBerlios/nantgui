@@ -23,7 +23,6 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using Crownwood.Magic.Collections;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
@@ -86,6 +85,7 @@ namespace NAntGui.Core
 		{
 			_clipboardHandler = _scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler;
 			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
+			_scriptEditor.ActiveTextAreaControl.TextArea.Enter += new EventHandler(this.GotFocus);
 
 			_scriptTab.Controls.Add(_scriptEditor);
 			_scriptTab.Location = new Point(0, 0);
@@ -219,22 +219,6 @@ namespace NAntGui.Core
 			}
 		}
 
-		public DragEventHandler DragDrop
-		{
-			set 
-			{
-				_scriptEditor.DragDrop += value;
-			}
-		}
-
-		public DragEventHandler DragEnter
-		{
-			set
-			{
-				_scriptEditor.DragEnter += value;
-			}
-		}
-
 		public string FileName
 		{
 			get { return _file.Name; }
@@ -260,9 +244,9 @@ namespace NAntGui.Core
 			get{ return _file.Contents != _scriptEditor.Text; }
 		}
 
-		public bool Focused
+		private void GotFocus(object sender, EventArgs e)
 		{
-			get { return _scriptEditor.ActiveTextAreaControl.TextArea.Focused; }
+			_mediator.TabFocused();
 		}
 
 		public void Copy()

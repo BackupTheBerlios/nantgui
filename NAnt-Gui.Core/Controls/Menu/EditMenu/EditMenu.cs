@@ -67,6 +67,16 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			}
 		}
 
+		public void EnablePasteAndDelete()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void DisablePasteAndDelete()
+		{
+			throw new NotImplementedException();
+		}
+
 		public EventHandler Undo_Click
 		{
 			set { _undo.Click += value; }
@@ -97,6 +107,5 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			get { return _wordWrap.Checked; }
 			set { _wordWrap.Checked = value; }
 		}
-
 	}
 }

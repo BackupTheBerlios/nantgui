@@ -19,6 +19,7 @@ namespace NAntGui.Core.Controls
 		
 		private PopupMenu _outputContextMenu = new PopupMenu();
 		private SaveFileDialog OutputSaveFileDialog = new SaveFileDialog();
+		private MainFormMediator _mediator;
 
 		public OutputBox()
 		{
@@ -153,6 +154,22 @@ namespace NAntGui.Core.Controls
 			else
 			{
 				this.WriteOutput(message);
+			}
+		}
+
+		protected override void OnEnter(EventArgs e)
+		{
+			Assert.NotNull(_mediator, "_mediator");
+			base.OnEnter(e);
+			_mediator.OutputFocused();
+		}
+
+		public MainFormMediator Mediator
+		{
+			set
+			{
+				Assert.NotNull(value, "value");
+				_mediator = value;
 			}
 		}
 	}

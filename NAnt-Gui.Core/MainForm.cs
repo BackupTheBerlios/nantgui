@@ -27,8 +27,8 @@ using System.Drawing;
 using System.Resources;
 using System.Windows.Forms;
 using NAntGui.Core.Controls;
-using NAntGui.Core.Menu;
-using NAntGui.Core.ToolBar;
+using NAntGui.Core.Controls.Menu;
+using NAntGui.Core.Controls.ToolBar;
 
 namespace NAntGui.Core
 {
@@ -37,7 +37,6 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainForm : Form
 	{
-		public MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainMenuControl _mainMenu = new MainMenuControl();
 		private ToolBarControl _mainToolBar = new ToolBarControl();
 		private ScriptTabs _sourceTabs = new ScriptTabs();
@@ -53,7 +52,7 @@ namespace NAntGui.Core
 			this.Initialize();
 
 			_mediator = new MainFormMediator(this, _sourceTabs,  
-				 _propertyGrid, _mainStatusBar, _mainMenu, _mainToolBar);
+				 _mainStatusBar, _mainMenu, _mainToolBar);
 
 			_mediator.LoadInitialBuildFile();
 		}

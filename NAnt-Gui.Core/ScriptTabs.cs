@@ -45,10 +45,11 @@ namespace NAntGui.Core
 			Assert.NotNull(tab, "tab");
 			Assert.NotNull(_mediator, "_mediator");
 
-			tab.Mediator	= _mediator;
+			tab.Mediator = _mediator;
 
 			_tabs.Add(tab);
 			tab.AddTabToControl(_tabControl.TabPages);
+
 			//_tabControl.SelectedTab = tab.ScriptTab;
 		}
 
