@@ -26,7 +26,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using ICSharpCode.TextEditor;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.Controls
 {
 	/// <summary>
 	/// Summary description for ScriptEditor.

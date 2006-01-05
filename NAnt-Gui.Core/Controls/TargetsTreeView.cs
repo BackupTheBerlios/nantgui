@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 using NAntGui.Framework;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.Controls
 {
 	/// <summary>
 	/// Summary description for TargetsTreeView.

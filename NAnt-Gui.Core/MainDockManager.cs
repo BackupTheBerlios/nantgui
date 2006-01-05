@@ -24,6 +24,7 @@
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
+using NAntGui.Core.Controls;
 using TabControl = Crownwood.Magic.Controls.TabControl;
 
 namespace NAntGui.Core

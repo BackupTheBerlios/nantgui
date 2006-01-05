@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.Controls
 {
 	/// <summary>
 	/// Summary description for MainStatusBar.

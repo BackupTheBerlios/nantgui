@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Resources;
 using System.Windows.Forms;
+using NAntGui.Core.Controls;
 using NAntGui.Core.Menu;
 using NAntGui.Core.ToolBar;
 
@@ -36,7 +37,6 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainForm : Form
 	{
-		private TargetsTreeView _targetsTree;
 		public MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainMenuControl _mainMenu = new MainMenuControl();
 		private ToolBarControl _mainToolBar = new ToolBarControl();
@@ -107,16 +107,6 @@ namespace NAntGui.Core
 
 		#endregion
 
-
-		public PropertySort PropertySort
-		{
-			get { return _propertyGrid.PropertySort; }
-			set
-			{
-				try	{ _propertyGrid.PropertySort = value; }
-				catch (ArgumentException) { /* ignore */ }
-			}
-		}
 
 		public MainFormMediator Mediator
 		{

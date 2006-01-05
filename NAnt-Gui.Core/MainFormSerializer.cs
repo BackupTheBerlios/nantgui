@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using NAntGui.Core.Controls;
 
 namespace NAntGui.Core
 {
@@ -35,16 +36,18 @@ namespace NAntGui.Core
 		private readonly RegistryKey _currentUser = Registry.CurrentUser;
 
 		private MainForm _mainForm;
+		private MainPropertyGrid _propertyGrid;
 
-		public static void Attach(MainForm form)
+		public static void Attach(MainForm form, MainPropertyGrid propertyGrid)
 		{
-			new MainFormSerializer(form);
+			new MainFormSerializer(form, propertyGrid);
 		}
 
-		private MainFormSerializer(MainForm form)
+		private MainFormSerializer(MainForm form, MainPropertyGrid propertyGrid)
 		{
 			_mainForm = form;
 			_mainForm.Load += new EventHandler(this.OnLoad);
+			_propertyGrid = propertyGrid;
 		}
 
 		private void OnLoad(object sender, EventArgs e)
@@ -74,7 +77,9 @@ namespace NAntGui.Core
 			_mainForm.Location = new Point(left, top);
 			_mainForm.Size = new Size(width, height);
 			_mainForm.WindowState = windowState;
-			_mainForm.PropertySort = propertySort;
+
+			try	{ _propertyGrid.PropertySort = propertySort; }
+			catch (ArgumentException) { /* ignore */ }
 
 			_mainForm.Closing += new CancelEventHandler(this.OnClosing);
 		}
@@ -110,7 +115,7 @@ namespace NAntGui.Core
 			}
 
 			lKey.SetValue("WindowState", this.AdjustWindowState());
-			lKey.SetValue("PropertySort", (int) _mainForm.PropertySort);
+			lKey.SetValue("PropertySort", (int) _propertyGrid.PropertySort);
 		}
 
 		private int AdjustWindowState()

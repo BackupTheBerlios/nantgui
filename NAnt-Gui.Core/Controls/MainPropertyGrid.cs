@@ -27,7 +27,7 @@ using System.Windows.Forms;
 using Flobbster.Windows.Forms;
 using NAntGui.Framework;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.Controls
 {
 	/// <summary>
 	/// Summary description for MainPropertyGrid.

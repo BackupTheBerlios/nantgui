@@ -233,6 +233,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ScriptTabPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ScriptTabs.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -274,11 +279,6 @@
                 />
                 <File
                     RelPath = "Controls\ScriptEditorContextMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ScriptTabPage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -48,7 +48,6 @@ namespace NAntGui.Core
 				IMAGE_PATH, new Size(16, 16), new Point(0, 0));
 
 			MainForm mainForm = new MainForm();
-			MainFormSerializer.Attach(mainForm);
 			Application.Run(mainForm);
 		}
 

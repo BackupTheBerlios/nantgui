@@ -24,7 +24,7 @@
 using System.Windows.Forms;
 using TabControl = Crownwood.Magic.Controls.TabControl;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.Controls
 {
 	/// <summary>
 	/// Summary description for MainTabControl.

@@ -2,7 +2,7 @@ using System;
 using Crownwood.Magic.Menus;
 using ICSharpCode.TextEditor;
 
-namespace NAntGui.Core
+namespace NAntGui.Core.Controls
 {
 	/// <summary>
 	/// Summary description for ScriptEditorContextMenu.

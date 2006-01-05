@@ -25,6 +25,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using NAntGui.Core.Controls;
 using NAntGui.Core.Menu;
 using NAntGui.Core.ToolBar;
 using NAntGui.Framework;
@@ -67,6 +68,7 @@ namespace NAntGui.Core
 			_targetsTree.Mediator	= this;
 			_sourceTabs.Mediator	= this;
 
+			MainFormSerializer.Attach(_mainForm, _propertyGrid);
 			this.AssignEventHandler();
 		}
 
