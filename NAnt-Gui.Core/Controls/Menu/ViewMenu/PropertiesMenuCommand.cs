@@ -44,8 +44,9 @@ namespace NAntGui.Core.Controls.Menu.ViewMenu
 			this.ImageList = NAntGuiApp.ImageList;
 		}
 
-		protected override void OnClick(EventArgs e)
+		public override void OnClick(EventArgs e)
 		{
+			base.OnClick(e);
 			_mediator.PropertiesClicked();
 		}
 	}

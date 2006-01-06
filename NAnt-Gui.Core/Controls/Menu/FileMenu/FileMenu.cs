@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.FileMenu
@@ -31,18 +30,29 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 	/// </summary>
 	public class FileMenu : MenuCommand
 	{
-		private NewMenuCommand _new = new NewMenuCommand();
-		private OpenMenuCommand _open = new OpenMenuCommand();
-		private SaveMenuCommand _save = new SaveMenuCommand();
-		private SaveAsMenuCommand _saveAs = new SaveAsMenuCommand();
-		private ReloadMenuCommand _reload = new ReloadMenuCommand();
-		private CloseMenuCommand _close = new CloseMenuCommand();
-		private SaveOutputMenuCommand _saveOutput = new SaveOutputMenuCommand();
-		private RecentItemsMenu _recent = new RecentItemsMenu();
-		private ExitMenuCommand _exit = new ExitMenuCommand();
+		private NewMenuCommand _new;
+		private OpenMenuCommand _open;
+		private SaveMenuCommand _save;
+		private SaveAsMenuCommand _saveAs;
+		private ReloadMenuCommand _reload;
+		private CloseMenuCommand _close;
+		private SaveOutputMenuCommand _saveOutput;
+		private RecentItemsMenu _recent;
+		private ExitMenuCommand _exit;
 
-		public FileMenu()
+		public FileMenu(MainFormMediator mediator)
 		{
+			_new = new NewMenuCommand(mediator);
+			_open = new OpenMenuCommand(mediator);
+			_save = new SaveMenuCommand(mediator);
+			_saveAs = new SaveAsMenuCommand(mediator);
+			_reload = new ReloadMenuCommand(mediator);
+			_close = new CloseMenuCommand(mediator);
+			_saveOutput = new SaveOutputMenuCommand(mediator);
+			_recent = new RecentItemsMenu(mediator);
+			_exit = new ExitMenuCommand(mediator);
+
+
 			this.Description = "MenuCommand";
 			this.MenuCommands.AddRange(new MenuCommand[]
 				{
@@ -51,22 +61,6 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 					new MenuCommand("-"), _exit
 				});
 			this.Text = "&File";
-		}
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				_new.SetMediator(value);
-				_open.SetMediator(value);
-				_save.SetMediator(value);
-				_saveAs.SetMediator(value);
-				_reload.SetMediator(value);
-				_close.SetMediator(value);
-				_saveOutput.SetMediator(value);
-				_exit.SetMediator(value);
-				_recent.Mediator = value;
-			}
 		}
 
 		public void Enable()
@@ -96,53 +90,6 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			_recent.RemoveRecentItem(file);
 		}
 
-		#region Events
-
-		public EventHandler New_Click
-		{
-			set { _new.Click += value; }
-		}
-
-		public EventHandler Open_Click
-		{
-			set { _open.Click += value; }
-		}
-
-		public EventHandler Save_Click
-		{
-			set { _save.Click += value; }
-		}
-
-		public EventHandler SaveAs_Click
-		{
-			set { _saveAs.Click += value; }
-		}
-
-		public EventHandler Reload_Click
-		{
-			set { _reload.Click += value; }
-		}
-
-		public EventHandler Close_Click
-		{
-			set { _close.Click += value; }
-		}
-
-		public EventHandler SaveOutput_Click
-		{
-			set { _saveOutput.Click += value; }
-		}
-
-		public EventHandler Exit_Click
-		{
-			set { _exit.Click += value; }
-		}
-
-		public EventHandler Recent_Click
-		{
-			set { _recent.Recent_Click = value; }
-		}
-
 		public bool HasRecentItems
 		{
 			get { return _recent.HasRecentItems; }
@@ -152,8 +99,5 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 		{
 			get { return _recent.FirstRecentItem; }
 		}
-
-		#endregion
-
 	}
 }

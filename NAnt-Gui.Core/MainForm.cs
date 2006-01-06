@@ -87,6 +87,12 @@ namespace NAntGui.Core
 
 		#endregion
 
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			base.OnClosing (e);
+			_mediator.MainFormClosing(e);
+		}
+
 
 		protected override void OnDragEnter(DragEventArgs e)
 		{

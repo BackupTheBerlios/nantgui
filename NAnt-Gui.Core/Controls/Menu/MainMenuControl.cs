@@ -34,24 +34,22 @@ namespace NAntGui.Core.Controls.Menu
 	/// </summary>
 	public class MainMenuControl : MenuControl
 	{
-		private FileMenu.FileMenu _fileMenu = new FileMenu.FileMenu();
+		private FileMenu.FileMenu _fileMenu;
 		private EditMenu.EditMenu _editMenu;
-		private ViewMenu.ViewMenu _viewMenu = new ViewMenu.ViewMenu();
-		private BuildMenu.BuildMenu _buildMenu = new BuildMenu.BuildMenu();
-		private ToolsMenu.ToolsMenu _toolsMenu = new ToolsMenu.ToolsMenu();
-		private HelpMenu.HelpMenu _helpMenu = new HelpMenu.HelpMenu();
+		private ViewMenu.ViewMenu _viewMenu;
+		private BuildMenu.BuildMenu _buildMenu;
+		private ToolsMenu.ToolsMenu _toolsMenu;
+		private HelpMenu.HelpMenu _helpMenu;
 
 		public MainMenuControl(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
+			_fileMenu = new FileMenu.FileMenu(mediator);
 			_editMenu = new EditMenu.EditMenu(mediator);
-
-			_fileMenu.Mediator = mediator;
-			_editMenu.Mediator = mediator;
-			_viewMenu.Mediator = mediator;
-			_buildMenu.Mediator = mediator;
-			_toolsMenu.Mediator = mediator;
-			_helpMenu.Mediator = mediator;
+			_viewMenu = new ViewMenu.ViewMenu(mediator);
+			_buildMenu = new BuildMenu.BuildMenu(mediator);
+			_toolsMenu = new ToolsMenu.ToolsMenu(mediator);
+			_helpMenu = new HelpMenu.HelpMenu(mediator);
 
 			this.Initialize();
 		}
@@ -123,133 +121,6 @@ namespace NAntGui.Core.Controls.Menu
 			set { _buildMenu.State = value; }
 		}
 
-		#region Events
-
-		public EventHandler NewClick
-		{
-			set { _fileMenu.New_Click = value; }
-		}
-
-		public EventHandler OpenClick
-		{
-			set { _fileMenu.Open_Click = value; }
-		}
-
-		public EventHandler Save_Click
-		{
-			set { _fileMenu.Save_Click = value; }
-		}
-
-		public EventHandler SaveAs_Click
-		{
-			set { _fileMenu.SaveAs_Click = value; }
-		}
-
-		public EventHandler ReloadClick
-		{
-			set { _fileMenu.Reload_Click = value; }
-		}
-
-		public EventHandler CloseClick
-		{
-			set { _fileMenu.Close_Click = value; }
-		}
-
-		public EventHandler SaveOutputClick
-		{
-			set { _fileMenu.SaveOutput_Click = value; }
-		}
-
-		public EventHandler ExitClick
-		{
-			set { _fileMenu.Exit_Click = value; }
-		}
-
-		public EventHandler UndoClick
-		{
-			set { _editMenu.UndoClick = value; }
-		}
-
-		public EventHandler RedoClick
-		{
-			set { _editMenu.RedoClick = value; }
-		}
-
-		public EventHandler CopyClick
-		{
-			set { _editMenu.CopyClick = value; }
-		}
-
-		public EventHandler PasteClick
-		{
-			set { _editMenu.PasteClick = value; }
-		}
-
-		public EventHandler SelectAllClick
-		{
-			set { _editMenu.SelectAllClick = value; }
-		}
-
-		public EventHandler WordWrapClick
-		{
-			set { _editMenu.WordWrapClick = value; }
-		}
-
-		public EventHandler Targets_Click
-		{
-			set { _viewMenu.Targets_Click = value; }
-		}
-
-		public EventHandler Properties_Click
-		{
-			set { _viewMenu.Properties_Click = value; }
-		}
-
-		public EventHandler Output_Click
-		{
-			set { _viewMenu.Output_Click = value; }
-		}
-
-		public EventHandler RunClick
-		{
-			set { _buildMenu.RunClick = value; }
-		}
-
-		public EventHandler StopClick
-		{
-			set { _buildMenu.StopClick = value; }
-		}
-
-		public EventHandler OptionsClick
-		{
-			set { _toolsMenu.Options_Click = value; }
-		}
-
-		public EventHandler NAntHelp_Click
-		{
-			set { _helpMenu.NAntHelp_Click = value; }
-		}
-
-		public EventHandler NAntSDK_Click
-		{
-			set { _helpMenu.NAntSDK_Click = value; }
-		}
-
-		public EventHandler NAntContrib_Click
-		{
-			set { _helpMenu.NAntContrib_Click = value; }
-		}
-
-		public EventHandler AboutClick
-		{
-			set { _helpMenu.About_Click = value; }
-		}
-
-		public EventHandler Recent_Click
-		{
-			set { _fileMenu.Recent_Click = value; }
-		}
-
 		public bool HasRecentItems
 		{
 			get { return _fileMenu.HasRecentItems; }
@@ -259,8 +130,5 @@ namespace NAntGui.Core.Controls.Menu
 		{
 			get { return _fileMenu.FirstRecentItem; }
 		}
-
-		#endregion
-
 	}
 }

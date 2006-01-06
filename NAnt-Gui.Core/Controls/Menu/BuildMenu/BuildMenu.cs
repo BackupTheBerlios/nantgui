@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.BuildMenu
@@ -31,11 +30,16 @@ namespace NAntGui.Core.Controls.Menu.BuildMenu
 	/// </summary>
 	public class BuildMenu : MenuCommand
 	{
-		private RunMenuCommand _runMenu = new RunMenuCommand();
-		private StopMenuCommand _stopMenu = new StopMenuCommand();
+		private RunMenuCommand _runMenu;
+		private StopMenuCommand _stopMenu;
 
-		public BuildMenu()
+		public BuildMenu(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+
+			_runMenu = new RunMenuCommand(mediator);
+			_stopMenu = new StopMenuCommand(mediator);
+
 			this.Description = "MenuCommand";
 			this.MenuCommands.AddRange(new MenuCommand[]
 				{
@@ -43,16 +47,6 @@ namespace NAntGui.Core.Controls.Menu.BuildMenu
 					_stopMenu
 				});
 			this.Text = "&Build";
-		}
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_runMenu.SetMediator(value);
-				_stopMenu.SetMediator(value);
-			}
 		}
 
 		public void Enable()
@@ -83,16 +77,6 @@ namespace NAntGui.Core.Controls.Menu.BuildMenu
 						break;
 				}
 			}
-		}
-
-		public EventHandler RunClick
-		{
-			set { _runMenu.Click += value; }
-		}
-
-		public EventHandler StopClick
-		{
-			set { _stopMenu.Click += value; }
 		}
 	}
 }

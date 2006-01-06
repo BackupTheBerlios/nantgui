@@ -33,20 +33,14 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 	{
 		MainFormMediator _mediator;
 
-		public CopyMenuCommand()
+		public CopyMenuCommand(MainFormMediator value)
 		{
+			Assert.NotNull(value, "value");
+			_mediator = value;
+
 			this.Description = "MenuCommand";
 			this.Shortcut = Shortcut.CtrlC;
 			this.Text = "&Copy";
-		}
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_mediator = value;
-			}
 		}
 
 		public override void OnClick(System.EventArgs e)

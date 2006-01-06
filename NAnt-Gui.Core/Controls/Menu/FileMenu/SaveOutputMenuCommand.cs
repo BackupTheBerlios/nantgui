@@ -44,8 +44,9 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			this.Text = "SaveO&utput";
 		}
 
-		protected override void OnClick(EventArgs e)
+		public override void OnClick(EventArgs e)
 		{
+			base.OnClick(e);
 			_mediator.SaveOutputClicked();
 		}
 	}

@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.EditMenu
@@ -31,14 +30,14 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 	/// </summary>
 	public class EditMenu : MenuCommand
 	{
-		private UndoMenuCommand _undo = new UndoMenuCommand();
-		private RedoMenuCommand _redo = new RedoMenuCommand();
+		private UndoMenuCommand _undo;
+		private RedoMenuCommand _redo;
 		private CutMenuCommand _cut;
-		private CopyMenuCommand _copy = new CopyMenuCommand();
+		private CopyMenuCommand _copy;
 		private PasteMenuCommand _paste;
 		private DeleteMenuCommand _delete;
-		private SelectAllMenuCommand _selectAll = new SelectAllMenuCommand();
-		private WordWrapMenuCommand _wordWrap = new WordWrapMenuCommand();
+		private SelectAllMenuCommand _selectAll;
+		private WordWrapMenuCommand _wordWrap;
 
 		public EditMenu(MainFormMediator mediator)
 		{
@@ -47,6 +46,11 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			_cut = new CutMenuCommand(mediator);
 			_paste = new PasteMenuCommand(mediator);
 			_delete = new DeleteMenuCommand(mediator);
+			_undo = new UndoMenuCommand(mediator);
+			_redo = new RedoMenuCommand(mediator);
+			_copy = new CopyMenuCommand(mediator);
+			_selectAll = new SelectAllMenuCommand(mediator);
+			_wordWrap = new WordWrapMenuCommand(mediator);
 
 			this.Initialize();
 		}
@@ -74,17 +78,6 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 
 		#endregion
 
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				_undo.SetMediator(value);
-				_redo.SetMediator(value);
-				_copy.Mediator = value;
-				_selectAll.SetMediator(value);
-				_wordWrap.SetMediator(value);
-			}
-		}
 
 		public void EnablePasteAndDelete()
 		{
@@ -94,36 +87,6 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 		public void DisablePasteAndDelete()
 		{
 			_paste.Enabled = false;
-		}
-
-		public EventHandler UndoClick
-		{
-			set { _undo.Click += value; }
-		}
-
-		public EventHandler RedoClick
-		{
-			set { _redo.Click += value; }
-		}
-
-		public EventHandler CopyClick
-		{
-			set { _copy.Click += value; }
-		}
-
-		public EventHandler PasteClick
-		{
-			set { _paste.Click += value; }
-		}
-
-		public EventHandler SelectAllClick
-		{
-			set { _selectAll.Click += value; }
-		}
-
-		public EventHandler WordWrapClick
-		{
-			set { _wordWrap.Click += value; }
 		}
 
 		public bool WordWrapChecked

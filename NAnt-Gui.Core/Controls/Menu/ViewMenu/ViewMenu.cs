@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.ViewMenu
@@ -31,12 +30,18 @@ namespace NAntGui.Core.Controls.Menu.ViewMenu
 	/// </summary>
 	public class ViewMenu : MenuCommand
 	{
-		private TargetsMenuCommand _targets = new TargetsMenuCommand();
-		private PropertiesMenuCommand _properties = new PropertiesMenuCommand();
-		private OutputMenuCommand _output = new OutputMenuCommand();
+		private TargetsMenuCommand _targets;
+		private PropertiesMenuCommand _properties;
+		private OutputMenuCommand _output;
 
-		public ViewMenu()
+		public ViewMenu(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			
+			_targets = new TargetsMenuCommand(mediator);
+			_properties = new PropertiesMenuCommand(mediator);
+			_output = new OutputMenuCommand(mediator);
+
 			this.Description = "MenuCommand";
 			this.MenuCommands.AddRange(new MenuCommand[]
 				{
@@ -44,33 +49,7 @@ namespace NAntGui.Core.Controls.Menu.ViewMenu
 					_properties,
 					_output
 				});
-			this.Text = "&View";	//
+			this.Text = "&View";
 		}
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				_targets.SetMediator(value);
-				_properties.SetMediator(value);
-				_output.SetMediator(value);
-			}
-		}
-
-		public EventHandler Targets_Click
-		{
-			set { _targets.Click += value; }
-		}
-
-		public EventHandler Properties_Click
-		{
-			set { _properties.Click += value; }
-		}
-
-		public EventHandler Output_Click
-		{
-			set { _output.Click += value; }
-		}
-
 	}
 }

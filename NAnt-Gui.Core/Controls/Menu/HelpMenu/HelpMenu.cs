@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.HelpMenu
@@ -31,13 +30,20 @@ namespace NAntGui.Core.Controls.Menu.HelpMenu
 	/// </summary>
 	public class HelpMenu : MenuCommand
 	{
-		private NAntContribMenuCommand _nantContrib = new NAntContribMenuCommand();
-		private NAntHelpMenuCommand _nant = new NAntHelpMenuCommand();
-		private NAntSDKMenuCommand _nantSDK = new NAntSDKMenuCommand();
-		private AboutMenuCommand _about = new AboutMenuCommand();
+		private NAntContribMenuCommand _nantContrib;
+		private NAntHelpMenuCommand _nant;
+		private NAntSDKMenuCommand _nantSDK;
+		private AboutMenuCommand _about;
 
-		public HelpMenu()
+		public HelpMenu(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+
+			_nantContrib = new NAntContribMenuCommand(mediator);
+			_nant = new NAntHelpMenuCommand(mediator);
+			_nantSDK = new NAntSDKMenuCommand(mediator);
+			_about = new AboutMenuCommand(mediator);
+
 			this.Description = "MenuCommand";
 			this.MenuCommands.AddRange(new MenuCommand[]
 				{
@@ -48,37 +54,6 @@ namespace NAntGui.Core.Controls.Menu.HelpMenu
 					_about
 				});
 			this.Text = "&Help";
-		}
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				_nant.SetMediator(value);
-				_nantSDK.SetMediator(value);
-				_nantContrib.SetMediator(value);
-				_about.SetMediator(value);
-			}
-		}
-
-		public EventHandler NAntHelp_Click
-		{
-			set { _nant.Click += value; }
-		}
-
-		public EventHandler NAntSDK_Click
-		{
-			set { _nantSDK.Click += value; }
-		}
-
-		public EventHandler NAntContrib_Click
-		{
-			set { _nantContrib.Click += value; }
-		}
-
-		public EventHandler About_Click
-		{
-			set { _about.Click += value; }
 		}
 	}
 }

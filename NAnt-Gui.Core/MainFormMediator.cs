@@ -27,7 +27,6 @@ using System.IO;
 using System.Windows.Forms;
 using NAntGui.Core.Controls;
 using NAntGui.Core.Controls.Menu;
-using NAntGui.Core.Controls.ToolBar;
 using NAntGui.Framework;
 
 namespace NAntGui.Core
@@ -39,12 +38,13 @@ namespace NAntGui.Core
 	{
 		private bool _firstLoad = true;
 
-		private ScriptTabs _sourceTabs;
-		private TargetsTreeView _targetsTree = new TargetsTreeView();
-		private OutputBox _outputBox;
 		private MainPropertyGrid _propertyGrid = new MainPropertyGrid();
-		private MainDockManager _dockManager;
 		private MainStatusBar _statusBar = new MainStatusBar();
+
+		private ScriptTabs _sourceTabs;
+		private TargetsTreeView _targetsTree;
+		private OutputBox _outputBox;
+		private MainDockManager _dockManager;
 		private ToolBarControl _toolBar;
 		private MainForm _form;
 		private IEditCommands _editCommands;
@@ -52,20 +52,18 @@ namespace NAntGui.Core
 
 		public MainFormMediator()
 		{
-			_form = new MainForm(this);
-			_mainMenu = new MainMenuControl(this);
-			_toolBar = new ToolBarControl(this);
-			_sourceTabs = new ScriptTabs(this);
-			_outputBox = new OutputBox(this);
+			_form			= new MainForm(this);
+			_mainMenu		= new MainMenuControl(this);
+			_toolBar		= new ToolBarControl(this);
+			_sourceTabs		= new ScriptTabs(this);
+			_outputBox		= new OutputBox(this);
+			_targetsTree	= new TargetsTreeView(this);
 
 			this.InitMainForm();
 
 			_dockManager	= new MainDockManager(_form, _sourceTabs, 
 				_targetsTree, _outputBox, _propertyGrid, _statusBar);
 
-			_targetsTree.SetMediator(this);
-			
-			this.AssignEventHandler();
 			this.LoadInitialBuildFile();
 		}
 
@@ -77,54 +75,6 @@ namespace NAntGui.Core
 			_form.Controls.Add(_statusBar);
 			_form.Controls.Add(_toolBar);
 			_form.Controls.Add(_mainMenu);
-		}
-
-		private void AssignEventHandler()
-		{
-			EventHandler clickHandler = new EventHandler(this.ClickHandler);
-
-			_toolBar.BuildClick		+= clickHandler;
-			_toolBar.OpenClick		+= clickHandler;
-			_toolBar.StopClick		+= clickHandler;
-			_toolBar.SaveClick		+= clickHandler;
-			_toolBar.ReloadClick	+= clickHandler;
-
-			_mainMenu.UndoClick = clickHandler;
-			_mainMenu.RedoClick = clickHandler;
-			_mainMenu.CopyClick = clickHandler;
-			_mainMenu.PasteClick = clickHandler;
-			_mainMenu.SelectAllClick = clickHandler;
-			_mainMenu.SaveOutputClick = clickHandler;
-			_mainMenu.WordWrapClick = clickHandler;
-			_mainMenu.ReloadClick = clickHandler;
-			_mainMenu.AboutClick = clickHandler;
-			_mainMenu.RunClick = clickHandler;
-			_mainMenu.StopClick = clickHandler;
-			_mainMenu.Recent_Click = clickHandler;
-			_mainMenu.CloseClick = clickHandler;
-			_mainMenu.ExitClick = clickHandler;
-			_mainMenu.NAntContrib_Click = clickHandler;
-			_mainMenu.NAntHelp_Click = clickHandler;
-			_mainMenu.NAntSDK_Click = clickHandler;
-			_mainMenu.OpenClick = clickHandler;
-			_mainMenu.OptionsClick = clickHandler;
-			_mainMenu.Properties_Click = clickHandler;
-			_mainMenu.Save_Click = clickHandler;
-			_mainMenu.SaveAs_Click = clickHandler;
-			_mainMenu.Targets_Click = clickHandler;
-			_mainMenu.Output_Click = clickHandler;
-			_targetsTree.BuildClick = clickHandler;
-
-			_form.Closing += new CancelEventHandler(this.MainForm_Closing);
-		}
-
-		private void ClickHandler(object sender, EventArgs e)
-		{
-			if (sender is IClicker)
-			{
-				IClicker clicker = sender as IClicker;
-				clicker.ExecuteClick();
-			}
 		}
 
 		public void NewClicked()
@@ -210,7 +160,7 @@ namespace NAntGui.Core
 			about.ShowDialog();
 		}
 
-		private void MainForm_Closing(object sender, CancelEventArgs e)
+		public void MainFormClosing(CancelEventArgs e)
 		{
 			_sourceTabs.SelectedTab.Stop();
 			_sourceTabs.CloseTabs(e);

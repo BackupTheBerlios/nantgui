@@ -42,8 +42,9 @@ namespace NAntGui.Core.Controls.Menu.HelpMenu
 			this.Text = "NAnt &Help";
 		}
 
-		protected override void OnClick(EventArgs e)
+		public override void OnClick(EventArgs e)
 		{
+			base.OnClick(e);
 			_mediator.NAntHelpClicked();
 		}
 	}

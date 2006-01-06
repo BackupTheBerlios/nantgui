@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.FileMenu
@@ -32,11 +31,12 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 	public class RecentItemsMenu : MenuCommand
 	{
 		private RecentItems _recentItems = new RecentItems();
-		EventHandler _onClick;
 		private MainFormMediator _mediator;
 
-		public RecentItemsMenu()
+		public RecentItemsMenu(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
 			this.Description = "MenuCommand";
 			this.Text = "Recent &Items";
 			this.CreateMenuCommands();
@@ -66,20 +66,9 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			foreach (string item in _recentItems)
 			{
 				string name = count++ + " " + item;
-				RecentItemMenuCommand recentItem = new RecentItemMenuCommand(name, _onClick);
-				recentItem.SetMediator(_mediator);
+				RecentItemMenuCommand recentItem = new RecentItemMenuCommand(name, _mediator);
 				this.MenuCommands.Add(recentItem);
 			}
-		}
-
-		public MainFormMediator Mediator
-		{
-			set { _mediator = value; }
-		}
-
-		public EventHandler Recent_Click
-		{
-			set { _onClick = value; }
 		}
 
 		public bool HasRecentItems

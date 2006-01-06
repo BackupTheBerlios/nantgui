@@ -44,13 +44,9 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			this.Text = "&Redo";
 		}
 
-
+		public override void OnClick(EventArgs e)
 		{
-			_mediator = value;
-		}
-
-		protected override void OnClick(EventArgs e)
-		{
+			base.OnClick(e);
 			_mediator.RedoClicked();
 		}
 	}

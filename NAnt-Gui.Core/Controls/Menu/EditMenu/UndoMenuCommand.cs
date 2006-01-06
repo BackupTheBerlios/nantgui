@@ -44,8 +44,9 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			this.Text = "&Undo";
 		}
 
-		protected override void OnClick(EventArgs e)
+		public override void OnClick(EventArgs e)
 		{
+			base.OnClick(e);
 			_mediator.UndoClicked();
 		}
 	}

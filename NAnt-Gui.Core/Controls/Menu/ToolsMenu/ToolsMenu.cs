@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.ToolsMenu
@@ -31,10 +30,13 @@ namespace NAntGui.Core.Controls.Menu.ToolsMenu
 	/// </summary>
 	public class ToolsMenu : MenuCommand
 	{
-		private OptionsMenuCommand _options = new OptionsMenuCommand();
+		private OptionsMenuCommand _options;
 
-		public ToolsMenu()
+		public ToolsMenu(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_options = new OptionsMenuCommand(mediator);
+
 			this.Description = "MenuCommand";
 			this.MenuCommands.AddRange(new MenuCommand[]
 				{
@@ -42,16 +44,5 @@ namespace NAntGui.Core.Controls.Menu.ToolsMenu
 				});
 			this.Text = "&Tools";
 		}
-
-		public MainFormMediator Mediator
-		{
-			set { _options.SetMediator(value); }
-		}
-
-		public EventHandler Options_Click
-		{
-			set { _options.Click += value; }
-		}
-
 	}
 }
