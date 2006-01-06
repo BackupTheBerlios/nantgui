@@ -333,6 +333,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Controls\Menu\EditMenu\PasteMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\Menu\EditMenu\RedoMenuCommand.cs"
                     SubType = "Component"
                     BuildAction = "Compile"

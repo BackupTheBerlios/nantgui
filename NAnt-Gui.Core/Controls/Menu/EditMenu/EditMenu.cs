@@ -34,14 +34,23 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 		private UndoMenuCommand _undo = new UndoMenuCommand();
 		private RedoMenuCommand _redo = new RedoMenuCommand();
 		private CopyMenuCommand _copy = new CopyMenuCommand();
+		private PasteMenuCommand _paste;
 		private SelectAllMenuCommand _selectAll = new SelectAllMenuCommand();
 		private WordWrapMenuCommand _wordWrap = new WordWrapMenuCommand();
 
-		public EditMenu()
+		public EditMenu(MainFormMediator mediator)
 		{
-			//
-			// EditMainMenuCommand
-			//
+			Assert.NotNull(mediator, "mediator");
+
+			_paste = new PasteMenuCommand(mediator);
+
+			this.Initialize();
+		}
+
+		#region Initialize
+
+		private void Initialize()
+		{
 			this.Description = "MenuCommand";
 			this.MenuCommands.AddRange(new MenuCommand[]
 				{
@@ -49,11 +58,15 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 					_redo,
 					new MenuCommand("-"),
 					_copy,
+					_paste,
+					new MenuCommand("-"),
 					_selectAll,
 					_wordWrap
 				});
 			this.Text = "&Edit";
 		}
+
+		#endregion
 
 		public MainFormMediator Mediator
 		{
@@ -69,35 +82,40 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 
 		public void EnablePasteAndDelete()
 		{
-			throw new NotImplementedException();
+			_paste.Enabled = true;
 		}
 
 		public void DisablePasteAndDelete()
 		{
-			throw new NotImplementedException();
+			_paste.Enabled = false;
 		}
 
-		public EventHandler Undo_Click
+		public EventHandler UndoClick
 		{
 			set { _undo.Click += value; }
 		}
 
-		public EventHandler Redo_Click
+		public EventHandler RedoClick
 		{
 			set { _redo.Click += value; }
 		}
 
-		public EventHandler Copy_Click
+		public EventHandler CopyClick
 		{
 			set { _copy.Click += value; }
 		}
 
-		public EventHandler SelectAll_Click
+		public EventHandler PasteClick
+		{
+			set { _paste.Click += value; }
+		}
+
+		public EventHandler SelectAllClick
 		{
 			set { _selectAll.Click += value; }
 		}
 
-		public EventHandler WordWrap_Click
+		public EventHandler WordWrapClick
 		{
 			set { _wordWrap.Click += value; }
 		}

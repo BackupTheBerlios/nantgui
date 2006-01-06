@@ -47,8 +47,8 @@ namespace NAntGui.Core
 			_imageList = ResourceHelper.LoadBitmapStrip(typeof(NAntGuiApp), 
 				IMAGE_PATH, new Size(16, 16), new Point(0, 0));
 
-			MainForm mainForm = new MainForm();
-			Application.Run(mainForm);
+			MainFormMediator mediator = new MainFormMediator();
+			mediator.RunApplication();
 		}
 
 		public static CommandLineOptions Options

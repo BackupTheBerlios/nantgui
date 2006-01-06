@@ -1,7 +1,7 @@
-#region Copyleft and Copyright
+#region Pasteleft and Pasteright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Pasteright (C) 2004-2005 Colin Svingen, Business Watch International
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General Public License
+// You should have received a Paste of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -27,33 +27,27 @@ using Crownwood.Magic.Menus;
 namespace NAntGui.Core.Controls.Menu.EditMenu
 {
 	/// <summary>
-	/// Summary description for CopyMenuCommand.
+	/// Summary description for PasteMenuCommand.
 	/// </summary>
-	public class CopyMenuCommand : MenuCommand
+	public class PasteMenuCommand : MenuCommand
 	{
 		MainFormMediator _mediator;
 
-		public CopyMenuCommand()
+		public PasteMenuCommand(MainFormMediator mediator)
 		{
-			this.Description = "MenuCommand";
-			this.Shortcut = Shortcut.CtrlC;
-			this.Text = "&Copy";
-		}
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
 
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_mediator = value;
-			}
+			this.Description = "MenuCommand";
+			this.Shortcut = Shortcut.CtrlV;
+			this.Text = "&Paste";
 		}
 
 		public override void OnClick(System.EventArgs e)
 		{
 			base.OnClick(e);
 			Assert.NotNull(_mediator, "_mediator");
-			_mediator.CopyClicked();
+			_mediator.PasteClicked();
 		}
 	}
 }

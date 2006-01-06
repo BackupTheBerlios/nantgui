@@ -7,7 +7,7 @@ namespace NAntGui.Core
 	public interface IEditCommands
 	{
 		void Copy();
-//		void Paste();
+		void Paste();
 //		void Delete();
 		void SelectAll();
 //		void WordWrap();

@@ -39,28 +39,25 @@ namespace NAntGui.Core
 	{
 		private bool _firstLoad = true;
 
+		private ToolBarControl _mainToolBar = new ToolBarControl();
+		private ScriptTabs _sourceTabs = new ScriptTabs();
+		private MainStatusBar _mainStatusBar = new MainStatusBar();
 		private TargetsTreeView _targetsTree = new TargetsTreeView();
 		private OutputBox _outputBox = new OutputBox();
 		private MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainDockManager _dockManager;
-		private ScriptTabs _sourceTabs;
-		private MainStatusBar _statusBar;
-		private MainMenuControl _mainMenu;
-		private ToolBarControl _toolBar;
+		private MainStatusBar _statusBar = new MainStatusBar();
+		private ToolBarControl _toolBar = new ToolBarControl();
 		private MainForm _mainForm;
-		private bool _outputFocused = false;
-		private bool _tabFocused = false;
+		private IEditCommands _editCommands;
+		private MainMenuControl _mainMenu;
 
-		public MainFormMediator(MainForm mainForm, ScriptTabs scriptTabs, 
-            MainStatusBar statusBar, MainMenuControl mainMenu, ToolBarControl toolBar)
+		public MainFormMediator()
 		{
-			_mainForm		= mainForm;
-			_sourceTabs		= scriptTabs;
-			_statusBar		= statusBar;
-			_mainMenu		= mainMenu;
-			_toolBar		= toolBar;
+			_mainForm = new MainForm(this);
+			_mainMenu = new MainMenuControl(this);
 
-			_dockManager	= new MainDockManager(mainForm, _sourceTabs, 
+			_dockManager	= new MainDockManager(_mainForm, _sourceTabs, 
 				_targetsTree, _outputBox, _propertyGrid, _statusBar);
 
 			_toolBar.Mediator		= this;
@@ -69,8 +66,19 @@ namespace NAntGui.Core
 			_sourceTabs.Mediator	= this;
 			_outputBox.Mediator		= this;
 
-			MainFormSerializer.Attach(_mainForm, _propertyGrid);
+			this.InitMainForm();
 			this.AssignEventHandler();
+			this.LoadInitialBuildFile();
+		}
+
+		private void InitMainForm()
+		{
+			MainFormSerializer.Attach(_mainForm, _propertyGrid);
+	
+			_sourceTabs.AddTabsToControls(_mainForm.Controls);
+			_mainForm.Controls.Add(_mainStatusBar);
+			_mainForm.Controls.Add(_mainToolBar);
+			_mainForm.Controls.Add(_mainMenu);
 		}
 
 		private void AssignEventHandler()
@@ -86,6 +94,7 @@ namespace NAntGui.Core
 			_mainMenu.UndoClick = clickHandler;
 			_mainMenu.RedoClick = clickHandler;
 			_mainMenu.CopyClick = clickHandler;
+			_mainMenu.PasteClick = clickHandler;
 			_mainMenu.SelectAllClick = clickHandler;
 			_mainMenu.SaveOutputClick = clickHandler;
 			_mainMenu.WordWrapClick = clickHandler;
@@ -99,7 +108,7 @@ namespace NAntGui.Core
 			_mainMenu.NAntContrib_Click = clickHandler;
 			_mainMenu.NAntHelp_Click = clickHandler;
 			_mainMenu.NAntSDK_Click = clickHandler;
-			_mainMenu.Open_Click = clickHandler;
+			_mainMenu.OpenClick = clickHandler;
 			_mainMenu.OptionsClick = clickHandler;
 			_mainMenu.Properties_Click = clickHandler;
 			_mainMenu.Save_Click = clickHandler;
@@ -245,26 +254,17 @@ namespace NAntGui.Core
 
 		public void SelectAllClicked()
 		{
-			if (_outputFocused)
-			{
-				_outputBox.SelectAll();	
-			}
-			else if (_tabFocused)
-			{
-				_sourceTabs.SelectedTab.SelectAll();
-			}
+			_editCommands.SelectAll();	
 		}
 
 		public void CopyClicked()
 		{
-			if (_outputFocused)
-			{
-				_outputBox.Copy();	
-			}
-			else if (_tabFocused)
-			{
-				_sourceTabs.SelectedTab.Copy();
-			}
+			_editCommands.Copy();	
+		}
+
+		public void PasteClicked()
+		{
+			_editCommands.Paste();
 		}
 
 		public void RedoClicked()
@@ -419,15 +419,18 @@ namespace NAntGui.Core
 		public void TabFocused()
 		{
 			_mainMenu.EnablePasteAndDelete();
-			_tabFocused = true;
-			_outputFocused = false;
+			_editCommands = _sourceTabs.SelectedTab;
 		}
 
 		public void OutputFocused()
 		{
 			_mainMenu.DisablePasteAndDelete();
-			_outputFocused = true;
-			_tabFocused = false;
+			_editCommands = _outputBox;
+		}
+
+		public void RunApplication()
+		{
+			Application.Run(_mainForm);
 		}
 	}
 }

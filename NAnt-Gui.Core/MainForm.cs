@@ -21,14 +21,10 @@
 
 #endregion
 
-using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Resources;
 using System.Windows.Forms;
-using NAntGui.Core.Controls;
-using NAntGui.Core.Controls.Menu;
-using NAntGui.Core.Controls.ToolBar;
 
 namespace NAntGui.Core
 {
@@ -37,24 +33,14 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainForm : Form
 	{
-		private MainMenuControl _mainMenu = new MainMenuControl();
-		private ToolBarControl _mainToolBar = new ToolBarControl();
-		private ScriptTabs _sourceTabs = new ScriptTabs();
-		private MainStatusBar _mainStatusBar = new MainStatusBar();
-
 		private MainFormMediator _mediator;
-
 		private IContainer components;
 
-
-		public MainForm()
+		public MainForm(MainFormMediator mediator)
 		{
 			this.Initialize();
-
-			_mediator = new MainFormMediator(this, _sourceTabs,  
-				 _mainStatusBar, _mainMenu, _mainToolBar);
-
-			_mediator.LoadInitialBuildFile();
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
 		}
 
 
@@ -91,11 +77,6 @@ namespace NAntGui.Core
 			this.AllowDrop = true;
 			this.AutoScaleBaseSize = new Size(5, 13);
 			this.ClientSize = new Size(824, 553);
-			_sourceTabs.AddTabsToControls(this.Controls);
-			this.Controls.Add(_mainStatusBar);
-			this.Controls.Add(_mainToolBar);
-			this.Controls.Add(_mainMenu);
-			
 			this.Icon = ((Icon) (resources.GetObject("$this.Icon")));
 			this.MinimumSize = new Size(480, 344);
 			this.Name = "MainForm";
@@ -106,11 +87,6 @@ namespace NAntGui.Core
 
 		#endregion
 
-
-		public MainFormMediator Mediator
-		{
-			set { throw new NotImplementedException(); }
-		}
 
 		protected override void OnDragEnter(DragEventArgs e)
 		{

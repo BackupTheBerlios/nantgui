@@ -35,13 +35,23 @@ namespace NAntGui.Core.Controls.Menu
 	public class MainMenuControl : MenuControl
 	{
 		private FileMenu.FileMenu _fileMenu = new FileMenu.FileMenu();
-		private EditMenu.EditMenu _editMenu = new EditMenu.EditMenu();
+		private EditMenu.EditMenu _editMenu;
 		private ViewMenu.ViewMenu _viewMenu = new ViewMenu.ViewMenu();
 		private BuildMenu.BuildMenu _buildMenu = new BuildMenu.BuildMenu();
 		private ToolsMenu.ToolsMenu _toolsMenu = new ToolsMenu.ToolsMenu();
 		private HelpMenu.HelpMenu _helpMenu = new HelpMenu.HelpMenu();
 
-		public MainMenuControl()
+		public MainMenuControl(MainFormMediator mediator)
+		{
+			Assert.NotNull(mediator, "mediator");
+			_editMenu = new EditMenu.EditMenu(mediator);
+
+			this.Initialize();
+		}
+
+		#region Initialize
+
+		private void Initialize()
 		{
 			this.AnimateStyle = Animation.System;
 			this.AnimateTime = 100;
@@ -66,6 +76,8 @@ namespace NAntGui.Core.Controls.Menu
 			this.TabIndex = 13;
 			this.TabStop = false;
 		}
+
+		#endregion
 
 		public MainFormMediator Mediator
 		{
@@ -119,12 +131,12 @@ namespace NAntGui.Core.Controls.Menu
 
 		#region Events
 
-		public EventHandler New_Click
+		public EventHandler NewClick
 		{
 			set { _fileMenu.New_Click = value; }
 		}
 
-		public EventHandler Open_Click
+		public EventHandler OpenClick
 		{
 			set { _fileMenu.Open_Click = value; }
 		}
@@ -161,27 +173,32 @@ namespace NAntGui.Core.Controls.Menu
 
 		public EventHandler UndoClick
 		{
-			set { _editMenu.Undo_Click = value; }
+			set { _editMenu.UndoClick = value; }
 		}
 
 		public EventHandler RedoClick
 		{
-			set { _editMenu.Redo_Click = value; }
+			set { _editMenu.RedoClick = value; }
 		}
 
 		public EventHandler CopyClick
 		{
-			set { _editMenu.Copy_Click = value; }
+			set { _editMenu.CopyClick = value; }
+		}
+
+		public EventHandler PasteClick
+		{
+			set { _editMenu.PasteClick = value; }
 		}
 
 		public EventHandler SelectAllClick
 		{
-			set { _editMenu.SelectAll_Click = value; }
+			set { _editMenu.SelectAllClick = value; }
 		}
 
 		public EventHandler WordWrapClick
 		{
-			set { _editMenu.WordWrap_Click = value; }
+			set { _editMenu.WordWrapClick = value; }
 		}
 
 		public EventHandler Targets_Click
