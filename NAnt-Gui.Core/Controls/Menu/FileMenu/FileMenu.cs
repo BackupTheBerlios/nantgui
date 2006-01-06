@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -57,14 +57,14 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 		{
 			set
 			{
-				_new.Mediator = value;
-				_open.Mediator = value;
-				_save.Mediator = value;
-				_saveAs.Mediator = value;
-				_reload.Mediator = value;
-				_close.Mediator = value;
-				_saveOutput.Mediator = value;
-				_exit.Mediator = value;
+				_new.SetMediator(value);
+				_open.SetMediator(value);
+				_save.SetMediator(value);
+				_saveAs.SetMediator(value);
+				_reload.SetMediator(value);
+				_close.SetMediator(value);
+				_saveOutput.SetMediator(value);
+				_exit.SetMediator(value);
 				_recent.Mediator = value;
 			}
 		}

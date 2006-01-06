@@ -46,6 +46,13 @@ namespace NAntGui.Core.Controls.Menu
 			Assert.NotNull(mediator, "mediator");
 			_editMenu = new EditMenu.EditMenu(mediator);
 
+			_fileMenu.Mediator = mediator;
+			_editMenu.Mediator = mediator;
+			_viewMenu.Mediator = mediator;
+			_buildMenu.Mediator = mediator;
+			_toolsMenu.Mediator = mediator;
+			_helpMenu.Mediator = mediator;
+
 			this.Initialize();
 		}
 
@@ -78,19 +85,6 @@ namespace NAntGui.Core.Controls.Menu
 		}
 
 		#endregion
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				_fileMenu.Mediator = value;
-				_editMenu.Mediator = value;
-				_viewMenu.Mediator = value;
-				_buildMenu.Mediator = value;
-				_toolsMenu.Mediator = value;
-				_helpMenu.Mediator = value;
-			}
-		}
 
 		public void Enable()
 		{

@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,22 +29,19 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 	/// <summary>
 	/// Summary description for RecentMenuCommand.
 	/// </summary>
-	public class RecentItemMenuCommand : MenuCommand, IClicker
+	public class RecentItemMenuCommand : MenuCommand
 	{
 		MainFormMediator _mediator;
 
-		public RecentItemMenuCommand(string text, EventHandler clickHandler)
-			: base(text, clickHandler)
+		public RecentItemMenuCommand(string text, MainFormMediator mediator) : base(text)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+			
 			this.Description = "MenuCommand";
 		}
 
-		public MainFormMediator Mediator
-		{
-			set { _mediator = value; }
-		}
-
-		public void ExecuteClick()
+		protected override void OnClick(EventArgs e)
 		{
 			_mediator.RecentItemClicked(this.Text.Substring(2));
 		}

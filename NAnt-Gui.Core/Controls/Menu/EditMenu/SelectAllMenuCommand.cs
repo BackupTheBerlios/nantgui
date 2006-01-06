@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
@@ -29,23 +30,21 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 	/// <summary>
 	/// Summary description for SelectAllMenuCommand.
 	/// </summary>
-	public class SelectAllMenuCommand : MenuCommand, IClicker
+	public class SelectAllMenuCommand : MenuCommand
 	{
 		MainFormMediator _mediator;
 
-		public SelectAllMenuCommand()
+		public SelectAllMenuCommand(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+
 			this.Description = "MenuCommand";
 			this.Shortcut = Shortcut.CtrlA;
 			this.Text = "Select &All";
 		}
 
-		public MainFormMediator Mediator
-		{
-			set { _mediator = value; }
-		}
-
-		public void ExecuteClick()
+		protected override void OnClick(EventArgs e)
 		{
 			_mediator.SelectAllClicked();
 		}

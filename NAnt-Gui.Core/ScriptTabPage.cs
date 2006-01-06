@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -206,11 +206,24 @@ namespace NAntGui.Core
 			return page == _scriptTab;
 		}
 
-
-
+		public void Cut()
+		{
+			_clipboardHandler.Cut(this, new EventArgs());
+		}		
+		
 		public void Copy()
 		{
 			_clipboardHandler.Copy(this, new EventArgs());
+		}
+
+		public void Paste()
+		{
+			_clipboardHandler.Paste(this, new EventArgs());
+		}
+
+		public void Delete()
+		{
+			_clipboardHandler.Delete(this, new EventArgs());
 		}
 
 		public void SelectAll()
@@ -218,10 +231,7 @@ namespace NAntGui.Core
 			_clipboardHandler.SelectAll(this, new EventArgs());
 		}
 
-		public void Paste()
-		{
-			_clipboardHandler.Paste(this, new EventArgs());
-		}
+		#region Properties
 
 		public IBuildScript BuildScript
 		{
@@ -265,7 +275,7 @@ namespace NAntGui.Core
 		{
 			get{ return _file.Contents != _scriptEditor.Text; }
 		}
-
-
+	
+		#endregion
 	}
 }

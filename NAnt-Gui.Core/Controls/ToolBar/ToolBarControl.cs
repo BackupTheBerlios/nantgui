@@ -21,51 +21,70 @@
 
 #endregion
 
-using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace NAntGui.Core.Controls.ToolBar
+namespace NAntGui.Core.Controls
 {
 	/// <summary>
 	/// Summary description for ToolBarControl.
 	/// </summary>
 	public class ToolBarControl : System.Windows.Forms.ToolBar
 	{
-		public event EventHandler NewClick;
-		public event EventHandler BuildClick;
-		public event EventHandler OpenClick;
-		public event EventHandler SaveClick;
-		public event EventHandler ReloadClick;
-		public event EventHandler StopClick;
+		private MainFormMediator _mediator;
 
-		private NewToolBarButton _newButton			= new NewToolBarButton();
-		private OpenToolBarButton _openButton		= new OpenToolBarButton();
-		private SaveToolBarButton _saveButton		= new SaveToolBarButton();
-		private ReloadToolBarButton _reloadButton	= new ReloadToolBarButton();
-		private BuildToolBarButton _buildButton		= new BuildToolBarButton();
-		private StopToolBarButton _stopButton		= new StopToolBarButton();
+		private ToolBarButton _newButton = new ToolBarButton();
+		private ToolBarButton _openButton = new ToolBarButton();
+		private ToolBarButton _saveButton = new ToolBarButton();
+		private ToolBarButton _reloadButton = new ToolBarButton();
+		private ToolBarButton _runButton = new ToolBarButton();
+		private ToolBarButton _stopButton = new ToolBarButton();
 
-		public ToolBarControl()
+		public ToolBarControl(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+
 			this.Initialize();
 		}
 
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				_newButton.Mediator = value;
-				_openButton.Mediator = value;
-				_saveButton.Mediator = value;
-				_reloadButton.Mediator = value;
-				_buildButton.Mediator = value;
-				_stopButton.Mediator = value;
-			}
-		}
+		#region Initialize
 
 		private void Initialize()
 		{
+			//
+			// _saveButton
+			//
+			_saveButton.ImageIndex = 3;
+			_saveButton.ToolTipText = "Abort the Current Build";
+			_saveButton.Enabled = false;
+			//
+			// _reloadButton
+			//
+			_reloadButton.ImageIndex = 4;
+			_reloadButton.ToolTipText = "Reload Build File";
+			//
+			// _openButton
+			//
+			_openButton.ImageIndex = 5;
+			_openButton.ToolTipText = "Open Build File";
+			//
+			// _newButton
+			//
+			_newButton.ImageIndex = 8;
+			_newButton.ToolTipText = "Not built yet";
+			_newButton.Enabled = false;
+			//
+			// _reloadButton
+			//
+			_runButton.ImageIndex = 7;
+			_runButton.ToolTipText = "Build Default Target";
+			//
+			// _reloadButton
+			//
+			_stopButton.ImageIndex = 3;
+			_stopButton.ToolTipText = "Abort the Current Build";
+			_stopButton.Enabled = false;
 			//
 			// MainToolBar
 			//
@@ -76,7 +95,7 @@ namespace NAntGui.Core.Controls.ToolBar
 					_openButton,
 					_saveButton,
 					_reloadButton,
-					_buildButton,
+					_runButton,
 					_stopButton
 				});
 			this.DropDownArrows = true;
@@ -89,31 +108,33 @@ namespace NAntGui.Core.Controls.ToolBar
 			this.ButtonClick += new ToolBarButtonClickEventHandler(this.Button_Click);
 		}
 
+		#endregion
+
 		private void Button_Click(object sender, ToolBarButtonClickEventArgs e)
 		{
-			if (e.Button == _newButton && this.NewClick != null)
+			if (e.Button == _newButton)
 			{
-				this.NewClick(_newButton, new EventArgs());
+				_mediator.NewClicked();
 			}
-			else if (e.Button == _buildButton && this.BuildClick != null)
+			else if (e.Button == _runButton)
 			{
-				this.BuildClick(_buildButton, new EventArgs());
+				_mediator.RunClicked();
 			}
-			else if (e.Button == _openButton && this.OpenClick != null)
+			else if (e.Button == _openButton)
 			{
-				this.OpenClick(_openButton, new EventArgs());
+				_mediator.OpenClicked();
 			}
-			else if (e.Button == _saveButton && this.SaveClick != null)
+			else if (e.Button == _saveButton)
 			{
-				this.SaveClick(_saveButton, new EventArgs());
+				_mediator.SaveClicked();
 			}
-			else if (e.Button == _reloadButton && this.ReloadClick != null)
+			else if (e.Button == _reloadButton)
 			{
-				this.ReloadClick(_reloadButton, new EventArgs());
+				_mediator.ReloadClicked();
 			}
-			else if (e.Button == _stopButton && this.StopClick != null)
+			else if (e.Button == _stopButton)
 			{
-				this.StopClick(_stopButton, new EventArgs());
+				_mediator.StopClicked();
 			}
 		}
 
@@ -122,14 +143,14 @@ namespace NAntGui.Core.Controls.ToolBar
 			_reloadButton.Enabled	= false;
 			_saveButton.Enabled		= false;
 			_stopButton.Enabled		= false;
-			_buildButton.Enabled	= false;
+			_runButton.Enabled		= false;
 		}
 
 		public void Enable()
 		{
 			_reloadButton.Enabled	= true;
 			_saveButton.Enabled		= true;
-			_buildButton.Enabled	= true;
+			_runButton.Enabled		= true;
 		}
 
 		public RunState State
@@ -139,11 +160,11 @@ namespace NAntGui.Core.Controls.ToolBar
 				switch (value)
 				{
 					case RunState.Running:
-						_buildButton.Enabled = false;
+						_runButton.Enabled = false;
 						_stopButton.Enabled = true;
 						break;
 					case RunState.Stopped:
-						_buildButton.Enabled = true;
+						_runButton.Enabled = true;
 						_stopButton.Enabled = false;
 						break;
 				}

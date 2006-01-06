@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,46 +39,44 @@ namespace NAntGui.Core
 	{
 		private bool _firstLoad = true;
 
-		private ToolBarControl _mainToolBar = new ToolBarControl();
-		private ScriptTabs _sourceTabs = new ScriptTabs();
-		private MainStatusBar _mainStatusBar = new MainStatusBar();
+		private ScriptTabs _sourceTabs;
 		private TargetsTreeView _targetsTree = new TargetsTreeView();
-		private OutputBox _outputBox = new OutputBox();
+		private OutputBox _outputBox;
 		private MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainDockManager _dockManager;
 		private MainStatusBar _statusBar = new MainStatusBar();
-		private ToolBarControl _toolBar = new ToolBarControl();
-		private MainForm _mainForm;
+		private ToolBarControl _toolBar;
+		private MainForm _form;
 		private IEditCommands _editCommands;
 		private MainMenuControl _mainMenu;
 
 		public MainFormMediator()
 		{
-			_mainForm = new MainForm(this);
+			_form = new MainForm(this);
 			_mainMenu = new MainMenuControl(this);
-
-			_dockManager	= new MainDockManager(_mainForm, _sourceTabs, 
-				_targetsTree, _outputBox, _propertyGrid, _statusBar);
-
-			_toolBar.Mediator		= this;
-			_mainMenu.Mediator		= this;
-			_targetsTree.Mediator	= this;
-			_sourceTabs.Mediator	= this;
-			_outputBox.Mediator		= this;
+			_toolBar = new ToolBarControl(this);
+			_sourceTabs = new ScriptTabs(this);
+			_outputBox = new OutputBox(this);
 
 			this.InitMainForm();
+
+			_dockManager	= new MainDockManager(_form, _sourceTabs, 
+				_targetsTree, _outputBox, _propertyGrid, _statusBar);
+
+			_targetsTree.SetMediator(this);
+			
 			this.AssignEventHandler();
 			this.LoadInitialBuildFile();
 		}
 
 		private void InitMainForm()
 		{
-			MainFormSerializer.Attach(_mainForm, _propertyGrid);
+			MainFormSerializer.Attach(_form, _propertyGrid);
 	
-			_sourceTabs.AddTabsToControls(_mainForm.Controls);
-			_mainForm.Controls.Add(_mainStatusBar);
-			_mainForm.Controls.Add(_mainToolBar);
-			_mainForm.Controls.Add(_mainMenu);
+			_sourceTabs.AddTabsToControls(_form.Controls);
+			_form.Controls.Add(_statusBar);
+			_form.Controls.Add(_toolBar);
+			_form.Controls.Add(_mainMenu);
 		}
 
 		private void AssignEventHandler()
@@ -117,7 +115,7 @@ namespace NAntGui.Core
 			_mainMenu.Output_Click = clickHandler;
 			_targetsTree.BuildClick = clickHandler;
 
-			_mainForm.Closing += new CancelEventHandler(this.MainForm_Closing);
+			_form.Closing += new CancelEventHandler(this.MainForm_Closing);
 		}
 
 		private void ClickHandler(object sender, EventArgs e)
@@ -187,7 +185,7 @@ namespace NAntGui.Core
 
 		public void ExitClicked()
 		{
-			_mainForm.Close();
+			_form.Close();
 		}
 
 		public void CloseClicked()
@@ -195,7 +193,7 @@ namespace NAntGui.Core
 			_sourceTabs.CloseSelectedTab();
 			this.AddBlankTab();
 
-			_mainForm.Text = "NAnt-Gui";
+			_form.Text = "NAnt-Gui";
 
 			_targetsTree.Clear();
 			_propertyGrid.SelectedObject = null;
@@ -380,7 +378,7 @@ namespace NAntGui.Core
 
 			IBuildScript buildScript = _sourceTabs.SelectedTab.BuildScript;
 
-			_mainForm.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
+			_form.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
 
 			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.FileName;
 
@@ -430,7 +428,17 @@ namespace NAntGui.Core
 
 		public void RunApplication()
 		{
-			Application.Run(_mainForm);
+			Application.Run(_form);
+		}
+
+		public void CutClicked()
+		{
+			_editCommands.Cut();
+		}
+
+		public void DeleteClicked()
+		{
+			_editCommands.Delete();
 		}
 	}
 }

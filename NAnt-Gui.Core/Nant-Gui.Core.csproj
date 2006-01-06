@@ -323,6 +323,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\Menu\EditMenu\CutMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\Menu\EditMenu\DeleteMenuCommand.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\Menu\EditMenu\EditMenu.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
@@ -464,41 +474,6 @@
                 />
                 <File
                     RelPath = "Controls\Menu\ViewMenu\ViewMenu.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ToolBar\BuildToolBarButton.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ToolBar\NewToolBarButton.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ToolBar\NewToolBarButton.resx"
-                    DependentUpon = "NewToolBarButton.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Controls\ToolBar\OpenToolBarButton.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ToolBar\ReloadToolBarButton.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ToolBar\SaveToolBarButton.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\ToolBar\StopToolBarButton.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
                 />

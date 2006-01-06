@@ -6,11 +6,12 @@ namespace NAntGui.Core
 	/// </summary>
 	public interface IEditCommands
 	{
+		void Cut();
 		void Copy();
 		void Paste();
-//		void Delete();
 		void SelectAll();
 //		void WordWrap();
 //		bool WordWrapped { get; }
+		void Delete();
 	}
 }

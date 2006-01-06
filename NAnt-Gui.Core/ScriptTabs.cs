@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,8 +35,11 @@ namespace NAntGui.Core
 		private MainTabControl _tabControl = new MainTabControl();
 		private MainFormMediator _mediator;
 
-		public ScriptTabs()
+		public ScriptTabs(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+			_tabControl.Mediator = mediator;
 			_tabControl.ClosePressed += new EventHandler(this.Close_Pressed);
 		}
 
@@ -109,15 +112,6 @@ namespace NAntGui.Core
 		public void CloseSelectedTab()
 		{
 			this.SelectedTab.CloseFile();
-		}
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				_mediator = value;
-				_tabControl.Mediator = value;
-			}
 		}
 	}
 }

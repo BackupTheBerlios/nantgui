@@ -21,37 +21,33 @@
 
 #endregion
 
-using System;
+using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
-namespace NAntGui.Core.Controls.Menu.ToolsMenu
+namespace NAntGui.Core.Controls.Menu.EditMenu
 {
 	/// <summary>
-	/// Summary description for ToolsMenu.
+	/// Summary description for DeleteMenuCommand.
 	/// </summary>
-	public class ToolsMenu : MenuCommand
+	public class DeleteMenuCommand : MenuCommand
 	{
-		private OptionsMenuCommand _options = new OptionsMenuCommand();
+		MainFormMediator _mediator;
 
-		public ToolsMenu()
+		public DeleteMenuCommand(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+
 			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_options
-				});
-			this.Text = "&Tools";
+			this.Shortcut = Shortcut.Del;
+			this.Text = "&Delete";
 		}
 
-		public MainFormMediator Mediator
+		public override void OnClick(System.EventArgs e)
 		{
-			set { _options.SetMediator(value); }
+			base.OnClick(e);
+			Assert.NotNull(_mediator, "_mediator");
+			_mediator.DeleteClicked();
 		}
-
-		public EventHandler Options_Click
-		{
-			set { _options.Click += value; }
-		}
-
 	}
 }

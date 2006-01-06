@@ -21,8 +21,10 @@ namespace NAntGui.Core.Controls
 		private SaveFileDialog OutputSaveFileDialog = new SaveFileDialog();
 		private MainFormMediator _mediator;
 
-		public OutputBox()
+		public OutputBox(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "value");
+			_mediator = mediator;
 			this.Initialize();
 			this.CreateOutputContextMenu();
 		}
@@ -164,13 +166,9 @@ namespace NAntGui.Core.Controls
 			_mediator.OutputFocused();
 		}
 
-		public MainFormMediator Mediator
+		public void Delete()
 		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_mediator = value;
-			}
+			/* delete not supported, just ignore */
 		}
 	}
 }

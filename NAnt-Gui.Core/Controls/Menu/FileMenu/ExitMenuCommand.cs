@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Core.Controls.Menu.FileMenu
@@ -28,22 +29,20 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 	/// <summary>
 	/// Summary description for ExitMenuCommand.
 	/// </summary>
-	public class ExitMenuCommand : MenuCommand, IClicker
+	public class ExitMenuCommand : MenuCommand
 	{
 		MainFormMediator _mediator;
 
-		public ExitMenuCommand()
+		public ExitMenuCommand(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+
 			this.Description = "MenuCommand";
 			this.Text = "&Exit";
 		}
 
-		public MainFormMediator Mediator
-		{
-			set { _mediator = value; }
-		}
-
-		public void ExecuteClick()
+		protected override void OnClick(EventArgs e)
 		{
 			_mediator.ExitClicked();
 		}

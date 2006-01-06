@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
@@ -29,12 +30,15 @@ namespace NAntGui.Core.Controls.Menu.BuildMenu
 	/// <summary>
 	/// Summary description for StopMenuCommand.
 	/// </summary>
-	public class StopMenuCommand : MenuCommand, IClicker
+	public class StopMenuCommand : MenuCommand
 	{
 		MainFormMediator _mediator;
 
-		public StopMenuCommand()
+		public StopMenuCommand(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+
 			this.Description = "Aborts the current build";
 			this.ImageIndex = 3;
 			this.Shortcut = Shortcut.CtrlDel;
@@ -42,18 +46,8 @@ namespace NAntGui.Core.Controls.Menu.BuildMenu
 			this.ImageList = NAntGuiApp.ImageList;
 		}
 
-		public MainFormMediator Mediator
+		protected override void OnClick(EventArgs e)
 		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_mediator = value;
-			}
-		}
-
-		public void ExecuteClick()
-		{
-			Assert.NotNull(_mediator, "_mediator");
 			_mediator.StopClicked();
 		}
 	}

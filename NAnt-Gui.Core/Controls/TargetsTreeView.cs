@@ -1,7 +1,30 @@
-using System;
+#region Copyleft and Copyright
+
+// NAnt-Gui - Gui frontend to the NAnt .NET build tool
+// Copyright (C) 2004-2005 Colin Svingen
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// Colin Svingen (nantgui@swoogan.com)
+
+#endregion
+
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
+using NAntGui.Core.Controls.Menu.BuildMenu;
 using NAntGui.Framework;
 
 namespace NAntGui.Core.Controls
@@ -9,15 +32,16 @@ namespace NAntGui.Core.Controls
 	/// <summary>
 	/// Summary description for TargetsTreeView.
 	/// </summary>
-	public class TargetsTreeView : TreeView, IClicker
+	public class TargetsTreeView : TreeView
 	{
 		private ToolTip ToolTip = new ToolTip();
 		private PopupMenu _targetsPopupMenu = new PopupMenu();
-		private MenuCommand _build = new MenuCommand("&Build");
-		private MainFormMediator _mediator;
+		private RunMenuCommand _runMenu;
 
-		public TargetsTreeView()
+		public TargetsTreeView(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_runMenu = new RunMenuCommand(mediator);
 			this.Initialize();
 		}
 
@@ -35,9 +59,7 @@ namespace NAntGui.Core.Controls
 			this.MouseUp += new MouseEventHandler(this.BuildTreeView_MouseUp);
 			this.MouseMove += new MouseEventHandler(this.BuildTreeView_MouseMove);
 
-			_build.ImageList = NAntGuiApp.ImageList;
-			_build.ImageIndex = 7;
-			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {_build});
+			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {_runMenu});
 		}
 
 		private void BuildTreeView_AfterCheck(object sender, TreeViewEventArgs e)
@@ -126,21 +148,6 @@ namespace NAntGui.Core.Controls
 		private static bool HasDescription(string description)
 		{
 			return description.Length > 0;
-		}
-
-		public void ExecuteClick()
-		{
-			_mediator.RunClicked();
-		}
-
-		public EventHandler BuildClick
-		{
-			set { _build.Click += value; }
-		}
-
-		public MainFormMediator Mediator
-		{
-			set { _mediator = value; }
 		}
 
 		public void Clear()

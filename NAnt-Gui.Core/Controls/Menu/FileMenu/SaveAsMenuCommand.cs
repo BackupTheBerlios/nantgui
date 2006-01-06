@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 
@@ -29,24 +30,22 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 	/// <summary>
 	/// Summary description for SaveAsMenuCommand.
 	/// </summary>
-	public class SaveAsMenuCommand : MenuCommand, IClicker
+	public class SaveAsMenuCommand : MenuCommand
 	{
 		MainFormMediator _mediator;
 
-		public SaveAsMenuCommand()
+		public SaveAsMenuCommand(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+
 			this.Description = "MenuCommand";
 			this.ImageIndex = 2;
 			this.Shortcut = Shortcut.F12;
 			this.Text = "Save &As";
 		}
 
-		public MainFormMediator Mediator
-		{
-			set { _mediator = value; }
-		}
-
-		public void ExecuteClick()
+		protected override void OnClick(EventArgs e)
 		{
 			_mediator.SaveAsClicked();
 		}

@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen, Business Watch International
+// Copyright (C) 2004-2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,8 +33,10 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 	{
 		private UndoMenuCommand _undo = new UndoMenuCommand();
 		private RedoMenuCommand _redo = new RedoMenuCommand();
+		private CutMenuCommand _cut;
 		private CopyMenuCommand _copy = new CopyMenuCommand();
 		private PasteMenuCommand _paste;
+		private DeleteMenuCommand _delete;
 		private SelectAllMenuCommand _selectAll = new SelectAllMenuCommand();
 		private WordWrapMenuCommand _wordWrap = new WordWrapMenuCommand();
 
@@ -42,7 +44,9 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 		{
 			Assert.NotNull(mediator, "mediator");
 
+			_cut = new CutMenuCommand(mediator);
 			_paste = new PasteMenuCommand(mediator);
+			_delete = new DeleteMenuCommand(mediator);
 
 			this.Initialize();
 		}
@@ -57,8 +61,10 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 					_undo,
 					_redo,
 					new MenuCommand("-"),
+					_cut,
 					_copy,
 					_paste,
+					_delete,
 					new MenuCommand("-"),
 					_selectAll,
 					_wordWrap
@@ -72,11 +78,11 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 		{
 			set
 			{
-				_undo.Mediator = value;
-				_redo.Mediator = value;
+				_undo.SetMediator(value);
+				_redo.SetMediator(value);
 				_copy.Mediator = value;
-				_selectAll.Mediator = value;
-				_wordWrap.Mediator = value;
+				_selectAll.SetMediator(value);
+				_wordWrap.SetMediator(value);
 			}
 		}
 

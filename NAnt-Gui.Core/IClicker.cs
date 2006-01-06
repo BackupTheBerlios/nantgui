@@ -6,7 +6,7 @@ namespace NAntGui.Core
 	/// </summary>
 	public interface IClicker
 	{
-		MainFormMediator Mediator { set; }
+		void SetMediator(MainFormMediator value);
 		void ExecuteClick();
 	}
 }
