@@ -1,4 +1,3 @@
-- Add cut, paste, and delete menuitems (diabled when output box has focus)
 - Add copy, paste, undo, redo icons
 - Create save output default initial dir reg key
 - Multiple tabs
@@ -19,3 +18,4 @@
 (CANCELLED: Non-standard behaviour) Add drag and drop text into the editor
 (DONE) Make stop build menu item
 (DONE) Hookup output and tabcontrol to mediator so it always knows which has focus for copy, wordwrap, paste, etc...
+(DONE) Add cut, paste, and delete menuitems (diabled when output box has focus)

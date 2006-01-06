@@ -85,7 +85,7 @@ namespace NAntGui.Core
 		public void RunClicked()
 		{
 			_toolBar.State = RunState.Running;
-			_mainMenu.State = RunState.Running;
+			_mainMenu.RunState = RunState.Running;
 			_outputBox.Clear();
 			_dockManager.ShowOutput();
 
@@ -122,7 +122,7 @@ namespace NAntGui.Core
 		private void SetStateStopped()
 		{
 			_toolBar.State = RunState.Stopped;
-			_mainMenu.State = RunState.Stopped;
+			_mainMenu.RunState = RunState.Stopped;
 		}
 
 		public void OpenClicked()
@@ -366,14 +366,26 @@ namespace NAntGui.Core
 
 		public void TabGotFocus()
 		{
-			_mainMenu.EnablePasteAndDelete();
+			_mainMenu.EditState = EditState.TabFocused;
 			_editCommands = _sourceTabs.SelectedTab;
 		}
 
-		public void OutputFocused()
+		public void TabLostFocus()
 		{
-			_mainMenu.DisablePasteAndDelete();
+			_mainMenu.EditState = EditState.NoFocus;
+			_editCommands = null;
+		}
+
+		public void OutputGotFocused()
+		{
+			_mainMenu.EditState = EditState.OutputFocused;
 			_editCommands = _outputBox;
+		}
+
+		public void OutputLostFocused()
+		{
+			_mainMenu.EditState = EditState.NoFocus;
+			_editCommands = null;
 		}
 
 		public void RunApplication()
@@ -391,9 +403,6 @@ namespace NAntGui.Core
 			_editCommands.Delete();
 		}
 
-		public void TabLostFocus()
-		{
-			throw new NotImplementedException();
-		}
+
 	}
 }

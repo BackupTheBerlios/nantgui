@@ -79,24 +79,50 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 		#endregion
 
 
-		public void EnablePasteAndDelete()
-		{
-			_cut.Enabled = true;
-			_paste.Enabled = true;
-			_delete.Enabled = true;
-		}
-
-		public void DisablePasteAndDelete()
-		{
-			_cut.Enabled = false;
-			_paste.Enabled = false;
-			_delete.Enabled = false;
-		}
-
 		public bool WordWrapChecked
 		{
 			get { return _wordWrap.Checked; }
 			set { _wordWrap.Checked = value; }
+		}
+
+		public EditState State
+		{
+			set 
+			{
+				switch(value)
+				{
+					case EditState.TabFocused:
+						_cut.Enabled		= true;
+						_paste.Enabled		= true;
+						_delete.Enabled		= true;
+						_undo.Enabled		= true;
+						_redo.Enabled		= true;
+						_copy.Enabled		= true;
+						_selectAll.Enabled	= true;
+						_wordWrap.Enabled	= true;
+						break;
+					case EditState.OutputFocused:
+						_cut.Enabled		= false;
+						_paste.Enabled		= false;
+						_delete.Enabled		= false;
+						_undo.Enabled		= false;
+						_redo.Enabled		= false;
+						_copy.Enabled		= true;
+						_selectAll.Enabled	= true;
+						_wordWrap.Enabled	= true;
+						break;
+					case EditState.NoFocus:
+						_cut.Enabled		= false;
+						_paste.Enabled		= false;
+						_delete.Enabled		= false;
+						_undo.Enabled		= false;
+						_redo.Enabled		= false;
+						_copy.Enabled		= false;
+						_selectAll.Enabled	= false;
+						_wordWrap.Enabled	= false;
+						break;
+				} 
+			}
 		}
 	}
 }

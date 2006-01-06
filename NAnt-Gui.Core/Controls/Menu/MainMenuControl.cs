@@ -106,17 +106,7 @@ namespace NAntGui.Core.Controls.Menu
 			_fileMenu.RemoveRecentItem(file);
 		}
 
-		public void EnablePasteAndDelete()
-		{
-			_editMenu.EnablePasteAndDelete();
-		}
-
-		public void DisablePasteAndDelete()
-		{
-			_editMenu.DisablePasteAndDelete();
-		}
-
-		public RunState State
+		public RunState RunState
 		{
 			set { _buildMenu.State = value; }
 		}
@@ -129,6 +119,11 @@ namespace NAntGui.Core.Controls.Menu
 		public string FirstRecentItem
 		{
 			get { return _fileMenu.FirstRecentItem; }
+		}
+
+		public EditState EditState
+		{
+			set { _editMenu.State = value; }
 		}
 	}
 }

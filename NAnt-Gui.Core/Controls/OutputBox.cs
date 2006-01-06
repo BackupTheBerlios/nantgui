@@ -153,7 +153,13 @@ namespace NAntGui.Core.Controls
 		protected override void OnEnter(EventArgs e)
 		{
 			base.OnEnter(e);
-			_mediator.OutputFocused();
+			_mediator.OutputGotFocused();
+		}
+
+		protected override void OnLeave(EventArgs e)
+		{
+			base.OnLeave(e);
+			_mediator.OutputLostFocused();
 		}
 
 		public void Delete()
