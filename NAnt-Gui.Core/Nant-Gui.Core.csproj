@@ -283,11 +283,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\ScriptEditorContextMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\TargetsTreeView.cs"
                     SubType = "Component"
                     BuildAction = "Compile"

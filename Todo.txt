@@ -1,4 +1,4 @@
-- Add paste and delete menuitems (diabled when output box has focus)
+- Add cut, paste, and delete menuitems (diabled when output box has focus)
 - Add copy, paste, undo, redo icons
 - Create save output default initial dir reg key
 - Multiple tabs

@@ -81,12 +81,16 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 
 		public void EnablePasteAndDelete()
 		{
+			_cut.Enabled = true;
 			_paste.Enabled = true;
+			_delete.Enabled = true;
 		}
 
 		public void DisablePasteAndDelete()
 		{
+			_cut.Enabled = false;
 			_paste.Enabled = false;
+			_delete.Enabled = false;
 		}
 
 		public bool WordWrapChecked

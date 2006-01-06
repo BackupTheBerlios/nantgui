@@ -33,12 +33,10 @@ namespace NAntGui.Core
 	{
 		private ArrayList _tabs = new ArrayList();
 		private MainTabControl _tabControl = new MainTabControl();
-		private MainFormMediator _mediator;
 
 		public ScriptTabs(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
-			_mediator = mediator;
 			_tabControl.Mediator = mediator;
 			_tabControl.ClosePressed += new EventHandler(this.Close_Pressed);
 		}
@@ -46,10 +44,6 @@ namespace NAntGui.Core
 		public void AddTab(ScriptTabPage tab)
 		{
 			Assert.NotNull(tab, "tab");
-			Assert.NotNull(_mediator, "_mediator");
-
-			tab.Mediator = _mediator;
-
 			_tabs.Add(tab);
 			tab.AddTabToControl(_tabControl.TabPages);
 

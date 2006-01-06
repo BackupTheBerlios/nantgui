@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
+using NAntGui.Core.Controls.Menu.EditMenu;
 using NAntGui.Framework;
 
 namespace NAntGui.Core.Controls
@@ -49,8 +50,8 @@ namespace NAntGui.Core.Controls
 
 		private void CreateOutputContextMenu()
 		{
-			MenuCommand copy = new MenuCommand("Cop&y", new EventHandler(this.CopyText));
-			MenuCommand selectAll = new MenuCommand("Select &All", new EventHandler(this.SelectAllText));
+			CopyMenuCommand copy = new CopyMenuCommand(_mediator);
+			SelectAllMenuCommand selectAll = new SelectAllMenuCommand(_mediator);
 
 			_outputContextMenu.MenuCommands.AddRange(new MenuCommand[] {copy, selectAll});
 		}
@@ -93,16 +94,6 @@ namespace NAntGui.Core.Controls
 			{
 				this.SaveRichTextOutput(this.OutputSaveFileDialog.FileName);
 			}
-		}
-
-		private void CopyText(object sender, EventArgs e)
-		{
-			this.Copy();
-		}
-
-		private void SelectAllText(object sender, EventArgs e)
-		{
-			this.SelectAll();
 		}
 
 		private void SavePlainTextOutput(string fileName)
@@ -161,7 +152,6 @@ namespace NAntGui.Core.Controls
 
 		protected override void OnEnter(EventArgs e)
 		{
-			Assert.NotNull(_mediator, "_mediator");
 			base.OnEnter(e);
 			_mediator.OutputFocused();
 		}

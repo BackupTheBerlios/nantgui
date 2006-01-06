@@ -281,14 +281,14 @@ namespace NAntGui.Core
 		public void AddBlankTab()
 		{
 			_sourceTabs.Clear();
-			_sourceTabs.AddTab(new ScriptTabPage(_outputBox));
+			_sourceTabs.AddTab(new ScriptTabPage(_outputBox, this));
 		}
 
 		private bool LoadBuildFile(string filename)
 		{
 			if (File.Exists(filename))
 			{
-				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, NAntGuiApp.Options);
+				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
 				page.BuildFinished = new VoidVoid(this.Tab_BuildFinished);
 
 				Settings.OpenInitialDirectory = page.FilePath;
@@ -364,7 +364,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void TabFocused()
+		public void TabGotFocus()
 		{
 			_mainMenu.EnablePasteAndDelete();
 			_editCommands = _sourceTabs.SelectedTab;
@@ -389,6 +389,11 @@ namespace NAntGui.Core
 		public void DeleteClicked()
 		{
 			_editCommands.Delete();
+		}
+
+		public void TabLostFocus()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

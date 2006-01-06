@@ -46,7 +46,6 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 		public override void OnClick(System.EventArgs e)
 		{
 			base.OnClick(e);
-			Assert.NotNull(_mediator, "_mediator");
 			_mediator.CutClicked();
 		}
 	}

@@ -39,27 +39,34 @@ namespace NAntGui.Core
 	public class ScriptTabPage : IEditCommands
 	{
 		private TabPage _scriptTab			= new TabPage();
-		private ScriptEditor _scriptEditor	= new ScriptEditor();
+		private ScriptEditor _scriptEditor;
 		private SourceFile _file;
 		private IBuildRunner _buildRunner;
 		private MainFormMediator _mediator;
 		private TextAreaClipboardHandler _clipboardHandler;
 
-		public ScriptTabPage(ILogsMessage logger)
+		public ScriptTabPage(ILogsMessage logger, MainFormMediator mediator)
 		{
 			Assert.NotNull(logger, "logger");
-			_file = new SourceFile(logger);
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+			_scriptEditor = new ScriptEditor(mediator);
+			
+			_file = new SourceFile(logger);	
+			
 			this.Initialize();
 		}
 
-		public ScriptTabPage(string filename, ILogsMessage logger, CommandLineOptions options)
+		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator)
 		{
 			Assert.NotNull(filename, "filename");
 			Assert.NotNull(logger, "logger");
-			Assert.NotNull(options, "options");
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+			_scriptEditor = new ScriptEditor(mediator);
 
 			_scriptEditor.LoadFile(filename);
-			_file = new SourceFile(filename, _scriptEditor.Text, logger, options);
+			_file = new SourceFile(filename, _scriptEditor.Text, logger, NAntGuiApp.Options);
 
 			this.Initialize();
 
@@ -71,21 +78,13 @@ namespace NAntGui.Core
 			_buildRunner.ParseBuildScript();
 		}
 
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_mediator = value;
-				_scriptEditor.Mediator = value;
-			}
-		}
-
 		private void Initialize()
 		{
-			_clipboardHandler = _scriptEditor.ActiveTextAreaControl.TextArea.ClipboardHandler;
+			TextArea textArea = _scriptEditor.ActiveTextAreaControl.TextArea;
+			_clipboardHandler = textArea.ClipboardHandler;
 			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
-			_scriptEditor.ActiveTextAreaControl.TextArea.Enter += new EventHandler(this.GotFocus);
+			textArea.Enter += new EventHandler(this.GotFocus);
+			textArea.Leave += new EventHandler(this.LostFocus);
 
 			_scriptTab.Controls.Add(_scriptEditor);
 			_scriptTab.Location = new Point(0, 0);
@@ -146,13 +145,17 @@ namespace NAntGui.Core
 			try{ _buildRunner.ParseBuildScript(); }
 			catch { /* ignore */ }
 	
-			Assert.NotNull(_mediator, "_mediator");
 			_mediator.UpdateDisplay();
 		}
 
 		private void GotFocus(object sender, EventArgs e)
 		{
-			_mediator.TabFocused();
+			_mediator.TabGotFocus();
+		}
+
+		public void LostFocus(object sender, EventArgs e)
+		{
+			_mediator.TabLostFocus();
 		}
 
 		public void Undo()

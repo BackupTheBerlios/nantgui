@@ -57,16 +57,12 @@ namespace NAntGui.Core.Controls
 
 		protected override void OnDragEnter(DragEventArgs e)
 		{
-			Assert.NotNull(e, "e");
-			Assert.NotNull(_mediator, "_mediator");
 			base.OnDragEnter(e);
 			_mediator.DragEnter(e);
 		}
 
 		protected override void OnDragDrop(DragEventArgs e)
 		{
-			Assert.NotNull(e, "e");
-			Assert.NotNull(_mediator, "_mediator");
 			base.OnDragDrop(e);
 			_mediator.DragDrop(e);
 		}

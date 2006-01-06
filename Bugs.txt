@@ -1,3 +1,4 @@
+- Hookup Leave event on outputbox and scripttabpage so the mediator can null reference _editCommand
 FIXED: Targets reset when you build, so selected targets are reset
 FIXED: Stop/Cancel build is never enabled (toolbar and menu)
 FIXED: You can close the current build file, then stop becomes enabled

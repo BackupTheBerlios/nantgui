@@ -24,7 +24,9 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Crownwood.Magic.Menus;
 using ICSharpCode.TextEditor;
+using NAntGui.Core.Controls.Menu.EditMenu;
 
 namespace NAntGui.Core.Controls
 {
@@ -33,11 +35,14 @@ namespace NAntGui.Core.Controls
 	/// </summary>
 	public class ScriptEditor : TextEditorControl
 	{
-		private ScriptEditorContextMenu _sourceContextMenu;
+		private PopupMenu _sourceContextMenu;
 		private MainFormMediator _mediator;
 
-		public ScriptEditor()
+		public ScriptEditor(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "value");
+			_mediator = mediator;
+
 			Initialize();
 		}
 
@@ -45,7 +50,17 @@ namespace NAntGui.Core.Controls
 
 		private void Initialize()
 		{
-			_sourceContextMenu = new ScriptEditorContextMenu(this.ActiveTextAreaControl.TextArea.ClipboardHandler);
+			_sourceContextMenu = new PopupMenu();
+			_sourceContextMenu.MenuCommands.AddRange(
+				new MenuCommand[]
+					{
+						new CopyMenuCommand(_mediator), 
+						new CutMenuCommand(_mediator), 
+						new PasteMenuCommand(_mediator), 
+						new DeleteMenuCommand(_mediator), 
+						new MenuCommand("-"), 
+						new SelectAllMenuCommand(_mediator)
+					});
 	
 			this.Dock = DockStyle.Fill;
 			this.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point, ((Byte) (0)));
@@ -74,25 +89,13 @@ namespace NAntGui.Core.Controls
 			}
 		}
 
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_mediator = value;
-			}
-		}
-
 		private void Drag_Drop(object sender, DragEventArgs e)
 		{
-			Assert.NotNull(e, "e");
 			_mediator.DragDrop(e);
 		}
 
 		public void Drag_Enter(object sender, DragEventArgs e)
 		{
-			Assert.NotNull(e, "e");
-			Assert.NotNull(_mediator, "_mediator");
 			_mediator.DragEnter(e);
 		}
 	}
