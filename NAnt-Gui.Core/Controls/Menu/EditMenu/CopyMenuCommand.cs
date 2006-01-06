@@ -38,6 +38,8 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			Assert.NotNull(value, "value");
 			_mediator = value;
 
+			this.ImageList = NAntGuiApp.ImageList;
+			this.ImageIndex = 13;
 			this.Description = "MenuCommand";
 			this.Shortcut = Shortcut.CtrlC;
 			this.Text = "&Copy";
