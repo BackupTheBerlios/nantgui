@@ -33,8 +33,11 @@ namespace NAntGui.Core.Controls
 	{
 		private MainFormMediator _mediator;
 
-		public MainTabControl()
+		public MainTabControl(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "value");
+			_mediator = mediator;
+
 			this.SuspendLayout();
 
 			this.Appearance = VisualAppearance.MultiDocument;
@@ -44,16 +47,6 @@ namespace NAntGui.Core.Controls
 
 			this.ResumeLayout(false);
 		}
-
-		public MainFormMediator Mediator
-		{
-			set
-			{
-				Assert.NotNull(value, "value");
-				_mediator = value;
-			}
-		}
-
 
 		protected override void OnDragEnter(DragEventArgs e)
 		{

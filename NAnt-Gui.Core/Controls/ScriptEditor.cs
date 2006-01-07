@@ -54,8 +54,8 @@ namespace NAntGui.Core.Controls
 			_sourceContextMenu.MenuCommands.AddRange(
 				new MenuCommand[]
 					{
-						new CopyMenuCommand(_mediator), 
 						new CutMenuCommand(_mediator), 
+						new CopyMenuCommand(_mediator),
 						new PasteMenuCommand(_mediator), 
 						new DeleteMenuCommand(_mediator), 
 						new MenuCommand("-"), 

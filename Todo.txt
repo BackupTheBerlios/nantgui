@@ -1,4 +1,3 @@
-- Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab)
 - Multiple tabs	
 	* New build file functionality
 - Create custom commandline options that make sense for msbuild and nant
@@ -19,3 +18,4 @@
 (DONE) Add cut, paste, and delete menuitems (diabled when output box has focus)
 (DONE) Add copy, paste, undo, redo icons
 (DONE) Create save output default initial dir reg key
+(DONE) Modify the tab control so that it is hooked up to the tabchange event and figures out the selected tab then instead of always searching for the selected tab)

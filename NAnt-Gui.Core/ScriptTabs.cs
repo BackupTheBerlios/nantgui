@@ -32,13 +32,15 @@ namespace NAntGui.Core
 	public class ScriptTabs
 	{
 		private ArrayList _tabs = new ArrayList();
-		private MainTabControl _tabControl = new MainTabControl();
+		private MainTabControl _tabControl;
+		private ScriptTabPage _selectedTab;
 
 		public ScriptTabs(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
-			_tabControl.Mediator = mediator;
+			_tabControl = new MainTabControl(mediator);
 			_tabControl.ClosePressed += new EventHandler(this.Close_Pressed);
+			_tabControl.TabIndexChanged += new EventHandler(this.TabIndex_Changed);
 		}
 
 		public void AddTab(ScriptTabPage tab)
@@ -46,28 +48,21 @@ namespace NAntGui.Core
 			Assert.NotNull(tab, "tab");
 			_tabs.Add(tab);
 			tab.AddTabToControl(_tabControl.TabPages);
-
+			_selectedTab = tab;
 			//_tabControl.SelectedTab = tab.ScriptTab;
-		}
-
-		public ScriptTabPage SelectedTab
-		{
-			get
-			{
-				foreach (ScriptTabPage page in _tabs)
-					if (page.Equals(_tabControl.SelectedTab)) return page;
-
-				return null;
-			}
 		}
 
 		public void Close_Pressed(object sender, EventArgs e)
 		{
+//			this.SelectedTab.CloseFile();
 //			this.TabPages.Remove(this.SelectedTab);
 		}
 
 		public void Clear()
 		{
+			foreach (ScriptTabPage page in _tabs)
+				page.CloseFile();
+
 			_tabControl.TabPages.Clear();
 		}
 
@@ -106,6 +101,22 @@ namespace NAntGui.Core
 		public void CloseSelectedTab()
 		{
 			this.SelectedTab.CloseFile();
+		}
+
+		public void TabIndex_Changed(object sender, EventArgs e)
+		{
+			foreach (ScriptTabPage page in _tabs)
+			{
+				if (page.Equals(_tabControl.SelectedTab)) 
+				{
+					_selectedTab = page;
+				}
+			}
+		}
+
+		public ScriptTabPage SelectedTab
+		{
+			get { return _selectedTab; }
 		}
 	}
 }
