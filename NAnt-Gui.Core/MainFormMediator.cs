@@ -291,7 +291,7 @@ namespace NAntGui.Core
 				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
 				page.BuildFinished = new VoidVoid(this.Tab_BuildFinished);
 
-				Settings.OpenInitialDirectory = page.FilePath;
+				Settings.OpenInitialDir = page.FilePath;
 
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);

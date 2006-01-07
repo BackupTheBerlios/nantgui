@@ -41,7 +41,7 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 
 			this.Description = "MenuCommand";
 			this.Shortcut = Shortcut.CtrlU;
-			this.Text = "SaveO&utput";
+			this.Text = "Save O&utput";
 		}
 
 		public override void OnClick(EventArgs e)

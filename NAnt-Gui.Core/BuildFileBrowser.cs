@@ -23,7 +23,7 @@ namespace NAntGui.Core
 
 		public static string[] BrowseForLoad()
 		{
-			_openDialog.InitialDirectory = Settings.OpenInitialDirectory;
+			_openDialog.InitialDirectory = Settings.OpenInitialDir;
 			if (_openDialog.ShowDialog() == DialogResult.OK)
 			{
 				return _openDialog.FileNames;

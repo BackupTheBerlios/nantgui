@@ -90,10 +90,16 @@ namespace NAntGui.Core
 			set { SetRegKeyValue("HideTargets", value); }
 		}
 
-		public static string OpenInitialDirectory
+		public static string OpenInitialDir
 		{
 			get { return GetRegKeyStringValue("OpenInitialDirectory", "C:\\"); }
 			set { SetRegKeyValue("OpenInitialDirectory", value); }
+		}
+
+		public static string SaveOutputInitialDir
+		{
+			get { return GetRegKeyStringValue("SaveOutputInitialDir", "C:\\"); }
+			set { SetRegKeyValue("SaveOutputInitialDir", value); }
 		}
 
 		private static bool GetRegKeyBoolValue(string keyName)

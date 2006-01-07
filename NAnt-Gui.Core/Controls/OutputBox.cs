@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 using NAntGui.Core.Controls.Menu.EditMenu;
@@ -19,7 +20,7 @@ namespace NAntGui.Core.Controls
 		private const int PLAIN_TEXT_INDEX = 1;
 		
 		private PopupMenu _outputContextMenu = new PopupMenu();
-		private SaveFileDialog OutputSaveFileDialog = new SaveFileDialog();
+		private SaveFileDialog _saveDialog = new SaveFileDialog();
 		private MainFormMediator _mediator;
 
 		public OutputBox(MainFormMediator mediator)
@@ -35,9 +36,9 @@ namespace NAntGui.Core.Controls
 			// 
 			// OutputSaveFileDialog
 			// 
-			this.OutputSaveFileDialog.DefaultExt = "txt";
-			this.OutputSaveFileDialog.FileName = "Output";
-			this.OutputSaveFileDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
+			_saveDialog.DefaultExt = "txt";
+			_saveDialog.FileName = "Output";
+			_saveDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
 
 			this.Dock = DockStyle.Fill;
 			this.BorderStyle = BorderStyle.FixedSingle;
@@ -73,8 +74,8 @@ namespace NAntGui.Core.Controls
 
 		public void SaveOutput()
 		{
-//			this.OutputSaveFileDialog.InitialDirectory = _sourceFile.FullPath;
-			DialogResult result = this.OutputSaveFileDialog.ShowDialog();
+			_saveDialog.InitialDirectory = Settings.SaveOutputInitialDir;
+			DialogResult result = _saveDialog.ShowDialog();
 
 			if (result == DialogResult.OK)
 			{
@@ -84,16 +85,19 @@ namespace NAntGui.Core.Controls
 
 		private void Save()
 		{
-			int filterIndex = this.OutputSaveFileDialog.FilterIndex;
+			int filterIndex = _saveDialog.FilterIndex;
 
 			if (filterIndex == PLAIN_TEXT_INDEX)
 			{
-				this.SavePlainTextOutput(this.OutputSaveFileDialog.FileName);
+				this.SavePlainTextOutput(_saveDialog.FileName);
 			}
 			else if (filterIndex == RICH_TEXT_INDEX)
 			{
-				this.SaveRichTextOutput(this.OutputSaveFileDialog.FileName);
+				this.SaveRichTextOutput(_saveDialog.FileName);
 			}
+
+			FileInfo file = new FileInfo(_saveDialog.FileName);
+			Settings.SaveOutputInitialDir = file.DirectoryName;
 		}
 
 		private void SavePlainTextOutput(string fileName)
