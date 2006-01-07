@@ -65,6 +65,7 @@ Global
 	GlobalSection(SolutionItems) = postSolution
 		Ant.ico = Ant.ico
 		Bugs.txt = Bugs.txt
+		build_number.txt = build_number.txt
 		License.txt = License.txt
 		NAnt-Gui.build = NAnt-Gui.build
 		NAnt-Gui.iss = NAnt-Gui.iss

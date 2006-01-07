@@ -78,6 +78,7 @@ Source: License.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Bugs.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Todo.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
+Source: build_number.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 ; Libraries
 Source: ThirdParty Libraries\*; DestDir: {app}\src\ThirdParty Libraries; Flags: ignoreversion; Components: src
 ; NAnt-Gui
@@ -106,6 +107,17 @@ Source: NAnt-Gui.NAnt\*.cs; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversi
 Source: NAnt-Gui.NAnt\*.resx; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.NAnt\*.csproj; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.NAnt\*.build; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
+; NAnt-Gui.MSBuild
+Source: NAnt-Gui.MSBuild\*.cs; DestDir: {app}\src\Nant-Gui.MSBuild; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.MSBuild\*.resx; DestDir: {app}\src\Nant-Gui.MSBuild; Flags: ignoreversion skipifsourcedoesntexist; Components: src
+Source: NAnt-Gui.MSBuild\*.csproj; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.MSBuild\*.build; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
+; NAnt.InnoSetup.Tasks
+Source: NAnt.InnoSetup\*.cs; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src
+Source: NAnt.InnoSetup\*.csproj; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src
+Source: NAnt.InnoSetup\Sample.iss; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion skipifsourcedoesntexist; Components: src
+Source: NAnt.InnoSetup\Sample.xml; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src
+Source: NAnt.InnoSetup\Tasks\*.cs; DestDir: {app}\src\NAnt.InnoSetup\Tasks; Flags: ignoreversion; Components: src
 ; Tools
 Source: Tools\*; DestDir: {app}\src\Tools; Flags: ignoreversion recursesubdirs; Components: src
 
