@@ -47,6 +47,7 @@ Name: envpath; GroupDescription: Set environment variables; Description: Add bin
 ; ### Binary ###
 ; Documents
 Source: License.txt; DestDir: {app}; Flags: ignoreversion
+Source: Install.txt; DestDir: {app}; Flags: ignoreversion
 Source: Todo.txt; DestDir: {app}; Flags: ignoreversion
 Source: Bugs.txt; DestDir: {app}; Flags: ignoreversion
 ; NAnt-Gui
@@ -75,6 +76,7 @@ Source: NAnt-Gui.sln; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.build; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Ant.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: License.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
+Source: Install.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Bugs.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Todo.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
