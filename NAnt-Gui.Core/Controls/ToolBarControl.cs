@@ -55,8 +55,8 @@ namespace NAntGui.Core.Controls
 			//
 			// _saveButton
 			//
-			_saveButton.ImageIndex = 3;
-			_saveButton.ToolTipText = "Abort the Current Build";
+			_saveButton.ImageIndex = 2;
+			_saveButton.ToolTipText = "Save Build File";
 			_saveButton.Enabled = false;
 			//
 			// _reloadButton
