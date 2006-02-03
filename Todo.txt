@@ -1,5 +1,5 @@
-- Multiple tabs	
-	* New build file functionality
+- New build file functionality (test to make sure save, reload, build, either work, or ignored on new files)
+- Multiple tabs		
 - Create custom commandline options that make sense for msbuild and nant
 - Add SLiNgshoT tool window to tools menu
 

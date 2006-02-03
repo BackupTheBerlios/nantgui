@@ -36,13 +36,14 @@ namespace NAntGui.Core
 	{
 		private Label label1;
 		private Label label2;
-		private Label label3;
-		private Label label4;
 		private Button OKButton;
 		private Label VersionLabel;
 		private Label label5;
 		private LinkLabel EmailLinkLabel;
 		private LinkLabel WebLinkLabel;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.ListBox listBox1;
 
 		/// <summary>
 		/// Required designer variable.
@@ -87,79 +88,66 @@ namespace NAntGui.Core
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(About));
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
 			this.OKButton = new System.Windows.Forms.Button();
 			this.VersionLabel = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.EmailLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.WebLinkLabel = new System.Windows.Forms.LinkLabel();
+			this.label6 = new System.Windows.Forms.Label();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.SuspendLayout();
 			// 
 			// label1
 			// 
-			this.label1.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.label1.Location = new System.Drawing.Point(8, 8);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(216, 24);
+			this.label1.Size = new System.Drawing.Size(80, 16);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "NAnt-Gui: It\'s like NAnt, but with a GUI.";
+			this.label1.Text = "NAnt-Gui";
 			// 
 			// label2
 			// 
-			this.label2.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label2.Location = new System.Drawing.Point(240, 8);
+			this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label2.Location = new System.Drawing.Point(312, 8);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(88, 16);
+			this.label2.Size = new System.Drawing.Size(64, 16);
 			this.label2.TabIndex = 1;
 			this.label2.Text = "Version:";
-			// 
-			// label3
-			// 
-			this.label3.Location = new System.Drawing.Point(8, 88);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(240, 16);
-			this.label3.TabIndex = 2;
-			this.label3.Text = "PropertyBag Copyright © 2002  Tony Allowatt";
-			// 
-			// label4
-			// 
-			this.label4.Location = new System.Drawing.Point(8, 112);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(256, 16);
-			this.label4.TabIndex = 3;
-			this.label4.Text = "NAnt 0.8.5 Copyright © 2001-2004 Gerry Shaw";
 			// 
 			// OKButton
 			// 
 			this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OKButton.Location = new System.Drawing.Point(264, 137);
+			this.OKButton.Location = new System.Drawing.Point(312, 168);
 			this.OKButton.Name = "OKButton";
 			this.OKButton.TabIndex = 4;
 			this.OKButton.Text = "&OK";
 			// 
 			// VersionLabel
 			// 
-			this.VersionLabel.Location = new System.Drawing.Point(240, 24);
+			this.VersionLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.VersionLabel.Location = new System.Drawing.Point(312, 24);
 			this.VersionLabel.Name = "VersionLabel";
-			this.VersionLabel.Size = new System.Drawing.Size(88, 16);
+			this.VersionLabel.Size = new System.Drawing.Size(64, 16);
 			this.VersionLabel.TabIndex = 5;
 			// 
 			// label5
 			// 
-			this.label5.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label5.Location = new System.Drawing.Point(8, 40);
+			this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label5.Location = new System.Drawing.Point(8, 32);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(320, 16);
+			this.label5.Size = new System.Drawing.Size(256, 16);
 			this.label5.TabIndex = 6;
-			this.label5.Text = "Copyright © 2005 Colin Svingen";
+			this.label5.Text = "Copyright © 2005-2006 Colin Svingen";
 			// 
 			// EmailLinkLabel
 			// 
-			this.EmailLinkLabel.Location = new System.Drawing.Point(200, 40);
+			this.EmailLinkLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.EmailLinkLabel.Location = new System.Drawing.Point(248, 56);
 			this.EmailLinkLabel.Name = "EmailLinkLabel";
-			this.EmailLinkLabel.Size = new System.Drawing.Size(128, 16);
+			this.EmailLinkLabel.Size = new System.Drawing.Size(136, 16);
 			this.EmailLinkLabel.TabIndex = 7;
 			this.EmailLinkLabel.TabStop = true;
 			this.EmailLinkLabel.Text = "nantgui@swoogan.com";
@@ -167,27 +155,60 @@ namespace NAntGui.Core
 			// 
 			// WebLinkLabel
 			// 
-			this.WebLinkLabel.Location = new System.Drawing.Point(8, 64);
+			this.WebLinkLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.WebLinkLabel.Location = new System.Drawing.Point(8, 56);
 			this.WebLinkLabel.Name = "WebLinkLabel";
-			this.WebLinkLabel.Size = new System.Drawing.Size(200, 16);
+			this.WebLinkLabel.Size = new System.Drawing.Size(152, 16);
 			this.WebLinkLabel.TabIndex = 8;
 			this.WebLinkLabel.TabStop = true;
-			this.WebLinkLabel.Text = "http://www.swoogan.com/nantgui.html";
+			this.WebLinkLabel.Text = "http://nantgui.berlios.de";
 			this.WebLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.WebLinkLabel_LinkClicked);
+			// 
+			// label6
+			// 
+			this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label6.Location = new System.Drawing.Point(88, 8);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(200, 16);
+			this.label6.TabIndex = 9;
+			this.label6.Text = "It\'s like NAnt, but with a GUI.";
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Location = new System.Drawing.Point(8, 72);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(376, 8);
+			this.groupBox1.TabIndex = 11;
+			this.groupBox1.TabStop = false;
+			// 
+			// listBox1
+			// 
+			this.listBox1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.listBox1.HorizontalScrollbar = true;
+			this.listBox1.Items.AddRange(new object[] {
+														  "ICSharpCode.TextEditor Copyright © 2000-2005 icsharpcode.net",
+														  "PropertyBag Copyright © 2002  Tony Allowatt",
+														  "NAnt 0.8.5 Copyright © 2001-2004 Gerry Shaw",
+														  "Magic Library 1.7.4"});
+			this.listBox1.Location = new System.Drawing.Point(8, 88);
+			this.listBox1.Name = "listBox1";
+			this.listBox1.Size = new System.Drawing.Size(376, 69);
+			this.listBox1.TabIndex = 13;
 			// 
 			// About
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(346, 168);
+			this.ClientSize = new System.Drawing.Size(394, 199);
+			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.label6);
 			this.Controls.Add(this.WebLinkLabel);
 			this.Controls.Add(this.EmailLinkLabel);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.VersionLabel);
 			this.Controls.Add(this.OKButton);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
+			this.Controls.Add(this.listBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;

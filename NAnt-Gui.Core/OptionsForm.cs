@@ -86,9 +86,9 @@ namespace NAntGui.Core
 			// HideTargetsCheckBox
 			// 
 			this.HideTargetsCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.HideTargetsCheckBox.Location = new System.Drawing.Point(16, 16);
+			this.HideTargetsCheckBox.Location = new System.Drawing.Point(8, 8);
 			this.HideTargetsCheckBox.Name = "HideTargetsCheckBox";
-			this.HideTargetsCheckBox.Size = new System.Drawing.Size(320, 24);
+			this.HideTargetsCheckBox.Size = new System.Drawing.Size(320, 16);
 			this.HideTargetsCheckBox.TabIndex = 1;
 			this.HideTargetsCheckBox.Text = "Hide targets that do not contain a description?";
 			// 
@@ -96,7 +96,7 @@ namespace NAntGui.Core
 			// 
 			this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OKButton.Location = new System.Drawing.Point(192, 88);
+			this.OKButton.Location = new System.Drawing.Point(176, 64);
 			this.OKButton.Name = "OKButton";
 			this.OKButton.TabIndex = 2;
 			this.OKButton.Text = "&OK";
@@ -106,22 +106,22 @@ namespace NAntGui.Core
 			// 
 			this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CloseButton.Location = new System.Drawing.Point(272, 88);
+			this.CloseButton.Location = new System.Drawing.Point(256, 64);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.TabIndex = 3;
 			this.CloseButton.Text = "&Cancel";
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(16, 48);
+			this.label1.Location = new System.Drawing.Point(8, 34);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(272, 24);
+			this.label1.Size = new System.Drawing.Size(272, 16);
 			this.label1.TabIndex = 4;
 			this.label1.Text = "Maximum number of items in the Recent Items menu:";
 			// 
 			// MaxRecentItemsUpDown
 			// 
-			this.MaxRecentItemsUpDown.Location = new System.Drawing.Point(296, 48);
+			this.MaxRecentItemsUpDown.Location = new System.Drawing.Point(288, 32);
 			this.MaxRecentItemsUpDown.Maximum = new System.Decimal(new int[] {
 																				 15,
 																				 0,
@@ -136,7 +136,7 @@ namespace NAntGui.Core
 			this.AcceptButton = this.OKButton;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.CloseButton;
-			this.ClientSize = new System.Drawing.Size(354, 119);
+			this.ClientSize = new System.Drawing.Size(338, 95);
 			this.Controls.Add(this.MaxRecentItemsUpDown);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.CloseButton);
@@ -146,8 +146,8 @@ namespace NAntGui.Core
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(360, 160);
 			this.Name = "OptionsForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Options";
 			this.Load += new System.EventHandler(this.OptionsForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.MaxRecentItemsUpDown)).EndInit();

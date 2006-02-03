@@ -22,7 +22,9 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using System.Windows.Forms;
 using Crownwood.Magic.Collections;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
@@ -34,16 +36,21 @@ using TargetCollection = NAntGui.Framework.TargetCollection;
 namespace NAntGui.Core
 {
 	/// <summary>
-	/// Summary description for ScriptTabPage.
+	/// This class needs to be separated.  Currently there is a mingling between
+	/// the GUI TabPage/ScriptEditor, and the non-GUI SourceFile/BuildRunner.
+	/// This problem is sufficiently difficult do to the fact that the ScriptEditor
+	/// does the actual file IO.
 	/// </summary>
 	public class ScriptTabPage : IEditCommands
 	{
-		private TabPage _scriptTab			= new TabPage();
+		private TabPage _scriptTab = new TabPage();
 		private ScriptEditor _scriptEditor;
 		private SourceFile _file;
 		private IBuildRunner _buildRunner;
 		private MainFormMediator _mediator;
 		private TextAreaClipboardHandler _clipboardHandler;
+		// this might be better moved to the SourceFile class
+		private FileType _fileType;
 
 		public ScriptTabPage(ILogsMessage logger, MainFormMediator mediator)
 		{
@@ -51,8 +58,10 @@ namespace NAntGui.Core
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 			_scriptEditor = new ScriptEditor(mediator);
+			_scriptEditor.SetHighlighting("XML");
 			
 			_file = new SourceFile(logger);	
+			_fileType = FileType.New;
 			
 			this.Initialize();
 		}
@@ -63,10 +72,12 @@ namespace NAntGui.Core
 			Assert.NotNull(logger, "logger");
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
-			_scriptEditor = new ScriptEditor(mediator);
 
+			_scriptEditor = new ScriptEditor(mediator);
 			_scriptEditor.LoadFile(filename);
+
 			_file = new SourceFile(filename, _scriptEditor.Text, logger, NAntGuiApp.Options);
+			_fileType = FileType.Existing;
 
 			this.Initialize();
 
@@ -104,30 +115,43 @@ namespace NAntGui.Core
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
 			}
 
-			Assert.NotNull(_mediator, "_mediator");
-			_mediator.UpdateDisplay();
+			// Can't parse a file that doesn't exist on the harddrive
+			if (_fileType == FileType.Existing)
+			{
+				_mediator.UpdateDisplay(false);
+			}
 		}
 
 		public void ReLoad()
 		{
 			_scriptEditor.LoadFile(_file.FullName);
 			_scriptTab.Title = _file.Name;
-			try{ _buildRunner.ParseBuildScript(); }
-			catch { /* ignore */ }
+
+			this.ParseBuildFile();
 		}
 
 		public void SaveAs(string fileName)
 		{
 			_scriptEditor.SaveFile(fileName);
+
 			_file = new SourceFile(fileName, _scriptEditor.Text, 
-				_file.MessageLogger, _file.Options);
+				_file.MessageLogger, NAntGuiApp.Options);
+
+			_buildRunner = BuildRunnerFactory.Create(_file);
 
 			this.ReInitialize();
 		}
 
 		public void Save()
 		{
-			this.Save(true);
+			if (_fileType == FileType.Existing)
+			{
+				this.Save(true);
+			}
+			else if (_fileType == FileType.New)
+			{
+				_mediator.SaveAsClicked();
+			}
 		}
 
 		public void Save(bool reInit)
@@ -141,11 +165,19 @@ namespace NAntGui.Core
 		private void ReInitialize()
 		{
 			_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
-	
+
+			this.ParseBuildFile();
+
+			_mediator.UpdateDisplay(false);
+		}
+
+		private void ParseBuildFile()
+		{
+			// Might want a more specific exception type to be caught here.
+			// For example, a NullReferenceException on _buildRunner 
+			// shouldn't be ignored.
 			try{ _buildRunner.ParseBuildScript(); }
 			catch { /* ignore */ }
-	
-			_mediator.UpdateDisplay();
 		}
 
 		private void GotFocus(object sender, EventArgs e)
@@ -194,9 +226,30 @@ namespace NAntGui.Core
 			_buildRunner.SetTargets(targets);
 		}
 
-		public void CloseFile()
+		public void Close(CancelEventArgs e)
 		{
-			_file.Close();
+			if (this.IsDirty)
+			{
+				DialogResult result =
+					MessageBox.Show("You have unsaved changes to " + _file.Name + ".  Save?", "Save Changes?",
+					MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+
+				if (result == DialogResult.Yes)
+				{
+					this.Save();
+				}
+				else if (result == DialogResult.Cancel)
+				{
+					e.Cancel = true;
+				}
+
+				if (result != DialogResult.Cancel)
+				{
+					_file.Close();
+					_file = null;
+					_buildRunner = null;
+				}
+			}
 		}
 
 		public void AddTabToControl(TabPageCollection tabPages)
@@ -232,6 +285,11 @@ namespace NAntGui.Core
 		public void SelectAll()
 		{
 			_clipboardHandler.SelectAll(this, new EventArgs());
+		}
+
+		public void Focus()
+		{
+			_scriptEditor.Focus();
 		}
 
 		#region Properties

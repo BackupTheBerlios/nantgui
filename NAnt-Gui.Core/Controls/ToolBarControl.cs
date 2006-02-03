@@ -73,7 +73,6 @@ namespace NAntGui.Core.Controls
 			//
 			_newButton.ImageIndex = 8;
 			_newButton.ToolTipText = "Not built yet";
-			_newButton.Enabled = false;
 			//
 			// _reloadButton
 			//

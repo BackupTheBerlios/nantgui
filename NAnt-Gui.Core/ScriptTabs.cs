@@ -43,48 +43,60 @@ namespace NAntGui.Core
 			_tabControl.TabIndexChanged += new EventHandler(this.TabIndex_Changed);
 		}
 
+		private void Close_Pressed(object sender, EventArgs e)
+		{
+			this.Clear();
+		}
+
+		private void TabIndex_Changed(object sender, EventArgs e)
+		{
+			foreach (ScriptTabPage page in _tabs)
+			{
+				if (page.Equals(_tabControl.SelectedTab)) 
+				{
+					_selectedTab = page;
+				}
+			}
+		}
+
 		public void AddTab(ScriptTabPage tab)
 		{
 			Assert.NotNull(tab, "tab");
 			_tabs.Add(tab);
 			tab.AddTabToControl(_tabControl.TabPages);
 			_selectedTab = tab;
+			_selectedTab.Focus();
 			//_tabControl.SelectedTab = tab.ScriptTab;
 		}
 
-		public void Close_Pressed(object sender, EventArgs e)
-		{
-//			this.SelectedTab.CloseFile();
-//			this.TabPages.Remove(this.SelectedTab);
-		}
-
+		/// <summary>
+		/// Temporary. To be removed when multiple tabs are allowed.
+		/// </summary>
 		public void Clear()
 		{
+			CancelEventArgs e = new CancelEventArgs();
 			foreach (ScriptTabPage page in _tabs)
-				page.CloseFile();
+			{
+				page.Close(e);
+			}
 
 			_tabControl.TabPages.Clear();
+			_tabs.Clear();
 		}
 
+		/// <summary>
+		/// Called when the application is closing and
+		/// any open tabs might need to be saved.
+		/// </summary>
+		/// <param name="e">
+		/// Passed by the closing event.  Used to cancel 
+		/// the close if the user made a mistake.
+		/// </param>
 		public void CloseTabs(CancelEventArgs e)
 		{
 			foreach (ScriptTabPage page in _tabs)
 			{
-				if (page.IsDirty)
-				{
-					DialogResult result =
-						MessageBox.Show("You have unsaved changes to " + page.FileName + ".  Save?", "Save Changes?",
-						MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-
-					if (result == DialogResult.Yes)
-					{
-						page.Save();
-					}
-					else if (result == DialogResult.Cancel)
-					{
-						e.Cancel = true;
-					}
-				}
+				page.Close(e);
 			}
 		}
 
@@ -98,25 +110,24 @@ namespace NAntGui.Core
 			controls.Add(_tabControl);
 		}
 
-		public void CloseSelectedTab()
+		/// <summary>
+		/// Called with the Close File menu item is clicked.
+		/// </summary>
+		/// <param name="e">
+		/// Passed in to cancel the close if the user made 
+		/// a mistake (when the file isn't saved.
+		/// </param>
+		public void CloseSelectedTab(CancelEventArgs e)
 		{
-			this.SelectedTab.CloseFile();
-		}
-
-		public void TabIndex_Changed(object sender, EventArgs e)
-		{
-			foreach (ScriptTabPage page in _tabs)
-			{
-				if (page.Equals(_tabControl.SelectedTab)) 
-				{
-					_selectedTab = page;
-				}
-			}
+			_selectedTab.Close(e);
+			
 		}
 
 		public ScriptTabPage SelectedTab
 		{
 			get { return _selectedTab; }
 		}
+
+
 	}
 }

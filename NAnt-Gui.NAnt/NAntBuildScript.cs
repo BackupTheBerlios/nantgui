@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Text.RegularExpressions;
 using NAnt.Core;
 using NAnt.Core.Util;
 using NAntGui.Framework;
@@ -66,7 +67,7 @@ namespace NAntGui.NAnt
 		}
 
 
-		public void AddProperties()
+		private void AddProperties()
 		{
 			foreach (BuildProperty property in _properties)
 			{
@@ -81,7 +82,7 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		public void AddTargets()
+		private void AddTargets()
 		{
 			foreach (BuildTarget target in _targets)
 			{
@@ -108,7 +109,6 @@ namespace NAntGui.NAnt
 			}
 		}
 
-
 		private void LoadNonProjectProperty(BuildProperty property)
 		{
 			string expandedValue = property.Value;
@@ -122,7 +122,13 @@ namespace NAntGui.NAnt
 			{ /* ignore */
 			}
 
-			_project.Properties.AddReadOnly(property.Name, expandedValue);
+			// If the expanded value doesn't have any "unexpanded" values
+			// add it to the project.
+			Regex regex = new Regex(@"\$\{.+\}");
+			if (!regex.IsMatch(expandedValue))
+			{
+				_project.Properties.AddReadOnly(property.Name, expandedValue);
+			}
 		}
 
 		private bool ValidTarget(string category)

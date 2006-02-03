@@ -116,6 +116,7 @@ namespace NAntGui.NAnt
 		{
 			this.ParseTstamps(project);
 			this.AddReadRegistrys(project);
+//			this.AddRegex(project);
 		}
 
 		private void ParseTstamps(Project project)
@@ -139,18 +140,49 @@ namespace NAntGui.NAnt
 
 		private void AddReadRegistrys(Project project)
 		{
-			foreach (XmlElement lElement in project.Document.GetElementsByTagName("readregistry"))
+			foreach (XmlElement element in project.Document.GetElementsByTagName("readregistry"))
 			{
-				if (TypeFactory.TaskBuilders.Contains(lElement.Name))
+				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
-					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(lElement);
+					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
 					if (task != null && task.PropertyName != null)
 					{
 						task.Execute();
 
-						NAntProperty lNAntProperty = new NAntProperty(task.PropertyName, task.Properties[task.PropertyName], lElement.ParentNode.Attributes["name"].Value, false);
-						lNAntProperty.ExpandedValue = lNAntProperty.Value;
-						_properties.Add(lNAntProperty);
+						NAntProperty nAntProperty = new NAntProperty(
+							task.PropertyName, task.Properties[task.PropertyName], 
+							element.ParentNode.Attributes["name"].Value, false);
+
+						nAntProperty.ExpandedValue = nAntProperty.Value;
+						_properties.Add(nAntProperty);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Not in use right now because it opens a can of worms.
+		/// The only way to know what value the input attribute has 
+		/// is to run the program.  
+		/// </summary>
+		/// <param name="project"></param>
+		private void AddRegex(Project project)
+		{
+			foreach (XmlElement element in project.Document.GetElementsByTagName("regex"))
+			{
+				if (TypeFactory.TaskBuilders.Contains(element.Name))
+				{
+					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
+					if (task != null && task.PropertyName != null)
+					{
+						task.Execute();
+
+						NAntProperty nAntProperty = new NAntProperty(
+							task.PropertyName, task.Properties[task.PropertyName], 
+							element.ParentNode.Attributes["name"].Value, false);
+
+						nAntProperty.ExpandedValue = nAntProperty.Value;
+						_properties.Add(nAntProperty);
 					}
 				}
 			}

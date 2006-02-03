@@ -43,7 +43,6 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			this.ImageIndex = 8;
 			this.Shortcut = Shortcut.CtrlN;
 			this.Text = "&New";
-			this.Enabled = false;
 			this.ImageList = NAntGuiApp.ImageList;
 		}
 

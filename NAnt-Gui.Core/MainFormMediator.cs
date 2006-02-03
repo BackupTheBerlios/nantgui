@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
@@ -36,8 +35,6 @@ namespace NAntGui.Core
 	/// </summary>
 	public class MainFormMediator
 	{
-		private bool _firstLoad = true;
-
 		private MainPropertyGrid _propertyGrid = new MainPropertyGrid();
 		private MainStatusBar _statusBar = new MainStatusBar();
 
@@ -79,7 +76,16 @@ namespace NAntGui.Core
 
 		public void NewClicked()
 		{
-			throw new NotImplementedException();
+			_form.Text = "NAnt-Gui";
+
+			_propertyGrid.Clear();
+			_outputBox.Clear();
+			_targetsTree.Clear();
+
+			_mainMenu.Disable();
+			_toolBar.Disable();
+
+			this.AddBlankTab();
 		}
 
 		public void RunClicked()
@@ -138,20 +144,18 @@ namespace NAntGui.Core
 			_form.Close();
 		}
 
+		/// <summary>
+		/// Called with the Close File menu item is clicked.
+		/// </summary>
 		public void CloseClicked()
 		{
-			_sourceTabs.CloseSelectedTab();
-			this.AddBlankTab();
+			CancelEventArgs e = new CancelEventArgs();
+			_sourceTabs.CloseSelectedTab(e);
 
-			_form.Text = "NAnt-Gui";
-
-			_targetsTree.Clear();
-			_propertyGrid.SelectedObject = null;
-
-			_outputBox.Clear();
-
-			_mainMenu.Disable();
-			_toolBar.Disable();
+			if (!e.Cancel)
+			{
+				this.NewClicked();
+			}
 		}
 
 		public void AboutClicked()
@@ -309,9 +313,9 @@ namespace NAntGui.Core
 						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				
-				this.UpdateDisplay();
 				_mainMenu.Enable();
 				_toolBar.Enable();
+				this.UpdateDisplay(true);
 
 				return true;
 			}
@@ -322,7 +326,7 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void UpdateDisplay()
+		public void UpdateDisplay(bool firstLoad)
 		{
 			_outputBox.Clear();
 
@@ -336,9 +340,7 @@ namespace NAntGui.Core
 			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.FileFullName;
 
 			_targetsTree.AddTargets(projectName, buildScript.Targets);
-			_propertyGrid.AddProperties(buildScript.Properties, _firstLoad);
-
-			_firstLoad = false;
+			_propertyGrid.AddProperties(buildScript.Properties, firstLoad);
 		}
 
 		public void DragDrop(DragEventArgs e)

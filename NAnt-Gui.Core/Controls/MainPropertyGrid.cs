@@ -88,6 +88,11 @@ namespace NAntGui.Core.Controls
 			return properties;
 		}
 
+		public void Clear()
+		{
+			this.SelectedObject = null;
+		}
+
 		private bool CommandLinePropertiesContains(string name)
 		{
 			foreach (string key in _commandLineProperties.AllKeys)

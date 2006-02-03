@@ -73,10 +73,12 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 
 		public void Disable()
 		{
-			_reload.Enabled =
-				_save.Enabled =
-					_saveAs.Enabled =
-						_close.Enabled = false;
+			// the following lines are commented because, currently, there will always be
+			// a file open.  When the user clicks "close" a new file is created.
+//			_reload.Enabled = false;
+//			_save.Enabled = false;
+//			_saveAs.Enabled = false;
+//			_close.Enabled = false;
 		}
 
 

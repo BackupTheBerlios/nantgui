@@ -31,8 +31,8 @@ namespace NAntGui.NAnt
 	/// </summary>
 	public class NAntProperty : BuildProperty
 	{
-		private static int Count = 1;
-		private int _rank;
+//		private static int Count = 1;
+//		private int _rank;
 
 		public NAntProperty(XmlElement element)
 		{
@@ -42,7 +42,7 @@ namespace NAntGui.NAnt
 			_value		= element.GetAttribute("value");
 			this.SetIsReadonly(element);
 			this.SetCategory(element);
-			_rank = Count++;
+//			_rank = Count++;
 		}
 
 		public NAntProperty(string name, string value, string category, bool isReadOnly)
@@ -51,7 +51,7 @@ namespace NAntGui.NAnt
 			_value		= value;
 			_category	= category;
 			_isReadOnly	= isReadOnly;
-			_rank		= Count++;
+//			_rank		= Count++;
 		}
 
 		private void SetIsReadonly(XmlElement element)
@@ -76,15 +76,13 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		#region Properties
-
-		public int Rank
-		{
-			get { return _rank; }
-		}
-
-
-
-		#endregion
+//		#region Properties
+//
+//		public int Rank
+//		{
+//			get { return _rank; }
+//		}
+//
+//		#endregion
 	}
 }
