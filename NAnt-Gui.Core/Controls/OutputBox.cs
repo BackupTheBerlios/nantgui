@@ -112,7 +112,7 @@ namespace NAntGui.Core.Controls
 				RichTextBoxStreamType.RichText);
 		}
 
-		public void WriteOutput(string pMessage)
+		private void WriteOutput(string pMessage)
 		{
 			lock (this)
 			{
@@ -169,6 +169,11 @@ namespace NAntGui.Core.Controls
 		public void Delete()
 		{
 			/* delete not supported, just ignore */
+		}
+
+		public void ReHightlight()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

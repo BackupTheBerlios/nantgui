@@ -41,10 +41,13 @@ namespace NAntGui.Core
 		private Content _targetsContent;
 		private Content _propertiesContent;
 		private Content _outputContent;
+		private OutputBox _outputBox;
 
 		public MainDockManager(MainForm mainForm, ScriptTabs scriptTabs, TargetsTreeView targetsTree, 
 			OutputBox outputBox, MainPropertyGrid propertyGrid, MainStatusBar statusBar)
 		{
+			Assert.NotNull(outputBox, "outputBox");
+			_outputBox = outputBox;
 			// Create the object that manages the docking state
 			_dockManager = new DockingManager(mainForm, VisualStyle.IDE);
 			// Ensure that the RichTextBox is always the innermost control
@@ -96,6 +99,11 @@ namespace NAntGui.Core
 		{
 			_dockManager.BringAutoHideIntoView(_outputContent);
 			_dockManager.ShowContent(_outputContent);
+
+			// have to do this because the highlighting is undone when
+			// the toolbox is reshown.  Didn't feel like wasting any time
+			// figuring out exactly why that happens.
+			_outputBox.ReHightlight();
 		}
 
 		public void AddTabControl(TabControl tabControl)
