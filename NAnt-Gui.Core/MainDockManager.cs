@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
@@ -73,6 +74,8 @@ namespace NAntGui.Core
 
 			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
 
+			_dockManager.ContentShown += new DockingManager.ContentHandler(this.ContentShown);
+
 			_dockManager.OuterControl = statusBar;
 
 			_dockManager.LoadConfigFromFile(DOCKING_CONFIG);			
@@ -99,16 +102,22 @@ namespace NAntGui.Core
 		{
 			_dockManager.BringAutoHideIntoView(_outputContent);
 			_dockManager.ShowContent(_outputContent);
-
-			// have to do this because the highlighting is undone when
-			// the toolbox is reshown.  Didn't feel like wasting any time
-			// figuring out exactly why that happens.
-			_outputBox.ReHightlight();
 		}
 
 		public void AddTabControl(TabControl tabControl)
 		{
 			_dockManager.InnerControl = tabControl;
+		}
+
+		private void ContentShown(Content c, EventArgs cea)
+		{
+			if (c == _outputContent)
+			{
+				// have to do this because the highlighting is undone when
+				// the toolbox is reshown.  Didn't feel like wasting any time
+				// figuring out exactly why that happens.
+				_outputBox.ReHightlight();
+			}
 		}
 	}
 }

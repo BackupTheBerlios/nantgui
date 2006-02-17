@@ -173,7 +173,9 @@ namespace NAntGui.Core.Controls
 
 		public void ReHightlight()
 		{
-			throw new NotImplementedException();
+			string text = this.Text;
+			this.Clear();
+			this.WriteOutput(text);
 		}
 	}
 }

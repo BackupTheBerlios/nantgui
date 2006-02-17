@@ -50,8 +50,9 @@ namespace NAntGui.Core
 
 		public static string Highlight(string text)
 		{
-			string[] expressions = {BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "ERROR"};
+			string[] expressions = {"\n", BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "ERROR"};
 			string highlightedText = Escape(text);
+			highlightedText = ReplaceNewlines(highlightedText);
 
 			foreach (string expression in expressions)
 			{
@@ -59,43 +60,54 @@ namespace NAntGui.Core
 
 				if (regex.IsMatch(highlightedText))
 				{
-					Match match = regex.Match(highlightedText);
-
-					switch (expression)
-					{
-						case BUILD_FAILED:
-							string output = ColorTable.RedTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-								+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
-
-							highlightedText = highlightedText.Replace(match.Value, output);
-							break;
-						case BUILD_SUCCEEDED:
-							output = ColorTable.GreenTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-								+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
-
-							highlightedText = highlightedText.Replace(match.Value, output);
-							break;
-
-						case @"\[[^\[]+\]":
-							output = ColorTable.BlueTag + Tags.SPACE
-								+ match.Value + Tags.BLACK + Tags.SPACE;
-
-							highlightedText = highlightedText.Replace(match.Value, output);
-							break;
-
-						case "error":
-						case "ERROR":
-							output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
-								+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
-
-							highlightedText = highlightedText.Replace(match.Value, output);
-							break;
-					}
-
+					MatchCollection matches = regex.Matches(highlightedText);
+					highlightedText = ReplaceMatches(matches, expression, highlightedText);
 				}
 			}
 
 			return highlightedText + Tags.SPACE;
+		}
+
+		private static string ReplaceMatches(MatchCollection matches, string expression, string highlightedText)
+		{
+			foreach (Match match in matches)
+			{
+				switch (expression)
+				{
+					case BUILD_FAILED:
+						string output = ColorTable.RedTag + Tags.BOLD + Tags.BIG + Tags.SPACE
+							+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+
+						highlightedText = highlightedText.Replace(match.Value, output);
+						break;
+					case BUILD_SUCCEEDED:
+						output = ColorTable.GreenTag + Tags.BOLD + Tags.BIG + Tags.SPACE
+							+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+
+						highlightedText = highlightedText.Replace(match.Value, output);
+						break;
+
+					case @"\[[^\[]+\]":
+						output = ColorTable.BlueTag + Tags.SPACE
+							+ match.Value + Tags.BLACK + Tags.SPACE;
+
+						highlightedText = highlightedText.Replace(match.Value, output);
+
+						// OMG! I used a goto
+						goto done;
+
+					case "error":
+					case "ERROR":
+						output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
+							+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
+
+						highlightedText = highlightedText.Replace(match.Value, output);
+						break;
+				}
+			}
+
+			done:
+			return highlightedText;
 		}
 
 		private static string Escape(string text)
@@ -104,6 +116,11 @@ namespace NAntGui.Core
 			text = text.Replace("{", @"\{");
 			text = text.Replace("}", @"\}");
 			return text;
+		}
+
+		private static string ReplaceNewlines(string text)
+		{
+			return text.Replace("\n", Tags.P + Tags.SPACE);
 		}
 	}
 }
