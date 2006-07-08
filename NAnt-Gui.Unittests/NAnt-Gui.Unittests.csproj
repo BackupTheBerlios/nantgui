@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = "..\..\..\Tools\nant-0.85-rc3\bin\nant.exe -f:..\..\AssemblyInfo.build"
+                PreBuildEvent = "..\..\..\Tools\nant-0.85-rc4\bin\nant.exe -f:..\..\AssemblyInfo.build"
                 PostBuildEvent = ""
                 RootNamespace = "NAntGui.Unittests"
                 RunPostBuildEvent = "OnBuildSuccess"

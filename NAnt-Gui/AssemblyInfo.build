@@ -1,4 +1,4 @@
-<project name="CreateAssemblyInfo" default="main" basedir="." xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
+<project name="CreateAssemblyInfo" default="main" basedir="." xmlns="http://nant.sf.net/release/0.85-rc4/nant.xsd">
 	<target name="main" description="main">		
 		<loadfile file="..\build_number.txt" property="nantgui.version" />
 		

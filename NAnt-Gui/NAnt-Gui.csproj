@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "WinExe"
-                PreBuildEvent = "..\..\..\Tools\nant-0.85-rc3\bin\nant.exe -f:..\..\AssemblyInfo.build"
+                PreBuildEvent = "..\..\..\Tools\nant-0.85-rc4\bin\nant.exe -f:..\..\AssemblyInfo.build"
                 PostBuildEvent = "copy ..\..\MainFormDocking.config ."
                 RootNamespace = "NAnt_Gui"
                 RunPostBuildEvent = "OnBuildSuccess"
@@ -95,14 +95,14 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "NAnt.Core"
-                    AssemblyName = "NAnt.Core"
-                    HintPath = "..\Tools\nant-0.85-rc3\bin\NAnt.Core.dll"
-                />
-                <Reference
                     Name = "NAnt-Gui.Framework"
                     Project = "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "NAnt.Core"
+                    AssemblyName = "NAnt.Core"
+                    HintPath = "..\Tools\nant-0.85-rc4\bin\NAnt.Core.dll"
                 />
             </References>
         </Build>
