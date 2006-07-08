@@ -11,8 +11,8 @@
 
 using System;
 using System.Drawing;
-using Crownwood.Magic.Common;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Docking
 {

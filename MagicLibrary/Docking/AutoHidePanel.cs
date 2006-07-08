@@ -10,13 +10,15 @@
 // *****************************************************************************
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.ComponentModel;
-using Crownwood.Magic.Win32;
+using Crownwood.Magic.Collections;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Controls;
-using Crownwood.Magic.Collections;
+using Crownwood.Magic.Win32;
+using TabControl=Crownwood.Magic.Controls.TabControl;
+using TabPage=Crownwood.Magic.Controls.TabPage;
 
 namespace Crownwood.Magic.Docking
 {
@@ -405,7 +407,7 @@ namespace Crownwood.Magic.Docking
             foreach(TabStub ts in this.Controls)
             {
                 // Test each page inside the TabStub
-                foreach(Crownwood.Magic.Controls.TabPage page in ts.TabPages)
+                foreach(TabPage page in ts.TabPages)
                 {
                     if (c.Title == (page.Tag as Content).Title)
                         return ts;
@@ -421,7 +423,7 @@ namespace Crownwood.Magic.Docking
             foreach(TabStub ts in this.Controls)
             {
                 // Test each page inside the TabStub
-                foreach(Crownwood.Magic.Controls.TabPage page in ts.TabPages)
+                foreach(TabPage page in ts.TabPages)
                 {
                     if (c.Title == (page.Tag as Content).Title)
                     {
@@ -460,7 +462,7 @@ namespace Crownwood.Magic.Docking
                 TabStub ts = this.Controls[controlIndex] as TabStub;
             
                 // Process each Page in the TabStub
-                foreach(Crownwood.Magic.Controls.TabPage page in ts.TabPages)
+                foreach(TabPage page in ts.TabPages)
                 {
                     Content content = page.Tag as Content;
 
@@ -538,7 +540,7 @@ namespace Crownwood.Magic.Docking
                 TabStub ts = this.Controls[controlIndex] as TabStub;
 
                 // Process each Page in the TabStub
-                foreach(Crownwood.Magic.Controls.TabPage page in ts.TabPages)
+                foreach(TabPage page in ts.TabPages)
                 {
                     Content c = page.Tag as Content;
 
@@ -613,7 +615,7 @@ namespace Crownwood.Magic.Docking
             }                
         
             // Create a new tab page
-            Crownwood.Magic.Controls.TabPage page = new Crownwood.Magic.Controls.TabPage();
+            TabPage page = new TabPage();
 		        
             // Copy across the visual properties
             page.Title = content.Title;
@@ -666,7 +668,7 @@ namespace Crownwood.Magic.Docking
             foreach(Content c in contents)
             {
                 // Create page object
-                Crownwood.Magic.Controls.TabPage page = new Crownwood.Magic.Controls.TabPage();
+                TabPage page = new TabPage();
 		        
                 // Copy across the visual properties
                 page.Title = c.Title;
@@ -739,7 +741,7 @@ namespace Crownwood.Magic.Docking
             wct.RedockAllowed = false;
 
             // Hide tab selection from user
-            wct.TabControl.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.HideAlways;
+            wct.TabControl.HideTabsMode = TabControl.HideTabsModes.HideAlways;
 
             // Associate WCT with matching TabStub
             ts.WindowContentTabbed = wct;
@@ -1026,13 +1028,13 @@ namespace Crownwood.Magic.Docking
         public void RemoveContent(Content c)
         {
             TabStub targetTS = null;
-            Crownwood.Magic.Controls.TabPage targetPage = null;
+            TabPage targetPage = null;
         
             // Find the TabStub group this content is inside
             foreach(TabStub ts in this.Controls)
             {
                 // Test each page of the TabStub control
-                foreach(Crownwood.Magic.Controls.TabPage page in ts.TabPages)
+                foreach(TabPage page in ts.TabPages)
                 {
                     Content pageC = page.Tag as Content;
                     
@@ -1576,8 +1578,8 @@ namespace Crownwood.Magic.Docking
             {		
                 switch(msg.Msg)
                 {
-                    case (int)Win32.Msgs.WM_MOUSEMOVE:
-                        Win32.POINT screenPos;
+                    case (int)Msgs.WM_MOUSEMOVE:
+                        POINT screenPos;
                         screenPos.x = (int)((uint)msg.LParam & 0x0000FFFFU);
                         screenPos.y = (int)(((uint)msg.LParam & 0xFFFF0000U) >> 16);
 

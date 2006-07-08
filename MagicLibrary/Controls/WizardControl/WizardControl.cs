@@ -10,15 +10,11 @@
 // *****************************************************************************
 
 using System;
-using System.Data;
-using System.Drawing;
-using System.Collections;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
 using System.ComponentModel;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Controls;
+using System.Drawing;
+using System.Windows.Forms;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Controls
 {
@@ -67,17 +63,17 @@ namespace Crownwood.Magic.Controls
         protected WizardPageCollection _wizardPages;
 	    
 	    // Instance designer fields
-        protected System.Windows.Forms.Panel _panelTop;
-        protected System.Windows.Forms.Panel _panelBottom;
-        protected System.Windows.Forms.Button _buttonUpdate;
-        protected System.Windows.Forms.Button _buttonCancel;
-        protected System.Windows.Forms.Button _buttonBack;
-        protected System.Windows.Forms.Button _buttonNext;
-        protected System.Windows.Forms.Button _buttonFinish;
-        protected System.Windows.Forms.Button _buttonClose;
-        protected System.Windows.Forms.Button _buttonHelp;
-        protected Crownwood.Magic.Controls.TabControl _tabControl;
-		protected System.ComponentModel.Container components = null;
+        protected Panel _panelTop;
+        protected Panel _panelBottom;
+        protected Button _buttonUpdate;
+        protected Button _buttonCancel;
+        protected Button _buttonBack;
+        protected Button _buttonNext;
+        protected Button _buttonFinish;
+        protected Button _buttonClose;
+        protected Button _buttonHelp;
+        protected TabControl _tabControl;
+		protected Container components = null;
 
         // Delegate definitions
         public delegate void WizardPageHandler(WizardPage wp, WizardControl wc);
@@ -116,9 +112,9 @@ namespace Crownwood.Magic.Controls
             _wizardPages = new WizardPageCollection();
             
             // Hook into collection events
-            _wizardPages.Cleared += new Collections.CollectionClear(OnWizardCleared);
-            _wizardPages.Inserted += new Collections.CollectionChange(OnWizardInserted);
-            _wizardPages.Removed += new Collections.CollectionChange(OnWizardRemoved);
+            _wizardPages.Cleared += new CollectionClear(OnWizardCleared);
+            _wizardPages.Inserted += new CollectionChange(OnWizardInserted);
+            _wizardPages.Removed += new CollectionChange(OnWizardRemoved);
 
             // Hook into drawing events
             _panelTop.Resize += new EventHandler(OnRepaintPanels);
@@ -307,7 +303,7 @@ namespace Crownwood.Magic.Controls
 		
         [Category("Wizard")]
         [Description("Access to underlying TabControl instance")]
-        public Controls.TabControl TabControl
+        public TabControl TabControl
         {
             get { return _tabControl; }
         }
@@ -370,13 +366,13 @@ namespace Crownwood.Magic.Controls
                             else
                                 LeaveFullPage();
                             
-                            _tabControl.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.HideAlways; 
+                            _tabControl.HideTabsMode = TabControl.HideTabsModes.HideAlways; 
                             break;
                         case Profiles.Controller:
                             // Controller is always full page
                             EnterFullPage();
                                 
-                            _tabControl.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.ShowAlways;
+                            _tabControl.HideTabsMode = TabControl.HideTabsModes.ShowAlways;
                             break;
                     }
 		            

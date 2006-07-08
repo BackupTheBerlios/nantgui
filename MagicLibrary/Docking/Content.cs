@@ -10,11 +10,10 @@
 // *****************************************************************************
 
 using System;
-using System.Xml;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml;
 using Crownwood.Magic.Common;
-using Crownwood.Magic.Docking;
 
 namespace Crownwood.Magic.Docking
 {

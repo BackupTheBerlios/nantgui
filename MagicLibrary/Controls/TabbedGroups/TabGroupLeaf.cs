@@ -10,18 +10,14 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Xml;
-using System.Data;
+using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using Crownwood.Magic.Menus;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Controls;
+using System.Xml;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
+using Crownwood.Magic.Menus;
 
 namespace Crownwood.Magic.Controls
 {
@@ -49,7 +45,7 @@ namespace Crownwood.Magic.Controls
         protected Cursor _savedCursor;
         protected bool _dragEntered;
         protected TargetManager _targetManager;
-        protected Controls.TabControl _tabControl;
+        protected TabControl _tabControl;
 
         static TabGroupLeaf()
         {
@@ -64,7 +60,7 @@ namespace Crownwood.Magic.Controls
 		    : base(tabbedGroups, parent)
 		{
 		    // Create our managed tab control instance
-		    _tabControl = new Controls.TabControl();
+		    _tabControl = new TabControl();
 		    
 		    // We need page drag to begin when mouse dragged a small distance
 		    _tabControl.DragFromControl = false;
@@ -98,7 +94,7 @@ namespace Crownwood.Magic.Controls
             DefinePopupMenuForControl(_tabControl);
 
             // Setup the correct 'HideTabsMode' for the control
-            Notify(TabGroupBase.NotifyCode.DisplayTabMode);
+            Notify(NotifyCode.DisplayTabMode);
 
 		    // Define the default setup of TabControl and allow developer to customize
 		    _tabbedGroups.OnTabControlCreated(_tabControl);
@@ -149,7 +145,7 @@ namespace Crownwood.Magic.Controls
 			}
 		}
 
-		protected void DefinePopupMenuForControl(Controls.TabControl tabControl)
+		protected void DefinePopupMenuForControl(TabControl tabControl)
         {
             PopupMenu pm = new PopupMenu();
             
@@ -207,22 +203,22 @@ namespace Crownwood.Magic.Controls
                     // Apply the latest mode
                     switch(_tabbedGroups.DisplayTabMode)
                     {
-                        case Crownwood.Magic.Controls.TabbedGroups.DisplayTabModes.ShowAll:
-                            _tabControl.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.ShowAlways;
+                        case TabbedGroups.DisplayTabModes.ShowAll:
+                            _tabControl.HideTabsMode = TabControl.HideTabsModes.ShowAlways;
                             break;
-                        case Crownwood.Magic.Controls.TabbedGroups.DisplayTabModes.HideAll:
-                            _tabControl.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.HideAlways;
+                        case TabbedGroups.DisplayTabModes.HideAll:
+                            _tabControl.HideTabsMode = TabControl.HideTabsModes.HideAlways;
                             break;
-                        case Crownwood.Magic.Controls.TabbedGroups.DisplayTabModes.ShowActiveLeaf:
-                            _tabControl.HideTabsMode = (_tabbedGroups.ActiveLeaf == this ? Magic.Controls.TabControl.HideTabsModes.ShowAlways :
-                                                                                           Magic.Controls.TabControl.HideTabsModes.HideAlways);
+                        case TabbedGroups.DisplayTabModes.ShowActiveLeaf:
+                            _tabControl.HideTabsMode = (_tabbedGroups.ActiveLeaf == this ? TabControl.HideTabsModes.ShowAlways :
+                                                                                           TabControl.HideTabsModes.HideAlways);
                             break;
-                        case Crownwood.Magic.Controls.TabbedGroups.DisplayTabModes.ShowMouseOver:
-                            _tabControl.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.HideWithoutMouse;
+                        case TabbedGroups.DisplayTabModes.ShowMouseOver:
+                            _tabControl.HideTabsMode = TabControl.HideTabsModes.HideWithoutMouse;
                             break;
-                        case Crownwood.Magic.Controls.TabbedGroups.DisplayTabModes.ShowActiveAndMouseOver:
-                            _tabControl.HideTabsMode = (_tabbedGroups.ActiveLeaf == this ? Magic.Controls.TabControl.HideTabsModes.ShowAlways :
-                                                                                           Magic.Controls.TabControl.HideTabsModes.HideWithoutMouse);
+                        case TabbedGroups.DisplayTabModes.ShowActiveAndMouseOver:
+                            _tabControl.HideTabsMode = (_tabbedGroups.ActiveLeaf == this ? TabControl.HideTabsModes.ShowAlways :
+                                                                                           TabControl.HideTabsModes.HideWithoutMouse);
                             break;
                     }
                     break;
@@ -255,7 +251,7 @@ namespace Crownwood.Magic.Controls
             xmlOut.WriteAttributeString("Space", _space.ToString());
 
             // Output each tab page
-            foreach(Controls.TabPage tp in _tabControl.TabPages)
+            foreach(TabPage tp in _tabControl.TabPages)
             {
                 string controlType = "null";
                 
@@ -306,7 +302,7 @@ namespace Crownwood.Magic.Controls
                 // Must always be a page instance
                 if (xmlIn.Name == "Page")
                 {
-                    Controls.TabPage tp = new Controls.TabPage();
+                    TabPage tp = new TabPage();
 
                     // Grab the expected attributes
                     string title = xmlIn.GetAttribute(0);
@@ -644,7 +640,7 @@ namespace Crownwood.Magic.Controls
             // Make new leaf the active one
             _tabbedGroups.ActiveLeaf = leaf;
                 
-            TabControl tc = leaf.GroupControl as Controls.TabControl;
+            TabControl tc = leaf.GroupControl as TabControl;
                 
             // Select the newly added page
             tc.SelectedTab = tp;
@@ -683,7 +679,7 @@ namespace Crownwood.Magic.Controls
             }
                      
             // Get tab control for source leaf
-            Controls.TabControl tc = sourceLeaf.GroupControl as Controls.TabControl;
+            TabControl tc = sourceLeaf.GroupControl as TabControl;
                         
             TabPage tp = tc.SelectedTab;
 

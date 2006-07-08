@@ -10,17 +10,14 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Xml;
-using System.Text;
-using System.Data;
-using System.Drawing;
-using System.Collections;
 using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
-using Crownwood.Magic.Win32;
+using System.Xml;
 using Crownwood.Magic.Common;
-using Crownwood.Magic.Controls;
+using Crownwood.Magic.Win32;
 
 namespace Crownwood.Magic.Controls
 {
@@ -107,14 +104,14 @@ namespace Crownwood.Magic.Controls
         protected VisualStyle _style;
 	
 	    // Delegates for events
-	    public delegate void TabControlCreatedHandler(TabbedGroups tg, Controls.TabControl tc);
+	    public delegate void TabControlCreatedHandler(TabbedGroups tg, TabControl tc);
 	    public delegate void PageCloseRequestHandler(TabbedGroups tg, TGCloseRequestEventArgs e);
         public delegate void PageContextMenuHandler(TabbedGroups tg, TGContextMenuEventArgs e);
         public delegate void GlobalSavingHandler(TabbedGroups tg, XmlTextWriter xmlOut);
         public delegate void GlobalLoadingHandler(TabbedGroups tg, XmlTextReader xmlIn);
         public delegate void PageSavingHandler(TabbedGroups tg, TGPageSavingEventArgs e);
         public delegate void PageLoadingHandler(TabbedGroups tg, TGPageLoadingEventArgs e);
-        public delegate void ExternalDropHandler(TabbedGroups tg, TabGroupLeaf tgl, Controls.TabControl tc, DragProvider dp);
+        public delegate void ExternalDropHandler(TabbedGroups tg, TabGroupLeaf tgl, TabControl tc, DragProvider dp);
 	
 	    // Instance events
 	    public event TabControlCreatedHandler TabControlCreated;
@@ -759,7 +756,7 @@ namespace Crownwood.Magic.Controls
                     if (_activeLeaf != null)
                     {
                         // Get access to the contained tab control
-                        TabControl tc = _activeLeaf.GroupControl as Controls.TabControl;
+                        TabControl tc = _activeLeaf.GroupControl as TabControl;
                         
                         // Remove bold text for the selected page
                         tc.BoldSelectedPage = false;
@@ -771,7 +768,7 @@ namespace Crownwood.Magic.Controls
                     if (value != null)
                     {
                         // Get access to the contained tab control
-                        TabControl tc = value.GroupControl as Controls.TabControl;
+                        TabControl tc = value.GroupControl as TabControl;
                         
                         // Remove bold text for the selected page
                         tc.BoldSelectedPage = true;
@@ -970,7 +967,7 @@ namespace Crownwood.Magic.Controls
             }
         }
         
-        public virtual void OnTabControlCreated(Controls.TabControl tc)
+        public virtual void OnTabControlCreated(TabControl tc)
         {
 			// Only modify leaf count when not suspended
 			if (_suspendLeafCount == 0)
@@ -980,7 +977,7 @@ namespace Crownwood.Magic.Controls
 			}
 			
             // Define default values
-            tc.Appearance = Magic.Controls.TabControl.VisualAppearance.MultiDocument;
+            tc.Appearance = TabControl.VisualAppearance.MultiDocument;
             tc.BoldSelectedPage = false;
 			tc.DragOverSelect = false;
             tc.IDEPixelBorder = true;
@@ -990,11 +987,11 @@ namespace Crownwood.Magic.Controls
             // Apply the current display tab mode setting            
             switch(_displayTabMode)
             {
-                case TabbedGroups.DisplayTabModes.ShowAll:
-                    tc.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.ShowAlways;
+                case DisplayTabModes.ShowAll:
+                    tc.HideTabsMode = TabControl.HideTabsModes.ShowAlways;
                     break;
-                case TabbedGroups.DisplayTabModes.HideAll:
-                    tc.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.HideAlways;
+                case DisplayTabModes.HideAll:
+                    tc.HideTabsMode = TabControl.HideTabsModes.HideAlways;
                     break;
             }
             
@@ -1067,7 +1064,7 @@ namespace Crownwood.Magic.Controls
                 DirtyChanged(this, e);
         }
 
-        public virtual void OnExternalDrop(TabGroupLeaf tgl, Controls.TabControl tc, DragProvider dp)
+        public virtual void OnExternalDrop(TabGroupLeaf tgl, TabControl tc, DragProvider dp)
         {
             // Has anyone registered for the event?
             if (ExternalDrop != null)
@@ -1564,13 +1561,13 @@ namespace Crownwood.Magic.Controls
             {		
                 switch(msg.Msg)
                 {
-                    case (int)Win32.Msgs.WM_KEYDOWN:
+                    case (int)Msgs.WM_KEYDOWN:
                         // Ignore keyboard input if the control is disabled
                         if (this.Enabled)
                         {
                             // Find up/down state of shift and control keys
-                            ushort shiftKey = User32.GetKeyState((int)Win32.VirtualKeys.VK_SHIFT);
-                            ushort controlKey = User32.GetKeyState((int)Win32.VirtualKeys.VK_CONTROL);
+                            ushort shiftKey = User32.GetKeyState((int)VirtualKeys.VK_SHIFT);
+                            ushort controlKey = User32.GetKeyState((int)VirtualKeys.VK_CONTROL);
 
                             // Basic code we are looking for is the key pressed
                             int code = (int)msg.WParam;
@@ -1582,7 +1579,7 @@ namespace Crownwood.Magic.Controls
                             bool controlPressed = (((int)controlKey & 0x00008000) != 0);
 
                             // Was the TAB key pressed?
-                            if ((code == (int)Win32.VirtualKeys.VK_TAB) && controlPressed)
+                            if ((code == (int)VirtualKeys.VK_TAB) && controlPressed)
                             {
                                 if (shiftPressed)
                                     return SelectPreviousTab();
@@ -1607,11 +1604,11 @@ namespace Crownwood.Magic.Controls
                             }
                         }
                         break;
-                    case (int)Win32.Msgs.WM_SYSKEYDOWN:
+                    case (int)Msgs.WM_SYSKEYDOWN:
                         // Ignore keyboard input if the control is disabled
                         if (this.Enabled)
                         {
-                            if ((int)msg.WParam != (int)Win32.VirtualKeys.VK_MENU)
+                            if ((int)msg.WParam != (int)VirtualKeys.VK_MENU)
                             {
                                 // Construct shortcut from ALT + keychar
                                 Shortcut sc = (Shortcut)(0x00040000 + (int)msg.WParam);
@@ -1636,7 +1633,7 @@ namespace Crownwood.Magic.Controls
             // Must have an active leaf for shortcuts to operate against
             if (_activeLeaf != null)
             {
-                Controls.TabControl tc = _activeLeaf.GroupControl as Controls.TabControl;
+                TabControl tc = _activeLeaf.GroupControl as TabControl;
             
                 // Must have an active tab for these shortcuts to work against
                 if (tc.SelectedTab != null)
@@ -1729,7 +1726,7 @@ namespace Crownwood.Magic.Controls
                 do
                 {
                     // Access to the embedded tab control
-                    Controls.TabControl tc = thisLeaf.GroupControl as Controls.TabControl;
+                    TabControl tc = thisLeaf.GroupControl as TabControl;
                 
                     // Does it have any pages?
                     if (tc.TabPages.Count > 0)
@@ -1798,7 +1795,7 @@ namespace Crownwood.Magic.Controls
                 do
                 {
                     // Access to the embedded tab control
-                    Controls.TabControl tc = thisLeaf.GroupControl as Controls.TabControl;
+                    TabControl tc = thisLeaf.GroupControl as TabControl;
                 
                     // Does it have any pages?
                     if (tc.TabPages.Count > 0)

@@ -10,18 +10,17 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Xml;
-using System.Text;
-using System.Drawing;
-using System.Windows.Forms;
 using System.ComponentModel;
-using System.Xml.Serialization;
-using Microsoft.Win32;
-using Crownwood.Magic.Menus;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Docking;
+using System.Drawing;
+using System.IO;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
+using Crownwood.Magic.Menus;
+using Microsoft.Win32;
+using TabControl=Crownwood.Magic.Controls.TabControl;
 
 namespace Crownwood.Magic.Docking
 {
@@ -78,7 +77,7 @@ namespace Crownwood.Magic.Docking
         public delegate void ContentHandler(Content c, EventArgs cea);
         public delegate void ContentHidingHandler(Content c, CancelEventArgs cea);
         public delegate void ContextMenuHandler(PopupMenu pm, CancelEventArgs cea);
-		public delegate void TabControlCreatedHandler(Magic.Controls.TabControl tabControl);
+		public delegate void TabControlCreatedHandler(TabControl tabControl);
 		public delegate void SaveCustomConfigHandler(XmlTextWriter xmlOut);
         public delegate void LoadCustomConfigHandler(XmlTextReader xmlIn);
 
@@ -143,7 +142,7 @@ namespace Crownwood.Magic.Docking
 			}
 
             // Need notification when colors change
-            Microsoft.Win32.SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(OnPreferenceChanged);
+            SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(OnPreferenceChanged);
         }
 
         public ContainerControl Container
@@ -1380,7 +1379,7 @@ namespace Crownwood.Magic.Docking
             }
         }
 
-		public virtual void OnTabControlCreated(Magic.Controls.TabControl tabControl)
+		public virtual void OnTabControlCreated(TabControl tabControl)
 		{ 
 			// Notify interested parties about creation of a new TabControl instance
 			if (TabControlCreated != null)

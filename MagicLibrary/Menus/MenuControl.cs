@@ -10,28 +10,25 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Drawing;
-using System.Reflection;
 using System.Collections;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using System.ComponentModel;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using Microsoft.Win32;
-using Crownwood.Magic.Win32;
-using Crownwood.Magic.Menus;
+using Crownwood.Magic.Collections;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Controls;
-using Crownwood.Magic.Collections;
+using Crownwood.Magic.Win32;
+using Microsoft.Win32;
+using Cursors=System.Windows.Forms.Cursors;
 
 namespace Crownwood.Magic.Menus
 {
     [ToolboxBitmap(typeof(MenuControl))]
     [DefaultProperty("MenuCommands")]
     [DefaultEvent("PopupSelected")]
-    [Designer(typeof(Crownwood.Magic.Menus.MenuControlDesigner))]
+    [Designer(typeof(MenuControlDesigner))]
     public class MenuControl : ContainerControl, IMessageFilter
     {
         internal class MdiClientSubclass : NativeWindow
@@ -40,8 +37,8 @@ namespace Crownwood.Magic.Menus
             {
                 switch(m.Msg)
                 {
-                    case (int)Win32.Msgs.WM_MDISETMENU:
-                    case (int)Win32.Msgs.WM_MDIREFRESHMENU:
+                    case (int)Msgs.WM_MDISETMENU:
+                    case (int)Msgs.WM_MDIREFRESHMENU:
                         return;
                 }
 
@@ -67,7 +64,7 @@ namespace Crownwood.Magic.Menus
         protected const int _pendantOffset = 3;
 
         // Class constant is marked as 'readonly' to allow non constant initialization
-        protected readonly int WM_OPERATEMENU = (int)Win32.Msgs.WM_USER + 1;
+        protected readonly int WM_OPERATEMENU = (int)Msgs.WM_USER + 1;
 
         // Class fields
         protected static ImageList _menuImages = null;
@@ -183,7 +180,7 @@ namespace Crownwood.Magic.Menus
             _menuCommands = new MenuCommandCollection();
 			_glyphFading = GlyphFading.Default;
 			this.Dock = DockStyle.Top;
-			this.Cursor = System.Windows.Forms.Cursors.Arrow;
+			this.Cursor = Cursors.Arrow;
 			
             // Animation details
             _animateTime = 100;
@@ -204,7 +201,7 @@ namespace Crownwood.Magic.Menus
             _menuCommands.Removed += new CollectionChange(OnCollectionRemoved);
 
 			// Need notification when the MenuFont is changed
-			Microsoft.Win32.SystemEvents.UserPreferenceChanged += 
+			SystemEvents.UserPreferenceChanged += 
 			    new UserPreferenceChangedEventHandler(OnPreferenceChanged);
 
             DefineColors();
@@ -227,7 +224,7 @@ namespace Crownwood.Magic.Menus
             if( disposing )
             {
                 // Remove notifications
-                Microsoft.Win32.SystemEvents.UserPreferenceChanged -= 
+                SystemEvents.UserPreferenceChanged -= 
                     new UserPreferenceChangedEventHandler(OnPreferenceChanged);
             }
             base.Dispose( disposing );
@@ -903,7 +900,7 @@ namespace Crownwood.Magic.Menus
             Invalidate();
         }
 
-        internal void OnWM_MOUSEDOWN(Win32.POINT screenPos)
+        internal void OnWM_MOUSEDOWN(POINT screenPos)
         {
             // Convert the mouse position to screen coordinates
             User32.ScreenToClient(this.Handle, ref screenPos);
@@ -999,7 +996,7 @@ namespace Crownwood.Magic.Menus
             base.OnMouseUp(e);
         }
 
-        internal void OnWM_MOUSEMOVE(Win32.POINT screenPos)
+        internal void OnWM_MOUSEMOVE(POINT screenPos)
         {
             // Convert the mouse position to screen coordinates
             User32.ScreenToClient(this.Handle, ref screenPos);
@@ -1029,11 +1026,11 @@ namespace Crownwood.Magic.Menus
                 if (!_mouseOver)
                 {
                     // Create the structure needed for User32 call
-                    Win32.TRACKMOUSEEVENTS tme = new Win32.TRACKMOUSEEVENTS();
+                    TRACKMOUSEEVENTS tme = new TRACKMOUSEEVENTS();
 
                     // Fill in the structure
                     tme.cbSize = 16;									
-                    tme.dwFlags = (uint)Win32.TrackerEventFlags.TME_LEAVE;
+                    tme.dwFlags = (uint)TrackerEventFlags.TME_LEAVE;
                     tme.hWnd = this.Handle;								
                     tme.dwHoverTime = 0;								
 
@@ -2167,7 +2164,7 @@ namespace Crownwood.Magic.Menus
 				bool hideCaret = User32.HideCaret(IntPtr.Zero);
 
 				// Create an object for storing windows message information
-				Win32.MSG msg = new Win32.MSG();
+				MSG msg = new MSG();
 
 				_exitLoop = false;
 
@@ -2178,7 +2175,7 @@ namespace Crownwood.Magic.Menus
 					if (User32.WaitMessage())
 					{
 						// Take a peek at the message details without removing from queue
-						while(!_exitLoop && User32.PeekMessage(ref msg, 0, 0, 0, (int)Win32.PeekMessageFlags.PM_NOREMOVE))
+						while(!_exitLoop && User32.PeekMessage(ref msg, 0, 0, 0, (int)PeekMessageFlags.PM_NOREMOVE))
 						{
 //							Console.WriteLine("Loop {0} {1}", this.Handle, ((Win32.Msgs)msg.message).ToString());
     
@@ -2530,13 +2527,13 @@ namespace Crownwood.Magic.Menus
             {		
                 switch(msg.Msg)
                 {
-                    case (int)Win32.Msgs.WM_KEYDOWN:
+                    case (int)Msgs.WM_KEYDOWN:
                         // Ignore keyboard input if the control is disabled
                         if (this.Enabled)
 						{
                             // Find up/down state of shift and control keys
-                            ushort shiftKey = User32.GetKeyState((int)Win32.VirtualKeys.VK_SHIFT);
-                            ushort controlKey = User32.GetKeyState((int)Win32.VirtualKeys.VK_CONTROL);
+                            ushort shiftKey = User32.GetKeyState((int)VirtualKeys.VK_SHIFT);
+                            ushort controlKey = User32.GetKeyState((int)VirtualKeys.VK_CONTROL);
 
                             // Basic code we are looking for is the key pressed...
                             int code = (int)msg.WParam;
@@ -2556,11 +2553,11 @@ namespace Crownwood.Magic.Menus
 							return GenerateShortcut(sc, _menuCommands);
                         }
                         break;
-                    case (int)Win32.Msgs.WM_SYSKEYUP:
+                    case (int)Msgs.WM_SYSKEYUP:
                         // Ignore keyboard input if the control is disabled
                         if (this.Enabled)
                         {
-                            if ((int)msg.WParam == (int)Win32.VirtualKeys.VK_MENU)
+                            if ((int)msg.WParam == (int)VirtualKeys.VK_MENU)
                             {
                                 // Are there any menu commands?
                                 if (_drawCommands.Count > 0)
@@ -2589,11 +2586,11 @@ namespace Crownwood.Magic.Menus
                             }
                         }
                         break;
-                    case (int)Win32.Msgs.WM_SYSKEYDOWN:
+                    case (int)Msgs.WM_SYSKEYDOWN:
                         // Ignore keyboard input if the control is disabled
                         if (this.Enabled)
                         {
-                            if ((int)msg.WParam != (int)Win32.VirtualKeys.VK_MENU)
+                            if ((int)msg.WParam != (int)VirtualKeys.VK_MENU)
                             {
                                 // Construct shortcut from ALT + keychar
                                 Shortcut sc = (Shortcut)(0x00040000 + (int)msg.WParam);
@@ -2620,19 +2617,19 @@ namespace Crownwood.Magic.Menus
             return false;
         }
 
-		protected bool ProcessInterceptedMessage(ref Win32.MSG msg)
+		protected bool ProcessInterceptedMessage(ref MSG msg)
 		{
 			bool eat = false;
         
 			switch(msg.message)
 			{
-				case (int)Win32.Msgs.WM_LBUTTONDOWN:
-				case (int)Win32.Msgs.WM_MBUTTONDOWN:
-				case (int)Win32.Msgs.WM_RBUTTONDOWN:
-				case (int)Win32.Msgs.WM_XBUTTONDOWN:
-				case (int)Win32.Msgs.WM_NCLBUTTONDOWN:
-				case (int)Win32.Msgs.WM_NCMBUTTONDOWN:
-				case (int)Win32.Msgs.WM_NCRBUTTONDOWN:
+				case (int)Msgs.WM_LBUTTONDOWN:
+				case (int)Msgs.WM_MBUTTONDOWN:
+				case (int)Msgs.WM_RBUTTONDOWN:
+				case (int)Msgs.WM_XBUTTONDOWN:
+				case (int)Msgs.WM_NCLBUTTONDOWN:
+				case (int)Msgs.WM_NCMBUTTONDOWN:
+				case (int)Msgs.WM_NCRBUTTONDOWN:
 					// Mouse clicks cause the end of simulated focus unless they are
 					// inside the client area of the menu control itself
 					Point pt = new Point( (int)((uint)msg.lParam & 0x0000FFFFU), 
@@ -2641,10 +2638,10 @@ namespace Crownwood.Magic.Menus
 					if (!this.ClientRectangle.Contains(pt))	
 						SimulateReturnFocus();
 					break;
-				case (int)Win32.Msgs.WM_KEYDOWN:
+				case (int)Msgs.WM_KEYDOWN:
 					// Find up/down state of shift and control keys
-					ushort shiftKey = User32.GetKeyState((int)Win32.VirtualKeys.VK_SHIFT);
-					ushort controlKey = User32.GetKeyState((int)Win32.VirtualKeys.VK_CONTROL);
+					ushort shiftKey = User32.GetKeyState((int)VirtualKeys.VK_SHIFT);
+					ushort controlKey = User32.GetKeyState((int)VirtualKeys.VK_CONTROL);
 
 					// Basic code we are looking for is the key pressed...
 					int basecode = (int)msg.wParam;
@@ -2658,7 +2655,7 @@ namespace Crownwood.Magic.Menus
 					if (((int)controlKey & 0x00008000) != 0)
 						code += 0x00020000;
 
-					if (code == (int)Win32.VirtualKeys.VK_ESCAPE)
+					if (code == (int)VirtualKeys.VK_ESCAPE)
 					{
 						// Is an item being tracked
 						if (_trackItem != -1)
@@ -2677,7 +2674,7 @@ namespace Crownwood.Magic.Menus
 						// Prevent intended destination getting message
 						eat = true;
 					}
-					else if (code == (int)Win32.VirtualKeys.VK_LEFT)
+					else if (code == (int)VirtualKeys.VK_LEFT)
 					{
 						if (_direction == Direction.Horizontal)
 							ProcessMoveLeft(false);
@@ -2688,7 +2685,7 @@ namespace Crownwood.Magic.Menus
 						// Prevent intended destination getting message
 						eat = true;
 					}
-					else if (code == (int)Win32.VirtualKeys.VK_RIGHT)
+					else if (code == (int)VirtualKeys.VK_RIGHT)
 					{
 						if (_direction == Direction.Horizontal)
 							ProcessMoveRight(false);
@@ -2701,14 +2698,14 @@ namespace Crownwood.Magic.Menus
 						// Prevent intended destination getting message
 						eat = true;
 					}
-					else if (code == (int)Win32.VirtualKeys.VK_RETURN)
+					else if (code == (int)VirtualKeys.VK_RETURN)
 					{
 						ProcessEnter();
 
 						// Prevent intended destination getting message
 						eat = true;
 					}
-					else if (code == (int)Win32.VirtualKeys.VK_DOWN)
+					else if (code == (int)VirtualKeys.VK_DOWN)
 					{
 						if (_direction == Direction.Horizontal)
 							ProcessMoveDown();
@@ -2718,7 +2715,7 @@ namespace Crownwood.Magic.Menus
 						// Prevent intended destination getting message
 						eat = true;
 					}
-					else if (code == (int)Win32.VirtualKeys.VK_UP)
+					else if (code == (int)VirtualKeys.VK_UP)
 					{
 						ProcessMoveLeft(false);
 
@@ -2748,12 +2745,12 @@ namespace Crownwood.Magic.Menus
 						eat = true;
 					}
 					break;
-				case (int)Win32.Msgs.WM_KEYUP:
+				case (int)Msgs.WM_KEYUP:
 					eat = true;
 					break;
-				case (int)Win32.Msgs.WM_SYSKEYUP:
+				case (int)Msgs.WM_SYSKEYUP:
 					// Ignore keyboard input if the control is disabled
-					if ((int)msg.wParam == (int)Win32.VirtualKeys.VK_MENU)
+					if ((int)msg.wParam == (int)VirtualKeys.VK_MENU)
 					{
 						if (_trackItem != -1)
 						{
@@ -2772,8 +2769,8 @@ namespace Crownwood.Magic.Menus
 						eat = true;
 					}
 					break;
-				case (int)Win32.Msgs.WM_SYSKEYDOWN:
-					if ((int)msg.wParam != (int)Win32.VirtualKeys.VK_MENU)
+				case (int)Msgs.WM_SYSKEYDOWN:
+					if ((int)msg.wParam != (int)VirtualKeys.VK_MENU)
 					{
 						// Construct shortcut from ALT + keychar
 						Shortcut sc = (Shortcut)(0x00040000 + (int)msg.wParam);
@@ -2844,7 +2841,7 @@ namespace Crownwood.Magic.Menus
         protected void OnWM_GETDLGCODE(ref Message m)
         {
             // We want to the Form to provide all keyboard input to us
-            m.Result = (IntPtr)Win32.DialogCodes.DLGC_WANTALLKEYS;
+            m.Result = (IntPtr)DialogCodes.DLGC_WANTALLKEYS;
         }
 
         protected override void WndProc(ref Message m)
@@ -2856,7 +2853,7 @@ namespace Crownwood.Magic.Menus
             {
                 switch(m.Msg)
                 {
-                    case (int)Win32.Msgs.WM_GETDLGCODE:
+                    case (int)Msgs.WM_GETDLGCODE:
                         OnWM_GETDLGCODE(ref m);
                         return;
                 }

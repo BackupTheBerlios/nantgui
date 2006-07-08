@@ -10,15 +10,14 @@
 // *****************************************************************************
 
 using System;
-using System.Drawing;
 using System.Collections;
-using System.Windows.Forms;
 using System.ComponentModel;
-using Microsoft.Win32;
-using Crownwood.Magic.Win32;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Controls;
+using System.Drawing;
+using System.Windows.Forms;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
+using Microsoft.Win32;
+using TabPage=Crownwood.Magic.Controls.TabPage;
 
 namespace Crownwood.Magic.Docking
 {
@@ -29,16 +28,16 @@ namespace Crownwood.Magic.Docking
 		{
 			protected int _index;
 			protected Rectangle _drawRect;
-            protected Crownwood.Magic.Controls.TabPage _tabPage;
+            protected TabPage _tabPage;
 
-			public DrawTab(Crownwood.Magic.Controls.TabPage tabPage, Rectangle drawRect, int index)
+			public DrawTab(TabPage tabPage, Rectangle drawRect, int index)
 			{
 				_index = index;
 				_tabPage = tabPage;
 				_drawRect = drawRect;
 			}
 
-			public Crownwood.Magic.Controls.TabPage TabPage  { get { return _tabPage; } }
+			public TabPage TabPage  { get { return _tabPage; } }
             public Rectangle DrawRect                        { get { return _drawRect; } }
 			public int Index                                 { get { return _index; } }
 		}
@@ -96,7 +95,7 @@ namespace Crownwood.Magic.Docking
             _tabPages.Removed += new CollectionChange(OnRemovedPage);
 
             // Need notification when the MenuFont is changed
-            Microsoft.Win32.SystemEvents.UserPreferenceChanged += new 
+            SystemEvents.UserPreferenceChanged += new 
                 UserPreferenceChangedEventHandler(OnPreferenceChanged);
 
 			// Default default colors
@@ -113,7 +112,7 @@ namespace Crownwood.Magic.Docking
             if(disposing)
             {
                 // Remove notifications
-                Microsoft.Win32.SystemEvents.UserPreferenceChanged -= new 
+                SystemEvents.UserPreferenceChanged -= new 
                     UserPreferenceChangedEventHandler(OnPreferenceChanged);
             }
             base.Dispose(disposing);
@@ -299,7 +298,7 @@ namespace Crownwood.Magic.Docking
 			}
 
 			// Cast to correct type
-			Crownwood.Magic.Controls.TabPage page = value as Crownwood.Magic.Controls.TabPage;
+			TabPage page = value as TabPage;
 
 			// Grab the content instance of the page
 			Content c = page.Tag as Content;
@@ -347,7 +346,7 @@ namespace Crownwood.Magic.Docking
         protected void OnRemovedPage(int index, object value)
         {
 			// Cast to correct type
-			Crownwood.Magic.Controls.TabPage page = value as Crownwood.Magic.Controls.TabPage;
+			TabPage page = value as TabPage;
 
 			// Grab the content instance of the page
 			Content c = page.Tag as Content;
@@ -365,7 +364,7 @@ namespace Crownwood.Magic.Docking
 			bool update = false;
 
 			// Scan each tab page in turn
-			foreach(Crownwood.Magic.Controls.TabPage page in _tabPages)
+			foreach(TabPage page in _tabPages)
 			{
 				// Is this the page for the changed content?
 				if (page.Tag == obj)
@@ -580,7 +579,7 @@ namespace Crownwood.Magic.Docking
 			// Find largest space needed for drawing page text
 			using(Graphics g = this.CreateGraphics())
 			{
-				foreach(Crownwood.Magic.Controls.TabPage page in _tabPages)
+				foreach(TabPage page in _tabPages)
 				{
 					// Find width of the requested text
 					SizeF dimension = g.MeasureString(page.Title, this.Font);
@@ -865,7 +864,7 @@ namespace Crownwood.Magic.Docking
                     DrawOutlineForCell(e.Graphics, borderPen, drawRect);
 
 					// Draw the image in the left/top of the cell
-					Crownwood.Magic.Controls.TabPage page = dt.TabPage;
+					TabPage page = dt.TabPage;
 
                     int xDraw;
                     int yDraw;

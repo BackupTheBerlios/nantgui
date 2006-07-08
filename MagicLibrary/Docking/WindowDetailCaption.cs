@@ -10,13 +10,13 @@
 // *****************************************************************************
 
 using System;
-using System.Drawing;
-using System.Windows.Forms;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Imaging;
-using Microsoft.Win32;
+using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Controls;
+using Crownwood.Magic.Win32;
 
 namespace Crownwood.Magic.Docking
 {
@@ -440,10 +440,10 @@ namespace Crownwood.Magic.Docking
         public bool PreFilterMessage(ref Message m)
         {
             // Has a key been pressed?
-            if (m.Msg == (int)Win32.Msgs.WM_KEYDOWN)
+            if (m.Msg == (int)Msgs.WM_KEYDOWN)
             {
                 // Is it the ESCAPE key?
-                if ((int)m.WParam == (int)Win32.VirtualKeys.VK_ESCAPE)
+                if ((int)m.WParam == (int)VirtualKeys.VK_ESCAPE)
                 {                   
                     // Are we in redocking mode?
                     if (_redocker != null)

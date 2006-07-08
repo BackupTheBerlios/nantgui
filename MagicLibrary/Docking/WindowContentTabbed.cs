@@ -10,12 +10,15 @@
 // *****************************************************************************
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.ComponentModel;
+using Crownwood.Magic.Collections;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Controls;
-using Crownwood.Magic.Collections;
+using Crownwood.Magic.Win32;
+using TabControl=Crownwood.Magic.Controls.TabControl;
+using TabPage=Crownwood.Magic.Controls.TabPage;
 
 namespace Crownwood.Magic.Docking
 {
@@ -30,7 +33,7 @@ namespace Crownwood.Magic.Docking
         protected int _dragPageIndex;
         protected Content _activeContent;
         protected RedockerContent _redocker;
-        protected Magic.Controls.TabControl _tabControl;
+        protected TabControl _tabControl;
 
         public WindowContentTabbed(DockingManager manager, VisualStyle vs)
             : base(manager, vs)
@@ -39,13 +42,13 @@ namespace Crownwood.Magic.Docking
             _activeContent = null;
             
             // Create the TabControl used for viewing the Content windows
-            _tabControl = new Magic.Controls.TabControl();
+            _tabControl = new TabControl();
 
             // It should always occupy the remaining space after all details
             _tabControl.Dock = DockStyle.Fill;
 
             // Show tabs only if two or more tab pages exist
-            _tabControl.HideTabsMode = Magic.Controls.TabControl.HideTabsModes.HideUsingLogic;
+            _tabControl.HideTabsMode = TabControl.HideTabsModes.HideUsingLogic;
             
             // Hook into the TabControl notifications
             _tabControl.GotFocus += new EventHandler(OnTabControlGotFocus);
@@ -57,7 +60,7 @@ namespace Crownwood.Magic.Docking
             _tabControl.PageDragMove += new MouseEventHandler(OnPageDragMove);
             _tabControl.PageDragEnd += new MouseEventHandler(OnPageDragEnd);
             _tabControl.PageDragQuit += new MouseEventHandler(OnPageDragQuit);
-            _tabControl.DoubleClickTab += new Magic.Controls.TabControl.DoubleClickTabHandler(OnDoubleClickTab);
+            _tabControl.DoubleClickTab += new TabControl.DoubleClickTabHandler(OnDoubleClickTab);
 			_tabControl.Font = manager.TabControlFont;
             _tabControl.BackColor = manager.BackColor;
             _tabControl.ForeColor = manager.InactiveTextColor;
@@ -101,7 +104,7 @@ namespace Crownwood.Magic.Docking
         {
             get
             {
-                Magic.Controls.TabPage tp = _tabControl.SelectedTab;
+                TabPage tp = _tabControl.SelectedTab;
                 
                 if (tp != null)
                     return (Content)tp.Tag;
@@ -110,14 +113,14 @@ namespace Crownwood.Magic.Docking
             }
         }
 
-		public Magic.Controls.TabControl TabControl
+		public TabControl TabControl
 		{
 			get { return _tabControl; } 
 		}
 
         public void HideCurrentContent()
         {
-            Magic.Controls.TabPage tp = _tabControl.SelectedTab;
+            TabPage tp = _tabControl.SelectedTab;
             
 			int count = _tabControl.TabPages.Count;
 
@@ -169,7 +172,7 @@ namespace Crownwood.Magic.Docking
 		public override void BringContentToFront(Content c)
 		{
             // Find the matching Page and select it
-            foreach(Magic.Controls.TabPage page in _tabControl.TabPages)
+            foreach(TabPage page in _tabControl.TabPages)
                 if (page.Tag == c)
                 {
                     _tabControl.SelectedTab = page;
@@ -230,7 +233,7 @@ namespace Crownwood.Magic.Docking
             Content content = value as Content;
 
             // Create TabPage to represent the Content
-            Magic.Controls.TabPage newPage = new Magic.Controls.TabPage();
+            TabPage newPage = new TabPage();
 
             // Reflect the Content properties int the TabPage
             newPage.Title = content.Title;
@@ -251,7 +254,7 @@ namespace Crownwood.Magic.Docking
             Content c = value as Content;
 
             // Find the matching Page and remove it
-            foreach(Magic.Controls.TabPage page in _tabControl.TabPages)
+            foreach(TabPage page in _tabControl.TabPages)
                 if (page.Tag == c)
                 {
                     _tabControl.TabPages.Remove(page);
@@ -335,7 +338,7 @@ namespace Crownwood.Magic.Docking
                 collection.Add(new HotZoneTabbed(hotArea, newSize, this, itself));				
         }
 
-		protected void OnDoubleClickTab(Magic.Controls.TabControl tc, Magic.Controls.TabPage page)
+		protected void OnDoubleClickTab(TabControl tc, TabPage page)
 		{
 			Content c = (Content)page.Tag;
 
@@ -355,7 +358,7 @@ namespace Crownwood.Magic.Docking
             if (this.RedockAllowed)
             {
                 // There must be a selected page for this event to occur
-                Magic.Controls.TabPage page = _tabControl.SelectedTab;
+                TabPage page = _tabControl.SelectedTab;
 
                 // Event page must specify its Content object
                 Content c = page.Tag as Content;
@@ -422,7 +425,7 @@ namespace Crownwood.Magic.Docking
         protected override void OnContentChanged(Content obj, Content.Property prop)
         {
             // Find the matching TabPage entry
-            foreach(Magic.Controls.TabPage page in _tabControl.TabPages)
+            foreach(TabPage page in _tabControl.TabPages)
             {
                 // Does this page manage our Content?
                 if (page.Tag == obj)
@@ -580,10 +583,10 @@ namespace Crownwood.Magic.Docking
         public bool PreFilterMessage(ref Message m)
         {
             // Has a key been pressed?
-            if (m.Msg == (int)Win32.Msgs.WM_KEYDOWN)
+            if (m.Msg == (int)Msgs.WM_KEYDOWN)
             {
                 // Is it the ESCAPE key?
-                if ((int)m.WParam == (int)Win32.VirtualKeys.VK_ESCAPE)
+                if ((int)m.WParam == (int)VirtualKeys.VK_ESCAPE)
                 {                   
                     // Are we in redocking mode?
                     if (_redocker != null)
@@ -608,7 +611,7 @@ namespace Crownwood.Magic.Docking
         protected void RestoreDraggingPage()
         {
             // Create TabPage to represent the Content
-            Magic.Controls.TabPage newPage = new Magic.Controls.TabPage();
+            TabPage newPage = new TabPage();
 
             Content content = _redocker.Content;
 

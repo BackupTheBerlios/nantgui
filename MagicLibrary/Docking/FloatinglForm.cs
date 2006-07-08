@@ -10,13 +10,11 @@
 // *****************************************************************************
 
 using System;
-using System.Drawing;
-using System.Collections;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Win32;
-using Crownwood.Magic.Docking;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Win32;
 
 namespace Crownwood.Magic.Docking
 {
@@ -222,7 +220,7 @@ namespace Crownwood.Magic.Docking
 
                 // The only way to get a caption bar with only small 
                 // close button is by providing this extended style
-                cp.ExStyle |= (int)Win32.WindowExStyles.WS_EX_TOOLWINDOW;
+                cp.ExStyle |= (int)WindowExStyles.WS_EX_TOOLWINDOW;
 
                 return cp;
             }
@@ -337,7 +335,7 @@ namespace Crownwood.Magic.Docking
 			base.OnClosing(e);
 		}
 
-        protected override void OnResize(System.EventArgs e)
+        protected override void OnResize(EventArgs e)
         {
             // Grab the aggregate collection of all Content objects in the Zone
             ContentCollection cc = ZoneHelper.Contents(_zone);
@@ -355,10 +353,10 @@ namespace Crownwood.Magic.Docking
         public bool PreFilterMessage(ref Message m)
         {
             // Has a key been pressed?
-            if (m.Msg == (int)Win32.Msgs.WM_KEYDOWN)
+            if (m.Msg == (int)Msgs.WM_KEYDOWN)
             {
                 // Is it the ESCAPE key?
-                if ((int)m.WParam == (int)Win32.VirtualKeys.VK_ESCAPE)
+                if ((int)m.WParam == (int)VirtualKeys.VK_ESCAPE)
                 {                   
                     // Are we in a redocking activity?
                     if (_intercept)
@@ -383,7 +381,7 @@ namespace Crownwood.Magic.Docking
         protected override void WndProc(ref Message m)
 		{
 			// Want to notice when the window is maximized
-			if (m.Msg == (int)Win32.Msgs.WM_NCLBUTTONDBLCLK)
+			if (m.Msg == (int)Msgs.WM_NCLBUTTONDBLCLK)
 			{
 				// Redock and kill ourself
 				Restore();
@@ -393,13 +391,13 @@ namespace Crownwood.Magic.Docking
 				// old state.  In that case we do not want to maximize the window
 				return;
 			}
-			else if (m.Msg == (int)Win32.Msgs.WM_NCLBUTTONDOWN)
+			else if (m.Msg == (int)Msgs.WM_NCLBUTTONDOWN)
 			{
 				if (!_intercept)
 				{
 					// Perform a hit test against our own window to determine 
 					// which area the mouse press is over at the moment.
-					uint result = User32.SendMessage(this.Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
+					uint result = User32.SendMessage(this.Handle, (int)Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
                 
 					// Only want to override the behviour of moving the window via the caption box
 					if (result == HITTEST_CAPTION)
@@ -414,7 +412,7 @@ namespace Crownwood.Magic.Docking
 						this.Activate();
 
 						// Get mouse position to inscreen coordinates
-						Win32.POINT mousePos;
+						POINT mousePos;
 						mousePos.x = (short)((uint)m.LParam & 0x0000FFFFU);
 						mousePos.y = (short)(uint)(((uint)m.LParam & 0xFFFF0000U) >> 16);
 
@@ -432,11 +430,11 @@ namespace Crownwood.Magic.Docking
 					}
 				}
 			}
-			else if (m.Msg == (int)Win32.Msgs.WM_MOUSEMOVE)
+			else if (m.Msg == (int)Msgs.WM_MOUSEMOVE)
 			{
 				if (_intercept)
 				{
-					Win32.POINT mousePos;
+					POINT mousePos;
 					mousePos.x = (short)((uint)m.LParam & 0x0000FFFFU);
 					mousePos.y = (short)(uint)(((uint)m.LParam & 0xFFFF0000U) >> 16);
 
@@ -446,12 +444,12 @@ namespace Crownwood.Magic.Docking
 					return;
 				}
 			}
-			else if ((m.Msg == (int)Win32.Msgs.WM_RBUTTONDOWN) ||
-					 (m.Msg == (int)Win32.Msgs.WM_MBUTTONDOWN))
+			else if ((m.Msg == (int)Msgs.WM_RBUTTONDOWN) ||
+					 (m.Msg == (int)Msgs.WM_MBUTTONDOWN))
 			{
 				if (_intercept)
 				{
-					Win32.POINT mousePos;
+					POINT mousePos;
 					mousePos.x = (short)((uint)m.LParam & 0x0000FFFFU);
 					mousePos.y = (short)(uint)(((uint)m.LParam & 0xFFFF0000U) >> 16);
 
@@ -467,11 +465,11 @@ namespace Crownwood.Magic.Docking
 					return;
 				}
 			}
-			else if (m.Msg == (int)Win32.Msgs.WM_LBUTTONUP)
+			else if (m.Msg == (int)Msgs.WM_LBUTTONUP)
 			{
 				if (_intercept)
 				{
-					Win32.POINT mousePos;
+					POINT mousePos;
 					mousePos.x = (short)((uint)m.LParam & 0x0000FFFFU);
 					mousePos.y = (short)(uint)(((uint)m.LParam & 0xFFFF0000U) >> 16);
 		
@@ -487,24 +485,24 @@ namespace Crownwood.Magic.Docking
 					return;
 				}
 			} 
-			else if ((m.Msg == (int)Win32.Msgs.WM_NCRBUTTONUP) ||
-				     (m.Msg == (int)Win32.Msgs.WM_NCMBUTTONDOWN) ||
-				     (m.Msg == (int)Win32.Msgs.WM_NCMBUTTONUP) ||
-			         (m.Msg == (int)Win32.Msgs.WM_RBUTTONDOWN) ||
-				     (m.Msg == (int)Win32.Msgs.WM_RBUTTONUP) ||
-			         (m.Msg == (int)Win32.Msgs.WM_MBUTTONDOWN) ||
-				     (m.Msg == (int)Win32.Msgs.WM_MBUTTONUP))
+			else if ((m.Msg == (int)Msgs.WM_NCRBUTTONUP) ||
+				     (m.Msg == (int)Msgs.WM_NCMBUTTONDOWN) ||
+				     (m.Msg == (int)Msgs.WM_NCMBUTTONUP) ||
+			         (m.Msg == (int)Msgs.WM_RBUTTONDOWN) ||
+				     (m.Msg == (int)Msgs.WM_RBUTTONUP) ||
+			         (m.Msg == (int)Msgs.WM_MBUTTONDOWN) ||
+				     (m.Msg == (int)Msgs.WM_MBUTTONUP))
 			{
 			    // Prevent middle and right mouse buttons from interrupting
 			    // the correct operation of left mouse dragging
 			    return;
 			} 
-			else if (m.Msg == (int)Win32.Msgs.WM_NCRBUTTONDOWN)
+			else if (m.Msg == (int)Msgs.WM_NCRBUTTONDOWN)
 			{
 			    if (!_intercept)
 			    {
 				    // Get screen coordinates of the mouse
-                    Win32.POINT mousePos;
+                    POINT mousePos;
                     mousePos.x = (short)((uint)m.LParam & 0x0000FFFFU);
                     mousePos.y = (short)(uint)(((uint)m.LParam & 0xFFFF0000U) >> 16);
         			

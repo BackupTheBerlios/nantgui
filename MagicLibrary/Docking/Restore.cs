@@ -10,12 +10,11 @@
 // *****************************************************************************
 
 using System;
-using System.Xml;
 using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Docking;
+using System.Xml;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Docking
 {
@@ -56,7 +55,7 @@ namespace Crownwood.Magic.Docking
 		public virtual void SaveToXml(XmlTextWriter xmlOut)
 		{
 			// Must define my type so loading can recreate my instance
-			xmlOut.WriteAttributeString("Type", this.GetType().ToString());
+			xmlOut.WriteAttributeString("Type", GetType().ToString());
 
 			SaveInternalToXml(xmlOut);
 

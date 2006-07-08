@@ -10,7 +10,6 @@
 // *****************************************************************************
 
 using System;
-using System.Text;
 using System.Drawing;
 
 namespace Crownwood.Magic.Common
@@ -25,12 +24,12 @@ namespace Crownwood.Magic.Common
 
 		public static string SizeToString(Size size)
 		{
-			return (string)_sc.ConvertTo(size, _stringType);
+			return _sc.ConvertToInvariantString(size);
 		}
 
 		public static Size StringToSize(string str)
 		{
-			return (Size)_sc.ConvertFrom(str);
+			return (Size)_sc.ConvertFromInvariantString(str);
 		}
 
 		public static string PointToString(Point point)

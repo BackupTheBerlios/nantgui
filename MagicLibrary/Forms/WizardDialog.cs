@@ -10,20 +10,17 @@
 // *****************************************************************************
 
 using System;
-using System.Drawing;
-using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Controls;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Controls;
 
 namespace Crownwood.Magic.Forms
 {
 	/// <summary>
 	/// Summary description for WizardDialog.
 	/// </summary>
-	public class WizardDialog : System.Windows.Forms.Form
+	public class WizardDialog : Form
 	{
 	    public enum TitleModes
 	    {
@@ -41,7 +38,7 @@ namespace Crownwood.Magic.Forms
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private Container components = null;
 
 		public WizardDialog()
 		{
@@ -54,9 +51,9 @@ namespace Crownwood.Magic.Forms
             ResetTitleMode();
             
             // Hook into wizard page collection changes
-            wizardControl.WizardPages.Cleared += new Collections.CollectionClear(OnPagesCleared);
-            wizardControl.WizardPages.Inserted += new Collections.CollectionChange(OnPagesChanged);
-            wizardControl.WizardPages.Removed += new Collections.CollectionChange(OnPagesChanged);
+            wizardControl.WizardPages.Cleared += new CollectionClear(OnPagesCleared);
+            wizardControl.WizardPages.Inserted += new CollectionChange(OnPagesChanged);
+            wizardControl.WizardPages.Removed += new CollectionChange(OnPagesChanged);
         }
 
 		/// <summary>
@@ -286,12 +283,12 @@ namespace Crownwood.Magic.Forms
             ApplyTitleMode();
         }
 
-        protected virtual void OnWizardPageEnter(Controls.WizardPage wp, Controls.WizardControl wc)
+        protected virtual void OnWizardPageEnter(WizardPage wp, WizardControl wc)
         {
             // By default we do nothing, let derived class override
         }
 
-        protected virtual void OnWizardPageLeave(Controls.WizardPage wp, Controls.WizardControl wc)
+        protected virtual void OnWizardPageLeave(WizardPage wp, WizardControl wc)
         {
             // By default we do nothing, let derived class override
         }

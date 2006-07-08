@@ -10,10 +10,8 @@
 // *****************************************************************************
 
 using System;
-using System.Data;
-using System.Drawing;
-using System.Collections;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Crownwood.Magic.Controls

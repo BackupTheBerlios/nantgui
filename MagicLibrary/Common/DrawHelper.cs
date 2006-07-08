@@ -11,8 +11,8 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Crownwood.Magic.Win32;
 
@@ -354,7 +354,7 @@ namespace Crownwood.Magic.Common
                     IntPtr extraRegion = CreateRectangleRegion(newRects[index], indent);
 
                     // Remove the intersection of the existing and extra regions
-                    Gdi32.CombineRgn(newRegion, newRegion, extraRegion, (int)Win32.CombineFlags.RGN_XOR);
+                    Gdi32.CombineRgn(newRegion, newRegion, extraRegion, (int)CombineFlags.RGN_XOR);
 
                     // Remove unwanted intermediate objects
                     Gdi32.DeleteObject(extraRegion);
@@ -366,7 +366,7 @@ namespace Crownwood.Magic.Common
                 // Define the area we are allowed to draw into
                 Gdi32.SelectClipRgn(hDC, newRegion);
 
-                Win32.RECT rectBox = new Win32.RECT();
+                RECT rectBox = new RECT();
 				 
                 // Get the smallest rectangle that encloses region
                 Gdi32.GetClipBox(hDC, ref rectBox);
@@ -400,7 +400,7 @@ namespace Crownwood.Magic.Common
 
         protected static IntPtr CreateRectangleRegion(Rectangle rect, int indent)
         {
-            Win32.RECT newWinRect = new Win32.RECT();
+            RECT newWinRect = new RECT();
             newWinRect.left = rect.Left;
             newWinRect.top = rect.Top;
             newWinRect.right = rect.Right;
@@ -421,7 +421,7 @@ namespace Crownwood.Magic.Common
             // Create region for the unwanted inside of the new rectangle
             IntPtr newInner = Gdi32.CreateRectRgnIndirect(ref newWinRect);
 
-            Win32.RECT emptyWinRect = new Win32.RECT();
+            RECT emptyWinRect = new RECT();
             emptyWinRect.left = 0;
             emptyWinRect.top = 0;
             emptyWinRect.right = 0;
@@ -431,7 +431,7 @@ namespace Crownwood.Magic.Common
             IntPtr newRegion = Gdi32.CreateRectRgnIndirect(ref emptyWinRect);
 
             // Remove the intersection of the outer and inner
-            Gdi32.CombineRgn(newRegion, newOuter, newInner, (int)Win32.CombineFlags.RGN_XOR);
+            Gdi32.CombineRgn(newRegion, newOuter, newInner, (int)CombineFlags.RGN_XOR);
 
             // Remove unwanted intermediate objects
             Gdi32.DeleteObject(newOuter);
@@ -459,9 +459,9 @@ namespace Crownwood.Magic.Common
 
                 IntPtr hBitmap = bitmap.GetHbitmap();
 
-                Win32.LOGBRUSH brush = new Win32.LOGBRUSH();
+                LOGBRUSH brush = new LOGBRUSH();
 
-                brush.lbStyle = (uint)Win32.BrushStyles.BS_PATTERN;
+                brush.lbStyle = (uint)BrushStyles.BS_PATTERN;
                 brush.lbHatch = (uint)hBitmap;
 
                 _halfToneBrush = Gdi32.CreateBrushIndirect(ref brush);

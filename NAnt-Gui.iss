@@ -56,6 +56,7 @@ Source: NAnt-Gui\MainFormDocking.config; DestDir: {app}\bin; Flags: ignoreversio
 Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.Framework\bin\Release\NAnt-Gui.Framework.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.NAnt\bin\Release\NAnt-Gui.NAnt.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+Source: NAnt-Gui\bin\Release\MagicLibrary.DLL; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 
 ; Libraries
 Source: ThirdParty Libraries\*; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
@@ -117,6 +118,14 @@ Source: NAnt.InnoSetup\*.csproj; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignor
 Source: NAnt.InnoSetup\Sample.iss; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt.InnoSetup\Sample.xml; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src
 Source: NAnt.InnoSetup\Tasks\*.cs; DestDir: {app}\src\NAnt.InnoSetup\Tasks; Flags: ignoreversion; Components: src
+; Magic Library
+Source: MagicLibrary\*.cs; DestDir: {app}\src\MagicLibrary; Flags: ignoreversion recursesubdirs; Components: src
+Source: MagicLibrary\*.resx; DestDir: {app}\src\MagicLibrary; Flags: ignoreversion skipifsourcedoesntexist recursesubdirs; Components: src
+Source: MagicLibrary\*.bmp; DestDir: {app}\src\MagicLibrary; Flags: ignoreversion skipifsourcedoesntexist recursesubdirs; Components: src
+Source: MagicLibrary\*.cur; DestDir: {app}\src\MagicLibrary; Flags: ignoreversion skipifsourcedoesntexist recursesubdirs; Components: src
+Source: MagicLibrary\*.ico; DestDir: {app}\src\MagicLibrary; Flags: ignoreversion skipifsourcedoesntexist recursesubdirs; Components: src
+Source: MagicLibrary\*.csproj; DestDir: {app}\src\MagicLibrary; Flags: ignoreversion; Components: src
+;Source: MagicLibrary\*.build; DestDir: {app}\src\MagicLibrary; Flags: ignoreversion; Components: src
 ; Tools
 Source: Tools\*; DestDir: {app}\src\Tools; Flags: ignoreversion recursesubdirs; Components: src
 

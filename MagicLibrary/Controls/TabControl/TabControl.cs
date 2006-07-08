@@ -10,28 +10,23 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Text;
-using System.Drawing;
-using System.Resources;
-using System.Reflection;
 using System.Collections;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using System.ComponentModel;
-using System.Drawing.Imaging;
-using Microsoft.Win32;
-using Crownwood.Magic.Win32;
-using Crownwood.Magic.Menus;
-using Crownwood.Magic.Common;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
+using Crownwood.Magic.Menus;
+using Microsoft.Win32;
 
 namespace Crownwood.Magic.Controls
 {
     [ToolboxBitmap(typeof(TabControl))]
     [DefaultProperty("Appearance")]
     [DefaultEvent("SelectionChanged")]
-    [Designer(typeof(Crownwood.Magic.Controls.TabControlDesigner))]
+    [Designer(typeof(TabControlDesigner))]
     public class TabControl : Panel
     {
         // Enumeration of appearance styles
@@ -302,7 +297,7 @@ namespace Crownwood.Magic.Controls
             _style = VisualStyle.IDE;
             _buttonActiveColor = Color.FromArgb(128, this.ForeColor);
             _buttonInactiveColor = _buttonActiveColor;
-            _textColor = TabControl.DefaultForeColor;	
+            _textColor = DefaultForeColor;	
             _textInactiveColor = Color.FromArgb(128, _textColor);
             _hotTextColor = SystemColors.ActiveCaption;
 
@@ -344,7 +339,7 @@ namespace Crownwood.Magic.Controls
 			_dragTimer.Tick += new EventHandler(OnDragOverTick);
 
             // Need notification when the MenuFont is changed
-            Microsoft.Win32.SystemEvents.UserPreferenceChanged += 
+            SystemEvents.UserPreferenceChanged += 
                 new UserPreferenceChangedEventHandler(OnPreferenceChanged);
 
             // Define the default Font, BackColor and Button images
@@ -362,14 +357,14 @@ namespace Crownwood.Magic.Controls
             if(disposing)
             {
                 // Remove notifications
-                Microsoft.Win32.SystemEvents.UserPreferenceChanged -= 
+                SystemEvents.UserPreferenceChanged -= 
                     new UserPreferenceChangedEventHandler(OnPreferenceChanged);
             }
             base.Dispose(disposing);
         }
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public new Control.ControlCollection Controls 
+		public new ControlCollection Controls 
 		{
 			get { return base.Controls; }
 		}
@@ -439,7 +434,7 @@ namespace Crownwood.Magic.Controls
 
         private bool ShouldSerializeForeColor()
         {
-            return _textColor != TabControl.DefaultForeColor;
+            return _textColor != DefaultForeColor;
         }
 
         [Category("Appearance")]
@@ -667,12 +662,12 @@ namespace Crownwood.Magic.Controls
 
         private bool ShouldSerializeTextColor()
         {
-            return _textColor != TabControl.DefaultForeColor;
+            return _textColor != DefaultForeColor;
         }
 
         public void ResetTextColor()
         {   
-            TextColor = TabControl.DefaultForeColor;
+            TextColor = DefaultForeColor;
         }
 
         [Category("Appearance")]
@@ -694,12 +689,12 @@ namespace Crownwood.Magic.Controls
 
         private bool ShouldSerializeTextInactiveColor()
         {
-            return _textInactiveColor != Color.FromArgb(128, TabControl.DefaultForeColor);
+            return _textInactiveColor != Color.FromArgb(128, DefaultForeColor);
         }
 
         public void TextTextInactiveColor()
         {
-            TextInactiveColor = Color.FromArgb(128, TabControl.DefaultForeColor);
+            TextInactiveColor = Color.FromArgb(128, DefaultForeColor);
         }
 
         [Browsable(false)]
@@ -3772,7 +3767,7 @@ namespace Crownwood.Magic.Controls
 
 		protected override void OnDoubleClick(EventArgs e)
 		{
-			Point pos = TabControl.MousePosition;
+			Point pos = MousePosition;
 
 			int count = _tabRects.Count;
 
@@ -3910,7 +3905,7 @@ namespace Crownwood.Magic.Controls
 			if (process < _tabPages.Count)
 			{
 				// Remember where the left mouse was initially pressed
-				if (Control.MouseButtons == MouseButtons.Left)
+				if (MouseButtons == MouseButtons.Left)
 				{
 					_leftMouseDown = true;
 					_ignoreDownDrag = false;
@@ -4136,7 +4131,7 @@ namespace Crownwood.Magic.Controls
 			// If still using the Default color when we were created
 			if (_defaultColor)
 			{
-				DefineBackColor(TabControl.DefaultBackColor);
+				DefineBackColor(DefaultBackColor);
 
                 Recalculate();
                 Invalidate();

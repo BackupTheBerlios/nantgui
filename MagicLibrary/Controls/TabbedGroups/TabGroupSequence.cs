@@ -10,13 +10,11 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Xml;
 using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Controls;
+using System.Xml;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Controls
 {
@@ -494,7 +492,7 @@ namespace Crownwood.Magic.Controls
         protected void CompactRemoveEmptyTabLeafs(TabbedGroups.CompactFlags flags)
         {
             // Should we check for empty leaf nodes?
-            if ((flags & Controls.TabbedGroups.CompactFlags.RemoveEmptyTabLeaf) != 0)
+            if ((flags & TabbedGroups.CompactFlags.RemoveEmptyTabLeaf) != 0)
             {
                 int count = _children.Count;
                 
@@ -540,7 +538,7 @@ namespace Crownwood.Magic.Controls
         protected void CompactRemoveEmptyTabSequences(TabbedGroups.CompactFlags flags)
         {
             // Should we check for empty sequence nodes?
-            if ((flags & Controls.TabbedGroups.CompactFlags.RemoveEmptyTabSequence) != 0)
+            if ((flags & TabbedGroups.CompactFlags.RemoveEmptyTabSequence) != 0)
             {
                 int count = _children.Count;
                 
@@ -577,7 +575,7 @@ namespace Crownwood.Magic.Controls
             bool changed = false;
         
             // Should we check for single instance nodes?
-            if ((flags & Controls.TabbedGroups.CompactFlags.ReduceSingleEntries) != 0)
+            if ((flags & TabbedGroups.CompactFlags.ReduceSingleEntries) != 0)
             {
                 int count = _children.Count;
                 
@@ -638,7 +636,7 @@ namespace Crownwood.Magic.Controls
             bool changed = false;
         
             // Should we check for same direction sub-sequences?
-            if ((flags & Controls.TabbedGroups.CompactFlags.ReduceSameDirection) != 0)
+            if ((flags & TabbedGroups.CompactFlags.ReduceSameDirection) != 0)
             {
                 int count = _children.Count;
                 

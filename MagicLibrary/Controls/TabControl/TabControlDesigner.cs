@@ -9,20 +9,16 @@
 //  Magic Version 1.7.4.0 	www.dotnetmagic.com
 // *****************************************************************************
 
-using System;
-using System.Drawing;
 using System.Collections;
-using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Crownwood.Magic.Win32;
-using Crownwood.Magic.Controls;
-using Crownwood.Magic.Collections;
 
 namespace Crownwood.Magic.Controls
 {
-    public class TabControlDesigner :  System.Windows.Forms.Design.ParentControlDesigner
+    public class TabControlDesigner :  ParentControlDesigner
     {
         private ISelectionService _selectionService = null;
 
@@ -30,8 +26,8 @@ namespace Crownwood.Magic.Controls
         {
             get 
             {
-                if (base.Control is Crownwood.Magic.Controls.TabControl)
-                    return ((Crownwood.Magic.Controls.TabControl)base.Control).TabPages;
+                if (base.Control is TabControl)
+                    return ((TabControl)base.Control).TabPages;
                 else
                     return base.AssociatedComponents;
             }
@@ -59,10 +55,10 @@ namespace Crownwood.Magic.Controls
         protected override void WndProc(ref Message msg)
         {
             // Test for the left mouse down windows message
-            if (msg.Msg == (int)Win32.Msgs.WM_LBUTTONDOWN)
+            if (msg.Msg == (int)Msgs.WM_LBUTTONDOWN)
             {
                 // Get access to the TabControl we are the designer for
-                Crownwood.Magic.Controls.TabControl tabControl = this.SelectionService.PrimarySelection as Crownwood.Magic.Controls.TabControl;
+                TabControl tabControl = this.SelectionService.PrimarySelection as TabControl;
 
                 // Check we have a valid object reference
                 if (tabControl != null)
@@ -77,10 +73,10 @@ namespace Crownwood.Magic.Controls
             }
             else
             {
-                if (msg.Msg == (int)Win32.Msgs.WM_LBUTTONDBLCLK)
+                if (msg.Msg == (int)Msgs.WM_LBUTTONDBLCLK)
                 {
                     // Get access to the TabControl we are the designer for
-                    Crownwood.Magic.Controls.TabControl tabControl = this.SelectionService.PrimarySelection as Crownwood.Magic.Controls.TabControl;
+                    TabControl tabControl = this.SelectionService.PrimarySelection as TabControl;
 
                     // Check we have a valid object reference
                     if (tabControl != null)

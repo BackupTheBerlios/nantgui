@@ -10,10 +10,9 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Xml;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Crownwood.Magic.Controls
 {

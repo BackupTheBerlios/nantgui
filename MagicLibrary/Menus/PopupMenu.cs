@@ -10,21 +10,19 @@
 // *****************************************************************************
 
 using System;
-using System.IO;
-using System.Drawing;
-using System.Reflection;
-using System.Drawing.Text;
 using System.Collections;
-using System.Windows.Forms;
 using System.ComponentModel;
-using System.Drawing.Imaging;
+using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
-using Crownwood.Magic.Menus;
-using Crownwood.Magic.Win32;
-using Crownwood.Magic.Common;
-using Crownwood.Magic.Controls;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.Threading;
+using System.Windows.Forms;
 using Crownwood.Magic.Collections;
+using Crownwood.Magic.Common;
+using Crownwood.Magic.Win32;
+using Cursors=Crownwood.Magic.Win32.Cursors;
+using Timer=System.Windows.Forms.Timer;
 
 namespace Crownwood.Magic.Menus
 {
@@ -102,8 +100,8 @@ namespace Crownwood.Magic.Menus
         }
 
         // Class constants that are marked as 'readonly' are allowed computed initialization
-        protected readonly int WM_DISMISS = (int)Win32.Msgs.WM_USER + 1;
-        protected readonly int WM_OPERATE_SUBMENU = (int)Win32.Msgs.WM_USER + 2;
+        protected readonly int WM_DISMISS = (int)Msgs.WM_USER + 1;
+        protected readonly int WM_OPERATE_SUBMENU = (int)Msgs.WM_USER + 2;
 
         // Instance fields
         protected Timer _timer;
@@ -472,14 +470,14 @@ namespace Crownwood.Magic.Menus
 				CreateAndShowWindow();
 			
 				// Create an object for storing windows message information
-				Win32.MSG msg = new Win32.MSG();
+				MSG msg = new MSG();
 
 				// Pretend user pressed key down to get the first valid item selected
 				if (selectFirst)
 					ProcessKeyDown();
 
 				// Always use the arrow cursor
-				User32.SetCursor(User32.LoadCursor(IntPtr.Zero, (uint)Win32.Cursors.IDC_ARROW));
+				User32.SetCursor(User32.LoadCursor(IntPtr.Zero, (uint)Cursors.IDC_ARROW));
 
 				// Must hide caret so user thinks focus has changed
 				bool hideCaret = User32.HideCaret(IntPtr.Zero);
@@ -491,7 +489,7 @@ namespace Crownwood.Magic.Menus
 					if (User32.WaitMessage())
 					{
 						// Take a peek at the message details without removing from queue
-						while(!_exitLoop && User32.PeekMessage(ref msg, 0, 0, 0, (int)Win32.PeekMessageFlags.PM_NOREMOVE))
+						while(!_exitLoop && User32.PeekMessage(ref msg, 0, 0, 0, (int)PeekMessageFlags.PM_NOREMOVE))
 						{
 	//						Console.WriteLine("Track {0} {1}", this.Handle, ((Win32.Msgs)msg.message).ToString());
 
@@ -501,16 +499,16 @@ namespace Crownwood.Magic.Menus
 							int localHeight = _currentSize.Height - _position[(int)_style, (int)PI.ShadowHeight];
 
 							// Mouse was pressed in a window of this application
-							if ((msg.message == (int)Win32.Msgs.WM_LBUTTONUP) ||
-								(msg.message == (int)Win32.Msgs.WM_MBUTTONUP) ||
-								(msg.message == (int)Win32.Msgs.WM_RBUTTONUP) ||
-								(msg.message == (int)Win32.Msgs.WM_XBUTTONUP) ||
-								(msg.message == (int)Win32.Msgs.WM_NCLBUTTONUP) ||
-								(msg.message == (int)Win32.Msgs.WM_NCMBUTTONUP) ||
-								(msg.message == (int)Win32.Msgs.WM_NCRBUTTONUP) ||
-								(msg.message == (int)Win32.Msgs.WM_NCXBUTTONUP))
+							if ((msg.message == (int)Msgs.WM_LBUTTONUP) ||
+								(msg.message == (int)Msgs.WM_MBUTTONUP) ||
+								(msg.message == (int)Msgs.WM_RBUTTONUP) ||
+								(msg.message == (int)Msgs.WM_XBUTTONUP) ||
+								(msg.message == (int)Msgs.WM_NCLBUTTONUP) ||
+								(msg.message == (int)Msgs.WM_NCMBUTTONUP) ||
+								(msg.message == (int)Msgs.WM_NCRBUTTONUP) ||
+								(msg.message == (int)Msgs.WM_NCXBUTTONUP))
 							{
-								Win32.POINT screenPos = MousePositionToScreen(msg);
+								POINT screenPos = MousePositionToScreen(msg);
 
 								// Is the POINT inside the Popup window rectangle
 								if ((screenPos.x >= _currentPoint.X) && (screenPos.x <= (_currentPoint.X + localWidth)) &&
@@ -537,16 +535,16 @@ namespace Crownwood.Magic.Menus
 							}
 	                                          
 							// Mouse was pressed in a window of this application
-							if ((msg.message == (int)Win32.Msgs.WM_LBUTTONDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_MBUTTONDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_RBUTTONDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_XBUTTONDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_NCLBUTTONDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_NCMBUTTONDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_NCRBUTTONDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_NCXBUTTONDOWN))
+							if ((msg.message == (int)Msgs.WM_LBUTTONDOWN) ||
+								(msg.message == (int)Msgs.WM_MBUTTONDOWN) ||
+								(msg.message == (int)Msgs.WM_RBUTTONDOWN) ||
+								(msg.message == (int)Msgs.WM_XBUTTONDOWN) ||
+								(msg.message == (int)Msgs.WM_NCLBUTTONDOWN) ||
+								(msg.message == (int)Msgs.WM_NCMBUTTONDOWN) ||
+								(msg.message == (int)Msgs.WM_NCRBUTTONDOWN) ||
+								(msg.message == (int)Msgs.WM_NCXBUTTONDOWN))
 							{
-								Win32.POINT screenPos = MousePositionToScreen(msg);
+								POINT screenPos = MousePositionToScreen(msg);
 
 								// Is the POINT inside the Popup window rectangle
 								if ((screenPos.x >= _currentPoint.X) && (screenPos.x <= (_currentPoint.X + localWidth)) &&
@@ -602,9 +600,9 @@ namespace Crownwood.Magic.Menus
 							}
 
 							// Mouse move occured
-							if (msg.message == (int)Win32.Msgs.WM_MOUSEMOVE) 
+							if (msg.message == (int)Msgs.WM_MOUSEMOVE) 
 							{
-								Win32.POINT screenPos = MousePositionToScreen(msg);
+								POINT screenPos = MousePositionToScreen(msg);
 
 								// Is the POINT inside the Popup window rectangle
 								if ((screenPos.x >= _currentPoint.X) && (screenPos.x <= (_currentPoint.X + localWidth)) &&
@@ -643,7 +641,7 @@ namespace Crownwood.Magic.Menus
 								eatMessage = true;								
 							}
 
-							if (msg.message == (int)Win32.Msgs.WM_SETCURSOR) 
+							if (msg.message == (int)Msgs.WM_SETCURSOR) 
 							{
 								OnWM_SETCURSOR();
 
@@ -652,10 +650,10 @@ namespace Crownwood.Magic.Menus
 							}
 
 							// Was the alt key pressed?
-							if (msg.message == (int)Win32.Msgs.WM_SYSKEYDOWN)
+							if (msg.message == (int)Msgs.WM_SYSKEYDOWN)
 							{
 								// Alt key pressed on its own
-								if((int)msg.wParam == (int)Win32.VirtualKeys.VK_MENU)	// ALT key
+								if((int)msg.wParam == (int)VirtualKeys.VK_MENU)	// ALT key
 								{
 									// Then we should dimiss ourself
 									_exitLoop = true;
@@ -663,25 +661,25 @@ namespace Crownwood.Magic.Menus
 								else
 								{
 									// Pretend it is a normal keypress for processing
-									msg.message = (int)Win32.Msgs.WM_KEYDOWN;
+									msg.message = (int)Msgs.WM_KEYDOWN;
 								}
 							}
 
 							// Was a non-alt key pressed?
-							if (msg.message == (int)Win32.Msgs.WM_KEYDOWN)
+							if (msg.message == (int)Msgs.WM_KEYDOWN)
 							{
 								switch((int)msg.wParam)
 								{
-									case (int)Win32.VirtualKeys.VK_UP:
+									case (int)VirtualKeys.VK_UP:
 										ProcessKeyUp();
 										break;
-									case (int)Win32.VirtualKeys.VK_DOWN:
+									case (int)VirtualKeys.VK_DOWN:
 										ProcessKeyDown();
 										break;
-									case (int)Win32.VirtualKeys.VK_LEFT:
+									case (int)VirtualKeys.VK_LEFT:
 										ProcessKeyLeft();
 										break;
-									case (int)Win32.VirtualKeys.VK_RIGHT:
+									case (int)VirtualKeys.VK_RIGHT:
 										if(ProcessKeyRight())
 										{
 											// Do not attempt to pull a message off the queue as the
@@ -689,7 +687,7 @@ namespace Crownwood.Magic.Menus
 											leaveMsg = true;
 										}
 										break;
-									case (int)Win32.VirtualKeys.VK_RETURN:
+									case (int)VirtualKeys.VK_RETURN:
 										// Is an item currently selected
 										if (_trackItem != -1)
 										{
@@ -723,7 +721,7 @@ namespace Crownwood.Magic.Menus
 											}
 										}
 										break;
-									case (int)Win32.VirtualKeys.VK_ESCAPE:
+									case (int)VirtualKeys.VK_ESCAPE:
 										// User wants to exit the menu, so set the flag to exit the message loop but 
 										// let the message get processed. This way the key press is thrown away.
 										_exitLoop = true;
@@ -751,10 +749,10 @@ namespace Crownwood.Magic.Menus
 							}
 
 							// We consume all keyboard input
-							if ((msg.message == (int)Win32.Msgs.WM_KEYDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_KEYUP) ||
-								(msg.message == (int)Win32.Msgs.WM_SYSKEYDOWN) ||
-								(msg.message == (int)Win32.Msgs.WM_SYSKEYUP))					
+							if ((msg.message == (int)Msgs.WM_KEYDOWN) ||
+								(msg.message == (int)Msgs.WM_KEYUP) ||
+								(msg.message == (int)Msgs.WM_SYSKEYDOWN) ||
+								(msg.message == (int)Msgs.WM_SYSKEYUP))					
 							{
 								// Eat the message to prevent the intended destination getting it
 								eatMessage = true;								
@@ -763,7 +761,7 @@ namespace Crownwood.Magic.Menus
 							// Should the message be eaten to prevent intended destination getting it?
 							if (eatMessage)
 							{
-								Win32.MSG eat = new Win32.MSG();
+								MSG eat = new MSG();
 								User32.GetMessage(ref eat, 0, 0, 0);
 							}
 							else
@@ -839,7 +837,7 @@ namespace Crownwood.Magic.Menus
 		
 		protected void HideMenuWindow()
 		{
-	        User32.ShowWindow(this.Handle, (short)Win32.ShowWindowStyles.SW_HIDE);
+	        User32.ShowWindow(this.Handle, (short)ShowWindowStyles.SW_HIDE);
 		}
 
 		protected void ManualAnimateBlend(bool show)
@@ -849,7 +847,7 @@ namespace Crownwood.Magic.Menus
             UpdateLayeredWindow(0);
 
             // Show the window without activating it (i.e. do not take focus)
-            User32.ShowWindow(this.Handle, (short)Win32.ShowWindowStyles.SW_SHOWNOACTIVATE);
+            User32.ShowWindow(this.Handle, (short)ShowWindowStyles.SW_SHOWNOACTIVATE);
 
             int stepDelay = (int)(_animateTime / _blendSteps);
             
@@ -871,7 +869,7 @@ namespace Crownwood.Magic.Menus
                 // Short delay before showing next frame, but test if delay is actually needed
                 // because sometimes the time to update layered window is longer than delay
                 if ((_animateTime > 0) && (elapsed.Milliseconds < stepDelay))
-                    System.Threading.Thread.Sleep(stepDelay - elapsed.Milliseconds);
+                    Thread.Sleep(stepDelay - elapsed.Milliseconds);
             }
 		}
 
@@ -906,26 +904,26 @@ namespace Crownwood.Magic.Menus
             cp.Parent = IntPtr.Zero;
 			
             // Appear as a top-level window
-            cp.Style = unchecked((int)(uint)Win32.WindowStyles.WS_POPUP);
+            cp.Style = unchecked((int)(uint)WindowStyles.WS_POPUP);
 			
             // Set styles so that it does not have a caption bar and is above all other 
             // windows in the ZOrder, i.e. TOPMOST
-            cp.ExStyle = (int)Win32.WindowExStyles.WS_EX_TOPMOST + 
-                         (int)Win32.WindowExStyles.WS_EX_TOOLWINDOW;
+            cp.ExStyle = (int)WindowExStyles.WS_EX_TOPMOST + 
+                         (int)WindowExStyles.WS_EX_TOOLWINDOW;
 
             // OS specific style
             if (_layered)
             {
                 // If not on NT then we are going to use alpha blending on the shadow border
                 // and so we need to specify the layered window style so the OS can handle it
-                cp.ExStyle += (int)Win32.WindowExStyles.WS_EX_LAYERED;
+                cp.ExStyle += (int)WindowExStyles.WS_EX_LAYERED;
             }
 
             // Is this the plain style of appearance?
             if (_style == VisualStyle.Plain)
             {
                 // We want the tradiditonal 3D border
-                cp.Style += unchecked((int)(uint)Win32.WindowStyles.WS_DLGFRAME);
+                cp.Style += unchecked((int)(uint)WindowStyles.WS_DLGFRAME);
             }
 
             // Create the actual window
@@ -960,7 +958,7 @@ namespace Crownwood.Magic.Menus
                         int bRetValue = 0;
 
                         // Does the system want animation to occur?
-                        User32.SystemParametersInfo((uint)Win32.SPIActions.SPI_GETMENUANIMATION, 0, ref bRetValue, 0);
+                        User32.SystemParametersInfo((uint)SPIActions.SPI_GETMENUANIMATION, 0, ref bRetValue, 0);
 
                         animate = (bRetValue != 0);
                         break;
@@ -976,7 +974,7 @@ namespace Crownwood.Magic.Menus
 						int bRetValue = 0;
 
 						// Does the system want fading or sliding?
-						User32.SystemParametersInfo((uint)Win32.SPIActions.SPI_GETMENUFADE, 0, ref bRetValue, 0);
+						User32.SystemParametersInfo((uint)SPIActions.SPI_GETMENUFADE, 0, ref bRetValue, 0);
 
 						// Use appropriate flags to match request
 						if (bRetValue != 0)
@@ -986,7 +984,7 @@ namespace Crownwood.Magic.Menus
 					}
 
 					// Animate the appearance of the window
-					if ((animateFlags & (uint)Win32.AnimateFlags.AW_BLEND) != 0)
+					if ((animateFlags & (uint)AnimateFlags.AW_BLEND) != 0)
 					{
 						// Cannot use Win32.AnimateWindow to blend a layered window
 						ManualAnimateBlend(true);
@@ -1005,7 +1003,7 @@ namespace Crownwood.Magic.Menus
 			if (!animated)
 			{
                 // Show the window without activating it (i.e. do not take focus)
-				User32.ShowWindow(this.Handle, (short)Win32.ShowWindowStyles.SW_SHOWNOACTIVATE);
+				User32.ShowWindow(this.Handle, (short)ShowWindowStyles.SW_SHOWNOACTIVATE);
 			}
         }
 
@@ -1047,31 +1045,31 @@ namespace Crownwood.Magic.Menus
                 IntPtr oldBitmap = Gdi32.SelectObject(memoryDC, hBitmap);
 
                 // New window size
-                Win32.SIZE ulwsize;
+                SIZE ulwsize;
                 ulwsize.cx = size.Width;
                 ulwsize.cy = size.Height;
 
                 // New window position
-                Win32.POINT topPos;
+                POINT topPos;
                 topPos.x = point.X;
                 topPos.y = point.Y;
 
                 // Offset into memory bitmap is always zero
-                Win32.POINT pointSource;
+                POINT pointSource;
                 pointSource.x = 0;
                 pointSource.y = 0;
 
                 // We want to make the entire bitmap opaque 
-                Win32.BLENDFUNCTION blend = new Win32.BLENDFUNCTION();
-                blend.BlendOp             = (byte)Win32.AlphaFlags.AC_SRC_OVER;
+                BLENDFUNCTION blend = new BLENDFUNCTION();
+                blend.BlendOp             = (byte)AlphaFlags.AC_SRC_OVER;
                 blend.BlendFlags          = 0;
                 blend.SourceConstantAlpha = alpha;
-                blend.AlphaFormat         = (byte)Win32.AlphaFlags.AC_SRC_ALPHA;
+                blend.AlphaFormat         = (byte)AlphaFlags.AC_SRC_ALPHA;
 
                 // Tell operating system to use our bitmap for painting
                 User32.UpdateLayeredWindow(Handle, hDC, ref topPos, ref ulwsize, 
                                            memoryDC, ref pointSource, 0, ref blend, 
-                                           (int)Win32.UpdateLayeredWindowsFlags.ULW_ALPHA);
+                                           (int)UpdateLayeredWindowsFlags.ULW_ALPHA);
 
                 // Put back the old bitmap handle
                 Gdi32.SelectObject(memoryDC, oldBitmap);
@@ -1281,7 +1279,7 @@ namespace Crownwood.Magic.Menus
                 // Alter size and location of window
                 User32.MoveWindow(this.Handle, newPos.X, newPos.Y, newSize.Width, newSize.Height, true);			
 
-				Win32.RECT clientRect = new Win32.RECT();
+				RECT clientRect = new RECT();
 
 				clientRect.left = 0;
 				clientRect.top = 0;
@@ -1704,7 +1702,7 @@ namespace Crownwood.Magic.Menus
 
         protected void RefreshAllCommands()
         {
-            Win32.RECT rectRaw = new Win32.RECT();
+            RECT rectRaw = new RECT();
 
             // Grab the screen rectangle of the window
             User32.GetWindowRect(this.Handle, ref rectRaw);
@@ -2826,22 +2824,22 @@ namespace Crownwood.Magic.Menus
             return -1;
         }
 
-        protected Win32.POINT MousePositionToScreen(Win32.MSG msg)
+        protected POINT MousePositionToScreen(MSG msg)
         {
-            Win32.POINT screenPos;
+            POINT screenPos;
             screenPos.x = (short)((uint)msg.lParam & 0x0000FFFFU);
             screenPos.y = (short)(((uint)msg.lParam & 0xFFFF0000U) >> 16);
 
 			// Convert the mouse position to screen coordinates, 
 			// but not for non-client messages
-			if ((msg.message != (int)Win32.Msgs.WM_NCLBUTTONUP) &&
-				(msg.message != (int)Win32.Msgs.WM_NCMBUTTONUP) &&
-				(msg.message != (int)Win32.Msgs.WM_NCRBUTTONUP) &&
-				(msg.message != (int)Win32.Msgs.WM_NCXBUTTONUP) &&
-				(msg.message != (int)Win32.Msgs.WM_NCLBUTTONDOWN) &&
-				(msg.message != (int)Win32.Msgs.WM_NCMBUTTONDOWN) &&
-				(msg.message != (int)Win32.Msgs.WM_NCRBUTTONDOWN) &&
-				(msg.message != (int)Win32.Msgs.WM_NCXBUTTONDOWN))	
+			if ((msg.message != (int)Msgs.WM_NCLBUTTONUP) &&
+				(msg.message != (int)Msgs.WM_NCMBUTTONUP) &&
+				(msg.message != (int)Msgs.WM_NCRBUTTONUP) &&
+				(msg.message != (int)Msgs.WM_NCXBUTTONUP) &&
+				(msg.message != (int)Msgs.WM_NCLBUTTONDOWN) &&
+				(msg.message != (int)Msgs.WM_NCMBUTTONDOWN) &&
+				(msg.message != (int)Msgs.WM_NCRBUTTONDOWN) &&
+				(msg.message != (int)Msgs.WM_NCXBUTTONDOWN))	
 			{
 				// Convert the mouse position to screen coordinates
 				User32.ClientToScreen(msg.hwnd, ref screenPos);
@@ -2850,13 +2848,13 @@ namespace Crownwood.Magic.Menus
 			return screenPos;
         }
 
-        protected bool ParentControlWantsMouseMessage(Win32.POINT screenPos, ref Win32.MSG msg)
+        protected bool ParentControlWantsMouseMessage(POINT screenPos, ref MSG msg)
         {
             // Special case the MOUSEMOVE so if we are part of a MenuControl
             // then we should let the MenuControl process that message
-            if ((msg.message == (int)Win32.Msgs.WM_MOUSEMOVE) && (_parentControl != null))
+            if ((msg.message == (int)Msgs.WM_MOUSEMOVE) && (_parentControl != null))
             {
-                Win32.RECT rectRaw = new Win32.RECT();
+                RECT rectRaw = new RECT();
 
                 // Grab the screen rectangle of the parent control
                 User32.GetWindowRect(_parentControl.Handle, ref rectRaw);
@@ -2869,7 +2867,7 @@ namespace Crownwood.Magic.Menus
             return false;
         }
 				
-        internal PopupMenu ParentPopupMenuWantsMouseMessage(Win32.POINT screenPos, ref Win32.MSG msg)
+        internal PopupMenu ParentPopupMenuWantsMouseMessage(POINT screenPos, ref MSG msg)
         {
             if (_parentMenu != null)
                 return _parentMenu.WantMouseMessage(screenPos);
@@ -2877,9 +2875,9 @@ namespace Crownwood.Magic.Menus
             return null;
         }
 
-        protected PopupMenu WantMouseMessage(Win32.POINT screenPos)
+        protected PopupMenu WantMouseMessage(POINT screenPos)
         {
-            Win32.RECT rectRaw = new Win32.RECT();
+            RECT rectRaw = new RECT();
 
             // Grab the screen rectangle of the window
             User32.GetWindowRect(this.Handle, ref rectRaw);
@@ -3031,13 +3029,13 @@ namespace Crownwood.Magic.Menus
             DrawCommand dc = _drawCommands[popupItem] as DrawCommand;
 
             // Find screen coordinate of Top right of item cell
-            Win32.POINT screenPosTR;
+            POINT screenPosTR;
             screenPosTR.x = dc.DrawRect.Right;
             screenPosTR.y = dc.DrawRect.Top;
             User32.ClientToScreen(this.Handle, ref screenPosTR);
 			
             // Find screen coordinate of top left of item cell
-            Win32.POINT screenPosTL;
+            POINT screenPosTL;
             screenPosTL.x = dc.DrawRect.Left;
             screenPosTL.y = dc.DrawRect.Top;
             User32.ClientToScreen(this.Handle, ref screenPosTL);
@@ -3137,12 +3135,12 @@ namespace Crownwood.Magic.Menus
 
         protected void OnWM_PAINT(ref Message m)
         {
-            Win32.PAINTSTRUCT ps = new Win32.PAINTSTRUCT();
+            PAINTSTRUCT ps = new PAINTSTRUCT();
 
             // Have to call BeginPaint whenever processing a WM_PAINT message
             IntPtr hDC = User32.BeginPaint(m.HWnd, ref ps);
 
-            Win32.RECT rectRaw = new Win32.RECT();
+            RECT rectRaw = new RECT();
 
             // Grab the screen rectangle of the window
             User32.GetWindowRect(this.Handle, ref rectRaw);
@@ -3334,13 +3332,13 @@ namespace Crownwood.Magic.Menus
         {
             // Do not allow the mouse down to activate the window, but eat 
             // the message as we still want the mouse down for processing
-            m.Result = (IntPtr)Win32.MouseActivateFlags.MA_NOACTIVATE;
+            m.Result = (IntPtr)MouseActivateFlags.MA_NOACTIVATE;
         }
 
         protected void OnWM_SETCURSOR()
         {
             // Always use the arrow cursor
-            User32.SetCursor(User32.LoadCursor(IntPtr.Zero, (uint)Win32.Cursors.IDC_ARROW));
+            User32.SetCursor(User32.LoadCursor(IntPtr.Zero, (uint)Cursors.IDC_ARROW));
         }
 		
         protected void OnWM_DISMISS()
@@ -3369,14 +3367,14 @@ namespace Crownwood.Magic.Menus
         protected bool OnWM_NCHITTEST(ref Message m)
         {
 			// Get mouse coordinates
-            Win32.POINT screenPos;
+            POINT screenPos;
             screenPos.x = (short)((uint)m.LParam & 0x0000FFFFU);
             screenPos.y = (short)(((uint)m.LParam & 0xFFFF0000U) >> 16);
 
 			// Only the IDE style has shadows
 			if (_style == VisualStyle.IDE)
 			{	
-				Win32.POINT popupPos;
+				POINT popupPos;
 				popupPos.x = _currentSize.Width - _position[(int)_style, (int)PI.ShadowWidth];
 				popupPos.y = _currentSize.Height - _position[(int)_style, (int)PI.ShadowHeight];
 
@@ -3388,7 +3386,7 @@ namespace Crownwood.Magic.Menus
 				    (screenPos.y > popupPos.y))
 				{
 					// Allow actions to occur to window beneath us
-					m.Result = (IntPtr)Win32.HitTest.HTTRANSPARENT;
+					m.Result = (IntPtr)HitTest.HTTRANSPARENT;
 
 					return true;
 				}
@@ -3411,19 +3409,19 @@ namespace Crownwood.Magic.Menus
                 // Want to notice when the window is maximized
                 switch(m.Msg)
                 {
-                    case (int)Win32.Msgs.WM_ACTIVATEAPP:
+                    case (int)Msgs.WM_ACTIVATEAPP:
                         OnWM_ACTIVATEAPP(ref m);
                         break;
-                    case (int)Win32.Msgs.WM_MOUSEACTIVATE:
+                    case (int)Msgs.WM_MOUSEACTIVATE:
                         OnWM_MOUSEACTIVATE(ref m);
                         break;
-                    case (int)Win32.Msgs.WM_PAINT:
+                    case (int)Msgs.WM_PAINT:
                         OnWM_PAINT(ref m);
                         break;
-					case (int)Win32.Msgs.WM_SETCURSOR:
+					case (int)Msgs.WM_SETCURSOR:
 						OnWM_SETCURSOR();
 						break;
-					case (int)Win32.Msgs.WM_NCHITTEST:
+					case (int)Msgs.WM_NCHITTEST:
 						if (!OnWM_NCHITTEST(ref m))
 	                        base.WndProc(ref m);
 						break;
@@ -3448,7 +3446,7 @@ namespace Crownwood.Magic.Menus
             Bitmap image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             
             // We want direct access to the bits so we can change values
-            BitmapData data = image.LockBits(new System.Drawing.Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            BitmapData data = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 				
             unsafe
             {

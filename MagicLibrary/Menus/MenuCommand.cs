@@ -10,11 +10,9 @@
 // *****************************************************************************
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Collections;
-using System.Windows.Forms;
 using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
 using Crownwood.Magic.Collections;
 
 namespace Crownwood.Magic.Menus

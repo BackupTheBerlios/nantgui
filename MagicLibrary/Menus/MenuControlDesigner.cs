@@ -9,25 +9,19 @@
 //  Magic Version 1.7.4.0 	www.dotnetmagic.com
 // *****************************************************************************
 
-using System;
-using System.Drawing;
 using System.Collections;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Crownwood.Magic.Controls;
 
 namespace Crownwood.Magic.Menus
 {
-    public class MenuControlDesigner :  System.Windows.Forms.Design.ParentControlDesigner
+    public class MenuControlDesigner :  ParentControlDesigner
     {
         public override ICollection AssociatedComponents
         {
             get 
             {
-                if (base.Control is Crownwood.Magic.Menus.MenuControl)
-                    return ((Crownwood.Magic.Menus.MenuControl)base.Control).MenuCommands;
+                if (base.Control is MenuControl)
+                    return ((MenuControl)base.Control).MenuCommands;
                 else
                     return base.AssociatedComponents;
             }
