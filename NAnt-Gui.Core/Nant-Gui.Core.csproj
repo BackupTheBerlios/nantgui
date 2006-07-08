@@ -95,11 +95,6 @@
                     HintPath = "..\ThirdParty Libraries\ICSharpCode.TextEditor.dll"
                 />
                 <Reference
-                    Name = "MagicLibrary"
-                    AssemblyName = "MagicLibrary"
-                    HintPath = "..\ThirdParty Libraries\MagicLibrary.DLL"
-                />
-                <Reference
                     Name = "NAnt-Gui.Framework"
                     Project = "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -113,6 +108,11 @@
                     Name = "NAnt.Core"
                     AssemblyName = "NAnt.Core"
                     HintPath = "..\Tools\nant-0.85-rc4\bin\NAnt.Core.dll"
+                />
+                <Reference
+                    Name = "MagicLibrary"
+                    Project = "{92F94EA0-9910-4895-B8A1-FED1543A9DA1}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
