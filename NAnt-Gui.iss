@@ -6,9 +6,8 @@
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
 
-#define NAnt = "Tools\nant-0.85-rc3"
-#define NAntContrib = "Tools\nantcontrib-0.85-rc3"
-#define NUnit2Report = "Tools\NUnit2Report-1.2.3"
+#define NAnt = "Tools\nant-0.85-rc4"
+#define NAntContrib = "Tools\nantcontrib-0.85-rc4"
 
 #define AppVersion = GetStringFileInfo("NAnt-Gui\bin\Release\NAnt-Gui.exe", "FileVersion")
 
@@ -66,8 +65,6 @@ Source: {#NAnt}\examples\*; DestDir: {app}\examples; Flags: ignoreversion recurs
 Source: {#NAnt}\doc\*; DestDir: {app}\nant-docs; Flags: ignoreversion recursesubdirs; Components: docs
 Source: {#NAntContrib}\bin\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\contrib
 Source: {#NAntContrib}\doc\*; DestDir: {app}\nantcontrib-docs; Flags: ignoreversion recursesubdirs; Components: docs
-; NUnit2Report
-Source: {#NUnit2Report}\*; DestDir: {app}\bin; Flags: ignoreversion recursesubdirs; Components: bin\nunit2report
 ; InnoSetupTask
 Source: Nant.InnoSetup\bin\Release\NAnt.InnoSetupTasks.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin\innosetup
 
@@ -158,10 +155,9 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
 [Components]
 Name: bin; Description: Executable files; Types: custom compact full
-Name: bin\nant; Description: NAnt 0.85-rc3; Types: custom compact full
-Name: bin\contrib; Description: NAnt Contrib 0.85-rc3; Types: full custom compact
+Name: bin\nant; Description: NAnt 0.85-rc4; Types: custom compact full
+Name: bin\contrib; Description: NAnt Contrib 0.85-rc4; Types: full custom compact
 Name: bin\innosetup; Description: NAnt InnoSetup Task; Types: full
-Name: bin\nunit2report; Description: NAnt NUnit2 Report Task; Types: full
 Name: examples; Description: Example NAnt build files; Types: full
 Name: docs; Description: NAnt documentation files; Types: custom full
 Name: src; Description: Source code files; Types: full
