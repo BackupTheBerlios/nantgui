@@ -39,13 +39,13 @@ namespace NAntGui.Core
 		{
 			Assert.NotNull(mediator, "mediator");
 			_tabControl = new MainTabControl(mediator);
-			_tabControl.ClosePressed += new EventHandler(this.Close_Pressed);
-			_tabControl.TabIndexChanged += new EventHandler(this.TabIndex_Changed);
+			_tabControl.ClosePressed += new EventHandler(Close_Pressed);
+			_tabControl.TabIndexChanged += new EventHandler(TabIndex_Changed);
 		}
 
 		private void Close_Pressed(object sender, EventArgs e)
 		{
-			this.Clear();
+			Clear();
 		}
 
 		private void TabIndex_Changed(object sender, EventArgs e)

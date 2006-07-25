@@ -56,12 +56,12 @@ namespace NAntGui.Core
 			_outputBox		= new OutputBox(this);
 			_targetsTree	= new TargetsTreeView(this);
 
-			this.InitMainForm();
+			InitMainForm();
 
 			_dockManager	= new MainDockManager(_form, _sourceTabs, 
 				_targetsTree, _outputBox, _propertyGrid, _statusBar);
 
-			this.LoadInitialBuildFile();
+			LoadInitialBuildFile();
 		}
 
 		private void InitMainForm()
@@ -85,7 +85,7 @@ namespace NAntGui.Core
 			_mainMenu.Disable();
 			_toolBar.Disable();
 
-			this.AddBlankTab();
+			AddBlankTab();
 		}
 
 		public void RunClicked()
@@ -105,13 +105,13 @@ namespace NAntGui.Core
 
 		private void Tab_BuildFinished()
 		{
-			this.SetStateStopped();
+			SetStateStopped();
 		}
 
 		public void StopClicked()
 		{
 			_sourceTabs.SelectedTab.Stop();
-			this.SetStateStopped();
+			SetStateStopped();
 		}
 
 		public void SaveClicked()
@@ -121,7 +121,7 @@ namespace NAntGui.Core
 
 		public void ReloadClicked()
 		{
-			this.SetStateStopped();
+			SetStateStopped();
 			_sourceTabs.SelectedTab.ReLoad();
 		}
 
@@ -135,7 +135,7 @@ namespace NAntGui.Core
 		{
 			foreach (string filename in BuildFileBrowser.BrowseForLoad())
 			{
-				this.LoadBuildFile(filename);
+				LoadBuildFile(filename);
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace NAntGui.Core
 
 			if (!e.Cancel)
 			{
-				this.NewClicked();
+				NewClicked();
 			}
 		}
 
@@ -177,7 +177,7 @@ namespace NAntGui.Core
 			if (file != null)
 			{
 				_sourceTabs.SelectedTab.SaveAs(file);
-				//this.LoadBuildFile(this.XMLSaveFileDialog.FileName);
+				//LoadBuildFile(XMLSaveFileDialog.FileName);
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace NAntGui.Core
 		{
 			if (File.Exists(file))
 			{
-				this.LoadBuildFile(file);
+				LoadBuildFile(file);
 			}
 			else
 			{
@@ -273,11 +273,11 @@ namespace NAntGui.Core
 
 		public void LoadInitialBuildFile()
 		{
-			if (NAntGuiApp.Options.BuildFile == null || !this.LoadBuildFile(NAntGuiApp.Options.BuildFile))
+			if (NAntGuiApp.Options.BuildFile == null || !LoadBuildFile(NAntGuiApp.Options.BuildFile))
 			{
-				if (!_mainMenu.HasRecentItems || !this.LoadBuildFile(_mainMenu.FirstRecentItem))
+				if (!_mainMenu.HasRecentItems || !LoadBuildFile(_mainMenu.FirstRecentItem))
 				{
-					this.AddBlankTab();
+					AddBlankTab();
 				}
 			}
 		}
@@ -293,7 +293,7 @@ namespace NAntGui.Core
 			if (File.Exists(filename))
 			{
 				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
-				page.BuildFinished = new VoidVoid(this.Tab_BuildFinished);
+				page.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
 				Settings.OpenInitialDir = page.FilePath;
 
@@ -315,7 +315,7 @@ namespace NAntGui.Core
 				
 				_mainMenu.Enable();
 				_toolBar.Enable();
-				this.UpdateDisplay(true);
+				UpdateDisplay(true);
 
 				return true;
 			}
@@ -345,7 +345,7 @@ namespace NAntGui.Core
 
 		public void DragDrop(DragEventArgs e)
 		{
-			this.LoadBuildFile(Utils.GetDragFilename(e));
+			LoadBuildFile(Utils.GetDragFilename(e));
 		}
 
 		//		private void WordWrap_Changed(bool checkValue)

@@ -63,7 +63,7 @@ namespace NAntGui.Core
 			_file = new SourceFile(logger);	
 			_fileType = FileType.New;
 			
-			this.Initialize();
+			Initialize();
 		}
 
 		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator)
@@ -79,7 +79,7 @@ namespace NAntGui.Core
 			_file = new SourceFile(filename, _scriptEditor.Text, logger, NAntGuiApp.Options);
 			_fileType = FileType.Existing;
 
-			this.Initialize();
+			Initialize();
 
 			_buildRunner = BuildRunnerFactory.Create(_file);
 		}
@@ -93,9 +93,9 @@ namespace NAntGui.Core
 		{
 			TextArea textArea = _scriptEditor.ActiveTextAreaControl.TextArea;
 			_clipboardHandler = textArea.ClipboardHandler;
-			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(this.Editor_TextChanged);
-			textArea.Enter += new EventHandler(this.GotFocus);
-			textArea.Leave += new EventHandler(this.LostFocus);
+			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(Editor_TextChanged);
+			textArea.Enter += new EventHandler(GotFocus);
+			textArea.Leave += new EventHandler(LostFocus);
 
 			_scriptTab.Controls.Add(_scriptEditor);
 			_scriptTab.Location = new Point(0, 0);
@@ -106,11 +106,11 @@ namespace NAntGui.Core
 
 		private void Editor_TextChanged(object sender, DocumentEventArgs e)
 		{
-			if (this.IsDirty && !Utils.HasAsterisk(_scriptTab.Title))
+			if (IsDirty && !Utils.HasAsterisk(_scriptTab.Title))
 			{
 				_scriptTab.Title = Utils.AddAsterisk(_scriptTab.Title);
 			}
-			else if (!this.IsDirty && Utils.HasAsterisk(_scriptTab.Title))
+			else if (!IsDirty && Utils.HasAsterisk(_scriptTab.Title))
 			{
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
 			}
@@ -127,7 +127,7 @@ namespace NAntGui.Core
 			_scriptEditor.LoadFile(_file.FullName);
 			_scriptTab.Title = _file.Name;
 
-			this.ParseBuildFile();
+			ParseBuildFile();
 		}
 
 		public void SaveAs(string fileName)
@@ -139,14 +139,14 @@ namespace NAntGui.Core
 
 			_buildRunner = BuildRunnerFactory.Create(_file);
 
-			this.ReInitialize();
+			ReInitialize();
 		}
 
 		public void Save()
 		{
 			if (_fileType == FileType.Existing)
 			{
-				this.Save(true);
+				Save(true);
 			}
 			else if (_fileType == FileType.New)
 			{
@@ -159,14 +159,14 @@ namespace NAntGui.Core
 			_scriptEditor.SaveFile(_file.FullName);
 			_file.Contents = _scriptEditor.Text;
 
-			if (reInit) this.ReInitialize();
+			if (reInit) ReInitialize();
 		}
 
 		private void ReInitialize()
 		{
 			_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
 
-			this.ParseBuildFile();
+			ParseBuildFile();
 
 			_mediator.UpdateDisplay(false);
 		}
@@ -228,7 +228,7 @@ namespace NAntGui.Core
 
 		public void Close(CancelEventArgs e)
 		{
-			if (this.IsDirty)
+			if (IsDirty)
 			{
 				DialogResult result =
 					MessageBox.Show("You have unsaved changes to " + _file.Name + ".  Save?", "Save Changes?",
@@ -236,7 +236,7 @@ namespace NAntGui.Core
 
 				if (result == DialogResult.Yes)
 				{
-					this.Save();
+					Save();
 				}
 				else if (result == DialogResult.Cancel)
 				{
