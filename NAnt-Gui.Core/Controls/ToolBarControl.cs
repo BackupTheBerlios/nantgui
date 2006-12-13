@@ -57,7 +57,6 @@ namespace NAntGui.Core.Controls
 			//
 			_saveButton.ImageIndex = 2;
 			_saveButton.ToolTipText = "Save Build File";
-			_saveButton.Enabled = false;
 			//
 			// _reloadButton
 			//
@@ -140,7 +139,7 @@ namespace NAntGui.Core.Controls
 		public void Disable()
 		{
 			_reloadButton.Enabled = false;
-			_saveButton.Enabled = false;
+//			_saveButton.Enabled = false;
 			_stopButton.Enabled = false;
 			_runButton.Enabled = false;
 		}
@@ -148,7 +147,7 @@ namespace NAntGui.Core.Controls
 		public void Enable()
 		{
 			_reloadButton.Enabled = true;
-			_saveButton.Enabled = true;
+//			_saveButton.Enabled = true;
 			_runButton.Enabled = true;
 		}
 

@@ -117,6 +117,8 @@ namespace NAntGui.Core
 		public void SaveClicked()
 		{
 			_sourceTabs.SelectedTab.Save();
+			_mainMenu.Enable();
+			_toolBar.Enable();
 		}
 
 		public void ReloadClicked()
@@ -285,7 +287,12 @@ namespace NAntGui.Core
 		public void AddBlankTab()
 		{
 			_sourceTabs.Clear();
-			_sourceTabs.AddTab(new ScriptTabPage(_outputBox, this));
+
+			ScriptTabPage page = new ScriptTabPage(_outputBox, this);
+			
+			//page.BuildFinished = new VoidVoid(Tab_BuildFinished);
+
+			_sourceTabs.AddTab(page);			
 		}
 
 		private bool LoadBuildFile(string filename)
