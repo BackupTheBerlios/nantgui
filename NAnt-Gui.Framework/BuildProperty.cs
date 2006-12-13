@@ -93,8 +93,8 @@ namespace NAntGui.Framework
 		public virtual Type Type
 		{
 			get
-			{
-				string val = _value.ToLower();
+			{				
+				string val = (_value == null) ? "" : _value.ToLower();
 				return (val == "true" || val == "false") ? typeof (bool) : typeof (string);
 			}
 		}

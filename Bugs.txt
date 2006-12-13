@@ -1,12 +1,15 @@
 - 008651 Exception raised parsing 2 tstamps for to the same property
-- 008322 Error parsing Nant 0.85 rc4
 - 008276 Exception Error when open NHibernateSolution.build
 - 007607 Crash using Italian regional settings
 - 007388 Global props set via GUI don't "take"? 
 - Tabs don't actually get closed (change a file, click new, close app, you'll get file not saved dialog)
 - If you sticky or unsticky the output box it loses it's formatting/highlighting
 
+1.3.3:
+FIXED: 008322 Error parsing Nant 0.85 rc4
 FIXED: Build doesn't enable when you save a new file
+
+1.3.2:
 FIXED: Hookup Leave event on outputbox and scripttabpage so the mediator can null reference _editCommand
 FIXED: Targets reset when you build, so selected targets are reset
 FIXED: Stop/Cancel build is never enabled (toolbar and menu)
