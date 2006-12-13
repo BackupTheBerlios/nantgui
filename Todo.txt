@@ -1,3 +1,6 @@
++ Modify the app.config file so that it points to the nant directory, then modify the app and 
+  installer so that it loads the tasks from the nant directory instead of having to have the
+  nant bin directory copied into the nant-gui bin directory
 + Reorder projects.  Add a Gui project and move the UI code into it
 + Multiple tabs
 + Add a property window to change nant settings after nant-gui is loaded

@@ -86,32 +86,38 @@ Source: NAnt-Gui\*.config; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Co
 Source: NAnt-Gui\*.cs; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\*.csproj; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui\*.build; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui\*.bat; DestDir: {app}\src\Nant-Gui; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Unittests
 Source: NAnt-Gui.Unittests\*.cs; DestDir: {app}\src\Nant-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\*.resx; DestDir: {app}\src\Nant-Gui.Unittests; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.Unittests\*.csproj; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\*.build; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Unittests\*.bat; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Core
 Source: NAnt-Gui.Core\Images\*; DestDir: {app}\src\Nant-Gui.Core\Images; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.cs; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion recursesubdirs; Components: src
 Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion skipifsourcedoesntexist recursesubdirs; Components: src
 Source: NAnt-Gui.Core\*.csproj; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.build; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Core\*.bat; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Framework
 Source: NAnt-Gui.Framework\*.cs; DestDir: {app}\src\Nant-Gui.Framework; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Framework\*.resx; DestDir: {app}\src\Nant-Gui.Framework; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.Framework\*.csproj; DestDir: {app}\src\NAnt-Gui.Framework; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Framework\*.build; DestDir: {app}\src\NAnt-Gui.Framework; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Framework\*.bat; DestDir: {app}\src\NAnt-Gui.Framework; Flags: ignoreversion; Components: src
 ; NAnt-Gui.NAnt
 Source: NAnt-Gui.NAnt\*.cs; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.NAnt\*.resx; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.NAnt\*.csproj; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.NAnt\*.build; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.NAnt\*.bat; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
 ; NAnt-Gui.MSBuild
 Source: NAnt-Gui.MSBuild\*.cs; DestDir: {app}\src\Nant-Gui.MSBuild; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.MSBuild\*.resx; DestDir: {app}\src\Nant-Gui.MSBuild; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.MSBuild\*.csproj; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.MSBuild\*.build; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.MSBuild\*.bat; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
 ; NAnt.InnoSetup.Tasks
 Source: NAnt.InnoSetup\*.cs; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src
 Source: NAnt.InnoSetup\*.csproj; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src

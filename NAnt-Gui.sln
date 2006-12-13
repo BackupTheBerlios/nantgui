@@ -94,6 +94,7 @@ Global
 		License.txt = License.txt
 		NAnt-Gui.build = NAnt-Gui.build
 		NAnt-Gui.iss = NAnt-Gui.iss
+		Readme.Txt = Readme.Txt
 		Todo.txt = Todo.txt
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
