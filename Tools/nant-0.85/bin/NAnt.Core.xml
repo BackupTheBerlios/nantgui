@@ -7464,68 +7464,6 @@
             The string to prefix the property names with. The default is "sys.".
             </summary>
         </member>
-        <member name="T:NAnt.Core.Tasks.TouchTask">
-            <summary>
-            Touches a file or set of files -- corresponds to the Unix touch command.  
-            </summary>
-            <remarks>
-            <para>
-            If the file specified does not exist, the task will create it.
-            </para>
-            </remarks>
-            <example>
-              <para>Touch the <c>Main.cs</c> file.  The current time is used.</para>
-              <code>
-                <![CDATA[
-            <touch file="Main.cs" />
-                ]]>
-              </code>
-            </example>
-            <example>
-              <para>
-              Touch all executable files in the project base directory and its 
-              subdirectories.
-              </para>
-              <code>
-                <![CDATA[
-            <touch>
-                <fileset>
-                    <include name="**/*.exe" />
-                    <include name="**/*.dll" />
-                </fileset>
-            </touch>
-                ]]>
-              </code>
-            </example>
-        </member>
-        <member name="M:NAnt.Core.Tasks.TouchTask.InitializeTask(System.Xml.XmlNode)">
-            <summary>
-            Ensures the supplied attributes are valid.
-            </summary>
-            <param name="taskNode">Xml node used to define this task instance.</param>
-        </member>
-        <member name="P:NAnt.Core.Tasks.TouchTask.File">
-            <summary>
-            The file to touch.
-            </summary>
-        </member>
-        <member name="P:NAnt.Core.Tasks.TouchTask.Millis">
-            <summary>
-            Specifies the new modification time of the file(s) in milliseconds 
-            since midnight Jan 1 1970.
-            </summary>
-        </member>
-        <member name="P:NAnt.Core.Tasks.TouchTask.Datetime">
-            <summary>
-            Specifies the new modification time of the file in the format 
-            MM/DD/YYYY HH:MM:SS.
-            </summary>
-        </member>
-        <member name="P:NAnt.Core.Tasks.TouchTask.TouchFileSet">
-            <summary>
-            Used to select files that should be touched.
-            </summary>
-        </member>
         <member name="T:NAnt.Core.Tasks.TStampTask">
             <summary>
             Sets properties with the current date and time.
@@ -7647,6 +7585,68 @@
                 <item><description>\ c</description><description>Pattern Where c is any character. Displays the character literally. To display the backslash character, use "\\". </description></item>
               </list>
             </remarks>
+        </member>
+        <member name="T:NAnt.Core.Tasks.TouchTask">
+            <summary>
+            Touches a file or set of files -- corresponds to the Unix touch command.  
+            </summary>
+            <remarks>
+            <para>
+            If the file specified does not exist, the task will create it.
+            </para>
+            </remarks>
+            <example>
+              <para>Touch the <c>Main.cs</c> file.  The current time is used.</para>
+              <code>
+                <![CDATA[
+            <touch file="Main.cs" />
+                ]]>
+              </code>
+            </example>
+            <example>
+              <para>
+              Touch all executable files in the project base directory and its 
+              subdirectories.
+              </para>
+              <code>
+                <![CDATA[
+            <touch>
+                <fileset>
+                    <include name="**/*.exe" />
+                    <include name="**/*.dll" />
+                </fileset>
+            </touch>
+                ]]>
+              </code>
+            </example>
+        </member>
+        <member name="M:NAnt.Core.Tasks.TouchTask.InitializeTask(System.Xml.XmlNode)">
+            <summary>
+            Ensures the supplied attributes are valid.
+            </summary>
+            <param name="taskNode">Xml node used to define this task instance.</param>
+        </member>
+        <member name="P:NAnt.Core.Tasks.TouchTask.File">
+            <summary>
+            The file to touch.
+            </summary>
+        </member>
+        <member name="P:NAnt.Core.Tasks.TouchTask.Millis">
+            <summary>
+            Specifies the new modification time of the file(s) in milliseconds 
+            since midnight Jan 1 1970.
+            </summary>
+        </member>
+        <member name="P:NAnt.Core.Tasks.TouchTask.Datetime">
+            <summary>
+            Specifies the new modification time of the file in the format 
+            MM/DD/YYYY HH:MM:SS.
+            </summary>
+        </member>
+        <member name="P:NAnt.Core.Tasks.TouchTask.TouchFileSet">
+            <summary>
+            Used to select files that should be touched.
+            </summary>
         </member>
         <member name="T:NAnt.Core.Tasks.UpToDateTask">
             <summary>
@@ -10229,7 +10229,7 @@
         <member name="M:NAnt.Core.Util.AssemblyResolver.Attach">
             <summary> 
             Installs the assembly resolver by hooking up to the 
-            <see cref="E:System.AppDomain.AssemblyResolve"/> event.
+            <see cref="F:System.AppDomain.AssemblyResolve"/> event.
             </summary>
         </member>
         <member name="M:NAnt.Core.Util.AssemblyResolver.Detach">
@@ -13325,7 +13325,7 @@
         </member>
         <member name="M:NAnt.Core.Project.OnBuildStarted(System.Object,NAnt.Core.BuildEventArgs)">
             <summary>
-            Dispatches a <see cref="E:NAnt.Core.Project.BuildStarted"/> event to the build listeners 
+            Dispatches a <see cref="F:NAnt.Core.Project.BuildStarted"/> event to the build listeners 
             for this <see cref="T:NAnt.Core.Project"/>.
             </summary>
             <param name="sender">The source of the event.</param>
@@ -13333,7 +13333,7 @@
         </member>
         <member name="M:NAnt.Core.Project.OnBuildFinished(System.Object,NAnt.Core.BuildEventArgs)">
             <summary>
-            Dispatches a <see cref="E:NAnt.Core.Project.BuildFinished"/> event to the build listeners 
+            Dispatches a <see cref="F:NAnt.Core.Project.BuildFinished"/> event to the build listeners 
             for this <see cref="T:NAnt.Core.Project"/>.
             </summary>
             <param name="sender">The source of the event.</param>
@@ -13341,7 +13341,7 @@
         </member>
         <member name="M:NAnt.Core.Project.OnTargetStarted(System.Object,NAnt.Core.BuildEventArgs)">
             <summary>
-            Dispatches a <see cref="E:NAnt.Core.Project.TargetStarted"/> event to the build listeners 
+            Dispatches a <see cref="F:NAnt.Core.Project.TargetStarted"/> event to the build listeners 
             for this <see cref="T:NAnt.Core.Project"/>.
             </summary>
             <param name="sender">The source of the event.</param>
@@ -13349,7 +13349,7 @@
         </member>
         <member name="M:NAnt.Core.Project.OnTargetFinished(System.Object,NAnt.Core.BuildEventArgs)">
             <summary>
-            Dispatches a <see cref="E:NAnt.Core.Project.TargetFinished"/> event to the build listeners 
+            Dispatches a <see cref="F:NAnt.Core.Project.TargetFinished"/> event to the build listeners 
             for this <see cref="T:NAnt.Core.Project"/>.
             </summary>
             <param name="sender">The source of the event.</param>
@@ -13357,7 +13357,7 @@
         </member>
         <member name="M:NAnt.Core.Project.OnTaskStarted(System.Object,NAnt.Core.BuildEventArgs)">
             <summary>
-            Dispatches a <see cref="E:NAnt.Core.Project.TaskStarted"/> event to the build listeners 
+            Dispatches a <see cref="F:NAnt.Core.Project.TaskStarted"/> event to the build listeners 
             for this <see cref="T:NAnt.Core.Project"/>.
             </summary>
             <param name="sender">The source of the event.</param>
@@ -13365,7 +13365,7 @@
         </member>
         <member name="M:NAnt.Core.Project.OnTaskFinished(System.Object,NAnt.Core.BuildEventArgs)">
             <summary>
-            Dispatches the <see cref="E:NAnt.Core.Project.TaskFinished"/> event to the build listeners 
+            Dispatches the <see cref="F:NAnt.Core.Project.TaskFinished"/> event to the build listeners 
             for this <see cref="T:NAnt.Core.Project"/>.
             </summary>
             <param name="sender">The source of the event.</param>
@@ -13373,7 +13373,7 @@
         </member>
         <member name="M:NAnt.Core.Project.OnMessageLogged(NAnt.Core.BuildEventArgs)">
             <summary>
-            Dispatches a <see cref="E:NAnt.Core.Project.MessageLogged"/> event to the build listeners 
+            Dispatches a <see cref="F:NAnt.Core.Project.MessageLogged"/> event to the build listeners 
             for this <see cref="T:NAnt.Core.Project"/>.
             </summary>
             <param name="e">A <see cref="T:NAnt.Core.BuildEventArgs"/> that contains the event data.</param>
