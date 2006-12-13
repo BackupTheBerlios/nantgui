@@ -98,7 +98,7 @@ namespace NAntGui.Core
 
 			ScriptTabPage tab = _sourceTabs.SelectedTab;
 
-			tab.Save();
+			tab.Save(false);
 			tab.SetProperties(_propertyGrid.GetProperties());
 			tab.SetTargets(_targetsTree.GetTargets());			
 			tab.Run();
@@ -117,7 +117,7 @@ namespace NAntGui.Core
 
 		public void SaveClicked()
 		{
-			_sourceTabs.SelectedTab.Save();
+			_sourceTabs.SelectedTab.Save(true);
 			_mainMenu.Enable();
 			_toolBar.Enable();
 		}
@@ -136,8 +136,6 @@ namespace NAntGui.Core
 
 				_mainMenu.Enable();
 				_toolBar.Enable();
-
-				UpdateDisplay(true);
 			}
 		}
 
@@ -192,8 +190,6 @@ namespace NAntGui.Core
 			_sourceTabs.CloseTabs(e);
 			_dockManager.SaveConfig();
 		}
-
-
 
 		public void SaveOutputClicked()
 		{

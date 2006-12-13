@@ -143,19 +143,21 @@ namespace NAntGui.Core
 			ParseBuildFile();
 		}
 
-		public void Save()
+		public void Save(bool update)
 		{
 			if (_fileType == FileType.Existing)
 			{
 				_scriptEditor.SaveFile(_file.FullName);
 				_file.Contents = _scriptEditor.Text;
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
-				ParseBuildFile();
-				_mediator.UpdateDisplay(false);
+				ParseBuildFile();				
+
+				if (update) _mediator.UpdateDisplay(false);
 			}
 			else if (_fileType == FileType.New)
 			{
-				_mediator.SaveAsClicked();
+				_mediator.SaveAsClicked();		
+				if (update) _mediator.UpdateDisplay(true);
 			}
 		}
 
@@ -230,7 +232,7 @@ namespace NAntGui.Core
 
 				if (result == DialogResult.Yes)
 				{
-					Save();
+					Save(false);
 				}
 				else if (result == DialogResult.Cancel)
 				{
