@@ -103,7 +103,7 @@ namespace NAntGui
 		private static Assembly ResolveHandler(object sender, ResolveEventArgs args)
 		{
 			const string nantCoreAssembly = "NAnt.Core.dll";
-			string nantPath = @"C:\Program Files\nant-0.85-rc3\bin\";
+			string nantPath = @"C:\Program Files\nant-0.85\bin\";
 			return Assembly.LoadFrom(nantPath + nantCoreAssembly);
 		}
 	}

@@ -1,1 +1,1 @@
-Tools\nant-0.85-rc4\bin\nant.exe -f:NAnt-Gui.build
+Tools\nant-0.85\bin\nant.exe -f:NAnt-Gui.build

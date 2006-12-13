@@ -6,8 +6,8 @@
 #define MyAppURL "http://www.swoogan.com/nantgui.html"
 #define MyAppExeName "NAnt-Gui.exe"
 
-#define NAnt = "Tools\nant-0.85-rc4"
-#define NAntContrib = "Tools\nantcontrib-0.85-rc4"
+#define NAnt = "Tools\nant-0.85"
+#define NAntContrib = "Tools\nantcontrib-0.85"
 
 #define AppVersion = GetStringFileInfo("NAnt-Gui\bin\Release\NAnt-Gui.exe", "FileVersion")
 
@@ -164,8 +164,8 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
 [Components]
 Name: bin; Description: Executable files; Types: custom compact full
-Name: bin\nant; Description: NAnt 0.85-rc4; Types: custom compact full
-Name: bin\contrib; Description: NAnt Contrib 0.85-rc4; Types: full custom compact
+Name: bin\nant; Description: NAnt 0.85; Types: custom compact full
+Name: bin\contrib; Description: NAnt Contrib 0.85; Types: full custom compact
 Name: bin\innosetup; Description: NAnt InnoSetup Task; Types: full
 Name: examples; Description: Example NAnt build files; Types: full
 Name: docs; Description: NAnt documentation files; Types: custom full
