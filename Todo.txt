@@ -1,8 +1,10 @@
-- New build file functionality (test to make sure save, reload, build, either work, or ignored on new files)
-- Multiple tabs		
++ Reorder projects.  Add a Gui project and move the UI code into it
++ Multiple tabs
++ Add a property window to change nant settings after nant-gui is loaded
++ Add SLiNgshoT tool window to tools menu
 - Create custom commandline options that make sense for msbuild and nant
-- Add SLiNgshoT tool window to tools menu
 
+(DONE) New build file functionality (test to make sure save, reload, build, either work, or ignored on new files)
 (DONE) Switch output windows to fixed-width font so NAnt output displays accurately
 (DONE) Put scroll bars on the editor window
 (DONE) Relatively reference nant for the prebuild step so it doesn't have to be in the path

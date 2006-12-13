@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = "..\..\..\Tools\nant-0.85\bin\nant.exe -f:..\..\AssemblyInfo.build"
+                PreBuildEvent = "$(ProjectDir)\PreBuild.bat"
                 PostBuildEvent = ""
                 RootNamespace = "NAnt_Gui.MSBuild"
                 RunPostBuildEvent = "OnBuildSuccess"
@@ -96,6 +96,10 @@
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PreBuild.bat"
+                    BuildAction = "None"
                 />
             </Include>
         </Files>

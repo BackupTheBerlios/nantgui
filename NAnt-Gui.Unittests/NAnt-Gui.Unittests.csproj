@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = "..\..\..\Tools\nant-0.85\bin\nant.exe -t:net-1.1 -f:..\..\AssemblyInfo.build"
+                PreBuildEvent = "$(ProjectDir)\PreBuild.bat"
                 PostBuildEvent = ""
                 RootNamespace = "NAntGui.Unittests"
                 RunPostBuildEvent = "OnBuildSuccess"
@@ -116,6 +116,10 @@
                     RelPath = "OutputterTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PreBuild.bat"
+                    BuildAction = "None"
                 />
             </Include>
         </Files>
