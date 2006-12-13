@@ -13,43 +13,43 @@ using System.Drawing;
 
 namespace Crownwood.Magic.Common
 {
-    public class ColorHelper
-    {
-        public static Color TabBackgroundFromBaseColor(Color backColor)
-        {
-            Color backIDE;
+	public class ColorHelper
+	{
+		public static Color TabBackgroundFromBaseColor(Color backColor)
+		{
+			Color backIDE;
 
-            // Check for the 'Classic' control color
-            if ((backColor.R == 212) &&
-                (backColor.G == 208) &&
-                (backColor.B == 200))
-            {
-                // Use the exact background for this color
-                backIDE = Color.FromArgb(247, 243, 233);
-            }
-            else
-            {
-                // Check for the 'XP' control color
-                if ((backColor.R == 236) &&
-                    (backColor.G == 233) &&
-                    (backColor.B == 216))
-                {
-                    // Use the exact background for this color
-                    backIDE = Color.FromArgb(255, 251, 233);
-                }
-                else
-                {
-                    // Calculate the IDE background color as only half as dark as the control color
-                    int red = 255 - ((255 - backColor.R) / 2);
-                    int green = 255 - ((255 - backColor.G) / 2);
-                    int blue = 255 - ((255 - backColor.B) / 2);
-                    backIDE = Color.FromArgb(red, green, blue);
-                }
-            }
-                        
-            return backIDE;
-        }
-	
+			// Check for the 'Classic' control color
+			if ((backColor.R == 212) &&
+			    (backColor.G == 208) &&
+			    (backColor.B == 200))
+			{
+				// Use the exact background for this color
+				backIDE = Color.FromArgb(247, 243, 233);
+			}
+			else
+			{
+				// Check for the 'XP' control color
+				if ((backColor.R == 236) &&
+				    (backColor.G == 233) &&
+				    (backColor.B == 216))
+				{
+					// Use the exact background for this color
+					backIDE = Color.FromArgb(255, 251, 233);
+				}
+				else
+				{
+					// Calculate the IDE background color as only half as dark as the control color
+					int red = 255 - ((255 - backColor.R)/2);
+					int green = 255 - ((255 - backColor.G)/2);
+					int blue = 255 - ((255 - backColor.B)/2);
+					backIDE = Color.FromArgb(red, green, blue);
+				}
+			}
+
+			return backIDE;
+		}
+
 		public static Color CalculateColor(Color front, Color back, int alpha)
 		{
 			// Use alpha blending to brigthen the colors but don't use it
@@ -64,17 +64,15 @@ namespace Crownwood.Magic.Common
 			float backGreen = backColor.G;
 			float backBlue = backColor.B;
 
-			float fRed = (frontRed * alpha / 255) + backRed * ((float)(255-alpha)/255);
-			float fGreen = (frontGreen * alpha / 255) + backGreen * ((float)(255-alpha)/255);
-			float fBlue = (frontBlue * alpha / 255) + backBlue * ((float)(255-alpha)/255);
+			float fRed = (frontRed*alpha/255) + backRed*((float) (255 - alpha)/255);
+			float fGreen = (frontGreen*alpha/255) + backGreen*((float) (255 - alpha)/255);
+			float fBlue = (frontBlue*alpha/255) + backBlue*((float) (255 - alpha)/255);
 
-			byte newRed = (byte)fRed;
-			byte newGreen = (byte)fGreen;
-			byte newBlue = (byte)fBlue;
+			byte newRed = (byte) fRed;
+			byte newGreen = (byte) fGreen;
+			byte newBlue = (byte) fBlue;
 
-			return  Color.FromArgb(255, newRed, newGreen, newBlue);
+			return Color.FromArgb(255, newRed, newGreen, newBlue);
 		}
 	}
 }
-
-

@@ -36,15 +36,15 @@ namespace NAntGui.NAnt
 
 		public NAntTarget(XmlElement element)
 		{
-			this.ParseAttributes(element);
+			ParseAttributes(element);
 		}
 
 		private void ParseAttributes(XmlElement element)
 		{
-			_name			= element.GetAttribute("name");
-			_description	= element.GetAttribute("description");
-			string depends	= element.GetAttribute("depends");
-			_depends		= this.SplitDepends(depends);
+			_name = element.GetAttribute("name");
+			_description = element.GetAttribute("description");
+			string depends = element.GetAttribute("depends");
+			_depends = SplitDepends(depends);
 		}
 
 		private string[] SplitDepends(string depends)

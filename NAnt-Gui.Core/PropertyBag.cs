@@ -133,7 +133,7 @@ namespace Flobbster.Windows.Forms
 			this.category = category;
 			this.description = description;
 			this.defaultValue = defaultValue;
-			this.attributes = null;
+			attributes = null;
 		}
 
 		/// <summary>
@@ -191,7 +191,8 @@ namespace Flobbster.Windows.Forms
 		/// converter for this property.  This type must derive from TypeConverter.</param>
 		public PropertySpec(string name, Type type, string category, string description, object defaultValue,
 		                    string editor, string typeConverter) :
-		                    	this(name, type.AssemblyQualifiedName, category, description, defaultValue, editor, typeConverter)
+		                    	this(name, type.AssemblyQualifiedName, category, description, defaultValue, editor, typeConverter
+		                    	)
 		{
 		}
 
@@ -256,7 +257,8 @@ namespace Flobbster.Windows.Forms
 		/// converter for this property.  This type must derive from TypeConverter.</param>
 		public PropertySpec(string name, string type, string category, string description, object defaultValue,
 		                    string editor, Type typeConverter) :
-		                    	this(name, type, category, description, defaultValue, editor, typeConverter.AssemblyQualifiedName)
+		                    	this(name, type, category, description, defaultValue, editor, typeConverter.AssemblyQualifiedName
+		                    	)
 		{
 		}
 
@@ -328,7 +330,7 @@ namespace Flobbster.Windows.Forms
 
 
 		public PropertySpec(BuildProperty property) : this(property.Name, property.Type,
-			property.Category, property.ExpandedValue, property.Value)
+		                                                   property.Category, property.ExpandedValue, property.Value)
 		{
 			tag = property;
 
@@ -792,7 +794,7 @@ namespace Flobbster.Windows.Forms
 	}
 
 	#endregion
-	
+
 	/// <summary>
 	/// Represents a collection of custom properties that can be selected into a
 	/// PropertyGrid to provide functionality beyond that of the simple reflection
@@ -834,7 +836,7 @@ namespace Flobbster.Windows.Forms
 				if (item.DefaultValue == null)
 					return false;
 				else
-					return !this.GetValue(component).Equals(item.DefaultValue);
+					return !GetValue(component).Equals(item.DefaultValue);
 			}
 
 			public override object GetValue(object component)
@@ -863,7 +865,7 @@ namespace Flobbster.Windows.Forms
 
 			public override bool ShouldSerializeValue(object component)
 			{
-				object val = this.GetValue(component);
+				object val = GetValue(component);
 
 				if (item.DefaultValue == null && val == null)
 					return false;
@@ -1049,7 +1051,7 @@ namespace Flobbster.Windows.Forms
 			// Convert the list of PropertyDescriptors to a collection that the
 			// ICustomTypeDescriptor can use, and return it.
 			PropertyDescriptor[] propArray = (PropertyDescriptor[]) props.ToArray(
-				typeof (PropertyDescriptor));
+			                                                        	typeof (PropertyDescriptor));
 			return new PropertyDescriptorCollection(propArray);
 		}
 

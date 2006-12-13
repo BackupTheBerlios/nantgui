@@ -52,7 +52,7 @@ namespace NAntGui.Core
 		{
 			foreach (ScriptTabPage page in _tabs)
 			{
-				if (page.Equals(_tabControl.SelectedTab)) 
+				if (page.Equals(_tabControl.SelectedTab))
 				{
 					_selectedTab = page;
 				}
@@ -120,14 +120,11 @@ namespace NAntGui.Core
 		public void CloseSelectedTab(CancelEventArgs e)
 		{
 			_selectedTab.Close(e);
-			
 		}
 
 		public ScriptTabPage SelectedTab
 		{
 			get { return _selectedTab; }
 		}
-
-
 	}
 }

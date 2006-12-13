@@ -52,32 +52,31 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			_selectAll = new SelectAllMenuCommand(mediator);
 			_wordWrap = new WordWrapMenuCommand(mediator);
 
-			this.Initialize();
+			Initialize();
 		}
 
 		#region Initialize
 
 		private void Initialize()
 		{
-			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_undo,
-					_redo,
-					new MenuCommand("-"),
-					_cut,
-					_copy,
-					_paste,
-					_delete,
-					new MenuCommand("-"),
-					_selectAll,
-					_wordWrap
-				});
-			this.Text = "&Edit";
+			Description = "MenuCommand";
+			MenuCommands.AddRange(new MenuCommand[]
+			                      	{
+			                      		_undo,
+			                      		_redo,
+			                      		new MenuCommand("-"),
+			                      		_cut,
+			                      		_copy,
+			                      		_paste,
+			                      		_delete,
+			                      		new MenuCommand("-"),
+			                      		_selectAll,
+			                      		_wordWrap
+			                      	});
+			Text = "&Edit";
 		}
 
 		#endregion
-
 
 		public bool WordWrapChecked
 		{
@@ -87,41 +86,41 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 
 		public EditState State
 		{
-			set 
+			set
 			{
-				switch(value)
+				switch (value)
 				{
 					case EditState.TabFocused:
-						_cut.Enabled		= true;
-						_paste.Enabled		= true;
-						_delete.Enabled		= true;
-						_undo.Enabled		= true;
-						_redo.Enabled		= true;
-						_copy.Enabled		= true;
-						_selectAll.Enabled	= true;
-						_wordWrap.Enabled	= true;
+						_cut.Enabled = true;
+						_paste.Enabled = true;
+						_delete.Enabled = true;
+						_undo.Enabled = true;
+						_redo.Enabled = true;
+						_copy.Enabled = true;
+						_selectAll.Enabled = true;
+						_wordWrap.Enabled = true;
 						break;
 					case EditState.OutputFocused:
-						_cut.Enabled		= false;
-						_paste.Enabled		= false;
-						_delete.Enabled		= false;
-						_undo.Enabled		= false;
-						_redo.Enabled		= false;
-						_copy.Enabled		= true;
-						_selectAll.Enabled	= true;
-						_wordWrap.Enabled	= true;
+						_cut.Enabled = false;
+						_paste.Enabled = false;
+						_delete.Enabled = false;
+						_undo.Enabled = false;
+						_redo.Enabled = false;
+						_copy.Enabled = true;
+						_selectAll.Enabled = true;
+						_wordWrap.Enabled = true;
 						break;
 					case EditState.NoFocus:
-						_cut.Enabled		= false;
-						_paste.Enabled		= false;
-						_delete.Enabled		= false;
-						_undo.Enabled		= false;
-						_redo.Enabled		= false;
-						_copy.Enabled		= false;
-						_selectAll.Enabled	= false;
-						_wordWrap.Enabled	= false;
+						_cut.Enabled = false;
+						_paste.Enabled = false;
+						_delete.Enabled = false;
+						_undo.Enabled = false;
+						_redo.Enabled = false;
+						_copy.Enabled = false;
+						_selectAll.Enabled = false;
+						_wordWrap.Enabled = false;
 						break;
-				} 
+				}
 			}
 		}
 	}

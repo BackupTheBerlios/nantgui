@@ -35,7 +35,7 @@ namespace NAntGui.NAnt
 
 		public NAntBuildRunner(SourceFile sourceFile)
 		{
-			Assert.NotNull(sourceFile,  "sourceFile");
+			Assert.NotNull(sourceFile, "sourceFile");
 			_messageLogger = sourceFile.MessageLogger;
 			_script = new NAntBuildScript(sourceFile);
 		}
@@ -65,8 +65,8 @@ namespace NAntGui.NAnt
 		{
 			string message = "";
 #if DEBUG
-			string errorType = error.GetType().ToString() 
-				+ Environment.NewLine + error.StackTrace;
+			string errorType = error.GetType().ToString()
+			                   + Environment.NewLine + error.StackTrace;
 
 			message += errorType;
 #endif

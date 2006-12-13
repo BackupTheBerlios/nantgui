@@ -12,13 +12,13 @@ namespace NAntGui.Core
 
 		static BuildFileBrowser()
 		{
-			_openDialog.DefaultExt = 
-				_saveDialog.DefaultExt = 
-					"build";
+			_openDialog.DefaultExt =
+				_saveDialog.DefaultExt =
+				"build";
 
-			_openDialog.Filter = 
-				_saveDialog.Filter = 
-					"Build Files (*.build)|*.build|NAnt Include|*.inc";
+			_openDialog.Filter =
+				_saveDialog.Filter =
+				"Build Files (*.build)|*.build|NAnt Include|*.inc";
 		}
 
 		public static string[] BrowseForLoad()
@@ -30,7 +30,7 @@ namespace NAntGui.Core
 			}
 			else
 			{
-				return new string[]{};
+				return new string[] {};
 			}
 		}
 

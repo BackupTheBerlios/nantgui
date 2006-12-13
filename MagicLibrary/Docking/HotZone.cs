@@ -14,48 +14,54 @@ using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Docking
 {
-    public class HotZone
-    {
-        // Class constants
-        protected static int _dragWidth = 4;
-		
-        // Instance fields
-        protected Rectangle _hotArea;
-        protected Rectangle _newSize;
+	public class HotZone
+	{
+		// Class constants
+		protected static int _dragWidth = 4;
 
-        public HotZone(Rectangle hotArea, Rectangle newSize)
-        {
-            // Store initial state
-            _hotArea = hotArea;
-            _newSize = newSize;
-        }
+		// Instance fields
+		protected Rectangle _hotArea;
+		protected Rectangle _newSize;
 
-        public Rectangle HotArea
-        {
-            get { return _hotArea; }
-        }
+		public HotZone(Rectangle hotArea, Rectangle newSize)
+		{
+			// Store initial state
+			_hotArea = hotArea;
+			_newSize = newSize;
+		}
 
-        public Rectangle NewSize
-        {
-            get { return _newSize; }
-        }
+		public Rectangle HotArea
+		{
+			get { return _hotArea; }
+		}
 
-        public virtual bool ApplyChange(Point screenPos, Redocker parent) { return false; }
-        public virtual void UpdateForMousePosition(Point screenPos, Redocker parent) {}
+		public Rectangle NewSize
+		{
+			get { return _newSize; }
+		}
 
-        public virtual void DrawIndicator(Point mousePos) 
-        {
-            DrawReversible(_newSize);
-        }
-		
-        public virtual void RemoveIndicator(Point mousePos) 
-        {
-            DrawReversible(_newSize);
-        }
+		public virtual bool ApplyChange(Point screenPos, Redocker parent)
+		{
+			return false;
+		}
 
-        public virtual void DrawReversible(Rectangle rect)
-        {
-            DrawHelper.DrawDragRectangle(rect, _dragWidth);
-        }
-    }
+		public virtual void UpdateForMousePosition(Point screenPos, Redocker parent)
+		{
+		}
+
+		public virtual void DrawIndicator(Point mousePos)
+		{
+			DrawReversible(_newSize);
+		}
+
+		public virtual void RemoveIndicator(Point mousePos)
+		{
+			DrawReversible(_newSize);
+		}
+
+		public virtual void DrawReversible(Rectangle rect)
+		{
+			DrawHelper.DrawDragRectangle(rect, _dragWidth);
+		}
+	}
 }

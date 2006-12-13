@@ -38,8 +38,8 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Description = "MenuCommand";
-			this.Text = "&Word Wrap";
+			Description = "MenuCommand";
+			Text = "&Word Wrap";
 		}
 
 		public override void OnClick(EventArgs e)

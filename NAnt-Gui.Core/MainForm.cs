@@ -38,7 +38,7 @@ namespace NAntGui.Core
 
 		public MainForm(MainFormMediator mediator)
 		{
-			this.Initialize();
+			Initialize();
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 		}
@@ -67,29 +67,29 @@ namespace NAntGui.Core
 		/// </summary>
 		private void Initialize()
 		{
-			this.components = new Container();
+			components = new Container();
 			ResourceManager resources = new ResourceManager(typeof (MainForm));
-			this.SuspendLayout();
-			
+			SuspendLayout();
+
 			// 
 			// MainForm
 			// 
-			this.AllowDrop = true;
-			this.AutoScaleBaseSize = new Size(5, 13);
-			this.ClientSize = new Size(824, 553);
-			this.Icon = ((Icon) (resources.GetObject("$this.Icon")));
-			this.MinimumSize = new Size(480, 344);
-			this.Name = "MainForm";
-			this.Text = "NAnt-Gui";
-			this.SetStyle(ControlStyles.DoubleBuffer, true);
-			this.ResumeLayout(false);
+			AllowDrop = true;
+			AutoScaleBaseSize = new Size(5, 13);
+			ClientSize = new Size(824, 553);
+			Icon = ((Icon) (resources.GetObject("$this.Icon")));
+			MinimumSize = new Size(480, 344);
+			Name = "MainForm";
+			Text = "NAnt-Gui";
+			SetStyle(ControlStyles.DoubleBuffer, true);
+			ResumeLayout(false);
 		}
 
 		#endregion
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			base.OnClosing (e);
+			base.OnClosing(e);
 			_mediator.MainFormClosing(e);
 		}
 

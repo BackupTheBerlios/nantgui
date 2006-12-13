@@ -39,9 +39,9 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Description = "MenuCommand";
-			this.Shortcut = Shortcut.CtrlU;
-			this.Text = "Save O&utput";
+			Description = "MenuCommand";
+			Shortcut = Shortcut.CtrlU;
+			Text = "Save O&utput";
 		}
 
 		public override void OnClick(EventArgs e)

@@ -1,4 +1,5 @@
 #region Copyleft and Copyright
+
 // Copyright (C) 2005 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
@@ -16,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 // Colin Svingen (csvingen@businesswatch.ca)
+
 #endregion
 
 using System;
@@ -184,8 +186,8 @@ namespace NAnt.Contrib.InnoSetup.Tasks
 			catch (Exception ex)
 			{
 				throw new BuildException(string.Format(CultureInfo.InvariantCulture,
-					"Error compiling installer from '{0}'.", Script.FullName),
-					Location, ex);
+				                                       "Error compiling installer from '{0}'.", Script.FullName),
+				                         Location, ex);
 			}
 		}
 
@@ -204,17 +206,16 @@ namespace NAnt.Contrib.InnoSetup.Tasks
 		/// <exception cref="BuildException"><see cref="Script" /> does not hold a valid file name.</exception>
 		protected override void InitializeTask(XmlNode taskNode)
 		{
-				// just check if program file to execute is a valid file name
+			// just check if program file to execute is a valid file name
 			if (!Script.Exists)
 			{
 				throw new BuildException(string.Format(CultureInfo.InvariantCulture,
-					"'{0}' is not a valid value for attribute 'script' of <{1} ... />.",
-					Script.FullName, Name), Location);
+				                                       "'{0}' is not a valid value for attribute 'script' of <{1} ... />.",
+				                                       Script.FullName, Name), Location);
 			}
 
 			base.InitializeTask(taskNode);
 		}
-
 
 		#endregion
 	}

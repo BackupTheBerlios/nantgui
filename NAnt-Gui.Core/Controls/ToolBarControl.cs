@@ -45,7 +45,7 @@ namespace NAntGui.Core.Controls
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Initialize();
+			Initialize();
 		}
 
 		#region Initialize
@@ -87,24 +87,24 @@ namespace NAntGui.Core.Controls
 			//
 			// MainToolBar
 			//
-			this.Appearance = ToolBarAppearance.Flat;
-			this.Buttons.AddRange(new ToolBarButton[]
-				{
-					_newButton,
-					_openButton,
-					_saveButton,
-					_reloadButton,
-					_runButton,
-					_stopButton
-				});
-			this.DropDownArrows = true;
-			this.Location = new Point(0, 25);
-			this.Name = "MainToolBar";
-			this.ShowToolTips = true;
-			this.Size = new Size(824, 28);
-			this.TabIndex = 4;
-			this.ImageList = NAntGuiApp.ImageList;
-			this.ButtonClick += new ToolBarButtonClickEventHandler(this.Button_Click);
+			Appearance = ToolBarAppearance.Flat;
+			Buttons.AddRange(new ToolBarButton[]
+			                 	{
+			                 		_newButton,
+			                 		_openButton,
+			                 		_saveButton,
+			                 		_reloadButton,
+			                 		_runButton,
+			                 		_stopButton
+			                 	});
+			DropDownArrows = true;
+			Location = new Point(0, 25);
+			Name = "MainToolBar";
+			ShowToolTips = true;
+			Size = new Size(824, 28);
+			TabIndex = 4;
+			ImageList = NAntGuiApp.ImageList;
+			ButtonClick += new ToolBarButtonClickEventHandler(Button_Click);
 		}
 
 		#endregion
@@ -139,17 +139,17 @@ namespace NAntGui.Core.Controls
 
 		public void Disable()
 		{
-			_reloadButton.Enabled	= false;
-			_saveButton.Enabled		= false;
-			_stopButton.Enabled		= false;
-			_runButton.Enabled		= false;
+			_reloadButton.Enabled = false;
+			_saveButton.Enabled = false;
+			_stopButton.Enabled = false;
+			_runButton.Enabled = false;
 		}
 
 		public void Enable()
 		{
-			_reloadButton.Enabled	= true;
-			_saveButton.Enabled		= true;
-			_runButton.Enabled		= true;
+			_reloadButton.Enabled = true;
+			_saveButton.Enabled = true;
+			_runButton.Enabled = true;
 		}
 
 		public RunState State

@@ -37,14 +37,14 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 		{
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
-			
-			this.Description = "MenuCommand";
+
+			Description = "MenuCommand";
 		}
 
 		public override void OnClick(EventArgs e)
 		{
 			base.OnClick(e);
-			_mediator.RecentItemClicked(this.Text.Substring(2));
+			_mediator.RecentItemClicked(Text.Substring(2));
 		}
 	}
 }

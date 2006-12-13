@@ -40,12 +40,12 @@ namespace NAntGui.Core
 
 			if (KeyExists(key))
 			{
-				this.LoadRecentItemsFromReg(key);
+				LoadRecentItemsFromReg(key);
 			}
 			else
 			{
-				this.LoadRecentItemsFromOldRegKey();
-			}			
+				LoadRecentItemsFromOldRegKey();
+			}
 		}
 
 		public void Save()
@@ -83,11 +83,11 @@ namespace NAntGui.Core
 		{
 			if (Exists(item))
 			{
-				this.ReplaceItem(item);
+				ReplaceItem(item);
 			}
 			else
 			{
-				this.AddItem(item);
+				AddItem(item);
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace NAntGui.Core
 
 				if (name == LOOP_ESCAPE) break;
 
-				this.InsertItem(name, itemsAddedCount++);
+				InsertItem(name, itemsAddedCount++);
 			}
 		}
 
@@ -136,7 +136,7 @@ namespace NAntGui.Core
 		{
 			if (TooManyItems)
 			{
-				this.RemoveLast();
+				RemoveLast();
 			}
 
 			_items.Insert(0, item);
@@ -181,7 +181,7 @@ namespace NAntGui.Core
 
 			if (KeyExists(key))
 			{
-				this.LoadRecentItemsFromReg(key);
+				LoadRecentItemsFromReg(key);
 			}
 		}
 	}

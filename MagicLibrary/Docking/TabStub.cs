@@ -21,14 +21,14 @@ using TabPage=Crownwood.Magic.Controls.TabPage;
 
 namespace Crownwood.Magic.Docking
 {
-    [ToolboxItem(false)]
-    public class TabStub : UserControl
-    {
+	[ToolboxItem(false)]
+	public class TabStub : UserControl
+	{
 		private class DrawTab
 		{
 			protected int _index;
 			protected Rectangle _drawRect;
-            protected TabPage _tabPage;
+			protected TabPage _tabPage;
 
 			public DrawTab(TabPage tabPage, Rectangle drawRect, int index)
 			{
@@ -37,18 +37,29 @@ namespace Crownwood.Magic.Docking
 				_drawRect = drawRect;
 			}
 
-			public TabPage TabPage  { get { return _tabPage; } }
-            public Rectangle DrawRect                        { get { return _drawRect; } }
-			public int Index                                 { get { return _index; } }
+			public TabPage TabPage
+			{
+				get { return _tabPage; }
+			}
+
+			public Rectangle DrawRect
+			{
+				get { return _drawRect; }
+			}
+
+			public int Index
+			{
+				get { return _index; }
+			}
 		}
 
-        // Class constants
+		// Class constants
 		protected static int _imageGap = 3;
 		protected static int _imageGaps = 6;
-        protected static int _imageVector = 16;
-        protected static int _beginGap = 2;
-        protected static int _endGap = 8;
-        protected static int _sideGap = 2;
+		protected static int _imageVector = 16;
+		protected static int _beginGap = 2;
+		protected static int _endGap = 8;
+		protected static int _sideGap = 2;
 		protected static int _hoverInterval = 500;
 
 		// Instance fields
@@ -56,47 +67,48 @@ namespace Crownwood.Magic.Docking
 		protected int _hoverOver;
 		protected int _hoverItem;
 		protected int _selectedIndex;
-    	protected bool _defaultFont;
+		protected bool _defaultFont;
 		protected bool _defaultColor;
 		protected Color _backIDE;
-        protected Timer _hoverTimer;
-        protected TabPageCollection _tabPages;
+		protected Timer _hoverTimer;
+		protected TabPageCollection _tabPages;
 		protected WindowContentTabbed _wct;
 		protected ArrayList _drawTabs;
-        protected VisualStyle _style;
+		protected VisualStyle _style;
 
-        public delegate void TabStubIndexHandler(TabStub sender, int pageIndex);
-        public delegate void TabStubHandler(TabStub sender);
+		public delegate void TabStubIndexHandler(TabStub sender, int pageIndex);
 
-        // Exposed events
-        public event TabStubIndexHandler PageClicked;
-        public event TabStubIndexHandler PageOver;
-        public event TabStubHandler PagesLeave;
+		public delegate void TabStubHandler(TabStub sender);
+
+		// Exposed events
+		public event TabStubIndexHandler PageClicked;
+		public event TabStubIndexHandler PageOver;
+		public event TabStubHandler PagesLeave;
 
 		public TabStub(VisualStyle style)
 		{
 			// Default state
 			_wct = null;
 			_style = style;
-            _hoverOver = -1;
-            _hoverItem = -1;
-            _selectedIndex = -1;
-            _defaultFont = true;
+			_hoverOver = -1;
+			_hoverItem = -1;
+			_selectedIndex = -1;
+			_defaultFont = true;
 			_defaultColor = true;
 			_edge = Edge.None;
 			_drawTabs = new ArrayList();
-            _tabPages = new TabPageCollection();
-            base.Font = SystemInformation.MenuFont;
+			_tabPages = new TabPageCollection();
+			base.Font = SystemInformation.MenuFont;
 
-            // Hookup to collection events
-            _tabPages.Cleared += new CollectionClear(OnClearedPages);
-            _tabPages.Inserted += new CollectionChange(OnInsertedPage);
-            _tabPages.Removing += new CollectionChange(OnRemovingPage);
-            _tabPages.Removed += new CollectionChange(OnRemovedPage);
+			// Hookup to collection events
+			_tabPages.Cleared += new CollectionClear(OnClearedPages);
+			_tabPages.Inserted += new CollectionChange(OnInsertedPage);
+			_tabPages.Removing += new CollectionChange(OnRemovingPage);
+			_tabPages.Removed += new CollectionChange(OnRemovedPage);
 
-            // Need notification when the MenuFont is changed
-            SystemEvents.UserPreferenceChanged += new 
-                UserPreferenceChangedEventHandler(OnPreferenceChanged);
+			// Need notification when the MenuFont is changed
+			SystemEvents.UserPreferenceChanged += new
+				UserPreferenceChangedEventHandler(OnPreferenceChanged);
 
 			// Default default colors
 			DefineBackColor(SystemColors.Control);
@@ -107,27 +119,27 @@ namespace Crownwood.Magic.Docking
 			_hoverTimer.Tick += new EventHandler(OnTimerExpire);
 		}
 
-        protected override void Dispose(bool disposing)
-        {
-            if(disposing)
-            {
-                // Remove notifications
-                SystemEvents.UserPreferenceChanged -= new 
-                    UserPreferenceChangedEventHandler(OnPreferenceChanged);
-            }
-            base.Dispose(disposing);
-        }
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// Remove notifications
+				SystemEvents.UserPreferenceChanged -= new
+					UserPreferenceChangedEventHandler(OnPreferenceChanged);
+			}
+			base.Dispose(disposing);
+		}
 
-        public TabPageCollection TabPages
-        {
-            get { return _tabPages; }
+		public TabPageCollection TabPages
+		{
+			get { return _tabPages; }
 
-            set
-            {
-                _tabPages.Clear();
-                _tabPages = value;
-            }
-        }
+			set
+			{
+				_tabPages.Clear();
+				_tabPages = value;
+			}
+		}
 
 		public Edge Edging
 		{
@@ -142,7 +154,7 @@ namespace Crownwood.Magic.Docking
 					Recalculate();
 					Invalidate();
 				}
-		    }
+			}
 		}
 
 		public int SelectedIndex
@@ -160,12 +172,12 @@ namespace Crownwood.Magic.Docking
 			}
 		}
 
-        public override Font Font
-        {
-            get { return base.Font; }
+		public override Font Font
+		{
+			get { return base.Font; }
 
-            set
-            {
+			set
+			{
 				if (value != null)
 				{
 					if (value != base.Font)
@@ -178,77 +190,77 @@ namespace Crownwood.Magic.Docking
 						Invalidate();
 					}
 				}
-            }
-        }
+			}
+		}
 
-        public override Color BackColor
-        {
-            get { return base.BackColor; }
+		public override Color BackColor
+		{
+			get { return base.BackColor; }
 
-            set
-            {
-                if (this.BackColor != value)
-                {
-                    _defaultColor = (value == SystemColors.Control);
+			set
+			{
+				if (BackColor != value)
+				{
+					_defaultColor = (value == SystemColors.Control);
 					DefineBackColor(value);
-                    Invalidate();
-                }
-            }
-        }
+					Invalidate();
+				}
+			}
+		}
 
-        public WindowContentTabbed WindowContentTabbed
-        {
-            get { return _wct; }
-            set { _wct = value; }
-        }
-        
+		public WindowContentTabbed WindowContentTabbed
+		{
+			get { return _wct; }
+			set { _wct = value; }
+		}
+
 		public virtual void OnPageClicked(int pageIndex)
 		{
-            // Has anyone registered for the event?
+			// Has anyone registered for the event?
 			if (PageClicked != null)
 				PageClicked(this, pageIndex);
 		}
 
 		public virtual void OnPageOver(int pageIndex)
 		{
-            // Has anyone registered for the event?
+			// Has anyone registered for the event?
 			if (PageOver != null)
 				PageOver(this, pageIndex);
 		}
 
-        public virtual void OnPagesLeave()
-        {
-            // Has anyone registered for the event?
-            if (PagesLeave != null)
-                PagesLeave(this);
-        }
-        
-        public void PropogateNameValue(PropogateName name, object value)
-        {
-            switch(name)
-            {
-                case PropogateName.BackColor:
-                    this.BackColor = (Color)value;
-                    Invalidate();
-                    break;
-                case PropogateName.InactiveTextColor:
-                    this.ForeColor = (Color)value;
-                    Invalidate();
-                    break;
-                case PropogateName.CaptionFont:
-                    this.Font = (Font)value;
-                    break;
-            }
-            
-            // Pass onto the contained WCT
-            _wct.PropogateNameValue(name, value);
-        }
-                
-        protected void DefineBackColor(Color backColor)
+		public virtual void OnPagesLeave()
+		{
+			// Has anyone registered for the event?
+			if (PagesLeave != null)
+				PagesLeave(this);
+		}
+
+		public void PropogateNameValue(PropogateName name, object value)
+		{
+			switch (name)
+			{
+				case PropogateName.BackColor:
+					BackColor = (Color) value;
+					Invalidate();
+					break;
+				case PropogateName.InactiveTextColor:
+					ForeColor = (Color) value;
+					Invalidate();
+					break;
+				case PropogateName.CaptionFont:
+					Font = (Font) value;
+					break;
+			}
+
+			// Pass onto the contained WCT
+			_wct.PropogateNameValue(name, value);
+		}
+
+		protected void DefineBackColor(Color backColor)
 		{
 			base.BackColor = backColor;
-			
-            _backIDE = ColorHelper.TabBackgroundFromBaseColor(backColor);
+
+			_backIDE = ColorHelper.TabBackgroundFromBaseColor(backColor);
 		}
 
 		protected void OnPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
@@ -268,17 +280,17 @@ namespace Crownwood.Magic.Docking
 			// If still using the Default color when we were created
 			if (_defaultColor)
 			{
-				this.BackColor = SystemColors.Control;
+				BackColor = SystemColors.Control;
 				Invalidate();
 			}
 
 			base.OnSystemColorsChanged(e);
 		}
 
-        protected void OnClearedPages()
-        {
-            // Cancel any hover selection
-            CancelHoverItem();
+		protected void OnClearedPages()
+		{
+			// Cancel any hover selection
+			CancelHoverItem();
 
 			// Cancel any current selection
 			_selectedIndex = -1;
@@ -287,8 +299,8 @@ namespace Crownwood.Magic.Docking
 			Recalculate();
 			Invalidate();
 		}
-		
-        protected void OnInsertedPage(int index, object value)
+
+		protected void OnInsertedPage(int index, object value)
 		{
 			// If no page is currently selected
 			if (_selectedIndex == -1)
@@ -311,40 +323,40 @@ namespace Crownwood.Magic.Docking
 			Invalidate();
 		}
 
-        protected void OnRemovingPage(int index, object value)
-        {
-            // Removed page involved in hover calculations?
-            if ((_hoverOver == index) || (_hoverItem == index))
-                CancelHoverItem();
-        
-            // Removing the last page?
-            if (_tabPages.Count == 1)
-            {
-                // Get rid of any selection
-                _selectedIndex = -1;
-            }
-            else
-            {
-                // If removing a page before the selected one...
-			    if (index < _selectedIndex)
-			    {
-                    // ...then the selected index must be decremented to match
-					_selectedIndex--;
-			    }
-			    else
-			    {
-			        // If the selected page is the last one then...
-			        if (_selectedIndex == (_tabPages.Count-1))
-			        {
-			            // Must reduce selected index
-                        _selectedIndex--;
-                    }
-			    }
-	        }
-        }
+		protected void OnRemovingPage(int index, object value)
+		{
+			// Removed page involved in hover calculations?
+			if ((_hoverOver == index) || (_hoverItem == index))
+				CancelHoverItem();
 
-        protected void OnRemovedPage(int index, object value)
-        {
+			// Removing the last page?
+			if (_tabPages.Count == 1)
+			{
+				// Get rid of any selection
+				_selectedIndex = -1;
+			}
+			else
+			{
+				// If removing a page before the selected one...
+				if (index < _selectedIndex)
+				{
+					// ...then the selected index must be decremented to match
+					_selectedIndex--;
+				}
+				else
+				{
+					// If the selected page is the last one then...
+					if (_selectedIndex == (_tabPages.Count - 1))
+					{
+						// Must reduce selected index
+						_selectedIndex--;
+					}
+				}
+			}
+		}
+
+		protected void OnRemovedPage(int index, object value)
+		{
 			// Cast to correct type
 			TabPage page = value as TabPage;
 
@@ -364,28 +376,28 @@ namespace Crownwood.Magic.Docking
 			bool update = false;
 
 			// Scan each tab page in turn
-			foreach(TabPage page in _tabPages)
+			foreach (TabPage page in _tabPages)
 			{
 				// Is this the page for the changed content?
 				if (page.Tag == obj)
 				{
 					// Property specific processing
-					switch(prop)
+					switch (prop)
 					{
 						case Content.Property.Title:
 							page.Title = obj.Title;
 							update = true;
 							break;
 						case Content.Property.ImageList:
-							page.ImageList= obj.ImageList;
+							page.ImageList = obj.ImageList;
 							update = true;
 							break;
 						case Content.Property.ImageIndex:
-							page.ImageIndex= obj.ImageIndex;
+							page.ImageIndex = obj.ImageIndex;
 							update = true;
 							break;
 						case Content.Property.Icon:
-							page.Icon= obj.Icon;
+							page.Icon = obj.Icon;
 							update = true;
 							break;
 					}
@@ -405,31 +417,31 @@ namespace Crownwood.Magic.Docking
 			}
 		}
 
-        protected void CancelHoverItem()
-        {
-            // Currently timing a hover change?
-            if (_hoverOver != -1)
-            {
-                // Prevent timer from expiring
-                _hoverTimer.Stop();
-                
-                // No item being timed
-                _hoverOver = -1;
-            }
+		protected void CancelHoverItem()
+		{
+			// Currently timing a hover change?
+			if (_hoverOver != -1)
+			{
+				// Prevent timer from expiring
+				_hoverTimer.Stop();
 
-            // Any current hover item?
-            if (_hoverItem != -1)
-            {
-                // No item is being hovered
-                _hoverItem = -1;
-		        
-                // Generate event for end of hover
-                OnPagesLeave();
-            }
-        }
+				// No item being timed
+				_hoverOver = -1;
+			}
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
+			// Any current hover item?
+			if (_hoverItem != -1)
+			{
+				// No item is being hovered
+				_hoverItem = -1;
+
+				// Generate event for end of hover
+				OnPagesLeave();
+			}
+		}
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
 			// Create a point representing current mouse position
 			Point mousePos = new Point(e.X, e.Y);
 
@@ -437,7 +449,7 @@ namespace Crownwood.Magic.Docking
 			int count = _drawTabs.Count;
 
 			// Search each draw cell
-			for(; index<count; index++)
+			for (; index < count; index++)
 			{
 				DrawTab dt = _drawTabs[index] as DrawTab;
 
@@ -447,18 +459,18 @@ namespace Crownwood.Magic.Docking
 					// If the mouse is not over the hover item
 					if (_hoverItem != dt.Index)
 					{
-					    // And we are not already timing this change in hover
-					    if (_hoverOver != dt.Index)
-					    {
-					        // Start timing the hover change
-						    _hoverTimer.Start();
-						    
-						    // Remember which item we are timing
-						    _hoverOver = dt.Index;
-				        }
+						// And we are not already timing this change in hover
+						if (_hoverOver != dt.Index)
+						{
+							// Start timing the hover change
+							_hoverTimer.Start();
+
+							// Remember which item we are timing
+							_hoverOver = dt.Index;
+						}
 					}
 
-    				break;
+					break;
 				}
 			}
 
@@ -468,145 +480,145 @@ namespace Crownwood.Magic.Docking
 				// If we have a hover item or timing a hover change
 				if ((_hoverOver != -1) || (_hoverItem != -1))
 				{
-				    // Stop any timing
-				    CancelHoverItem();
+					// Stop any timing
+					CancelHoverItem();
 				}
 			}
 
 			base.OnMouseMove(e);
 		}
 
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            // Remove any hover state
-            CancelHoverItem();
-    
+		protected override void OnMouseLeave(EventArgs e)
+		{
+			// Remove any hover state
+			CancelHoverItem();
+
 			base.OnMouseLeave(e);
 		}
 
 		protected void OnTimerExpire(object sender, EventArgs e)
 		{
-		    // Prevent the timer from firing again
+			// Prevent the timer from firing again
 			_hoverTimer.Stop();
 
-            // A change in hover still valid?
-            if (_hoverItem != _hoverOver)
-            {
-                // This item becomes the current hover item
-                _hoverItem = _hoverOver;
-                
-                // No longer in a timing state
-                _hoverOver = -1;
+			// A change in hover still valid?
+			if (_hoverItem != _hoverOver)
+			{
+				// This item becomes the current hover item
+				_hoverItem = _hoverOver;
 
-			    // Do we need a change in selection?
-			    if (_selectedIndex != _hoverItem)
-			    {
-				    // Change selection and redraw
-				    _selectedIndex = _hoverItem;
+				// No longer in a timing state
+				_hoverOver = -1;
 
-				    Recalculate();
-				    Invalidate();
-                }
+				// Do we need a change in selection?
+				if (_selectedIndex != _hoverItem)
+				{
+					// Change selection and redraw
+					_selectedIndex = _hoverItem;
 
-			    // Generate event to notify where mouse is now hovering
-			    OnPageOver(_selectedIndex);
-		    }
+					Recalculate();
+					Invalidate();
+				}
+
+				// Generate event to notify where mouse is now hovering
+				OnPageOver(_selectedIndex);
+			}
 		}
 
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            // Only select a button or page when using left mouse button
-            if (e.Button == MouseButtons.Left)
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			// Only select a button or page when using left mouse button
+			if (e.Button == MouseButtons.Left)
 			{
-                // Create a point representing current mouse position
-                Point mousePos = new Point(e.X, e.Y);
+				// Create a point representing current mouse position
+				Point mousePos = new Point(e.X, e.Y);
 
 				int count = _drawTabs.Count;
 
 				// Search each draw cell
-				for(int index=0; index<count; index++)
+				for (int index = 0; index < count; index++)
 				{
 					DrawTab dt = _drawTabs[index] as DrawTab;
 
 					// Is mouse pressed in this draw cell?
 					if (dt.DrawRect.Contains(mousePos))
 					{
-                        // Prevent any hover timer expiring
-                        _hoverTimer.Stop();
-						    
-                        // This becomes the current hover item
-                        _hoverItem = _selectedIndex;
-						    
-                        // Not timing a hover change
-                        _hoverOver = _hoverItem;
-                        
-                        // Will this cause a change in selection?
+						// Prevent any hover timer expiring
+						_hoverTimer.Stop();
+
+						// This becomes the current hover item
+						_hoverItem = _selectedIndex;
+
+						// Not timing a hover change
+						_hoverOver = _hoverItem;
+
+						// Will this cause a change in selection?
 						if (_selectedIndex != dt.Index)
 						{
-                            // Change selection and redraw
-                            _selectedIndex = dt.Index;
-						
+							// Change selection and redraw
+							_selectedIndex = dt.Index;
+
 							Recalculate();
 							Invalidate();
-                        }
+						}
 
-                        // Generate event to notify a click occured on the selection
-                        OnPageClicked(_selectedIndex);
+						// Generate event to notify a click occured on the selection
+						OnPageClicked(_selectedIndex);
 
-                        break;
+						break;
 					}
 				}
 			}
-       }
+		}
 
-        public static int TabStubVector(Font font)
-        {
-            int fixedVector = _imageVector + _imageGaps;
+		public static int TabStubVector(Font font)
+		{
+			int fixedVector = _imageVector + _imageGaps;
 
-            int minFontVector = font.Height + _imageGaps;
+			int minFontVector = font.Height + _imageGaps;
 
-            // Make sure at least bit enough for the provided font
-            if (fixedVector < minFontVector)
-                fixedVector = minFontVector;
-                
-            return fixedVector + _sideGap;
-        }
+			// Make sure at least bit enough for the provided font
+			if (fixedVector < minFontVector)
+				fixedVector = minFontVector;
+
+			return fixedVector + _sideGap;
+		}
 
 		protected void ResizeControl()
 		{
 			int textMax = 0;
 
 			// Find largest space needed for drawing page text
-			using(Graphics g = this.CreateGraphics())
+			using (Graphics g = CreateGraphics())
 			{
-				foreach(TabPage page in _tabPages)
+				foreach (TabPage page in _tabPages)
 				{
 					// Find width of the requested text
-					SizeF dimension = g.MeasureString(page.Title, this.Font);
+					SizeF dimension = g.MeasureString(page.Title, Font);
 
-					if ((int)dimension.Width > textMax)
-						textMax = (int)dimension.Width;
+					if ((int) dimension.Width > textMax)
+						textMax = (int) dimension.Width;
 				}
 			}
 
 			// Calculate total width/height needed
-			int variableVector = _tabPages.Count * (_imageVector + _imageGaps) + textMax + _imageGap;
+			int variableVector = _tabPages.Count*(_imageVector + _imageGaps) + textMax + _imageGap;
 
-            // Calculate the fixed direction value
-			int fixedVector = TabStubVector(this.Font);
+			// Calculate the fixed direction value
+			int fixedVector = TabStubVector(Font);
 
 			// Resize the control as appropriate
-			switch(_edge)
+			switch (_edge)
 			{
 				case Edge.Left:
 				case Edge.Right:
-					this.Size = new Size(fixedVector, variableVector + _beginGap + _endGap);
+					Size = new Size(fixedVector, variableVector + _beginGap + _endGap);
 					break;
 				case Edge.Top:
 				case Edge.Bottom:
 				case Edge.None:
 				default:
-					this.Size = new Size(variableVector + _beginGap + _endGap, fixedVector);
+					Size = new Size(variableVector + _beginGap + _endGap, fixedVector);
 					break;
 			}
 		}
@@ -621,43 +633,43 @@ namespace Crownwood.Magic.Docking
 			int cellVector = _imageVector + _imageGaps;
 			int posStart = _beginGap;
 
-			switch(_edge)
+			switch (_edge)
 			{
 				case Edge.Left:
 				case Edge.Right:
-					posEnd = this.Height - _endGap;
+					posEnd = Height - _endGap;
 					break;
 				case Edge.Top:
 				case Edge.Bottom:
 				case Edge.None:
 				default:
-					posEnd = this.Width - _endGap;
+					posEnd = Width - _endGap;
 					break;
 			}
 
 			int count = _tabPages.Count;
 
 			// Process from start of list until we find the selected one
-			for(int index=0; (index<count) && (index!=_selectedIndex); index++)
+			for (int index = 0; (index < count) && (index != _selectedIndex); index++)
 			{
 				Rectangle drawRect;
 
 				// Drawing rectangle depends on direction
-				switch(_edge)
+				switch (_edge)
 				{
 					case Edge.Left:
-						drawRect = new Rectangle(0, posStart, this.Width - _sideGap - 1, cellVector);
+						drawRect = new Rectangle(0, posStart, Width - _sideGap - 1, cellVector);
 						break;
 					case Edge.Right:
-						drawRect = new Rectangle(_sideGap, posStart, this.Width - _sideGap, cellVector);
+						drawRect = new Rectangle(_sideGap, posStart, Width - _sideGap, cellVector);
 						break;
 					case Edge.Bottom:
-						drawRect = new Rectangle(posStart, _sideGap, cellVector, this.Height - _sideGap);
+						drawRect = new Rectangle(posStart, _sideGap, cellVector, Height - _sideGap);
 						break;
 					case Edge.Top:
 					case Edge.None:
 					default:
-						drawRect = new Rectangle(posStart, 0, cellVector, this.Height - _sideGap - 1);
+						drawRect = new Rectangle(posStart, 0, cellVector, Height - _sideGap - 1);
 						break;
 				}
 
@@ -669,26 +681,26 @@ namespace Crownwood.Magic.Docking
 			}
 
 			// Process from end of list until we find the selected one
-			for(int index=count-1; (index>=0) && (index!=_selectedIndex); index--)
+			for (int index = count - 1; (index >= 0) && (index != _selectedIndex); index--)
 			{
 				Rectangle drawRect;
 
 				// Drawing rectangle depends on direction
-				switch(_edge)
+				switch (_edge)
 				{
 					case Edge.Left:
-						drawRect = new Rectangle(0, posEnd - cellVector, this.Width - _sideGap - 1, cellVector);
+						drawRect = new Rectangle(0, posEnd - cellVector, Width - _sideGap - 1, cellVector);
 						break;
 					case Edge.Right:
-						drawRect = new Rectangle(_sideGap, posEnd - cellVector, this.Width - _sideGap, cellVector);
+						drawRect = new Rectangle(_sideGap, posEnd - cellVector, Width - _sideGap, cellVector);
 						break;
 					case Edge.Bottom:
-						drawRect = new Rectangle(posEnd - cellVector, _sideGap, cellVector, this.Height - _sideGap);
+						drawRect = new Rectangle(posEnd - cellVector, _sideGap, cellVector, Height - _sideGap);
 						break;
 					case Edge.Top:
 					case Edge.None:
 					default:
-						drawRect = new Rectangle(posEnd - cellVector, 0, cellVector, this.Height - _sideGap - 1);
+						drawRect = new Rectangle(posEnd - cellVector, 0, cellVector, Height - _sideGap - 1);
 						break;
 				}
 
@@ -704,21 +716,21 @@ namespace Crownwood.Magic.Docking
 				Rectangle drawRect;
 
 				// Drawing rectangle depends on direction
-				switch(_edge)
+				switch (_edge)
 				{
 					case Edge.Left:
-						drawRect = new Rectangle(0, posStart, this.Width - _sideGap - 1, posEnd - posStart);
+						drawRect = new Rectangle(0, posStart, Width - _sideGap - 1, posEnd - posStart);
 						break;
 					case Edge.Right:
-						drawRect = new Rectangle(_sideGap, posStart, this.Width - _sideGap, posEnd - posStart);
+						drawRect = new Rectangle(_sideGap, posStart, Width - _sideGap, posEnd - posStart);
 						break;
 					case Edge.Bottom:
-						drawRect = new Rectangle(posStart, _sideGap, posEnd - posStart, this.Height - _sideGap);
+						drawRect = new Rectangle(posStart, _sideGap, posEnd - posStart, Height - _sideGap);
 						break;
 					case Edge.Top:
 					case Edge.None:
 					default:
-						drawRect = new Rectangle(posStart, 0, posEnd - posStart, this.Height - _sideGap - 1);
+						drawRect = new Rectangle(posStart, 0, posEnd - posStart, Height - _sideGap - 1);
 						break;
 				}
 
@@ -730,7 +742,7 @@ namespace Crownwood.Magic.Docking
 		protected void AdjustRectForEdge(ref Rectangle rect)
 		{
 			// Adjust rectangle to exclude desired edge
-			switch(_edge)
+			switch (_edge)
 			{
 				case Edge.Left:
 					rect.X--;
@@ -751,141 +763,141 @@ namespace Crownwood.Magic.Docking
 			}
 		}
 
-        protected void DrawOutline(Graphics g, bool pre)
-        {
-            Rectangle borderRect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+		protected void DrawOutline(Graphics g, bool pre)
+		{
+			Rectangle borderRect = new Rectangle(0, 0, Width - 1, Height - 1);
 
-            // Adjust for drawing area
-            switch(_edge)
-            {
-                case Edge.Left:
-                    borderRect.Y += _beginGap;
-                    borderRect.Height -= _beginGap + _endGap - 1;
-                    borderRect.Width -= _sideGap;
-                    break;
-                case Edge.Right:
-                    borderRect.Y += _beginGap;
-                    borderRect.Height -= _beginGap + _endGap - 1;
-                    borderRect.X += _sideGap;
-                    borderRect.Width -= _sideGap;
-                    break;
-                case Edge.Bottom:
-                    borderRect.Y += _sideGap;
-                    borderRect.Height -= _sideGap;
-                    borderRect.X += _beginGap;
-                    borderRect.Width -= _beginGap + _endGap - 1;
-                    break;
-                case Edge.Top:
-                case Edge.None:
-                default:
-                    borderRect.Height -= _sideGap;
-                    borderRect.X += _beginGap;
-                    borderRect.Width -= _beginGap + _endGap - 1;
-                    break;
-            }
+			// Adjust for drawing area
+			switch (_edge)
+			{
+				case Edge.Left:
+					borderRect.Y += _beginGap;
+					borderRect.Height -= _beginGap + _endGap - 1;
+					borderRect.Width -= _sideGap;
+					break;
+				case Edge.Right:
+					borderRect.Y += _beginGap;
+					borderRect.Height -= _beginGap + _endGap - 1;
+					borderRect.X += _sideGap;
+					borderRect.Width -= _sideGap;
+					break;
+				case Edge.Bottom:
+					borderRect.Y += _sideGap;
+					borderRect.Height -= _sideGap;
+					borderRect.X += _beginGap;
+					borderRect.Width -= _beginGap + _endGap - 1;
+					break;
+				case Edge.Top:
+				case Edge.None:
+				default:
+					borderRect.Height -= _sideGap;
+					borderRect.X += _beginGap;
+					borderRect.Width -= _beginGap + _endGap - 1;
+					break;
+			}
 
-            // Remove unwated drawing edge
-            AdjustRectForEdge(ref borderRect);
+			// Remove unwated drawing edge
+			AdjustRectForEdge(ref borderRect);
 
-            if (pre)
-            {
-                if (_style == VisualStyle.IDE)
-                {
-			        // Fill tab area in required color
-                    using(SolidBrush fillBrush = new SolidBrush(this.BackColor))
-                        g.FillRectangle(fillBrush, borderRect);
-                }
-            }
-            else
-            {
-                if (_style == VisualStyle.Plain)
-                {
-                    using(Pen penL = new Pen(ControlPaint.LightLight(this.BackColor)),
-                          penD = new Pen(ControlPaint.Dark(this.BackColor)))
-                    {
-                        g.DrawLine(penL, borderRect.Left, borderRect.Top, borderRect.Right, borderRect.Top);
-                        g.DrawLine(penL, borderRect.Left, borderRect.Top, borderRect.Left, borderRect.Bottom);
-                        g.DrawLine(penD, borderRect.Right, borderRect.Top, borderRect.Right, borderRect.Bottom);
-                        g.DrawLine(penD, borderRect.Right, borderRect.Bottom, borderRect.Left, borderRect.Bottom);
-                    }
-                }
-            }
-        }
+			if (pre)
+			{
+				if (_style == VisualStyle.IDE)
+				{
+					// Fill tab area in required color
+					using (SolidBrush fillBrush = new SolidBrush(BackColor))
+						g.FillRectangle(fillBrush, borderRect);
+				}
+			}
+			else
+			{
+				if (_style == VisualStyle.Plain)
+				{
+					using (Pen penL = new Pen(ControlPaint.LightLight(BackColor)),
+					           penD = new Pen(ControlPaint.Dark(BackColor)))
+					{
+						g.DrawLine(penL, borderRect.Left, borderRect.Top, borderRect.Right, borderRect.Top);
+						g.DrawLine(penL, borderRect.Left, borderRect.Top, borderRect.Left, borderRect.Bottom);
+						g.DrawLine(penD, borderRect.Right, borderRect.Top, borderRect.Right, borderRect.Bottom);
+						g.DrawLine(penD, borderRect.Right, borderRect.Bottom, borderRect.Left, borderRect.Bottom);
+					}
+				}
+			}
+		}
 
-        protected void DrawOutlineForCell(Graphics g, Pen pen, Rectangle rect)
-        {
+		protected void DrawOutlineForCell(Graphics g, Pen pen, Rectangle rect)
+		{
 			// Draw border around the tab cell
 			if (_style == VisualStyle.IDE)
 				g.DrawRectangle(pen, rect);
 			else
-		    {
-		        switch(_edge)
-		        {
-		            case Edge.Left:
-                    case Edge.Right:
-                        g.DrawLine(pen, rect.Left + 1, rect.Bottom, rect.Right, rect.Bottom);       
-                        break;                    
-                    case Edge.Top:
-                    case Edge.Bottom:
-                        g.DrawLine(pen, rect.Right, rect.Top + 1, rect.Right, rect.Bottom);       
-                        break;                    
-                }
-		    }
-        }
+			{
+				switch (_edge)
+				{
+					case Edge.Left:
+					case Edge.Right:
+						g.DrawLine(pen, rect.Left + 1, rect.Bottom, rect.Right, rect.Bottom);
+						break;
+					case Edge.Top:
+					case Edge.Bottom:
+						g.DrawLine(pen, rect.Right, rect.Top + 1, rect.Right, rect.Bottom);
+						break;
+				}
+			}
+		}
 
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-        }
+		protected override void OnPaintBackground(PaintEventArgs e)
+		{
+		}
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            // Fill background in required color
-            if (_style == VisualStyle.IDE)            
-                using(SolidBrush fillBrush = new SolidBrush(_backIDE))
-                    e.Graphics.FillRectangle(fillBrush, this.ClientRectangle);
-            else
-                using(SolidBrush fillBrush = new SolidBrush(this.BackColor))
-                    e.Graphics.FillRectangle(fillBrush, this.ClientRectangle);
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			// Fill background in required color
+			if (_style == VisualStyle.IDE)
+				using (SolidBrush fillBrush = new SolidBrush(_backIDE))
+					e.Graphics.FillRectangle(fillBrush, ClientRectangle);
+			else
+				using (SolidBrush fillBrush = new SolidBrush(BackColor))
+					e.Graphics.FillRectangle(fillBrush, ClientRectangle);
 
-            // Style specific outline drawing
-            DrawOutline(e.Graphics, true);
+			// Style specific outline drawing
+			DrawOutline(e.Graphics, true);
 
-            // Draw border around area
-			using(Pen borderPen = new Pen(ControlPaint.LightLight(this.ForeColor)))
+			// Draw border around area
+			using (Pen borderPen = new Pen(ControlPaint.LightLight(ForeColor)))
 			{
 				// Draw each of the draw objects
-				foreach(DrawTab dt in _drawTabs)
+				foreach (DrawTab dt in _drawTabs)
 				{
 					Rectangle drawRect = dt.DrawRect;
 
 					AdjustRectForEdge(ref drawRect);
 
-                    // Style specific cell outline drawing
-                    DrawOutlineForCell(e.Graphics, borderPen, drawRect);
+					// Style specific cell outline drawing
+					DrawOutlineForCell(e.Graphics, borderPen, drawRect);
 
 					// Draw the image in the left/top of the cell
 					TabPage page = dt.TabPage;
 
-                    int xDraw;
-                    int yDraw;
+					int xDraw;
+					int yDraw;
 
-                    switch(_edge)
-                    {
-                        case Edge.Left:
-                        case Edge.Right:
-                            xDraw = drawRect.Left + (drawRect.Width - _imageVector) / 2;
-                            yDraw = drawRect.Top + _imageGap;
-                            break;
-                        case Edge.Top:
-                        case Edge.Bottom:
-                        case Edge.None:
-                        default:
-                            xDraw = drawRect.Left + _imageGap;
-                            yDraw = drawRect.Top + (drawRect.Height - _imageVector) / 2;
-                            break;
-                    }
+					switch (_edge)
+					{
+						case Edge.Left:
+						case Edge.Right:
+							xDraw = drawRect.Left + (drawRect.Width - _imageVector)/2;
+							yDraw = drawRect.Top + _imageGap;
+							break;
+						case Edge.Top:
+						case Edge.Bottom:
+						case Edge.None:
+						default:
+							xDraw = drawRect.Left + _imageGap;
+							yDraw = drawRect.Top + (drawRect.Height - _imageVector)/2;
+							break;
+					}
 
-                    if ((page.Icon != null) || ((page.ImageIndex != -1) && (page.ImageList != null)))
+					if ((page.Icon != null) || ((page.ImageIndex != -1) && (page.ImageList != null)))
 					{
 						if (page.Icon != null)
 						{
@@ -896,59 +908,58 @@ namespace Crownwood.Magic.Docking
 						{
 							// Draw the actual image
 							e.Graphics.DrawImage(page.ImageList.Images[page.ImageIndex],
-												 new Rectangle(xDraw, yDraw, _imageVector, _imageVector));
+							                     new Rectangle(xDraw, yDraw, _imageVector, _imageVector));
 						}
-                    }
+					}
 
 					// Is anything currently selected
 					if (_selectedIndex != -1)
 					{
 						// Is this page selected?
-						
+
 						if (page == _tabPages[_selectedIndex])
 						{
 							Rectangle textRect;
 
 							StringFormat drawFormat = new StringFormat();
-						    drawFormat.FormatFlags = StringFormatFlags.NoClip | StringFormatFlags.NoWrap;
+							drawFormat.FormatFlags = StringFormatFlags.NoClip | StringFormatFlags.NoWrap;
 							drawFormat.Alignment = StringAlignment.Center;
 							drawFormat.LineAlignment = StringAlignment.Center;
 
 							// Create text drawing rectangle
-							switch(_edge)
+							switch (_edge)
 							{
 								case Edge.Left:
 								case Edge.Right:
-									textRect = new Rectangle(drawRect.Left, yDraw + _imageVector + _imageGap, 
-										                     drawRect.Width, drawRect.Height - _imageVector - _imageGap * 2);
-				                    drawFormat.FormatFlags |= StringFormatFlags.DirectionVertical;
+									textRect = new Rectangle(drawRect.Left, yDraw + _imageVector + _imageGap,
+									                         drawRect.Width, drawRect.Height - _imageVector - _imageGap*2);
+									drawFormat.FormatFlags |= StringFormatFlags.DirectionVertical;
 									break;
 								case Edge.Top:
 								case Edge.Bottom:
 								case Edge.None:
 								default:
-									textRect = new Rectangle(xDraw + _imageVector + _imageGap, drawRect.Top, 
-										                     drawRect.Width - _imageVector - _imageGap * 2, drawRect.Height);
+									textRect = new Rectangle(xDraw + _imageVector + _imageGap, drawRect.Top,
+									                         drawRect.Width - _imageVector - _imageGap*2, drawRect.Height);
 									break;
 							}
-							
-							Color brushColor = this.ForeColor;
-							
+
+							Color brushColor = ForeColor;
+
 							if (_style == VisualStyle.IDE)
 								brushColor = ControlPaint.Light(brushColor);
 
-							using(SolidBrush drawBrush = new SolidBrush(brushColor))
-								e.Graphics.DrawString(page.Title, this.Font, drawBrush, textRect, drawFormat);
+							using (SolidBrush drawBrush = new SolidBrush(brushColor))
+								e.Graphics.DrawString(page.Title, Font, drawBrush, textRect, drawFormat);
 						}
 					}
 				}
 			}
 
-            // Style specific outline drawing
-            DrawOutline(e.Graphics, false);
-            
-            base.OnPaint(e);
+			// Style specific outline drawing
+			DrawOutline(e.Graphics, false);
+
+			base.OnPaint(e);
 		}
 	}
 }
-

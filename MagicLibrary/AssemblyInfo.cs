@@ -16,14 +16,14 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Magic")]
-[assembly: AssemblyDescription("The User Interface Library for .NET")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Crownwood Consulting Ltd")]
-[assembly: AssemblyProduct("Magic")]
-[assembly: AssemblyCopyright("Copyright 2002-2003 - Crownwood Consulting Ltd")]
-[assembly: AssemblyTrademark("Magic - The User Interface Library for .NET")]
-[assembly: AssemblyCulture("")]		
+[assembly : AssemblyTitle("Magic")]
+[assembly : AssemblyDescription("The User Interface Library for .NET")]
+[assembly : AssemblyConfiguration("")]
+[assembly : AssemblyCompany("Crownwood Consulting Ltd")]
+[assembly : AssemblyProduct("Magic")]
+[assembly : AssemblyCopyright("Copyright 2002-2003 - Crownwood Consulting Ltd")]
+[assembly : AssemblyTrademark("Magic - The User Interface Library for .NET")]
+[assembly : AssemblyCulture("")]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -36,7 +36,7 @@ using System.Reflection;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.4.0")]
+[assembly : AssemblyVersion("1.7.4.0")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -63,6 +63,6 @@ using System.Reflection;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
-[assembly: AssemblyKeyName("")]
+[assembly : AssemblyDelaySign(false)]
+[assembly : AssemblyKeyFile("")]
+[assembly : AssemblyKeyName("")]

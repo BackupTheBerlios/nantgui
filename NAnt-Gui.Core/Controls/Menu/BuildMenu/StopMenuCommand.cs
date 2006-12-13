@@ -39,11 +39,11 @@ namespace NAntGui.Core.Controls.Menu.BuildMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Description = "Aborts the current build";
-			this.ImageIndex = 3;
-			this.Shortcut = Shortcut.CtrlDel;
-			this.Text = "&Cancel Build";
-			this.ImageList = NAntGuiApp.ImageList;
+			Description = "Aborts the current build";
+			ImageIndex = 3;
+			Shortcut = Shortcut.CtrlDel;
+			Text = "&Cancel Build";
+			ImageList = NAntGuiApp.ImageList;
 		}
 
 		public override void OnClick(EventArgs e)

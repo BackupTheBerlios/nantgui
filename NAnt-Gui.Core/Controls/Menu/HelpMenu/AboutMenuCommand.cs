@@ -38,8 +38,8 @@ namespace NAntGui.Core.Controls.Menu.HelpMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Description = "MenuCommand";
-			this.Text = "&About NAnt-Gui";
+			Description = "MenuCommand";
+			Text = "&About NAnt-Gui";
 		}
 
 		public override void OnClick(EventArgs e)

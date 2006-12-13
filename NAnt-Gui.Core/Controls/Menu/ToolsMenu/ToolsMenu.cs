@@ -37,12 +37,12 @@ namespace NAntGui.Core.Controls.Menu.ToolsMenu
 			Assert.NotNull(mediator, "mediator");
 			_options = new OptionsMenuCommand(mediator);
 
-			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_options
-				});
-			this.Text = "&Tools";
+			Description = "MenuCommand";
+			MenuCommands.AddRange(new MenuCommand[]
+			                      	{
+			                      		_options
+			                      	});
+			Text = "&Tools";
 		}
 	}
 }

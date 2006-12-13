@@ -74,13 +74,13 @@ namespace NAntGui.Core
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(OptionsForm));
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof (OptionsForm));
 			this.HideTargetsCheckBox = new System.Windows.Forms.CheckBox();
 			this.OKButton = new System.Windows.Forms.Button();
 			this.CloseButton = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.MaxRecentItemsUpDown = new System.Windows.Forms.NumericUpDown();
-			((System.ComponentModel.ISupportInitialize)(this.MaxRecentItemsUpDown)).BeginInit();
+			((System.ComponentModel.ISupportInitialize) (this.MaxRecentItemsUpDown)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// HideTargetsCheckBox
@@ -94,7 +94,9 @@ namespace NAntGui.Core
 			// 
 			// OKButton
 			// 
-			this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.OKButton.Anchor =
+				((System.Windows.Forms.AnchorStyles)
+				 ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.OKButton.Location = new System.Drawing.Point(176, 64);
 			this.OKButton.Name = "OKButton";
@@ -104,7 +106,9 @@ namespace NAntGui.Core
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.CloseButton.Anchor =
+				((System.Windows.Forms.AnchorStyles)
+				 ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.CloseButton.Location = new System.Drawing.Point(256, 64);
 			this.CloseButton.Name = "CloseButton";
@@ -122,11 +126,13 @@ namespace NAntGui.Core
 			// MaxRecentItemsUpDown
 			// 
 			this.MaxRecentItemsUpDown.Location = new System.Drawing.Point(288, 32);
-			this.MaxRecentItemsUpDown.Maximum = new System.Decimal(new int[] {
-																				 15,
-																				 0,
-																				 0,
-																				 0});
+			this.MaxRecentItemsUpDown.Maximum = new System.Decimal(new int[]
+			                                                       	{
+			                                                       		15,
+			                                                       		0,
+			                                                       		0,
+			                                                       		0
+			                                                       	});
 			this.MaxRecentItemsUpDown.Name = "MaxRecentItemsUpDown";
 			this.MaxRecentItemsUpDown.Size = new System.Drawing.Size(40, 20);
 			this.MaxRecentItemsUpDown.TabIndex = 5;
@@ -143,31 +149,29 @@ namespace NAntGui.Core
 			this.Controls.Add(this.OKButton);
 			this.Controls.Add(this.HideTargetsCheckBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "OptionsForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Options";
 			this.Load += new System.EventHandler(this.OptionsForm_Load);
-			((System.ComponentModel.ISupportInitialize)(this.MaxRecentItemsUpDown)).EndInit();
+			((System.ComponentModel.ISupportInitialize) (this.MaxRecentItemsUpDown)).EndInit();
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion
 
 		private void OptionsForm_Load(object sender, EventArgs e)
 		{
-			this.HideTargetsCheckBox.Checked = Settings.HideTargetsWithoutDescription;
-			this.MaxRecentItemsUpDown.Value = Settings.MaxRecentItems;
+			HideTargetsCheckBox.Checked = Settings.HideTargetsWithoutDescription;
+			MaxRecentItemsUpDown.Value = Settings.MaxRecentItems;
 		}
 
 		private void OKButton_Click(object sender, EventArgs e)
 		{
-			Settings.HideTargetsWithoutDescription = this.HideTargetsCheckBox.Checked;
-			Settings.MaxRecentItems = (int) this.MaxRecentItemsUpDown.Value;
+			Settings.HideTargetsWithoutDescription = HideTargetsCheckBox.Checked;
+			Settings.MaxRecentItems = (int) MaxRecentItemsUpDown.Value;
 		}
-
 	}
 }

@@ -46,7 +46,7 @@ namespace NAntGui.Core
 		private MainFormSerializer(MainForm form, MainPropertyGrid propertyGrid)
 		{
 			_mainForm = form;
-			_mainForm.Load += new EventHandler(this.OnLoad);
+			_mainForm.Load += new EventHandler(OnLoad);
 			_propertyGrid = propertyGrid;
 		}
 
@@ -56,20 +56,20 @@ namespace NAntGui.Core
 
 			if (KeyExists(key))
 			{
-				this.LoadStateFromReg(key);
+				LoadStateFromReg(key);
 			}
 			else
 			{
-				this.LoadStateFromOldRegKey();
+				LoadStateFromOldRegKey();
 			}
 		}
 
 		private void LoadStateFromReg(RegistryKey key)
 		{
-			int left	= Convert.ToInt32(key.GetValue("Left", _mainForm.Left));
-			int top		= Convert.ToInt32(key.GetValue("Top", _mainForm.Top));
-			int width	= Convert.ToInt32(key.GetValue("Width", _mainForm.Width));
-			int height	= Convert.ToInt32(key.GetValue("Height", _mainForm.Height));
+			int left = Convert.ToInt32(key.GetValue("Left", _mainForm.Left));
+			int top = Convert.ToInt32(key.GetValue("Top", _mainForm.Top));
+			int width = Convert.ToInt32(key.GetValue("Width", _mainForm.Width));
+			int height = Convert.ToInt32(key.GetValue("Height", _mainForm.Height));
 
 			FormWindowState windowState = (FormWindowState) key.GetValue("WindowState", (int) _mainForm.WindowState);
 			PropertySort propertySort = (PropertySort) key.GetValue("PropertySort", (int) _propertyGrid.PropertySort);
@@ -78,10 +78,16 @@ namespace NAntGui.Core
 			_mainForm.Size = new Size(width, height);
 			_mainForm.WindowState = windowState;
 
-			try	{ _propertyGrid.PropertySort = propertySort; }
-			catch (ArgumentException) { /* ignore */ }
+			try
+			{
+				_propertyGrid.PropertySort = propertySort;
+			}
+			catch (ArgumentException)
+			{
+				/* ignore */
+			}
 
-			_mainForm.Closing += new CancelEventHandler(this.OnClosing);
+			_mainForm.Closing += new CancelEventHandler(OnClosing);
 		}
 
 		private void LoadStateFromOldRegKey()
@@ -90,7 +96,7 @@ namespace NAntGui.Core
 
 			if (KeyExists(key))
 			{
-				this.LoadStateFromReg(key);
+				LoadStateFromReg(key);
 			}
 		}
 
@@ -114,7 +120,7 @@ namespace NAntGui.Core
 				lKey.SetValue("Height", _mainForm.Height);
 			}
 
-			lKey.SetValue("WindowState", this.AdjustWindowState());
+			lKey.SetValue("WindowState", AdjustWindowState());
 			lKey.SetValue("PropertySort", (int) _propertyGrid.PropertySort);
 		}
 

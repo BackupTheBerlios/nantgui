@@ -14,20 +14,20 @@ using System.Windows.Forms;
 
 namespace Crownwood.Magic.Common
 {
-    public class DebugHelper
-    {
-        public static void ListControls(Control.ControlCollection controls)
-        {
+	public class DebugHelper
+	{
+		public static void ListControls(Control.ControlCollection controls)
+		{
 			ListControls("Control Collection", controls, false);
 		}
 
-        public static void ListControls(string title, Control.ControlCollection controls)
-        {
+		public static void ListControls(string title, Control.ControlCollection controls)
+		{
 			ListControls(title, controls, false);
 		}
 
-        public static void ListControls(string title, Control.ControlCollection controls, bool fullName)
-        {
+		public static void ListControls(string title, Control.ControlCollection controls, bool fullName)
+		{
 			// Output title first
 			Console.WriteLine("\n{0}", title);
 
@@ -35,12 +35,12 @@ namespace Crownwood.Magic.Common
 			int count = controls.Count;
 
 			// Output details for each 
-			for(int index=0; index<count; index++)
+			for (int index = 0; index < count; index++)
 			{
 				Control c = controls[index];
 
 				string typeName;
-				
+
 				if (fullName)
 					typeName = c.GetType().FullName;
 				else
@@ -48,8 +48,6 @@ namespace Crownwood.Magic.Common
 
 				Console.WriteLine("{0} V:{1} T:{2} N:{3}", index, c.Visible, typeName, c.Name);
 			}
-        }
-    }
+		}
+	}
 }
-
-

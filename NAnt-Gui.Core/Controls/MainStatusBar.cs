@@ -14,18 +14,18 @@ namespace NAntGui.Core.Controls
 
 		public MainStatusBar()
 		{
-			this.Location = new Point(0, 531);
-			this.Name = "MainStatusBar";
-			this.Panels.AddRange(new StatusBarPanel[]
-				{
-					_filePanel,
-					_fullFilePanel,
-					_progressPanel
-				});
-			this.ShowPanels = true;
-			this.Size = new Size(824, 22);
-			this.SizingGrip = false;
-			this.TabIndex = 2;
+			Location = new Point(0, 531);
+			Name = "MainStatusBar";
+			Panels.AddRange(new StatusBarPanel[]
+			                	{
+			                		_filePanel,
+			                		_fullFilePanel,
+			                		_progressPanel
+			                	});
+			ShowPanels = true;
+			Size = new Size(824, 22);
+			SizingGrip = false;
+			TabIndex = 2;
 			// 
 			// FileStatusBarPanel
 			// 

@@ -37,9 +37,9 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 		{
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
-			this.Description = "MenuCommand";
-			this.Text = "Recent &Items";
-			this.CreateMenuCommands();
+			Description = "MenuCommand";
+			Text = "Recent &Items";
+			CreateMenuCommands();
 		}
 
 		public void AddRecentItem(string file)
@@ -47,7 +47,7 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			_recentItems.Add(file);
 			_recentItems.Save();
 
-			this.CreateMenuCommands();
+			CreateMenuCommands();
 		}
 
 		public void RemoveRecentItem(string file)
@@ -55,19 +55,19 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			_recentItems.Remove(file);
 			_recentItems.Save();
 
-			this.CreateMenuCommands();
+			CreateMenuCommands();
 		}
 
 		private void CreateMenuCommands()
 		{
-			this.MenuCommands.Clear();
+			MenuCommands.Clear();
 
 			int count = 1;
 			foreach (string item in _recentItems)
 			{
 				string name = count++ + " " + item;
 				RecentItemMenuCommand recentItem = new RecentItemMenuCommand(name, _mediator);
-				this.MenuCommands.Add(recentItem);
+				MenuCommands.Add(recentItem);
 			}
 		}
 

@@ -13,15 +13,15 @@ using System.Windows.Forms;
 
 namespace Crownwood.Magic.Common
 {
-    public class ControlHelper
+	public class ControlHelper
 	{
 		public static void RemoveAll(Control control)
 		{
 			if ((control != null) && (control.Controls.Count > 0))
 			{
-                Button tempButton = null;
-                Form parentForm = control.FindForm();
-                
+				Button tempButton = null;
+				Form parentForm = control.FindForm();
+
 				if (parentForm != null)
 				{
 					// Create a hidden, temporary button
@@ -33,14 +33,14 @@ namespace Crownwood.Magic.Common
 
 					// Must ensure that temp button is the active one
 					parentForm.ActiveControl = tempButton;
-                }
+				}
 
-  				// Remove all entries from target
+				// Remove all entries from target
 				control.Controls.Clear();
 
-                if (parentForm != null)
-                {
-                    // Remove the temporary button
+				if (parentForm != null)
+				{
+					// Remove the temporary button
 					tempButton.Dispose();
 					parentForm.Controls.Remove(tempButton);
 				}
@@ -51,8 +51,8 @@ namespace Crownwood.Magic.Common
 		{
 			if ((coll != null) && (item != null))
 			{
-                Button tempButton = null;
-                Form parentForm = item.FindForm();
+				Button tempButton = null;
+				Form parentForm = item.FindForm();
 
 				if (parentForm != null)
 				{
@@ -65,14 +65,14 @@ namespace Crownwood.Magic.Common
 
 					// Must ensure that temp button is the active one
 					parentForm.ActiveControl = tempButton;
-                }
-                
+				}
+
 				// Remove our target control
 				coll.Remove(item);
 
-                if (parentForm != null)
-                {
-                    // Remove the temporary button
+				if (parentForm != null)
+				{
+					// Remove the temporary button
 					tempButton.Dispose();
 					parentForm.Controls.Remove(tempButton);
 				}
@@ -89,36 +89,36 @@ namespace Crownwood.Magic.Common
 				}
 			}
 		}
-    
-        public static void RemoveForm(Control source, Form form)
-        {
-            ContainerControl container = source.FindForm() as ContainerControl;
-            
-            if (container == null)
-                container = source as ContainerControl;
 
-            Button tempButton = new Button();
+		public static void RemoveForm(Control source, Form form)
+		{
+			ContainerControl container = source.FindForm() as ContainerControl;
 
-            if (container != null)
-            {            
-                tempButton.Visible = false;
+			if (container == null)
+				container = source as ContainerControl;
 
-                // Add this temporary button to the parent form
-                container.Controls.Add(tempButton);
+			Button tempButton = new Button();
 
-                // Must ensure that temp button is the active one
-                container.ActiveControl = tempButton;
-            }
-            
-            // Remove Form parent
-            form.Parent = null;
- 
-            if (container != null)
-            {
-                // Remove the temporary button
-                tempButton.Dispose();
-                container.Controls.Remove(tempButton);
-            }
-        }
-    }
+			if (container != null)
+			{
+				tempButton.Visible = false;
+
+				// Add this temporary button to the parent form
+				container.Controls.Add(tempButton);
+
+				// Must ensure that temp button is the active one
+				container.ActiveControl = tempButton;
+			}
+
+			// Remove Form parent
+			form.Parent = null;
+
+			if (container != null)
+			{
+				// Remove the temporary button
+				tempButton.Dispose();
+				container.Controls.Remove(tempButton);
+			}
+		}
+	}
 }

@@ -36,21 +36,21 @@ namespace NAntGui.NAnt
 
 		public NAntProperty(XmlElement element)
 		{
-			_category	= "Global";
+			_category = "Global";
 			_isReadOnly = false;
-			_name		= element.GetAttribute("name");
-			_value		= element.GetAttribute("value");
-			this.SetIsReadonly(element);
-			this.SetCategory(element);
+			_name = element.GetAttribute("name");
+			_value = element.GetAttribute("value");
+			SetIsReadonly(element);
+			SetCategory(element);
 //			_rank = Count++;
 		}
 
 		public NAntProperty(string name, string value, string category, bool isReadOnly)
 		{
-			_name		= name;
-			_value		= value;
-			_category	= category;
-			_isReadOnly	= isReadOnly;
+			_name = name;
+			_value = value;
+			_category = category;
+			_isReadOnly = isReadOnly;
 //			_rank		= Count++;
 		}
 

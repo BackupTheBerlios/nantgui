@@ -16,30 +16,30 @@ using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Docking
 {
-    public enum State
-    {
-        Floating,
-        DockTop,
-        DockBottom,
-        DockLeft,
-        DockRight
-    }
+	public enum State
+	{
+		Floating,
+		DockTop,
+		DockBottom,
+		DockLeft,
+		DockRight
+	}
 
-    public interface IHotZoneSource
-    {
-        void AddHotZones(Redocker redock, HotZoneCollection collection);
-    }
+	public interface IHotZoneSource
+	{
+		void AddHotZones(Redocker redock, HotZoneCollection collection);
+	}
 
-    public interface IZoneMaximizeWindow
-    {
-        Direction Direction { get; }
-        bool IsMaximizeAvailable();
-        bool IsWindowMaximized(Window w);
-        void MaximizeWindow(Window w);
-        void RestoreWindow();
-        event EventHandler RefreshMaximize;
-    }
+	public interface IZoneMaximizeWindow
+	{
+		Direction Direction { get; }
+		bool IsMaximizeAvailable();
+		bool IsWindowMaximized(Window w);
+		void MaximizeWindow(Window w);
+		void RestoreWindow();
+		event EventHandler RefreshMaximize;
+	}
 
-    // Delegate signatures
-    public delegate void ContextHandler(Point screenPos);
+	// Delegate signatures
+	public delegate void ContextHandler(Point screenPos);
 }

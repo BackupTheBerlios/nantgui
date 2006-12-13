@@ -39,9 +39,9 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Description = "MenuCommand";
-			this.Shortcut = Shortcut.CtrlA;
-			this.Text = "Select &All";
+			Description = "MenuCommand";
+			Shortcut = Shortcut.CtrlA;
+			Text = "Select &All";
 		}
 
 		public override void OnClick(EventArgs e)

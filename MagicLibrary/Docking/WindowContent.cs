@@ -15,113 +15,117 @@ using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Docking
 {
-    [ToolboxItem(false)]
-    public class WindowContent : Window
-    {
-        // Instance fields
-        protected ContentCollection _contents;
-        protected VisualStyle _style;
+	[ToolboxItem(false)]
+	public class WindowContent : Window
+	{
+		// Instance fields
+		protected ContentCollection _contents;
+		protected VisualStyle _style;
 
-        public WindowContent(DockingManager manager, VisualStyle vs)
-            : base(manager)
-        {
-            // Remember state
-            _style = vs;
-        
-            // Create collection of window details
-            _contents = new ContentCollection();
+		public WindowContent(DockingManager manager, VisualStyle vs)
+			: base(manager)
+		{
+			// Remember state
+			_style = vs;
 
-            // We want notification when contents are added/removed/cleared
-            _contents.Clearing += new CollectionClear(OnContentsClearing);
-            _contents.Inserted += new CollectionChange(OnContentInserted);
-            _contents.Removing += new CollectionChange(OnContentRemoving);
-            _contents.Removed += new CollectionChange(OnContentRemoved);
-        }
+			// Create collection of window details
+			_contents = new ContentCollection();
 
-        public ContentCollection Contents
-        {
-            get { return _contents; }
-			
-            set
-            {
-                _contents.Clear();
-                _contents = value;
-            }
-        }
+			// We want notification when contents are added/removed/cleared
+			_contents.Clearing += new CollectionClear(OnContentsClearing);
+			_contents.Inserted += new CollectionChange(OnContentInserted);
+			_contents.Removing += new CollectionChange(OnContentRemoving);
+			_contents.Removed += new CollectionChange(OnContentRemoved);
+		}
 
-		public virtual void BringContentToFront(Content c) {}
+		public ContentCollection Contents
+		{
+			get { return _contents; }
 
-        protected virtual void OnContentsClearing()
-        {
-            foreach(Content c in _contents)
-            {
-                // Inform content of new parent content window
-                c.ParentWindowContent = null;
+			set
+			{
+				_contents.Clear();
+				_contents = value;
+			}
+		}
 
-                // Unhook from property change notification
-                c.PropertyChanged -= new Content.PropChangeHandler(OnContentChanged);
-            }
+		public virtual void BringContentToFront(Content c)
+		{
+		}
 
-            // Should we kill ourself?
-            if (this.AutoDispose)
-                Suicide();
-        }
+		protected virtual void OnContentsClearing()
+		{
+			foreach (Content c in _contents)
+			{
+				// Inform content of new parent content window
+				c.ParentWindowContent = null;
 
-        protected virtual void OnContentInserted(int index, object value)
-        {
-            Content content = value as Content;
+				// Unhook from property change notification
+				c.PropertyChanged -= new Content.PropChangeHandler(OnContentChanged);
+			}
 
-            // Is this the first Content added?
-            if (_contents.Count == 1)
-            {
-                // Use size of the Content to determine our size
-                this.Size = content.DisplaySize;
-            }
+			// Should we kill ourself?
+			if (AutoDispose)
+				Suicide();
+		}
 
-            // Inform content where it now resides
-            content.ParentWindowContent = this;
+		protected virtual void OnContentInserted(int index, object value)
+		{
+			Content content = value as Content;
 
-            // Monitor changes in Content properties
-            content.PropertyChanged += new Content.PropChangeHandler(OnContentChanged);
-        }
+			// Is this the first Content added?
+			if (_contents.Count == 1)
+			{
+				// Use size of the Content to determine our size
+				Size = content.DisplaySize;
+			}
 
-        protected virtual void OnContentRemoving(int index, object value)
-        {
-            Content content = value as Content;
+			// Inform content where it now resides
+			content.ParentWindowContent = this;
 
-            // Inform content of new parent content window
-            content.ParentWindowContent = null;
+			// Monitor changes in Content properties
+			content.PropertyChanged += new Content.PropChangeHandler(OnContentChanged);
+		}
 
-            // Unhook from monitoring changes in Content properties
-            content.PropertyChanged -= new Content.PropChangeHandler(OnContentChanged);
-        }
+		protected virtual void OnContentRemoving(int index, object value)
+		{
+			Content content = value as Content;
 
-        protected virtual void OnContentRemoved(int index, object value)
-        {
-            // Removed the last entry?
-            if (_contents.Count == 0)
-            {
-                // Should we kill ourself?
-                if (this.AutoDispose)
-                    Suicide();
-            }
-        }
+			// Inform content of new parent content window
+			content.ParentWindowContent = null;
 
-        protected virtual void OnContentChanged(Content obj, Content.Property prop) {}
+			// Unhook from monitoring changes in Content properties
+			content.PropertyChanged -= new Content.PropChangeHandler(OnContentChanged);
+		}
 
-        protected void Suicide()
-        {
-            // Are we inside a Zone object?
-            if (this.ParentZone != null)
-                this.ParentZone.Windows.Remove(this);
+		protected virtual void OnContentRemoved(int index, object value)
+		{
+			// Removed the last entry?
+			if (_contents.Count == 0)
+			{
+				// Should we kill ourself?
+				if (AutoDispose)
+					Suicide();
+			}
+		}
 
-            // Remover monitoring of events
-            _contents.Clearing -= new CollectionClear(OnContentsClearing);
-            _contents.Inserted -= new CollectionChange(OnContentInserted);
-            _contents.Removing -= new CollectionChange(OnContentRemoving);
-            _contents.Removed -= new CollectionChange(OnContentRemoved);
+		protected virtual void OnContentChanged(Content obj, Content.Property prop)
+		{
+		}
 
-            this.Dispose();
-        }
-    }
+		protected void Suicide()
+		{
+			// Are we inside a Zone object?
+			if (ParentZone != null)
+				ParentZone.Windows.Remove(this);
+
+			// Remover monitoring of events
+			_contents.Clearing -= new CollectionClear(OnContentsClearing);
+			_contents.Inserted -= new CollectionChange(OnContentInserted);
+			_contents.Removing -= new CollectionChange(OnContentRemoving);
+			_contents.Removed -= new CollectionChange(OnContentRemoved);
+
+			Dispose();
+		}
+	}
 }

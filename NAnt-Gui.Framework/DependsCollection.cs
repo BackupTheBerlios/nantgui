@@ -31,27 +31,27 @@ namespace NAntGui.Framework
 
 		public DependsCollection()
 		{
-			this.mDepends = new ArrayList();
+			mDepends = new ArrayList();
 		}
 
 		public DependsCollection(int pSize)
 		{
-			this.mDepends = new ArrayList(pSize);
+			mDepends = new ArrayList(pSize);
 		}
 
 		public void Add(string[] pDepends)
 		{
-			this.mDepends.AddRange(pDepends);
+			mDepends.AddRange(pDepends);
 		}
 
 		public IEnumerator GetEnumerator()
 		{
-			return this.mDepends.GetEnumerator();
+			return mDepends.GetEnumerator();
 		}
 
 		public bool Contains(string pTarget)
 		{
-			return this.mDepends.Contains(pTarget);
+			return mDepends.Contains(pTarget);
 		}
 	}
 }

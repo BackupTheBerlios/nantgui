@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = "..\..\..\Tools\nant-0.85-rc4\bin\nant.exe -f:..\..\AssemblyInfo.build"
+                PreBuildEvent = "..\..\..\Tools\nant-0.85\bin\nant.exe -t:net-1.1 -f:..\..\AssemblyInfo.build"
                 PostBuildEvent = ""
                 RootNamespace = "NAntGui.Framework"
                 RunPostBuildEvent = "OnBuildSuccess"
@@ -87,7 +87,7 @@
                 <Reference
                     Name = "NAnt.Core"
                     AssemblyName = "NAnt.Core"
-                    HintPath = "..\Tools\nant-0.85-rc4\bin\NAnt.Core.dll"
+                    HintPath = "..\Tools\nant-0.85\bin\NAnt.Core.dll"
                 />
             </References>
         </Build>

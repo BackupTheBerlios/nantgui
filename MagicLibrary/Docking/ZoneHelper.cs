@@ -13,15 +13,15 @@ using Crownwood.Magic.Collections;
 
 namespace Crownwood.Magic.Docking
 {
-    public class ZoneHelper
-    {
+	public class ZoneHelper
+	{
 		public static ContentCollection Contents(Zone z)
 		{
 			// Container for returned group of found Content objects
 			ContentCollection cc = new ContentCollection();
 
 			// Process each Window in the Zone
-			foreach(Window w in z.Windows)
+			foreach (Window w in z.Windows)
 			{
 				WindowContent wc = w as WindowContent;
 
@@ -29,7 +29,7 @@ namespace Crownwood.Magic.Docking
 				if (wc != null)
 				{
 					// Add each Content into the collection
-					foreach(Content c in wc.Contents)
+					foreach (Content c in wc.Contents)
 						cc.Add(c);
 				}
 			}
@@ -43,7 +43,7 @@ namespace Crownwood.Magic.Docking
 			StringCollection sc = new StringCollection();
 
 			// Process each Window in the Zone
-			foreach(Window w in z.Windows)
+			foreach (Window w in z.Windows)
 			{
 				WindowContent wc = w as WindowContent;
 
@@ -51,7 +51,7 @@ namespace Crownwood.Magic.Docking
 				if (wc != null)
 				{
 					// Add each Content into the collection
-					foreach(Content c in wc.Contents)
+					foreach (Content c in wc.Contents)
 						sc.Add(c.Title);
 				}
 			}
@@ -65,7 +65,7 @@ namespace Crownwood.Magic.Docking
 			StringCollection sc = new StringCollection();
 
 			// Process each Window in the Zone
-			foreach(Window w in z.Windows)
+			foreach (Window w in z.Windows)
 			{
 				WindowContent wc = w as WindowContent;
 
@@ -77,14 +77,14 @@ namespace Crownwood.Magic.Docking
 					{
 						// All Content of this Window are given priority and 
 						// added into the start of the collection
-						foreach(Content content in wc.Contents)
+						foreach (Content content in wc.Contents)
 							sc.Insert(0, content.Title);
 					}
 					else
 					{
 						// Lower priority Window and so contents are always
 						// added to the end of the collection
-						foreach(Content content in wc.Contents)
+						foreach (Content content in wc.Contents)
 							sc.Add(content.Title);
 					}
 				}
@@ -92,5 +92,5 @@ namespace Crownwood.Magic.Docking
 
 			return sc;
 		}
-    }
+	}
 }

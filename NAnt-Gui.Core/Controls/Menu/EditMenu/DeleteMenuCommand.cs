@@ -38,11 +38,11 @@ namespace NAntGui.Core.Controls.Menu.EditMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.ImageList = NAntGuiApp.ImageList;
-			this.ImageIndex = 15;
-			this.Description = "MenuCommand";
-			this.Shortcut = Shortcut.Del;
-			this.Text = "&Delete";
+			ImageList = NAntGuiApp.ImageList;
+			ImageIndex = 15;
+			Description = "MenuCommand";
+			Shortcut = Shortcut.Del;
+			Text = "&Delete";
 		}
 
 		public override void OnClick(System.EventArgs e)

@@ -54,25 +54,25 @@ namespace NAntGui.Core.Controls
 			_sourceContextMenu.MenuCommands.AddRange(
 				new MenuCommand[]
 					{
-						new CutMenuCommand(_mediator), 
+						new CutMenuCommand(_mediator),
 						new CopyMenuCommand(_mediator),
-						new PasteMenuCommand(_mediator), 
-						new DeleteMenuCommand(_mediator), 
-						new MenuCommand("-"), 
+						new PasteMenuCommand(_mediator),
+						new DeleteMenuCommand(_mediator),
+						new MenuCommand("-"),
 						new SelectAllMenuCommand(_mediator)
 					});
-	
-			this.Dock = DockStyle.Fill;
-			this.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point, ((Byte) (0)));
-			this.ShowVRuler = false;
-			this.ShowEOLMarkers = false;
-			this.ShowSpaces = false;
-			this.ShowTabs = false;
-			this.EnableFolding = true;
-			this.ShowMatchingBracket = true;
-			this.ActiveTextAreaControl.TextArea.MouseUp += new MouseEventHandler(this.PopupMenu);
-			this.ActiveTextAreaControl.TextArea.DragEnter += new DragEventHandler(this.Drag_Enter);
-			this.ActiveTextAreaControl.TextArea.DragDrop += new DragEventHandler(this.Drag_Drop);
+
+			Dock = DockStyle.Fill;
+			Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point, ((Byte) (0)));
+			ShowVRuler = false;
+			ShowEOLMarkers = false;
+			ShowSpaces = false;
+			ShowTabs = false;
+			EnableFolding = true;
+			ShowMatchingBracket = true;
+			ActiveTextAreaControl.TextArea.MouseUp += new MouseEventHandler(PopupMenu);
+			ActiveTextAreaControl.TextArea.DragEnter += new DragEventHandler(Drag_Enter);
+			ActiveTextAreaControl.TextArea.DragDrop += new DragEventHandler(Drag_Drop);
 		}
 
 		#endregion

@@ -29,7 +29,7 @@ namespace NAntGui.Framework
 
 		TargetCollection Targets { get; set; }
 		PropertyCollection Properties { get; set; }
-		
+
 		string Name { get; }
 		string Description { get; }
 		bool HasName { get; }

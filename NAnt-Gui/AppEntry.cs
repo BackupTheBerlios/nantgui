@@ -86,14 +86,14 @@ namespace NAntGui
 				exceptionIndentationLevel += 4;
 				// output exception message
 				Console.Error.WriteLine(new string(' ', exceptionIndentationLevel)
-					+ nestedException.Message);
+				                        + nestedException.Message);
 				// move on to next inner exception
 				nestedException = nestedException.InnerException;
 			}
-	
+
 			// insert empty line
 			Console.WriteLine();
-	
+
 			// instruct users to check the usage instructions
 			/*
 				Console.WriteLine("Try 'NAnt-Gui -help' for more information");

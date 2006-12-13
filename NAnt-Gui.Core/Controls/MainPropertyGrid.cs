@@ -41,17 +41,17 @@ namespace NAntGui.Core.Controls
 		{
 			_commandLineProperties = NAntGuiApp.Options.Properties;
 
-			this.CommandsVisibleIfAvailable = true;
-			this.Dock = DockStyle.Fill;
-			this.LargeButtons = false;
-			this.LineColor = SystemColors.ScrollBar;
-			this.Location = new Point(0, 252);
-			this.Name = "ProjectPropertyGrid";
-			this.Size = new Size(175, 351);
-			this.TabIndex = 4;
-			this.Text = "Build Properties";
-			this.ViewBackColor = SystemColors.Window;
-			this.ViewForeColor = SystemColors.WindowText;
+			CommandsVisibleIfAvailable = true;
+			Dock = DockStyle.Fill;
+			LargeButtons = false;
+			LineColor = SystemColors.ScrollBar;
+			Location = new Point(0, 252);
+			Name = "ProjectPropertyGrid";
+			Size = new Size(175, 351);
+			TabIndex = 4;
+			Text = "Build Properties";
+			ViewBackColor = SystemColors.Window;
+			ViewForeColor = SystemColors.WindowText;
 		}
 
 		public void AddProperties(PropertyCollection properties, bool firstLoad)
@@ -63,7 +63,7 @@ namespace NAntGui.Core.Controls
 				PropertySpec spec = new PropertySpec(property);
 				_propertyTable.Properties.Add(spec);
 
-				if (firstLoad && this.CommandLinePropertiesContains(spec.Name))
+				if (firstLoad && CommandLinePropertiesContains(spec.Name))
 				{
 					_propertyTable[spec.Key] = _commandLineProperties[spec.Name];
 				}
@@ -73,7 +73,7 @@ namespace NAntGui.Core.Controls
 				}
 			}
 
-			this.SelectedObject = _propertyTable;
+			SelectedObject = _propertyTable;
 		}
 
 		public PropertyCollection GetProperties()
@@ -82,7 +82,7 @@ namespace NAntGui.Core.Controls
 
 			foreach (PropertySpec spec in _propertyTable.Properties)
 			{
-				properties.Add((BuildProperty)spec.Tag);
+				properties.Add((BuildProperty) spec.Tag);
 			}
 
 			return properties;
@@ -90,7 +90,7 @@ namespace NAntGui.Core.Controls
 
 		public void Clear()
 		{
-			this.SelectedObject = null;
+			SelectedObject = null;
 		}
 
 		private bool CommandLinePropertiesContains(string name)

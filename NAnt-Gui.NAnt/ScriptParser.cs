@@ -14,7 +14,7 @@ namespace NAntGui.NAnt
 	public class ScriptParser
 	{
 		Project _project;
-		private Framework.TargetCollection _targets = new Framework.TargetCollection();
+		private TargetCollection _targets = new TargetCollection();
 		private DependsCollection _depends = new DependsCollection();
 		private PropertyCollection _properties = new PropertyCollection();
 
@@ -26,16 +26,16 @@ namespace NAntGui.NAnt
 
 		public void Parse()
 		{
-			this.ParseTargetsAndDependencies();
-			this.ParseProperties();
-			this.ParseNonPropertyProperties();
-			this.FollowIncludes();
-			this.ParseBaseDir();
+			ParseTargetsAndDependencies();
+			ParseProperties();
+			ParseNonPropertyProperties();
+			FollowIncludes();
+			ParseBaseDir();
 		}
 
 		private void ParseTargetsAndDependencies()
 		{
-			this.ParseTargetsAndDependencies(_project.Document);
+			ParseTargetsAndDependencies(_project.Document);
 		}
 
 		private void ParseTargetsAndDependencies(XmlDocument doc)
@@ -60,18 +60,18 @@ namespace NAntGui.NAnt
 
 				if (File.Exists(filename))
 				{
-					this.ParseIncludeFile(filename);
+					ParseIncludeFile(filename);
 				}
 			}
 		}
 
-        private void ParseIncludeFile(string filename)
+		private void ParseIncludeFile(string filename)
 		{
 			XmlDocument document = new XmlDocument();
 			document.Load(filename);
-			this.ParseTargetsAndDependencies(document);
-			this.ParseProperties(document);
-			this.ParseNonPropertyProperties(_project);
+			ParseTargetsAndDependencies(document);
+			ParseProperties(document);
+			ParseNonPropertyProperties(_project);
 		}
 
 		private void ParseBaseDir()
@@ -83,7 +83,7 @@ namespace NAntGui.NAnt
 
 		private void ParseProperties()
 		{
-			this.ParseProperties(_project.Document);
+			ParseProperties(_project.Document);
 		}
 
 		private void ParseProperties(XmlDocument doc)
@@ -96,7 +96,8 @@ namespace NAntGui.NAnt
 					nantProperty.ExpandedValue = _project.ExpandProperties(nantProperty.Value, new Location("Buildfile"));
 				}
 				catch (BuildException)
-				{ /* ignore */
+				{
+					/* ignore */
 				}
 
 				if (!_project.Properties.Contains(nantProperty.Name))
@@ -109,14 +110,14 @@ namespace NAntGui.NAnt
 
 		private void ParseNonPropertyProperties()
 		{
-			this.ParseNonPropertyProperties(_project);
+			ParseNonPropertyProperties(_project);
 		}
 
 		private void ParseNonPropertyProperties(Project project)
 		{
-			this.ParseTstamps(project);
-			this.AddReadRegistrys(project);
-//			this.AddRegex(project);
+			ParseTstamps(project);
+			AddReadRegistrys(project);
+//			AddRegex(project);
 		}
 
 		private void ParseTstamps(Project project)
@@ -130,7 +131,9 @@ namespace NAntGui.NAnt
 					{
 						task.Execute();
 
-						NAntProperty lNAntProperty = new NAntProperty(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value, false);
+						NAntProperty lNAntProperty =
+							new NAntProperty(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value,
+							                 false);
 						lNAntProperty.ExpandedValue = lNAntProperty.Value;
 						_properties.Add(lNAntProperty);
 					}
@@ -150,7 +153,7 @@ namespace NAntGui.NAnt
 						task.Execute();
 
 						NAntProperty nAntProperty = new NAntProperty(
-							task.PropertyName, task.Properties[task.PropertyName], 
+							task.PropertyName, task.Properties[task.PropertyName],
 							element.ParentNode.Attributes["name"].Value, false);
 
 						nAntProperty.ExpandedValue = nAntProperty.Value;
@@ -160,6 +163,7 @@ namespace NAntGui.NAnt
 			}
 		}
 
+/*
 		/// <summary>
 		/// Not in use right now because it opens a can of worms.
 		/// The only way to know what value the input attribute has 
@@ -187,6 +191,7 @@ namespace NAntGui.NAnt
 				}
 			}
 		}
+*/
 
 		#region Properties
 

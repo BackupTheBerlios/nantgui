@@ -40,13 +40,13 @@ namespace NAntGui.Core.Controls.Menu.BuildMenu
 			_runMenu = new RunMenuCommand(mediator);
 			_stopMenu = new StopMenuCommand(mediator);
 
-			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_runMenu,
-					_stopMenu
-				});
-			this.Text = "&Build";
+			Description = "MenuCommand";
+			MenuCommands.AddRange(new MenuCommand[]
+			                      	{
+			                      		_runMenu,
+			                      		_stopMenu
+			                      	});
+			Text = "&Build";
 		}
 
 		public void Enable()

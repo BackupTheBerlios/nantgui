@@ -37,38 +37,38 @@ namespace NAntGui.Framework
 		protected string _contents;
 		protected ILogsMessage _messageLogger;
 
-		private Watcher	_watcher = new Watcher();
+		private Watcher _watcher = new Watcher();
 		private CommandLineOptions _options;
 
 
 		public SourceFile(ILogsMessage messageLogger)
 		{
-			_name			= "Untitled";
-			_path			= ".\\";
-			_fullName		= _path + _name;
-			_extension		= "";
-			_contents		= "";
-			_messageLogger	= messageLogger;
+			_name = "Untitled";
+			_path = ".\\";
+			_fullName = _path + _name;
+			_extension = "";
+			_contents = "";
+			_messageLogger = messageLogger;
 		}
 
 		/// <summary>
 		/// Create a new build file.
 		/// </summary>
-		public SourceFile(string buildFile, string contents, 
-			ILogsMessage messageLogger, CommandLineOptions options)
+		public SourceFile(string buildFile, string contents,
+		                  ILogsMessage messageLogger, CommandLineOptions options)
 		{
 			Assert.NotNull(buildFile, "buildFile");
 			Assert.NotNull(contents, "contents");
 			Assert.NotNull(options, "options");
-            			
-			_fullName		= buildFile;
-			_contents		= contents;
-			_options		= options;
-			FileInfo info	= new FileInfo(_fullName);
-			_name			= info.Name;
-			_path			= info.DirectoryName;
-			_extension		= info.Extension;
-			_messageLogger	= messageLogger;
+
+			_fullName = buildFile;
+			_contents = contents;
+			_options = options;
+			FileInfo info = new FileInfo(_fullName);
+			_name = info.Name;
+			_path = info.DirectoryName;
+			_extension = info.Extension;
+			_messageLogger = messageLogger;
 
 			_watcher.WatchBuildFile(info);
 		}

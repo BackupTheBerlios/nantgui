@@ -37,19 +37,19 @@ namespace NAntGui.Core.Controls.Menu.ViewMenu
 		public ViewMenu(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
-			
+
 			_targets = new TargetsMenuCommand(mediator);
 			_properties = new PropertiesMenuCommand(mediator);
 			_output = new OutputMenuCommand(mediator);
 
-			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_targets,
-					_properties,
-					_output
-				});
-			this.Text = "&View";
+			Description = "MenuCommand";
+			MenuCommands.AddRange(new MenuCommand[]
+			                      	{
+			                      		_targets,
+			                      		_properties,
+			                      		_output
+			                      	});
+			Text = "&View";
 		}
 	}
 }

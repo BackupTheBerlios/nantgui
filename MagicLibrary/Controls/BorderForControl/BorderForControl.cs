@@ -16,76 +16,76 @@ using System.Windows.Forms;
 
 namespace Crownwood.Magic.Controls
 {
-    [ToolboxItem(false)]
-    public class BorderForControl : UserControl 
-    {
-        // Instance fields
-        protected int _borderWidth = 2;
+	[ToolboxItem(false)]
+	public class BorderForControl : UserControl
+	{
+		// Instance fields
+		protected int _borderWidth = 2;
 
-        public BorderForControl()
-        {
-            InternalConstruct(null, _borderWidth);
-        }
+		public BorderForControl()
+		{
+			InternalConstruct(null, _borderWidth);
+		}
 
-        public BorderForControl(Control control)
-        {
-            InternalConstruct(control, _borderWidth);
-        }
+		public BorderForControl(Control control)
+		{
+			InternalConstruct(control, _borderWidth);
+		}
 
-        public BorderForControl(Control control, int borderWidth)
-        {
-            InternalConstruct(control, borderWidth);
-        }
+		public BorderForControl(Control control, int borderWidth)
+		{
+			InternalConstruct(control, borderWidth);
+		}
 
-        protected void InternalConstruct(Control control, int borderWidth)
-        {
-            // Remember parameter
-            _borderWidth = borderWidth;
-			
-            if (control != null)
-            {
-                // Remove any existing docking style for passed in Control
-                control.Dock = DockStyle.None;
+		protected void InternalConstruct(Control control, int borderWidth)
+		{
+			// Remember parameter
+			_borderWidth = borderWidth;
 
-                // Add to appearance
-                Controls.Add(control);
-            }
-        }	
+			if (control != null)
+			{
+				// Remove any existing docking style for passed in Control
+				control.Dock = DockStyle.None;
 
-        public int BorderWidth
-        {
-            get { return _borderWidth; }
-            set { _borderWidth = value; }
-        }
+				// Add to appearance
+				Controls.Add(control);
+			}
+		}
 
-        protected override void OnResize(EventArgs e)
-        {
-            ResizeOnlyTheChild();
-            base.OnResize(e);
-        }
-		
-        protected override void OnLayout(LayoutEventArgs e)	
-        {
-            ResizeOnlyTheChild();
-            base.OnLayout(e);
-        }
+		public int BorderWidth
+		{
+			get { return _borderWidth; }
+			set { _borderWidth = value; }
+		}
 
-        protected void ResizeOnlyTheChild()
-        {
-            // Do we have a child control to resize? 
-            if (Controls.Count >= 1)
-            {
-                Size ourSize = this.Size;
+		protected override void OnResize(EventArgs e)
+		{
+			ResizeOnlyTheChild();
+			base.OnResize(e);
+		}
 
-                // Get the first child (there should not be any others)
-                Control child = this.Controls[0];
+		protected override void OnLayout(LayoutEventArgs e)
+		{
+			ResizeOnlyTheChild();
+			base.OnLayout(e);
+		}
 
-                // Define new position
-                child.Location = new Point(_borderWidth, _borderWidth);
+		protected void ResizeOnlyTheChild()
+		{
+			// Do we have a child control to resize? 
+			if (Controls.Count >= 1)
+			{
+				Size ourSize = Size;
 
-                // Define new size
-                child.Size = new Size(ourSize.Width - _borderWidth * 2, ourSize.Height - _borderWidth * 2);
-            }
-        }	
-    }
+				// Get the first child (there should not be any others)
+				Control child = Controls[0];
+
+				// Define new position
+				child.Location = new Point(_borderWidth, _borderWidth);
+
+				// Define new size
+				child.Size = new Size(ourSize.Width - _borderWidth*2, ourSize.Height - _borderWidth*2);
+			}
+		}
+	}
 }

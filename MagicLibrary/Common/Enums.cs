@@ -11,25 +11,24 @@
 
 namespace Crownwood.Magic.Common
 {
-    public enum VisualStyle
-    {
-        IDE,
-        Plain
-    }
+	public enum VisualStyle
+	{
+		IDE,
+		Plain
+	}
 
-    public enum Direction
-    {
-        Vertical,
-        Horizontal
-    }
-    
-    public enum Edge
-    {
-        Top,
-        Left,
-        Bottom,
-        Right,
-        None
-    }
+	public enum Direction
+	{
+		Vertical,
+		Horizontal
+	}
+
+	public enum Edge
+	{
+		Top,
+		Left,
+		Bottom,
+		Right,
+		None
+	}
 }
-

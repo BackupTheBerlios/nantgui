@@ -39,11 +39,11 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Description = "MenuCommand";
-			this.ImageIndex = 5;
-			this.Shortcut = Shortcut.CtrlO;
-			this.Text = "&Open";
-			this.ImageList = NAntGuiApp.ImageList;
+			Description = "MenuCommand";
+			ImageIndex = 5;
+			Shortcut = Shortcut.CtrlO;
+			Text = "&Open";
+			ImageList = NAntGuiApp.ImageList;
 		}
 
 		public override void OnClick(EventArgs e)

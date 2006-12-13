@@ -38,14 +38,14 @@ namespace NAntGui.Core.Controls
 			Assert.NotNull(mediator, "value");
 			_mediator = mediator;
 
-			this.SuspendLayout();
+			SuspendLayout();
 
-			this.Appearance = VisualAppearance.MultiDocument;
-			this.Dock = DockStyle.Fill;
-			this.IDEPixelArea = true;
-			this.IDEPixelBorder = false;
+			Appearance = VisualAppearance.MultiDocument;
+			Dock = DockStyle.Fill;
+			IDEPixelArea = true;
+			IDEPixelBorder = false;
 
-			this.ResumeLayout(false);
+			ResumeLayout(false);
 		}
 
 		protected override void OnDragEnter(DragEventArgs e)

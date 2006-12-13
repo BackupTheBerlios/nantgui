@@ -59,10 +59,10 @@ namespace NAntGui.Core
 			_mediator = mediator;
 			_scriptEditor = new ScriptEditor(mediator);
 			_scriptEditor.SetHighlighting("XML");
-			
-			_file = new SourceFile(logger);	
+
+			_file = new SourceFile(logger);
 			_fileType = FileType.New;
-			
+
 			Initialize();
 		}
 
@@ -134,8 +134,8 @@ namespace NAntGui.Core
 		{
 			_scriptEditor.SaveFile(fileName);
 
-			_file = new SourceFile(fileName, _scriptEditor.Text, 
-				_file.MessageLogger, NAntGuiApp.Options);
+			_file = new SourceFile(fileName, _scriptEditor.Text,
+			                       _file.MessageLogger, NAntGuiApp.Options);
 
 			_buildRunner = BuildRunnerFactory.Create(_file);
 
@@ -176,8 +176,14 @@ namespace NAntGui.Core
 			// Might want a more specific exception type to be caught here.
 			// For example, a NullReferenceException on _buildRunner 
 			// shouldn't be ignored.
-			try{ _buildRunner.ParseBuildScript(); }
-			catch { /* ignore */ }
+			try
+			{
+				_buildRunner.ParseBuildScript();
+			}
+			catch
+			{
+				/* ignore */
+			}
 		}
 
 		private void GotFocus(object sender, EventArgs e)
@@ -232,7 +238,7 @@ namespace NAntGui.Core
 			{
 				DialogResult result =
 					MessageBox.Show("You have unsaved changes to " + _file.Name + ".  Save?", "Save Changes?",
-					MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+					                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
 
 				if (result == DialogResult.Yes)
 				{
@@ -265,8 +271,8 @@ namespace NAntGui.Core
 		public void Cut()
 		{
 			_clipboardHandler.Cut(this, new EventArgs());
-		}		
-		
+		}
+
 		public void Copy()
 		{
 			_clipboardHandler.Copy(this, new EventArgs());
@@ -334,9 +340,9 @@ namespace NAntGui.Core
 
 		public bool IsDirty
 		{
-			get{ return _file.Contents != _scriptEditor.Text; }
+			get { return _file.Contents != _scriptEditor.Text; }
 		}
-	
+
 		#endregion
 	}
 }

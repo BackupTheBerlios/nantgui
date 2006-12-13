@@ -123,13 +123,13 @@ namespace NAntGui.Core
 		private static PropertySort GetRegKeyPropertySortValue(string keyName, PropertySort defaultValue)
 		{
 			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
-			return (PropertySort)Enum.Parse(typeof(PropertySort), regKeyStringValue);
-		}		
-		
+			return (PropertySort) Enum.Parse(typeof (PropertySort), regKeyStringValue);
+		}
+
 		private static FormWindowState GetRegKeyWindowStateValue(string keyName, FormWindowState defaultValue)
 		{
 			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
-			return (FormWindowState)Enum.Parse(typeof(FormWindowState), regKeyStringValue);
+			return (FormWindowState) Enum.Parse(typeof (FormWindowState), regKeyStringValue);
 		}
 
 		private static void SetRegKeyValue(string keyName, object value)

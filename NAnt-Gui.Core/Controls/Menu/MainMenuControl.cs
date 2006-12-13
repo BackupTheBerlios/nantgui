@@ -51,35 +51,35 @@ namespace NAntGui.Core.Controls.Menu
 			_toolsMenu = new ToolsMenu.ToolsMenu(mediator);
 			_helpMenu = new HelpMenu.HelpMenu(mediator);
 
-			this.Initialize();
+			Initialize();
 		}
 
 		#region Initialize
 
 		private void Initialize()
 		{
-			this.AnimateStyle = Animation.System;
-			this.AnimateTime = 100;
-			this.Cursor = Cursors.Arrow;
-			this.Direction = Direction.Horizontal;
-			this.Dock = DockStyle.Top;
-			this.Font = new Font("Tahoma", 11F, FontStyle.Regular, GraphicsUnit.World, ((Byte) (0)));
-			this.HighlightTextColor = SystemColors.MenuText;
-			this.Location = new Point(0, 0);
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_fileMenu,
-					_editMenu,
-					_viewMenu,
-					_buildMenu,
-					_toolsMenu,
-					_helpMenu
-				});
-			this.Name = "MainMenu";
-			this.Size = new Size(824, 25);
-			this.Style = VisualStyle.IDE;
-			this.TabIndex = 13;
-			this.TabStop = false;
+			AnimateStyle = Animation.System;
+			AnimateTime = 100;
+			Cursor = Cursors.Arrow;
+			Direction = Direction.Horizontal;
+			Dock = DockStyle.Top;
+			Font = new Font("Tahoma", 11F, FontStyle.Regular, GraphicsUnit.World, ((Byte) (0)));
+			HighlightTextColor = SystemColors.MenuText;
+			Location = new Point(0, 0);
+			MenuCommands.AddRange(new MenuCommand[]
+			                      	{
+			                      		_fileMenu,
+			                      		_editMenu,
+			                      		_viewMenu,
+			                      		_buildMenu,
+			                      		_toolsMenu,
+			                      		_helpMenu
+			                      	});
+			Name = "MainMenu";
+			Size = new Size(824, 25);
+			Style = VisualStyle.IDE;
+			TabIndex = 13;
+			TabStop = false;
 		}
 
 		#endregion

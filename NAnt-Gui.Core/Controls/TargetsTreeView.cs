@@ -42,22 +42,22 @@ namespace NAntGui.Core.Controls
 		{
 			Assert.NotNull(mediator, "mediator");
 			_runMenu = new RunMenuCommand(mediator);
-			this.Initialize();
+			Initialize();
 		}
 
 		private void Initialize()
 		{
-			this.CheckBoxes = true;
-			this.Dock = DockStyle.Top;
-			this.ImageIndex = -1;
-			this.Location = new Point(0, 0);
-			this.Name = "TargetsTreeView";
-			this.SelectedImageIndex = -1;
-			this.Size = new Size(175, 148);
-			this.TabIndex = 6;
-			this.AfterCheck += new TreeViewEventHandler(this.BuildTreeView_AfterCheck);
-			this.MouseUp += new MouseEventHandler(this.BuildTreeView_MouseUp);
-			this.MouseMove += new MouseEventHandler(this.BuildTreeView_MouseMove);
+			CheckBoxes = true;
+			Dock = DockStyle.Top;
+			ImageIndex = -1;
+			Location = new Point(0, 0);
+			Name = "TargetsTreeView";
+			SelectedImageIndex = -1;
+			Size = new Size(175, 148);
+			TabIndex = 6;
+			AfterCheck += new TreeViewEventHandler(BuildTreeView_AfterCheck);
+			MouseUp += new MouseEventHandler(BuildTreeView_MouseUp);
+			MouseMove += new MouseEventHandler(BuildTreeView_MouseMove);
 
 			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {_runMenu});
 		}
@@ -85,22 +85,22 @@ namespace NAntGui.Core.Controls
 
 		private void BuildTreeView_MouseMove(object sender, MouseEventArgs e)
 		{
-			TreeNode node = this.GetNodeAt(e.X, e.Y);
+			TreeNode node = GetNodeAt(e.X, e.Y);
 			if (node == null || node.Parent == null)
 			{
-				this.ToolTip.SetToolTip(this, "");
+				ToolTip.SetToolTip(this, "");
 			}
 			else
 			{
 				BuildTarget target = node.Tag as BuildTarget;
-				this.ToolTip.SetToolTip(this, target.Description);
+				ToolTip.SetToolTip(this, target.Description);
 			}
 		}
 
 		public TargetCollection GetTargets()
 		{
 			TargetCollection targets = new TargetCollection();
-			foreach (TreeNode node in this.Nodes[0].Nodes)
+			foreach (TreeNode node in Nodes[0].Nodes)
 			{
 				if (node.Checked)
 				{
@@ -114,16 +114,16 @@ namespace NAntGui.Core.Controls
 
 		public void AddTargets(string projectName, TargetCollection targets)
 		{
-			this.Nodes.Clear();
+			Nodes.Clear();
 
-			this.Nodes.Add(new TreeNode(projectName));
+			Nodes.Add(new TreeNode(projectName));
 
 			foreach (BuildTarget target in targets)
 			{
-				this.AddTargetTreeNode(target);
+				AddTargetTreeNode(target);
 			}
 
-			this.ExpandAll();
+			ExpandAll();
 		}
 
 		private void AddTargetTreeNode(BuildTarget buildTarget)
@@ -134,7 +134,7 @@ namespace NAntGui.Core.Controls
 				TreeNode node = new TreeNode(targetName);
 				node.Checked = buildTarget.Default;
 				node.Tag = buildTarget;
-				this.Nodes[0].Nodes.Add(node);
+				Nodes[0].Nodes.Add(node);
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace NAntGui.Core.Controls
 
 		public void Clear()
 		{
-			this.Nodes.Clear();
+			Nodes.Clear();
 		}
 	}
 }

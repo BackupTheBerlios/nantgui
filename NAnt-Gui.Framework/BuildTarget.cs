@@ -29,7 +29,9 @@ namespace NAntGui.Framework
 		protected string _description = "";
 		protected bool _default = false;
 
-		public BuildTarget(){}
+		public BuildTarget()
+		{
+		}
 
 		public BuildTarget(string name)
 		{

@@ -76,20 +76,20 @@ namespace NAntGui.Core
 				{
 					case BUILD_FAILED:
 						string output = ColorTable.RedTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-							+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+						                + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
 
 						highlightedText = highlightedText.Replace(match.Value, output);
 						break;
 					case BUILD_SUCCEEDED:
 						output = ColorTable.GreenTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-							+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+						         + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
 
 						highlightedText = highlightedText.Replace(match.Value, output);
 						break;
 
 					case @"\[[^\[]+\]":
 						output = ColorTable.BlueTag + Tags.SPACE
-							+ match.Value + Tags.BLACK + Tags.SPACE;
+						         + match.Value + Tags.BLACK + Tags.SPACE;
 
 						highlightedText = highlightedText.Replace(match.Value, output);
 
@@ -99,7 +99,7 @@ namespace NAntGui.Core
 					case "error":
 					case "ERROR":
 						output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
-							+ match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
+						         + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
 
 						highlightedText = highlightedText.Replace(match.Value, output);
 						break;

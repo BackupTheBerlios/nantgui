@@ -49,17 +49,17 @@ namespace NAntGui.Core
 
 		public MainFormMediator()
 		{
-			_form			= new MainForm(this);
-			_mainMenu		= new MainMenuControl(this);
-			_toolBar		= new ToolBarControl(this);
-			_sourceTabs		= new ScriptTabs(this);
-			_outputBox		= new OutputBox(this);
-			_targetsTree	= new TargetsTreeView(this);
+			_form = new MainForm(this);
+			_mainMenu = new MainMenuControl(this);
+			_toolBar = new ToolBarControl(this);
+			_sourceTabs = new ScriptTabs(this);
+			_outputBox = new OutputBox(this);
+			_targetsTree = new TargetsTreeView(this);
 
 			InitMainForm();
 
-			_dockManager	= new MainDockManager(_form, _sourceTabs, 
-				_targetsTree, _outputBox, _propertyGrid, _statusBar);
+			_dockManager = new MainDockManager(_form, _sourceTabs,
+			                                   _targetsTree, _outputBox, _propertyGrid, _statusBar);
 
 			LoadInitialBuildFile();
 		}
@@ -67,7 +67,7 @@ namespace NAntGui.Core
 		private void InitMainForm()
 		{
 			MainFormSerializer.Attach(_form, _propertyGrid);
-	
+
 			_sourceTabs.AddTabsToControls(_form.Controls);
 			_form.Controls.Add(_statusBar);
 			_form.Controls.Add(_toolBar);
@@ -96,7 +96,7 @@ namespace NAntGui.Core
 			_dockManager.ShowOutput();
 
 			ScriptTabPage selectedTab = _sourceTabs.SelectedTab;
-			
+
 			selectedTab.SetProperties(_propertyGrid.GetProperties());
 			selectedTab.SetTargets(_targetsTree.GetTargets());
 			selectedTab.Save(false);
@@ -168,7 +168,7 @@ namespace NAntGui.Core
 		{
 			_sourceTabs.SelectedTab.Stop();
 			_sourceTabs.CloseTabs(e);
-			_dockManager.SaveConfig();	
+			_dockManager.SaveConfig();
 		}
 
 		public void SaveAsClicked()
@@ -206,12 +206,12 @@ namespace NAntGui.Core
 
 		public void SelectAllClicked()
 		{
-			_editCommands.SelectAll();	
+			_editCommands.SelectAll();
 		}
 
 		public void CopyClicked()
 		{
-			_editCommands.Copy();	
+			_editCommands.Copy();
 		}
 
 		public void PasteClicked()
@@ -299,20 +299,20 @@ namespace NAntGui.Core
 
 				_sourceTabs.Clear();
 				_sourceTabs.AddTab(page);
-				
+
 				string file = _sourceTabs.SelectedTab.FileFullName;
 				_mainMenu.AddRecentItem(file);
 
 				try
 				{
-					page.ParseBuildScript();	
+					page.ParseBuildScript();
 				}
 				catch (BuildFileLoadException error)
 				{
-					MessageBox.Show(error.Message, "Error Loading Build File", 
-						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show(error.Message, "Error Loading Build File",
+					                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
-				
+
 				_mainMenu.Enable();
 				_toolBar.Enable();
 				UpdateDisplay(true);
@@ -404,7 +404,5 @@ namespace NAntGui.Core
 		{
 			_editCommands.Delete();
 		}
-
-
 	}
 }

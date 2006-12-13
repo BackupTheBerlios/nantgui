@@ -15,86 +15,86 @@ using System.Windows.Forms.Design;
 
 namespace Crownwood.Magic.Controls
 {
-    [Designer(typeof(ParentControlDesigner))]
-    public class WizardPage : TabPage
+	[Designer(typeof (ParentControlDesigner))]
+	public class WizardPage : TabPage
 	{
-	    // Instance fields
-	    protected bool _fullPage;
-        protected string _subTitle;
-        protected string _captionTitle;
-        
-        // Instance events
-        public event EventHandler FullPageChanged;
-        public event EventHandler SubTitleChanged;
-        public event EventHandler CaptionTitleChanged;
-    
+		// Instance fields
+		protected bool _fullPage;
+		protected string _subTitle;
+		protected string _captionTitle;
+
+		// Instance events
+		public event EventHandler FullPageChanged;
+		public event EventHandler SubTitleChanged;
+		public event EventHandler CaptionTitleChanged;
+
 		public WizardPage()
 		{
-		    _fullPage = false;
-		    _subTitle = "(Page Description not defined)";
-            _captionTitle = "(Page Title)";
-        }
-		
+			_fullPage = false;
+			_subTitle = "(Page Description not defined)";
+			_captionTitle = "(Page Title)";
+		}
+
 		public bool FullPage
 		{
-		    get { return _fullPage; }
-		    
-		    set 
-		    {
-		        if (_fullPage != value)
-		        {
-		            _fullPage = value;
-		            OnFullPageChanged(EventArgs.Empty);
-		        }
-		    }
+			get { return _fullPage; }
+
+			set
+			{
+				if (_fullPage != value)
+				{
+					_fullPage = value;
+					OnFullPageChanged(EventArgs.Empty);
+				}
+			}
 		}
-		
+
 		[Localizable(true)]
 		public string SubTitle
 		{
-		    get { return _subTitle; }
+			get { return _subTitle; }
 
-		    set 
-		    {
-		        if (_subTitle != value)
-		        {
-		            _subTitle = value;
-		            OnSubTitleChanged(EventArgs.Empty);
-		        }
-		    }
+			set
+			{
+				if (_subTitle != value)
+				{
+					_subTitle = value;
+					OnSubTitleChanged(EventArgs.Empty);
+				}
+			}
 		}
-		
+
 		[Localizable(true)]
 		public string CaptionTitle
 		{
-		    get { return _captionTitle; }
-		    
-		    set
-		    {
-		        if (_captionTitle != value)
-		        {
-		            _captionTitle = value;
-		            OnCaptionTitleChanged(EventArgs.Empty);
-		        }
-		    }
+			get { return _captionTitle; }
+
+			set
+			{
+				if (_captionTitle != value)
+				{
+					_captionTitle = value;
+					OnCaptionTitleChanged(EventArgs.Empty);
+				}
+			}
 		}
-		
+
 		public virtual void OnFullPageChanged(EventArgs e)
 		{
-		    if (FullPageChanged != null)
-		        FullPageChanged(this, e);
+			if (FullPageChanged != null)
+				FullPageChanged(this, e);
 		}
-    
-        public virtual void OnSubTitleChanged(EventArgs e)
-        {
-            if (SubTitleChanged != null)
-                SubTitleChanged(this, e);
-        }
 
-        public virtual void OnCaptionTitleChanged(EventArgs e)
-        {
-            if (CaptionTitleChanged != null)
-                CaptionTitleChanged(this, e);
-        }
-    }
+		public virtual void OnSubTitleChanged(EventArgs e)
+		{
+			if (SubTitleChanged != null)
+				SubTitleChanged(this, e);
+		}
+
+		public virtual void OnCaptionTitleChanged(EventArgs e)
+		{
+			if (CaptionTitleChanged != null)
+				CaptionTitleChanged(this, e);
+		}
+	}
 }

@@ -24,82 +24,87 @@ using TabControl=Crownwood.Magic.Controls.TabControl;
 
 namespace Crownwood.Magic.Docking
 {
-    public enum PropogateName
-    {
-        BackColor,
-        ActiveColor,
-        ActiveTextColor,
-        InactiveTextColor,
-        ResizeBarColor,
-        ResizeBarVector,
-        CaptionFont,
+	public enum PropogateName
+	{
+		BackColor,
+		ActiveColor,
+		ActiveTextColor,
+		InactiveTextColor,
+		ResizeBarColor,
+		ResizeBarVector,
+		CaptionFont,
 		TabControlFont,
-        ZoneMinMax,
-        PlainTabBorder
-    }
+		ZoneMinMax,
+		PlainTabBorder
+	}
 
-    public class DockingManager
-    {
-        // Instance fields
-        protected bool _zoneMinMax;
-        protected bool _insideFill;
-        protected bool _autoResize;
-        protected bool _firstHalfWidth;
-        protected bool _firstHalfHeight;
-        protected int _surpressVisibleEvents;
-        protected int _resizeBarVector;
-        protected Size _innerMinimum;
-        protected Color _backColor;
-        protected Color _activeColor;
-        protected Color _activeTextColor;
-        protected Color _inactiveTextColor;
-        protected Color _resizeBarColor;
-        protected Font _captionFont;
+	public class DockingManager
+	{
+		// Instance fields
+		protected bool _zoneMinMax;
+		protected bool _insideFill;
+		protected bool _autoResize;
+		protected bool _firstHalfWidth;
+		protected bool _firstHalfHeight;
+		protected int _surpressVisibleEvents;
+		protected int _resizeBarVector;
+		protected Size _innerMinimum;
+		protected Color _backColor;
+		protected Color _activeColor;
+		protected Color _activeTextColor;
+		protected Color _inactiveTextColor;
+		protected Color _resizeBarColor;
+		protected Font _captionFont;
 		protected Font _tabControlFont;
-        protected bool _defaultBackColor;
-        protected bool _defaultActiveColor;
-        protected bool _defaultActiveTextColor;
-        protected bool _defaultInactiveTextColor;
-        protected bool _defaultResizeBarColor;
-        protected bool _defaultCaptionFont;
+		protected bool _defaultBackColor;
+		protected bool _defaultActiveColor;
+		protected bool _defaultActiveTextColor;
+		protected bool _defaultInactiveTextColor;
+		protected bool _defaultResizeBarColor;
+		protected bool _defaultCaptionFont;
 		protected bool _defaultTabControlFont;
-        protected bool _plainTabBorder;
-        protected Control _innerControl;
-        protected Control _outerControl;
-        protected AutoHidePanel _ahpTop;
-        protected AutoHidePanel _ahpLeft;
-        protected AutoHidePanel _ahpBottom;
-        protected AutoHidePanel _ahpRight;
-        protected VisualStyle _visualStyle;
-        protected ContainerControl _container;
-        protected ManagerContentCollection _contents;
+		protected bool _plainTabBorder;
+		protected Control _innerControl;
+		protected Control _outerControl;
+		protected AutoHidePanel _ahpTop;
+		protected AutoHidePanel _ahpLeft;
+		protected AutoHidePanel _ahpBottom;
+		protected AutoHidePanel _ahpRight;
+		protected VisualStyle _visualStyle;
+		protected ContainerControl _container;
+		protected ManagerContentCollection _contents;
 
-        public delegate void ContentHandler(Content c, EventArgs cea);
-        public delegate void ContentHidingHandler(Content c, CancelEventArgs cea);
-        public delegate void ContextMenuHandler(PopupMenu pm, CancelEventArgs cea);
+		public delegate void ContentHandler(Content c, EventArgs cea);
+
+		public delegate void ContentHidingHandler(Content c, CancelEventArgs cea);
+
+		public delegate void ContextMenuHandler(PopupMenu pm, CancelEventArgs cea);
+
 		public delegate void TabControlCreatedHandler(TabControl tabControl);
-		public delegate void SaveCustomConfigHandler(XmlTextWriter xmlOut);
-        public delegate void LoadCustomConfigHandler(XmlTextReader xmlIn);
 
-        // Exposed events
-        public event ContentHandler ContentShown;
-        public event ContentHandler ContentHidden;
-        public event ContentHidingHandler ContentHiding;
-        public event ContextMenuHandler ContextMenu;
+		public delegate void SaveCustomConfigHandler(XmlTextWriter xmlOut);
+
+		public delegate void LoadCustomConfigHandler(XmlTextReader xmlIn);
+
+		// Exposed events
+		public event ContentHandler ContentShown;
+		public event ContentHandler ContentHidden;
+		public event ContentHidingHandler ContentHiding;
+		public event ContextMenuHandler ContextMenu;
 		public event TabControlCreatedHandler TabControlCreated;
 		public event SaveCustomConfigHandler SaveCustomConfig;
-        public event LoadCustomConfigHandler LoadCustomConfig;
+		public event LoadCustomConfigHandler LoadCustomConfig;
 
-        public DockingManager(ContainerControl container, VisualStyle vs)
-        {
-            // Must provide a valid container instance
-            if (container == null)
-                throw new ArgumentNullException("Container");
+		public DockingManager(ContainerControl container, VisualStyle vs)
+		{
+			// Must provide a valid container instance
+			if (container == null)
+				throw new ArgumentNullException("Container");
 
-            // Default state
-            _container = container;
-            _visualStyle = vs;
-            _innerControl = null;
+			// Default state
+			_container = container;
+			_visualStyle = vs;
+			_innerControl = null;
 			_zoneMinMax = true;
 			_insideFill = false;
 			_autoResize = true;
@@ -108,8 +113,8 @@ namespace Crownwood.Magic.Docking
 			_plainTabBorder = false;
 			_surpressVisibleEvents = 0;
 			_innerMinimum = new Size(20, 20);
-	
-            // Default font/resize
+
+			// Default font/resize
 			_resizeBarVector = -1;
 			_captionFont = SystemInformation.MenuFont;
 			_tabControlFont = SystemInformation.MenuFont;
@@ -119,82 +124,82 @@ namespace Crownwood.Magic.Docking
 			// Create and add hidden auto hide panels
 			AddAutoHidePanels();
 
-            // Define initial colors
-            ResetColors();
+			// Define initial colors
+			ResetColors();
 
-            // Create an object to manage the collection of Content
-            _contents = new ManagerContentCollection(this);
+			// Create an object to manage the collection of Content
+			_contents = new ManagerContentCollection(this);
 
-            // We want notification when contents are removed/cleared
-            _contents.Clearing += new CollectionClear(OnContentsClearing);
-            _contents.Removed += new CollectionChange(OnContentRemoved);
+			// We want notification when contents are removed/cleared
+			_contents.Clearing += new CollectionClear(OnContentsClearing);
+			_contents.Removed += new CollectionChange(OnContentRemoved);
 
 			// We want to perform special action when container is resized
 			_container.Resize += new EventHandler(OnContainerResized);
-			
+
 			// A Form can cause the child controls to be reordered after the initialisation
 			// but before the Form.Load event. To handle this we hook into the event and force
 			// the auto hide panels to be ordered back into their proper place.
 			if (_container is Form)
-			{   
-			    Form formContainer = _container as Form;			    
-			    formContainer.Load += new EventHandler(OnFormLoaded);
-			}
-
-            // Need notification when colors change
-            SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(OnPreferenceChanged);
-        }
-
-        public ContainerControl Container
-        {
-            get { return _container; }
-        }
-
-        public Control InnerControl
-        {
-            get { return _innerControl; }
-            set { _innerControl = value; }
-        }
-
-        public Control OuterControl
-        {
-            get { return _outerControl; }
-            set 
 			{
-			    if (_outerControl != value)
-			    {
-				    _outerControl = value;
-				    
-				    // Use helper routine to ensure panels are in correct positions
-                    ReorderAutoHidePanels();
-		        }
+				Form formContainer = _container as Form;
+				formContainer.Load += new EventHandler(OnFormLoaded);
 			}
-        }
 
-        public ManagerContentCollection Contents
-        {
-            get { return _contents; }
-			
-            set 
-            {
-                _contents.Clear();
-                _contents = value;	
-            }
-        }
+			// Need notification when colors change
+			SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(OnPreferenceChanged);
+		}
+
+		public ContainerControl Container
+		{
+			get { return _container; }
+		}
+
+		public Control InnerControl
+		{
+			get { return _innerControl; }
+			set { _innerControl = value; }
+		}
+
+		public Control OuterControl
+		{
+			get { return _outerControl; }
+			set
+			{
+				if (_outerControl != value)
+				{
+					_outerControl = value;
+
+					// Use helper routine to ensure panels are in correct positions
+					ReorderAutoHidePanels();
+				}
+			}
+		}
+
+		public ManagerContentCollection Contents
+		{
+			get { return _contents; }
+
+			set
+			{
+				_contents.Clear();
+				_contents = value;
+			}
+		}
 
 		public bool ZoneMinMax
 		{
 			get { return _zoneMinMax; }
 
-			set 
-			{ 
-			    if (value != _zoneMinMax)
-			    {
-			        _zoneMinMax = value;
-                
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.ZoneMinMax, (object)_zoneMinMax);
-                } 
+			set
+			{
+				if (value != _zoneMinMax)
+				{
+					_zoneMinMax = value;
+
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.ZoneMinMax, (object) _zoneMinMax);
+				}
 			}
 		}
 
@@ -210,16 +215,16 @@ namespace Crownwood.Magic.Docking
 
 					if (_insideFill)
 					{
-					    // Add Fill style to innermost docking window
+						// Add Fill style to innermost docking window
 						AddInnerFillStyle();
-			        }
+					}
 					else
 					{
-					    // Remove Fill style from innermost docking window
+						// Remove Fill style from innermost docking window
 						RemoveAnyFillStyle();
-						
+
 						// Ensure that inner control can be seen
-                        OnContainerResized(null, EventArgs.Empty);
+						OnContainerResized(null, EventArgs.Empty);
 					}
 				}
 			}
@@ -237,190 +242,190 @@ namespace Crownwood.Magic.Docking
 			set { _innerMinimum = value; }
 		}
 
-        public VisualStyle Style
-        {
-            get { return _visualStyle; }
-        }
+		public VisualStyle Style
+		{
+			get { return _visualStyle; }
+		}
 
-        public int ResizeBarVector
-        {
-            get { return _resizeBarVector; }
-            
-            set 
-            {
-                if (value != _resizeBarVector)
-                {
-                    _resizeBarVector = value;
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.ResizeBarVector, (object)_resizeBarVector);
-                }
-            }
-        }
+		public int ResizeBarVector
+		{
+			get { return _resizeBarVector; }
 
-        public Color BackColor
-        {
-            get { return _backColor; }
-            
-            set 
-            {
-                if (value != _backColor)
-                {
-                    _backColor = value;
-                    _defaultBackColor = (_backColor == SystemColors.Control);
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.BackColor, (object)_backColor);
-                }
-            }
-        }
-    
-        public Color ActiveColor
-        {
-            get { return _activeColor; }
-            
-            set 
-            {
-                if (value != _activeColor)
-                {
-                    _activeColor = value;
-                    _defaultActiveColor = (_activeColor == SystemColors.ActiveCaption);
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.ActiveColor, (object)_activeColor);
-                }
-            }
-        }
-        
-        public Color ActiveTextColor
-        {
-            get { return _activeTextColor; }
-            
-            set 
-            {
-                if (value != _activeTextColor)
-                {
-                    _activeTextColor = value;
-                    _defaultActiveTextColor = (_activeTextColor == SystemColors.ActiveCaptionText);
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.ActiveTextColor, (object)_activeTextColor);
-                }
-            }
-        }
+			set
+			{
+				if (value != _resizeBarVector)
+				{
+					_resizeBarVector = value;
 
-        public Color InactiveTextColor
-        {
-            get { return _inactiveTextColor; }
-            
-            set 
-            {
-                if (value != _inactiveTextColor)
-                {
-                    _inactiveTextColor = value;
-                    _defaultInactiveTextColor = (_inactiveTextColor == SystemColors.ControlText);
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.InactiveTextColor, (object)_inactiveTextColor);
-                }
-            }
-        }
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.ResizeBarVector, (object) _resizeBarVector);
+				}
+			}
+		}
 
-        public Color ResizeBarColor
-        {
-            get { return _resizeBarColor; }
-            
-            set 
-            {
-                if (value != _resizeBarColor)
-                {
-                    _resizeBarColor = value;
-                    _defaultResizeBarColor = (_resizeBarColor == SystemColors.Control);
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.ResizeBarColor, (object)_resizeBarColor);
-                }
-            }
-        }
-        
-        public Font CaptionFont
-        {
-            get { return _captionFont; }
-            
-            set 
-            {
-                if (value != _captionFont)
-                {
-                    _captionFont = value;
-                    _defaultCaptionFont = (_captionFont == SystemInformation.MenuFont);
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.CaptionFont, (object)_captionFont);
-                }
-            }
-        }
+		public Color BackColor
+		{
+			get { return _backColor; }
 
-        public Font TabControlFont
-        {
-            get { return _tabControlFont; }
-            
-            set 
-            {
-                if (value != _tabControlFont)
-                {
-                    _tabControlFont = value;
-                    _defaultTabControlFont = (_captionFont == SystemInformation.MenuFont);
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.TabControlFont, (object)_tabControlFont);
-                }
-            }
-        }
+			set
+			{
+				if (value != _backColor)
+				{
+					_backColor = value;
+					_defaultBackColor = (_backColor == SystemColors.Control);
 
-        public bool PlainTabBorder
-        {
-            get { return _plainTabBorder; }
-            
-            set 
-            {
-                if (value != _plainTabBorder)
-                {
-                    _plainTabBorder = value;
-                    
-                    // Notify each object in docking hierarchy in case they need to know new value
-                    PropogateNameValue(PropogateName.PlainTabBorder, (object)_plainTabBorder);
-                }
-            }
-        }
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.BackColor, (object) _backColor);
+				}
+			}
+		}
 
-        public void ResetColors()
-        {
-            _backColor = SystemColors.Control;
-            _inactiveTextColor = SystemColors.ControlText;
-            _activeColor = SystemColors.ActiveCaption;
-            _activeTextColor = SystemColors.ActiveCaptionText;
-            _resizeBarColor = SystemColors.Control;
-            _defaultBackColor = true;
-            _defaultActiveColor = true;
-            _defaultActiveTextColor = true;
-            _defaultInactiveTextColor = true;
-            _defaultResizeBarColor = true;
+		public Color ActiveColor
+		{
+			get { return _activeColor; }
 
-            PropogateNameValue(PropogateName.BackColor, (object)_backColor);
-            PropogateNameValue(PropogateName.ActiveColor, (object)_activeColor);
-            PropogateNameValue(PropogateName.ActiveTextColor, (object)_activeTextColor);
-            PropogateNameValue(PropogateName.InactiveTextColor, (object)_inactiveTextColor);
-            PropogateNameValue(PropogateName.ResizeBarColor, (object)_resizeBarColor);
-        }
+			set
+			{
+				if (value != _activeColor)
+				{
+					_activeColor = value;
+					_defaultActiveColor = (_activeColor == SystemColors.ActiveCaption);
 
-        public void UpdateInsideFill()
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.ActiveColor, (object) _activeColor);
+				}
+			}
+		}
+
+		public Color ActiveTextColor
+		{
+			get { return _activeTextColor; }
+
+			set
+			{
+				if (value != _activeTextColor)
+				{
+					_activeTextColor = value;
+					_defaultActiveTextColor = (_activeTextColor == SystemColors.ActiveCaptionText);
+
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.ActiveTextColor, (object) _activeTextColor);
+				}
+			}
+		}
+
+		public Color InactiveTextColor
+		{
+			get { return _inactiveTextColor; }
+
+			set
+			{
+				if (value != _inactiveTextColor)
+				{
+					_inactiveTextColor = value;
+					_defaultInactiveTextColor = (_inactiveTextColor == SystemColors.ControlText);
+
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.InactiveTextColor, (object) _inactiveTextColor);
+				}
+			}
+		}
+
+		public Color ResizeBarColor
+		{
+			get { return _resizeBarColor; }
+
+			set
+			{
+				if (value != _resizeBarColor)
+				{
+					_resizeBarColor = value;
+					_defaultResizeBarColor = (_resizeBarColor == SystemColors.Control);
+
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.ResizeBarColor, (object) _resizeBarColor);
+				}
+			}
+		}
+
+		public Font CaptionFont
+		{
+			get { return _captionFont; }
+
+			set
+			{
+				if (value != _captionFont)
+				{
+					_captionFont = value;
+					_defaultCaptionFont = (_captionFont == SystemInformation.MenuFont);
+
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.CaptionFont, (object) _captionFont);
+				}
+			}
+		}
+
+		public Font TabControlFont
+		{
+			get { return _tabControlFont; }
+
+			set
+			{
+				if (value != _tabControlFont)
+				{
+					_tabControlFont = value;
+					_defaultTabControlFont = (_captionFont == SystemInformation.MenuFont);
+
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.TabControlFont, (object) _tabControlFont);
+				}
+			}
+		}
+
+		public bool PlainTabBorder
+		{
+			get { return _plainTabBorder; }
+
+			set
+			{
+				if (value != _plainTabBorder)
+				{
+					_plainTabBorder = value;
+
+					// Notify each object in docking hierarchy in case they need to know new value
+					PropogateNameValue(PropogateName.PlainTabBorder, (object) _plainTabBorder);
+				}
+			}
+		}
+
+		public void ResetColors()
+		{
+			_backColor = SystemColors.Control;
+			_inactiveTextColor = SystemColors.ControlText;
+			_activeColor = SystemColors.ActiveCaption;
+			_activeTextColor = SystemColors.ActiveCaptionText;
+			_resizeBarColor = SystemColors.Control;
+			_defaultBackColor = true;
+			_defaultActiveColor = true;
+			_defaultActiveTextColor = true;
+			_defaultInactiveTextColor = true;
+			_defaultResizeBarColor = true;
+
+			PropogateNameValue(PropogateName.BackColor, (object) _backColor);
+			PropogateNameValue(PropogateName.ActiveColor, (object) _activeColor);
+			PropogateNameValue(PropogateName.ActiveTextColor, (object) _activeTextColor);
+			PropogateNameValue(PropogateName.InactiveTextColor, (object) _inactiveTextColor);
+			PropogateNameValue(PropogateName.ResizeBarColor, (object) _resizeBarColor);
+		}
+
+		public void UpdateInsideFill()
 		{
 			// Is inside fill ability enabled?
 			if (_insideFill)
 			{
 				// Reduce flicker
 				_container.SuspendLayout();
-				
+
 				// Ensure correct zone has the Fill style
 				RemoveAnyFillStyle();
 				AddInnerFillStyle();
@@ -445,7 +450,7 @@ namespace Crownwood.Magic.Docking
 			{
 				// Find the hosting panel for the window content instance
 				AutoHidePanel ahp = AutoHidePanelForState(c.ParentWindowContent.State);
-				
+
 				// Ask the panel to un-autohide
 				ahp.InvertAutoHideWindowContent(c.ParentWindowContent as WindowContentTabbed);
 			}
@@ -461,35 +466,35 @@ namespace Crownwood.Magic.Docking
 
 		public virtual bool ShowContent(Content c)
 		{
-            // Validate the incoming Content instance is a valid reference
-            // and is a current instance within our internal collection
-            if ((c == null) || !_contents.Contains(c))
-                return false;
-		
-			// Remove it from view by removing from current WindowContent container
-            if (!c.Visible)
-			{
-                // Do not generate hiding/hidden/shown events
-                _surpressVisibleEvents++;
+			// Validate the incoming Content instance is a valid reference
+			// and is a current instance within our internal collection
+			if ((c == null) || !_contents.Contains(c))
+				return false;
 
-                // Manageing Zones should remove display AutoHide windows
-                RemoveShowingAutoHideWindows();
-                               
-                // Use the assigned restore object to position the Content appropriately
+			// Remove it from view by removing from current WindowContent container
+			if (!c.Visible)
+			{
+				// Do not generate hiding/hidden/shown events
+				_surpressVisibleEvents++;
+
+				// Manageing Zones should remove display AutoHide windows
+				RemoveShowingAutoHideWindows();
+
+				// Use the assigned restore object to position the Content appropriately
 				if (c.Docked)
 				{
-				    if (c.AutoHidden)
-				        c.AutoHideRestore.PerformRestore(this);
-				    else
-					    c.DockingRestore.PerformRestore(this);
-			    }
+					if (c.AutoHidden)
+						c.AutoHideRestore.PerformRestore(this);
+					else
+						c.DockingRestore.PerformRestore(this);
+				}
 				else
 					c.FloatingRestore.PerformRestore(this);
 
-                // Enable generation hiding/hidden/shown events
-                _surpressVisibleEvents--;
+				// Enable generation hiding/hidden/shown events
+				_surpressVisibleEvents--;
 
-                // Generate event
+				// Generate event
 				OnContentShown(c);
 
 				return true;
@@ -502,7 +507,7 @@ namespace Crownwood.Magic.Docking
 		{
 			_container.SuspendLayout();
 
-			foreach(Content c in _contents)
+			foreach (Content c in _contents)
 				ShowContent(c);
 
 			UpdateInsideFill();
@@ -517,46 +522,46 @@ namespace Crownwood.Magic.Docking
 
 		public virtual void HideContent(Content c, bool record, bool reorder)
 		{
-            // Remove it from view by removing from current WindowContent container
-            if (c.Visible)
-            {
-                // Do not generate hiding/hidden/shown events
-                _surpressVisibleEvents++;
+			// Remove it from view by removing from current WindowContent container
+			if (c.Visible)
+			{
+				// Do not generate hiding/hidden/shown events
+				_surpressVisibleEvents++;
 
-                // Manageing Zones should remove display AutoHide windows
-                RemoveShowingAutoHideWindows();
-                
-                if (record)
+				// Manageing Zones should remove display AutoHide windows
+				RemoveShowingAutoHideWindows();
+
+				if (record)
 				{
 					// Tell the Content to create a new Restore object to record its current location
 					c.RecordRestore();
 				}
 
-                if (c.AutoHidden)
-                {
-                    // Remove it from its current AutoHidePanel
-                    c.AutoHidePanel.RemoveContent(c);
-                }
-                else
-                {
-                    // Remove the Content from its current WindowContent
-                    c.ParentWindowContent.Contents.Remove(c);
-                }
-                
+				if (c.AutoHidden)
+				{
+					// Remove it from its current AutoHidePanel
+					c.AutoHidePanel.RemoveContent(c);
+				}
+				else
+				{
+					// Remove the Content from its current WindowContent
+					c.ParentWindowContent.Contents.Remove(c);
+				}
+
 				if (reorder)
 				{
 					// Move the Content to the start of the list
-					_contents.SetIndex(0, c); 
+					_contents.SetIndex(0, c);
 				}
 
 				UpdateInsideFill();
 
-                // Enable generation hiding/hidden/shown events
-                _surpressVisibleEvents--;
-                
-                // Generate event
+				// Enable generation hiding/hidden/shown events
+				_surpressVisibleEvents--;
+
+				// Generate event
 				OnContentHidden(c);
-            }
+			}
 		}
 
 		public virtual void HideAllContents()
@@ -566,81 +571,81 @@ namespace Crownwood.Magic.Docking
 			int count = _contents.Count;
 
 			// Hide in reverse order so that a ShowAll in forward order gives accurate restore
-			for(int index=count-1; index>=0; index--)
+			for (int index = count - 1; index >= 0; index--)
 			{
-			    // Cannot hide something already hidden
-			    if (_contents[index].Visible)
-			    {
-                    // Generate event
-                    if (!OnContentHiding(_contents[index]))
-                    {
-                        HideContent(_contents[index], true, false);
-                    }
-                }
-		    }
+				// Cannot hide something already hidden
+				if (_contents[index].Visible)
+				{
+					// Generate event
+					if (!OnContentHiding(_contents[index]))
+					{
+						HideContent(_contents[index], true, false);
+					}
+				}
+			}
 
 			UpdateInsideFill();
 
 			_container.ResumeLayout();
 		}
 
-        public virtual Window CreateWindowForContent(Content c)
-        {
-            return CreateWindowForContent(c, new EventHandler(OnContentClose), 
-										     new EventHandler(OnRestore),
-                                             new EventHandler(OnInvertAutoHide),
-                                             new ContextHandler(OnShowContextMenu));
-        }
+		public virtual Window CreateWindowForContent(Content c)
+		{
+			return CreateWindowForContent(c, new EventHandler(OnContentClose),
+			                              new EventHandler(OnRestore),
+			                              new EventHandler(OnInvertAutoHide),
+			                              new ContextHandler(OnShowContextMenu));
+		}
 
-        public virtual Window CreateWindowForContent(Content c,
-                                                     EventHandler contentClose,
-                                                     EventHandler restore,
-                                                     EventHandler invertAutoHide,
-                                                     ContextHandler showContextMenu)
-        {
-            // Create new instance with correct style
-            WindowContent wc = new WindowContentTabbed(this, _visualStyle);
+		public virtual Window CreateWindowForContent(Content c,
+		                                             EventHandler contentClose,
+		                                             EventHandler restore,
+		                                             EventHandler invertAutoHide,
+		                                             ContextHandler showContextMenu)
+		{
+			// Create new instance with correct style
+			WindowContent wc = new WindowContentTabbed(this, _visualStyle);
 
-            WindowDetailCaption wdc;
+			WindowDetailCaption wdc;
 
-            // Create a style specific caption detail
-            if (_visualStyle == VisualStyle.IDE)
-                wdc = new WindowDetailCaptionIDE(this, contentClose, restore,
-                                                 invertAutoHide, showContextMenu);
-            else
-                wdc = new WindowDetailCaptionPlain(this, contentClose, restore,
-                                                   invertAutoHide, showContextMenu);
+			// Create a style specific caption detail
+			if (_visualStyle == VisualStyle.IDE)
+				wdc = new WindowDetailCaptionIDE(this, contentClose, restore,
+				                                 invertAutoHide, showContextMenu);
+			else
+				wdc = new WindowDetailCaptionPlain(this, contentClose, restore,
+				                                   invertAutoHide, showContextMenu);
 
-            // Add the caption to the window display
-            wc.WindowDetails.Add(wdc);
+			// Add the caption to the window display
+			wc.WindowDetails.Add(wdc);
 
-            if (c != null)
-            {
-                // Add provided Content to this instance
-                wc.Contents.Add(c);
-            }
+			if (c != null)
+			{
+				// Add provided Content to this instance
+				wc.Contents.Add(c);
+			}
 
-            return wc;
-        }    
-            
-        public virtual Zone CreateZoneForContent(State zoneState)
-        {
+			return wc;
+		}
+
+		public virtual Zone CreateZoneForContent(State zoneState)
+		{
 			return CreateZoneForContent(zoneState, _container);
 		}
 
-        protected virtual Zone CreateZoneForContent(State zoneState, ContainerControl destination)
-        {
-            DockStyle ds;
-            Direction direction;
+		protected virtual Zone CreateZoneForContent(State zoneState, ContainerControl destination)
+		{
+			DockStyle ds;
+			Direction direction;
 
-            // Find relevant values dependant on required state
-            ValuesFromState(zoneState, out ds, out direction);
+			// Find relevant values dependant on required state
+			ValuesFromState(zoneState, out ds, out direction);
 
-            // Create a new ZoneSequence which can host Content
-            ZoneSequence zs = new ZoneSequence(this, zoneState, _visualStyle, direction, _zoneMinMax);
+			// Create a new ZoneSequence which can host Content
+			ZoneSequence zs = new ZoneSequence(this, zoneState, _visualStyle, direction, _zoneMinMax);
 
-            // Set the appropriate docking style
-            zs.Dock = ds;
+			// Set the appropriate docking style
+			zs.Dock = ds;
 
 			if (destination != null)
 			{
@@ -648,113 +653,113 @@ namespace Crownwood.Magic.Docking
 				destination.Controls.Add(zs);
 			}
 
-            return zs;
-        }
+			return zs;
+		}
 
-        public WindowContent AddContentWithState(Content c, State newState)
-        {
-            // Validate the incoming Content instance is a valid reference
-            // and is a current instance within our internal collection
-            if ((c == null) || !_contents.Contains(c))
-                return null;
-		
-            // Do not generate hiding/hidden/shown events
-            _surpressVisibleEvents++;
+		public WindowContent AddContentWithState(Content c, State newState)
+		{
+			// Validate the incoming Content instance is a valid reference
+			// and is a current instance within our internal collection
+			if ((c == null) || !_contents.Contains(c))
+				return null;
 
-            // Manageing Zones should remove display AutoHide windows
-            RemoveShowingAutoHideWindows();
-                
-            // Is the window already part of a WindowContent?
-            if (c.ParentWindowContent != null)
-            {
+			// Do not generate hiding/hidden/shown events
+			_surpressVisibleEvents++;
+
+			// Manageing Zones should remove display AutoHide windows
+			RemoveShowingAutoHideWindows();
+
+			// Is the window already part of a WindowContent?
+			if (c.ParentWindowContent != null)
+			{
 				// If it used to be in a floating mode, then record state change
 				if (c.ParentWindowContent.ParentZone.State == State.Floating)
 					c.ContentLeavesFloating();
 
-                // Remove the Content from its current WindowContent
-                c.ParentWindowContent.Contents.Remove(c);
-            }
+				// Remove the Content from its current WindowContent
+				c.ParentWindowContent.Contents.Remove(c);
+			}
 
-            // Create a new Window instance appropriate for hosting a Content object
-            Window w = CreateWindowForContent(c);
+			// Create a new Window instance appropriate for hosting a Content object
+			Window w = CreateWindowForContent(c);
 
 			ContainerControl destination = null;
 
-	        if (newState != State.Floating)
+			if (newState != State.Floating)
 			{
 				destination = _container;
-		        destination.SuspendLayout();
+				destination.SuspendLayout();
 			}
 
-            // Create a new Zone capable of hosting a WindowContent
-            Zone z = CreateZoneForContent(newState, destination);
+			// Create a new Zone capable of hosting a WindowContent
+			Zone z = CreateZoneForContent(newState, destination);
 
-	        if (newState == State.Floating)
+			if (newState == State.Floating)
 			{
-			    // Content is not in the docked state
-			    c.Docked = false;
-			
+				// Content is not in the docked state
+				c.Docked = false;
+
 				// destination a new floating form
 				destination = new FloatingForm(this, z, new ContextHandler(OnShowContextMenu));
 
 				// Define its location
 				destination.Location = c.DisplayLocation;
-				
+
 				// ...and its size, add the height of the caption bar to the requested content size
-				destination.Size = new Size(c.FloatingSize.Width, 
+				destination.Size = new Size(c.FloatingSize.Width,
 				                            c.FloatingSize.Height + SystemInformation.ToolWindowCaptionHeight);
 			}
-			
-            // Add the Window to the Zone
-            z.Windows.Add(w);
 
-	        if (newState != State.Floating)
+			// Add the Window to the Zone
+			z.Windows.Add(w);
+
+			if (newState != State.Floating)
 			{
 				// Set the Zone to be the least important of our Zones
 				ReorderZoneToInnerMost(z);
 
 				UpdateInsideFill();
 
-	            destination.ResumeLayout();
+				destination.ResumeLayout();
 			}
 			else
 				destination.Show();
 
-            // Enable generation hiding/hidden/shown events
-            _surpressVisibleEvents--;
+			// Enable generation hiding/hidden/shown events
+			_surpressVisibleEvents--;
 
-            // Generate event to indicate content is now visible
-            OnContentShown(c);
+			// Generate event to indicate content is now visible
+			OnContentShown(c);
 
-            return w as WindowContent;
-        }
+			return w as WindowContent;
+		}
 
-        public WindowContent AddContentToWindowContent(Content c, WindowContent wc)
-        {
-            // Validate the incoming Content instance is a valid reference
-            // and is a current instance within our internal collection
-            if ((c == null) || !_contents.Contains(c))
-                return null;
+		public WindowContent AddContentToWindowContent(Content c, WindowContent wc)
+		{
+			// Validate the incoming Content instance is a valid reference
+			// and is a current instance within our internal collection
+			if ((c == null) || !_contents.Contains(c))
+				return null;
 
-            // Validate the incoming WindowContent instance is a valid reference
-            if (wc == null)
-                return null;
+			// Validate the incoming WindowContent instance is a valid reference
+			if (wc == null)
+				return null;
 
-            // Is Content already part of given Window then nothing to do
-            if (c.ParentWindowContent == wc)
-                return wc;
-            else
-            {
+			// Is Content already part of given Window then nothing to do
+			if (c.ParentWindowContent == wc)
+				return wc;
+			else
+			{
 				bool valid = true;
 
-                // Do not generate hiding/hidden/shown events
-                _surpressVisibleEvents++;
+				// Do not generate hiding/hidden/shown events
+				_surpressVisibleEvents++;
 
-                // Manageing Zones should remove display AutoHide windows
-                RemoveShowingAutoHideWindows();
-                
-                if (c.ParentWindowContent != null)
-                {
+				// Manageing Zones should remove display AutoHide windows
+				RemoveShowingAutoHideWindows();
+
+				if (c.ParentWindowContent != null)
+				{
 					// Is there a change in docking state?
 					if (c.ParentWindowContent.ParentZone.State != wc.ParentZone.State)
 					{
@@ -765,11 +770,11 @@ namespace Crownwood.Magic.Docking
 							c.ContentBecomesFloating();
 					}
 
-                    // Remove the Content from its current WindowContent
-                    c.ParentWindowContent.Contents.Remove(c);
-                }
-                else
-                {
+					// Remove the Content from its current WindowContent
+					c.ParentWindowContent.Contents.Remove(c);
+				}
+				else
+				{
 					// If a window content is in AutoHide then it will not have a parent zone
 					if (wc.ParentZone != null)
 					{
@@ -782,7 +787,7 @@ namespace Crownwood.Magic.Docking
 						// Cannot dynamically add into an autohide parent
 						valid = false;
 					}
-                }
+				}
 
 				if (valid)
 				{
@@ -790,8 +795,8 @@ namespace Crownwood.Magic.Docking
 					wc.Contents.Add(c);
 				}
 
-                // Enable generation hiding/hidden/shown events
-                _surpressVisibleEvents--;
+				// Enable generation hiding/hidden/shown events
+				_surpressVisibleEvents--;
 
 				if (valid)
 				{
@@ -799,30 +804,30 @@ namespace Crownwood.Magic.Docking
 					OnContentShown(c);
 				}
 
-                return wc;
-            }
-        }
+				return wc;
+			}
+		}
 
-        public Window AddContentToZone(Content c, Zone z, int index)
-        {
-            // Validate the incoming Content instance is a valid reference
-            // and is a current instance within our internal collection
-            if ((c == null) || !_contents.Contains(c))
-                return null;
+		public Window AddContentToZone(Content c, Zone z, int index)
+		{
+			// Validate the incoming Content instance is a valid reference
+			// and is a current instance within our internal collection
+			if ((c == null) || !_contents.Contains(c))
+				return null;
 
-            // Validate the incoming Zone instance is a valid reference
-            if (z == null) 
-                return null;
+			// Validate the incoming Zone instance is a valid reference
+			if (z == null)
+				return null;
 
-            // Do not generate hiding/hidden/shown events
-            _surpressVisibleEvents++;
+			// Do not generate hiding/hidden/shown events
+			_surpressVisibleEvents++;
 
-            // Manageing Zones should remove display AutoHide windows
-            RemoveShowingAutoHideWindows();
-                
-            // Is the window already part of a WindowContent?
-            if (c.ParentWindowContent != null)
-            {
+			// Manageing Zones should remove display AutoHide windows
+			RemoveShowingAutoHideWindows();
+
+			// Is the window already part of a WindowContent?
+			if (c.ParentWindowContent != null)
+			{
 				// Is there a change in docking state?
 				if (c.ParentWindowContent.ParentZone.State != z.State)
 				{
@@ -833,30 +838,30 @@ namespace Crownwood.Magic.Docking
 						c.ContentBecomesFloating();
 				}
 
-                // Remove the Content from its current WindowContent
-                c.ParentWindowContent.Contents.Remove(c);
-            }
-            else
-            {
-                // If target zone is floating window then we are no longer docked
-                if (z.State == State.Floating)
-                    c.Docked = false;
-            }
+				// Remove the Content from its current WindowContent
+				c.ParentWindowContent.Contents.Remove(c);
+			}
+			else
+			{
+				// If target zone is floating window then we are no longer docked
+				if (z.State == State.Floating)
+					c.Docked = false;
+			}
 
-            // Create a new WindowContent instance according to our style
-            Window w = CreateWindowForContent(c);
+			// Create a new WindowContent instance according to our style
+			Window w = CreateWindowForContent(c);
 
-            // Add the Window to the Zone at given position
-            z.Windows.Insert(index, w);
+			// Add the Window to the Zone at given position
+			z.Windows.Insert(index, w);
 
-            // Enable generation hiding/hidden/shown events
-            _surpressVisibleEvents--;
+			// Enable generation hiding/hidden/shown events
+			_surpressVisibleEvents--;
 
-            // Generate event to indicate content is now visible
-            OnContentShown(c);
+			// Generate event to indicate content is now visible
+			OnContentShown(c);
 
-            return w;
-        }
+			return w;
+		}
 
 		public Rectangle InnerResizeRectangle(Control source)
 		{
@@ -868,204 +873,204 @@ namespace Crownwood.Magic.Docking
 			int sourceIndex = _container.Controls.IndexOf(source);
 
 			// Process each control outside the inner control
-			for(int index=count-1; index>inner; index--)
+			for (int index = count - 1; index > inner; index--)
 			{
 				Control item = _container.Controls[index];
 
 				bool insideSource = (index < sourceIndex);
 
-				switch(item.Dock)
+				switch (item.Dock)
 				{
-				    case DockStyle.Left:
-					    client.Width -= item.Width;
-					    client.X += item.Width;
+					case DockStyle.Left:
+						client.Width -= item.Width;
+						client.X += item.Width;
 
-					    if (insideSource)
-						    client.Width -= item.Width;
-					    break;
-				    case DockStyle.Right:
-					    client.Width -= item.Width;
+						if (insideSource)
+							client.Width -= item.Width;
+						break;
+					case DockStyle.Right:
+						client.Width -= item.Width;
 
-					    if (insideSource)
-					    {
-						    client.Width -= item.Width;
-						    client.X += item.Width;
-					    }
-					    break;
-				    case DockStyle.Top:
-					    client.Height -= item.Height;
-					    client.Y += item.Height;
+						if (insideSource)
+						{
+							client.Width -= item.Width;
+							client.X += item.Width;
+						}
+						break;
+					case DockStyle.Top:
+						client.Height -= item.Height;
+						client.Y += item.Height;
 
-					    if (insideSource)
-						    client.Height -= item.Height;
-					    break;
-				    case DockStyle.Bottom:
-					    client.Height -= item.Height;
+						if (insideSource)
+							client.Height -= item.Height;
+						break;
+					case DockStyle.Bottom:
+						client.Height -= item.Height;
 
-					    if (insideSource)
-					    {
-						    client.Height -= item.Height;
-						    client.Y += item.Height;
-					    }
-					    break;
-				    case DockStyle.Fill:
-				    case DockStyle.None:
-					    break;
+						if (insideSource)
+						{
+							client.Height -= item.Height;
+							client.Y += item.Height;
+						}
+						break;
+					case DockStyle.Fill:
+					case DockStyle.None:
+						break;
 				}
 			}
 
 			return client;
 		}
 
-        public void ReorderZoneToInnerMost(Zone zone)
-        {
-            int index = 0;
+		public void ReorderZoneToInnerMost(Zone zone)
+		{
+			int index = 0;
 
-            // If there is no control specified as the one for all Zones to be placed
-            // in front of then simply add the Zone at the start of the list so it is
-            // in front of all controls.
-            if (_innerControl != null)
-            {
-                // Find position of specified control and place after it in the list 
-                // (hence adding one to the returned value)
-                index = _container.Controls.IndexOf(_innerControl) + 1;
-            }
+			// If there is no control specified as the one for all Zones to be placed
+			// in front of then simply add the Zone at the start of the list so it is
+			// in front of all controls.
+			if (_innerControl != null)
+			{
+				// Find position of specified control and place after it in the list 
+				// (hence adding one to the returned value)
+				index = _container.Controls.IndexOf(_innerControl) + 1;
+			}
 
-            // Find current position of the Zone to be repositioned
-            int current = _container.Controls.IndexOf(zone);
+			// Find current position of the Zone to be repositioned
+			int current = _container.Controls.IndexOf(zone);
 
-            // If the old position is before the new position then we need to 
-            // subtract one. As the collection will remove the Control from the
-            // old position before inserting it in the new, thus reducing the index
-            // by 1 before the insert occurs.
-            if (current < index)
-                index--;
+			// If the old position is before the new position then we need to 
+			// subtract one. As the collection will remove the Control from the
+			// old position before inserting it in the new, thus reducing the index
+			// by 1 before the insert occurs.
+			if (current < index)
+				index--;
 
-            // Found a Control that is not a Zone, so need to insert straight it
-            _container.Controls.SetChildIndex(zone, index);
-            
-            // Manageing Zones should remove display AutoHide windows
-            RemoveShowingAutoHideWindows();
-        }
+			// Found a Control that is not a Zone, so need to insert straight it
+			_container.Controls.SetChildIndex(zone, index);
 
-        public void ReorderZoneToOuterMost(Zone zone)
-        {
-            // Get index of the outer control (minus AutoHidePanel's)
-            int index = OuterControlIndex();
+			// Manageing Zones should remove display AutoHide windows
+			RemoveShowingAutoHideWindows();
+		}
 
-            // Find current position of the Zone to be repositioned
-            int current = _container.Controls.IndexOf(zone);
+		public void ReorderZoneToOuterMost(Zone zone)
+		{
+			// Get index of the outer control (minus AutoHidePanel's)
+			int index = OuterControlIndex();
 
-            // If the old position is before the new position then we need to 
-            // subtract one. As the collection will remove the Control from the
-            // old position before inserting it in the new, thus reducing the index
-            // by 1 before the insert occurs.
-            if (current < index)
-                index--;
+			// Find current position of the Zone to be repositioned
+			int current = _container.Controls.IndexOf(zone);
 
-            // Found a Control that is not a Zone, so need to insert straight it
-            _container.Controls.SetChildIndex(zone, index);
+			// If the old position is before the new position then we need to 
+			// subtract one. As the collection will remove the Control from the
+			// old position before inserting it in the new, thus reducing the index
+			// by 1 before the insert occurs.
+			if (current < index)
+				index--;
 
-            // Manageing Zones should remove display AutoHide windows
-            RemoveShowingAutoHideWindows();
-        }
-        
-        public int OuterControlIndex()
-        {
-            int index = _container.Controls.Count;
+			// Found a Control that is not a Zone, so need to insert straight it
+			_container.Controls.SetChildIndex(zone, index);
 
-            // If there is no control specified as the one for all Zones to be placed behind 
-            // then simply add the Zone at the end of the list so it is behind all controls.
-            if (_outerControl != null)
-            {
-                // Find position of specified control and place before it in the list 
-                index = _container.Controls.IndexOf(_outerControl);
-            }
+			// Manageing Zones should remove display AutoHide windows
+			RemoveShowingAutoHideWindows();
+		}
 
-            // Adjust backwards to prevent being after any AutoHidePanels
-            for(; index>0; index--)
-                if (!(_container.Controls[index-1] is AutoHidePanel))
-                    break;
-                    
-            return index;
-        }
+		public int OuterControlIndex()
+		{
+			int index = _container.Controls.Count;
 
-        public void RemoveShowingAutoHideWindows()
-        {
-            _ahpLeft.RemoveShowingWindow();
-            _ahpRight.RemoveShowingWindow();
-            _ahpTop.RemoveShowingWindow();
-            _ahpBottom.RemoveShowingWindow();
-        }
-        
-        internal void RemoveShowingAutoHideWindowsExcept(AutoHidePanel except)
-        {
-            if (except != _ahpLeft)
-                _ahpLeft.RemoveShowingWindow();
+			// If there is no control specified as the one for all Zones to be placed behind 
+			// then simply add the Zone at the end of the list so it is behind all controls.
+			if (_outerControl != null)
+			{
+				// Find position of specified control and place before it in the list 
+				index = _container.Controls.IndexOf(_outerControl);
+			}
 
-            if (except != _ahpRight)
-                _ahpRight.RemoveShowingWindow();
-            
-            if (except != _ahpTop)
-                _ahpTop.RemoveShowingWindow();
-            
-            if (except != _ahpBottom)
-                _ahpBottom.RemoveShowingWindow();
-        }
+			// Adjust backwards to prevent being after any AutoHidePanels
+			for (; index > 0; index--)
+				if (!(_container.Controls[index - 1] is AutoHidePanel))
+					break;
 
-        public void BringAutoHideIntoView(Content c)
-        {
-            if (_ahpLeft.ContainsContent(c))
-                _ahpLeft.BringContentIntoView(c);     
+			return index;
+		}
 
-            if (_ahpRight.ContainsContent(c))
-                _ahpRight.BringContentIntoView(c);     
+		public void RemoveShowingAutoHideWindows()
+		{
+			_ahpLeft.RemoveShowingWindow();
+			_ahpRight.RemoveShowingWindow();
+			_ahpTop.RemoveShowingWindow();
+			_ahpBottom.RemoveShowingWindow();
+		}
 
-            if (_ahpTop.ContainsContent(c))
-                _ahpTop.BringContentIntoView(c);     
+		internal void RemoveShowingAutoHideWindowsExcept(AutoHidePanel except)
+		{
+			if (except != _ahpLeft)
+				_ahpLeft.RemoveShowingWindow();
 
-            if (_ahpBottom.ContainsContent(c))
-                _ahpBottom.BringContentIntoView(c);     
-        }            
-        
-        public void ValuesFromState(State newState, out DockStyle dockState, out Direction direction)
-        {
-            switch(newState)
-            {
-                case State.Floating:
-                    dockState = DockStyle.Fill;
-                    direction = Direction.Vertical;
-                    break;
-                case State.DockTop:
-                    dockState = DockStyle.Top;
-                    direction = Direction.Horizontal;
-                    break;
-                case State.DockBottom:
-                    dockState = DockStyle.Bottom;
-                    direction = Direction.Horizontal;
-                    break;
-                case State.DockRight:
-                    dockState = DockStyle.Right;
-                    direction = Direction.Vertical;
-                    break;
-                case State.DockLeft:
-                default:
-                    dockState = DockStyle.Left;
-                    direction = Direction.Vertical;
-                    break;
-            }
-        }
+			if (except != _ahpRight)
+				_ahpRight.RemoveShowingWindow();
+
+			if (except != _ahpTop)
+				_ahpTop.RemoveShowingWindow();
+
+			if (except != _ahpBottom)
+				_ahpBottom.RemoveShowingWindow();
+		}
+
+		public void BringAutoHideIntoView(Content c)
+		{
+			if (_ahpLeft.ContainsContent(c))
+				_ahpLeft.BringContentIntoView(c);
+
+			if (_ahpRight.ContainsContent(c))
+				_ahpRight.BringContentIntoView(c);
+
+			if (_ahpTop.ContainsContent(c))
+				_ahpTop.BringContentIntoView(c);
+
+			if (_ahpBottom.ContainsContent(c))
+				_ahpBottom.BringContentIntoView(c);
+		}
+
+		public void ValuesFromState(State newState, out DockStyle dockState, out Direction direction)
+		{
+			switch (newState)
+			{
+				case State.Floating:
+					dockState = DockStyle.Fill;
+					direction = Direction.Vertical;
+					break;
+				case State.DockTop:
+					dockState = DockStyle.Top;
+					direction = Direction.Horizontal;
+					break;
+				case State.DockBottom:
+					dockState = DockStyle.Bottom;
+					direction = Direction.Horizontal;
+					break;
+				case State.DockRight:
+					dockState = DockStyle.Right;
+					direction = Direction.Vertical;
+					break;
+				case State.DockLeft:
+				default:
+					dockState = DockStyle.Left;
+					direction = Direction.Vertical;
+					break;
+			}
+		}
 
 		public byte[] SaveConfigToArray()
 		{
-			return SaveConfigToArray(Encoding.Unicode);	
+			return SaveConfigToArray(Encoding.Unicode);
 		}
 
 		public byte[] SaveConfigToArray(Encoding encoding)
 		{
 			// Create a memory based stream
 			MemoryStream ms = new MemoryStream();
-			
+
 			// Save into the file stream
 			SaveConfigToStream(ms, encoding);
 
@@ -1085,9 +1090,9 @@ namespace Crownwood.Magic.Docking
 		{
 			// Create/Overwrite existing file
 			FileStream fs = new FileStream(filename, FileMode.Create);
-			
+
 			// Save into the file stream
-			SaveConfigToStream(fs, encoding);		
+			SaveConfigToStream(fs, encoding);
 
 			// Must remember to close
 			fs.Close();
@@ -1095,11 +1100,11 @@ namespace Crownwood.Magic.Docking
 
 		public void SaveConfigToStream(Stream stream, Encoding encoding)
 		{
-			XmlTextWriter xmlOut = new XmlTextWriter(stream, encoding); 
+			XmlTextWriter xmlOut = new XmlTextWriter(stream, encoding);
 
 			// Use indenting for readability
 			xmlOut.Formatting = Formatting.Indented;
-			
+
 			// Always begin file with identification and warning
 			xmlOut.WriteStartDocument();
 			xmlOut.WriteComment(" Magic, The User Interface library for .NET (www.dotnetmagic.com) ");
@@ -1124,16 +1129,16 @@ namespace Crownwood.Magic.Docking
 			// processing by the 'HideContent'.
 			ContentCollection origContents = _contents.Copy();
 
-            // Do not generate hiding/hidden/shown events
-            _surpressVisibleEvents++;
-            
-            int count = origContents.Count;
+			// Do not generate hiding/hidden/shown events
+			_surpressVisibleEvents++;
 
-            // Hide in reverse order so that a ShowAll in forward order gives accurate restore
-            for(int index=count-1; index>=0; index--)
-            {
-                Content c = origContents[index];
-            
+			int count = origContents.Count;
+
+			// Hide in reverse order so that a ShowAll in forward order gives accurate restore
+			for (int index = count - 1; index >= 0; index--)
+			{
+				Content c = origContents[index];
+
 				c.RecordRestore();
 				c.SaveToXml(xmlOut);
 
@@ -1145,18 +1150,18 @@ namespace Crownwood.Magic.Docking
 					HideContent(c);
 				}
 			}
-			
+
 			// Allow an event handler a chance to add custom information after ours
 			OnSaveCustomConfig(xmlOut);
 
 			// Put content we hide back again
-			foreach(Content c in hideContent)
+			foreach (Content c in hideContent)
 				ShowContent(c);
 
-            // Enable generation of hiding/hidden/shown events
-            _surpressVisibleEvents--;
-            
-            // Reapply any fill style required
+			// Enable generation of hiding/hidden/shown events
+			_surpressVisibleEvents--;
+
+			// Reapply any fill style required
 			AddInnerFillStyle();
 
 			_container.ResumeLayout();
@@ -1166,14 +1171,14 @@ namespace Crownwood.Magic.Docking
 			xmlOut.WriteEndDocument();
 
 			// This should flush all actions and close the file
-			xmlOut.Close();			
+			xmlOut.Close();
 		}
 
 		public void LoadConfigFromArray(byte[] buffer)
 		{
 			// Create a memory based stream
 			MemoryStream ms = new MemoryStream(buffer);
-			
+
 			// Save into the file stream
 			LoadConfigFromStream(ms);
 
@@ -1185,9 +1190,9 @@ namespace Crownwood.Magic.Docking
 		{
 			// Open existing file
 			FileStream fs = new FileStream(filename, FileMode.Open);
-			
+
 			// Load from the file stream
-			LoadConfigFromStream(fs);		
+			LoadConfigFromStream(fs);
 
 			// Must remember to close
 			fs.Close();
@@ -1195,7 +1200,7 @@ namespace Crownwood.Magic.Docking
 
 		public void LoadConfigFromStream(Stream stream)
 		{
-			XmlTextReader xmlIn = new XmlTextReader(stream); 
+			XmlTextReader xmlIn = new XmlTextReader(stream);
 
 			// Ignore whitespace, not interested
 			xmlIn.WhitespaceHandling = WhitespaceHandling.None;
@@ -1212,22 +1217,22 @@ namespace Crownwood.Magic.Docking
 			string insideFill = xmlIn.GetAttribute(1);
 			string innerSize = xmlIn.GetAttribute(2);
 
-            // Convert format version from string to double
-            int formatVersion = (int)Convert.ToDouble(version);
-            
-            // We can only load 3 upward version formats
-            if (formatVersion < 3)
-                throw new ArgumentException("Can only load Version 3 and upwards Docking Configuration files");
+			// Convert format version from string to double
+			int formatVersion = (int) Convert.ToDouble(version);
 
-            // Convert from string to proper types
-			_insideFill = (bool)Convert.ToBoolean(insideFill);
+			// We can only load 3 upward version formats
+			if (formatVersion < 3)
+				throw new ArgumentException("Can only load Version 3 and upwards Docking Configuration files");
+
+			// Convert from string to proper types
+			_insideFill = (bool) Convert.ToBoolean(insideFill);
 			_innerMinimum = ConversionHelper.StringToSize(innerSize);
 
 			ContentCollection cc = new ContentCollection();
 
 			do
 			{
-                // Read the next Element
+				// Read the next Element
 				if (!xmlIn.Read())
 					throw new ArgumentException("An element was expected but could not be read in");
 
@@ -1238,24 +1243,23 @@ namespace Crownwood.Magic.Docking
 				// Is the element name 'Content'
 				if (xmlIn.Name == "Content")
 				{
-                    // Process this Content element
-                    cc.Insert(0, new Content(xmlIn, formatVersion));
-                }
+					// Process this Content element
+					cc.Insert(0, new Content(xmlIn, formatVersion));
+				}
 				else
 				{
-				    // Must have reached end of our code, let the custom handler deal with this
-                    OnLoadCustomConfig(xmlIn);
+					// Must have reached end of our code, let the custom handler deal with this
+					OnLoadCustomConfig(xmlIn);
 
-                    // Ignore anything else that might be in the XML
-                    xmlIn.Close();			
-                   
-                    // Exit
-                    break;
-                }
+					// Ignore anything else that might be in the XML
+					xmlIn.Close();
 
-			} while(!xmlIn.EOF);
+					// Exit
+					break;
+				}
+			} while (!xmlIn.EOF);
 
-			xmlIn.Close();			
+			xmlIn.Close();
 
 			// Reduce flicker during window operations
 			_container.SuspendLayout();
@@ -1264,7 +1268,7 @@ namespace Crownwood.Magic.Docking
 			HideAllContents();
 
 			// Attempt to apply loaded settings
-			foreach(Content loaded in cc)
+			foreach (Content loaded in cc)
 			{
 				Content c = _contents[loaded.Title];
 
@@ -1272,11 +1276,11 @@ namespace Crownwood.Magic.Docking
 				if (c != null)
 				{
 					// Copy across the loaded values of interest
-                    c.Docked = loaded.Docked;
-                    c.AutoHidden = loaded.AutoHidden;
-                    c.CaptionBar = loaded.CaptionBar;
-                    c.CloseButton = loaded.CloseButton;
-                    c.DisplaySize = loaded.DisplaySize;
+					c.Docked = loaded.Docked;
+					c.AutoHidden = loaded.AutoHidden;
+					c.CaptionBar = loaded.CaptionBar;
+					c.CloseButton = loaded.CloseButton;
+					c.DisplaySize = loaded.DisplaySize;
 					c.DisplayLocation = loaded.DisplayLocation;
 					c.AutoHideSize = loaded.AutoHideSize;
 					c.FloatingSize = loaded.FloatingSize;
@@ -1286,7 +1290,7 @@ namespace Crownwood.Magic.Docking
 					c.FloatingRestore = loaded.FloatingRestore;
 
 					// Allow the Restore objects a chance to rehook into object instances
-					c.ReconnectRestore();					
+					c.ReconnectRestore();
 
 					// Was the loaded item visible?
 					if (loaded.Visible)
@@ -1302,163 +1306,163 @@ namespace Crownwood.Magic.Docking
 
 			// Reduce flicker during window operations
 			_container.ResumeLayout();
-			
+
 			// If any AutoHostPanel's have become visible we need to force a repaint otherwise
 			// the area not occupied by the TabStub instances will be painted the correct color
 			_ahpLeft.Invalidate();
-            _ahpRight.Invalidate();
-            _ahpTop.Invalidate();
-            _ahpBottom.Invalidate();
-        }
-        
-        public void PropogateNameValue(PropogateName name, object value)
-        {
-            foreach(Control c in _container.Controls)
-            {
-                Zone z = c as Zone;
+			_ahpRight.Invalidate();
+			_ahpTop.Invalidate();
+			_ahpBottom.Invalidate();
+		}
 
-                // Only interested in our Zones
-                if (z != null)
-                    z.PropogateNameValue(name, value);
-            }
+		public void PropogateNameValue(PropogateName name, object value)
+		{
+			foreach (Control c in _container.Controls)
+			{
+				Zone z = c as Zone;
 
-            // If the docking manager is created for a Container that does not
-            // yet have a parent control then we need to double check before
-            // trying to enumerate the owned forms.
-            if (_container.FindForm() != null)
-            {
-                foreach(Form f in _container.FindForm().OwnedForms)
-                {
-                    FloatingForm ff = f as FloatingForm;
-                    
-                    // Only interested in our FloatingForms
-                    if (ff != null)
-                        ff.PropogateNameValue(name, value);
-                }
-            }
-            
-            // Propogate into the AutoHidePanel objects
-            _ahpTop.PropogateNameValue(name, value);
-            _ahpLeft.PropogateNameValue(name, value);
-            _ahpRight.PropogateNameValue(name, value);
-            _ahpBottom.PropogateNameValue(name, value);
-        }
+				// Only interested in our Zones
+				if (z != null)
+					z.PropogateNameValue(name, value);
+			}
+
+			// If the docking manager is created for a Container that does not
+			// yet have a parent control then we need to double check before
+			// trying to enumerate the owned forms.
+			if (_container.FindForm() != null)
+			{
+				foreach (Form f in _container.FindForm().OwnedForms)
+				{
+					FloatingForm ff = f as FloatingForm;
+
+					// Only interested in our FloatingForms
+					if (ff != null)
+						ff.PropogateNameValue(name, value);
+				}
+			}
+
+			// Propogate into the AutoHidePanel objects
+			_ahpTop.PropogateNameValue(name, value);
+			_ahpLeft.PropogateNameValue(name, value);
+			_ahpRight.PropogateNameValue(name, value);
+			_ahpBottom.PropogateNameValue(name, value);
+		}
 
 		public virtual bool OnContentHiding(Content c)
-        {
-            CancelEventArgs cea = new CancelEventArgs();
+		{
+			CancelEventArgs cea = new CancelEventArgs();
 
-            if (_surpressVisibleEvents == 0)
-            {
-                // Allow user to prevent hide operation                
-                if (ContentHiding != null)
-                    ContentHiding(c, cea);
-            }
-            
-            // Was action cancelled?                        
-            return cea.Cancel;
-        }
+			if (_surpressVisibleEvents == 0)
+			{
+				// Allow user to prevent hide operation                
+				if (ContentHiding != null)
+					ContentHiding(c, cea);
+			}
+
+			// Was action cancelled?                        
+			return cea.Cancel;
+		}
 
 		public virtual void OnContentHidden(Content c)
-        {
-            if (_surpressVisibleEvents == 0)
-            {
-                // Notify operation has completed
-                if (ContentHidden != null)
-                    ContentHidden(c, EventArgs.Empty);
-            }
-        }
+		{
+			if (_surpressVisibleEvents == 0)
+			{
+				// Notify operation has completed
+				if (ContentHidden != null)
+					ContentHidden(c, EventArgs.Empty);
+			}
+		}
 
 		public virtual void OnContentShown(Content c)
-        {
-            if (_surpressVisibleEvents == 0)
-            {
-                // Notify operation has completed
-                if (ContentShown != null)
-                    ContentShown(c, EventArgs.Empty);
-            }
-        }
+		{
+			if (_surpressVisibleEvents == 0)
+			{
+				// Notify operation has completed
+				if (ContentShown != null)
+					ContentShown(c, EventArgs.Empty);
+			}
+		}
 
 		public virtual void OnTabControlCreated(TabControl tabControl)
-		{ 
+		{
 			// Notify interested parties about creation of a new TabControl instance
 			if (TabControlCreated != null)
 				TabControlCreated(tabControl);
 		}
-		
+
 		public virtual void OnSaveCustomConfig(XmlTextWriter xmlOut)
 		{
-            // Notify interested parties that they can add their own custom data
-            if (SaveCustomConfig != null)
-                SaveCustomConfig(xmlOut);
-        }
+			// Notify interested parties that they can add their own custom data
+			if (SaveCustomConfig != null)
+				SaveCustomConfig(xmlOut);
+		}
 
-        public virtual void OnLoadCustomConfig(XmlTextReader xmlIn)
-        {
-            // Notify interested parties that they can add their own custom data
-            if (LoadCustomConfig != null)
-                LoadCustomConfig(xmlIn);
-        }
-        
-        protected virtual void OnContentsClearing()
-        {
-            _container.SuspendLayout();
+		public virtual void OnLoadCustomConfig(XmlTextReader xmlIn)
+		{
+			// Notify interested parties that they can add their own custom data
+			if (LoadCustomConfig != null)
+				LoadCustomConfig(xmlIn);
+		}
+
+		protected virtual void OnContentsClearing()
+		{
+			_container.SuspendLayout();
 
 			// Hide them all will gracefully remove them from view
 			HideAllContents();
 
-            _container.ResumeLayout();
-        }
+			_container.ResumeLayout();
+		}
 
-        protected virtual void OnContentRemoved(int index, object value)
-        {
-            _container.SuspendLayout();
+		protected virtual void OnContentRemoved(int index, object value)
+		{
+			_container.SuspendLayout();
 
-            Content c = value as Content;
+			Content c = value as Content;
 
 			// Hide the content will gracefully remove it from view
-            if (c != null)
+			if (c != null)
 				HideContent(c, true, false);
 
-            _container.ResumeLayout();
-        }
+			_container.ResumeLayout();
+		}
 
-        protected virtual void OnContentClose(object sender, EventArgs e)
-        {
-            WindowDetailCaption wdc = sender as WindowDetailCaption;
-            
-            // Was Close generated by a Caption detail?
-            if (wdc != null)
-            {
-                WindowContentTabbed wct = wdc.ParentWindow as WindowContentTabbed;
-                
-                // Is the Caption part of a WindowContentTabbed object?
-                if (wct != null)
-                {
-                    // Find the Content object that is the target
-                    Content c = wct.CurrentContent;
-                    
-                    if (c != null)
-                    {
-                        // Was action cancelled?                        
-                        if (!OnContentHiding(c))
-                            wct.HideCurrentContent();
-                    }
-                }
-            }
-        }
-        
-        protected virtual void OnInvertAutoHide(object sender, EventArgs e)
-        {
-            WindowDetail detail = sender as WindowDetail;
+		protected virtual void OnContentClose(object sender, EventArgs e)
+		{
+			WindowDetailCaption wdc = sender as WindowDetailCaption;
 
-            // Get access to Content that initiated AutoHide for its Window
-            WindowContent wc = detail.ParentWindow as WindowContent;
-                        
+			// Was Close generated by a Caption detail?
+			if (wdc != null)
+			{
+				WindowContentTabbed wct = wdc.ParentWindow as WindowContentTabbed;
+
+				// Is the Caption part of a WindowContentTabbed object?
+				if (wct != null)
+				{
+					// Find the Content object that is the target
+					Content c = wct.CurrentContent;
+
+					if (c != null)
+					{
+						// Was action cancelled?                        
+						if (!OnContentHiding(c))
+							wct.HideCurrentContent();
+					}
+				}
+			}
+		}
+
+		protected virtual void OnInvertAutoHide(object sender, EventArgs e)
+		{
+			WindowDetail detail = sender as WindowDetail;
+
+			// Get access to Content that initiated AutoHide for its Window
+			WindowContent wc = detail.ParentWindow as WindowContent;
+
 			// Make the window content auto hide
 			InvertAutoHideWindowContent(wc);
-        }
-        
+		}
+
 		protected virtual void InvertAutoHideWindowContent(WindowContent wc)
 		{
 			// Do not generate hiding/hidden/shown events
@@ -1466,9 +1470,9 @@ namespace Crownwood.Magic.Docking
 
 			// Create a collection of the Content in the same window
 			ContentCollection cc = new ContentCollection();
-	            
+
 			// Add all Content into collection
-			foreach(Content c in wc.Contents)
+			foreach (Content c in wc.Contents)
 				cc.Add(c);
 
 			// Add to the correct AutoHidePanel
@@ -1479,108 +1483,108 @@ namespace Crownwood.Magic.Docking
 		}
 
 		internal AutoHidePanel AutoHidePanelForState(State state)
-        {
-            AutoHidePanel ahp = null;
+		{
+			AutoHidePanel ahp = null;
 
-            // Grab the correct hosting panel
-            switch(state)
-            {
-                case State.DockLeft:
-                    ahp = _ahpLeft;
-                    break;
-                case State.DockRight:
-                    ahp = _ahpRight;
-                    break;
-                case State.DockTop:
-                    ahp = _ahpTop;
-                    break;
-                case State.DockBottom:
-                    ahp = _ahpBottom;
-                    break;
-            }
+			// Grab the correct hosting panel
+			switch (state)
+			{
+				case State.DockLeft:
+					ahp = _ahpLeft;
+					break;
+				case State.DockRight:
+					ahp = _ahpRight;
+					break;
+				case State.DockTop:
+					ahp = _ahpTop;
+					break;
+				case State.DockBottom:
+					ahp = _ahpBottom;
+					break;
+			}
 
-            return ahp;
-        }
-        
-        internal void AutoHideContents(ContentCollection cc, State state)
-        {
-            // Hide all the Content instances. This will cause the restore objects to be 
-            // created and so remember the docking positions for when they are restored
-            foreach(Content c in cc)
-                HideContent(c);
+			return ahp;
+		}
 
-            AutoHidePanel ahp = AutoHidePanelForState(state);
+		internal void AutoHideContents(ContentCollection cc, State state)
+		{
+			// Hide all the Content instances. This will cause the restore objects to be 
+			// created and so remember the docking positions for when they are restored
+			foreach (Content c in cc)
+				HideContent(c);
 
-            // Pass management of Contents into the panel            
-            ahp.AddContentsAsGroup(cc);
-        }
+			AutoHidePanel ahp = AutoHidePanelForState(state);
 
-        internal AutoHidePanel AutoHidePanelForContent(Content c)
-        {
-            if (_ahpLeft.ContainsContent(c))
-                return _ahpLeft;     
+			// Pass management of Contents into the panel            
+			ahp.AddContentsAsGroup(cc);
+		}
 
-            if (_ahpRight.ContainsContent(c))
-                return _ahpRight;     
+		internal AutoHidePanel AutoHidePanelForContent(Content c)
+		{
+			if (_ahpLeft.ContainsContent(c))
+				return _ahpLeft;
 
-            if (_ahpTop.ContainsContent(c))
-                return _ahpTop;     
+			if (_ahpRight.ContainsContent(c))
+				return _ahpRight;
 
-            if (_ahpBottom.ContainsContent(c))
-                return _ahpBottom;     
-                
-            return null;
-        }
+			if (_ahpTop.ContainsContent(c))
+				return _ahpTop;
 
-        internal int SurpressVisibleEvents
-        {
-            get { return _surpressVisibleEvents; }
-            set { _surpressVisibleEvents = value; }
-        }
+			if (_ahpBottom.ContainsContent(c))
+				return _ahpBottom;
 
-        protected void AddAutoHidePanels()
-        {
-            // Create an instance for each container edge (they default to being hidden)
-            _ahpTop = new AutoHidePanel(this, DockStyle.Top);
-            _ahpLeft = new AutoHidePanel(this, DockStyle.Left);
-            _ahpBottom = new AutoHidePanel(this, DockStyle.Bottom);
-            _ahpRight = new AutoHidePanel(this, DockStyle.Right);
-        
+			return null;
+		}
+
+		internal int SurpressVisibleEvents
+		{
+			get { return _surpressVisibleEvents; }
+			set { _surpressVisibleEvents = value; }
+		}
+
+		protected void AddAutoHidePanels()
+		{
+			// Create an instance for each container edge (they default to being hidden)
+			_ahpTop = new AutoHidePanel(this, DockStyle.Top);
+			_ahpLeft = new AutoHidePanel(this, DockStyle.Left);
+			_ahpBottom = new AutoHidePanel(this, DockStyle.Bottom);
+			_ahpRight = new AutoHidePanel(this, DockStyle.Right);
+
 			_ahpTop.Name = "Top";
 			_ahpLeft.Name = "Left";
 			_ahpBottom.Name = "Bottom";
 			_ahpRight.Name = "Right";
-		    
-            // Add to the end of the container we manage
-            _container.Controls.AddRange(new Control[]{_ahpBottom, _ahpTop, _ahpRight, _ahpLeft});
+
+			// Add to the end of the container we manage
+			_container.Controls.AddRange(new Control[] {_ahpBottom, _ahpTop, _ahpRight, _ahpLeft});
 		}
-		            
-        protected void RepositionControlBefore(Control target, Control source)
-        {
-            // Find indexs of the two controls
-            int targetPos = _container.Controls.IndexOf(target);
-            int sourcePos = _container.Controls.IndexOf(source);
 
-            // If the source is being moved further up the list then we must decrement the target index 
-            // as the move is carried out in two phases. First the source control is removed from the 
-            // collection and then added at the given requested index. So when insertion point needs 
-            // ahjusting to reflec the fact the control has been removed before being inserted.
-            if (targetPos >= sourcePos)
-                targetPos--;
+		protected void RepositionControlBefore(Control target, Control source)
+		{
+			// Find indexs of the two controls
+			int targetPos = _container.Controls.IndexOf(target);
+			int sourcePos = _container.Controls.IndexOf(source);
 
-            _container.Controls.SetChildIndex(source, targetPos);			
-        }
+			// If the source is being moved further up the list then we must decrement the target index 
+			// as the move is carried out in two phases. First the source control is removed from the 
+			// collection and then added at the given requested index. So when insertion point needs 
+			// ahjusting to reflec the fact the control has been removed before being inserted.
+			if (targetPos >= sourcePos)
+				targetPos--;
 
-        protected virtual void OnRestore(object sender, EventArgs e)
-        {
-            WindowDetailCaption wdc = sender as WindowDetailCaption;
+			_container.Controls.SetChildIndex(source, targetPos);
+		}
+
+		protected virtual void OnRestore(object sender, EventArgs e)
+		{
+			WindowDetailCaption wdc = sender as WindowDetailCaption;
 
 			// Was Restore generated by a Caption detail?
 			if (wdc != null)
 			{
 				RemoveAnyFillStyle();
 
-                WindowContent wc = wdc.ParentWindow as WindowContent;
+				WindowContent wc = wdc.ParentWindow as WindowContent;
 
 				// Is the Caption part of a WindowContent object?
 				if (wc != null)
@@ -1589,7 +1593,7 @@ namespace Crownwood.Magic.Docking
 
 					// Make every Content of the WindowContent record its
 					// current position and remember it for when the future
-					foreach(Content c in wc.Contents)
+					foreach (Content c in wc.Contents)
 					{
 						c.RecordRestore();
 
@@ -1616,7 +1620,7 @@ namespace Crownwood.Magic.Docking
 							if (newWC != null)
 							{
 								// Transfer each one to its new location
-								for(int index=1; index<copyCount; index++)
+								for (int index = 1; index < copyCount; index++)
 								{
 									HideContent(copy[index], false, true);
 									newWC.Contents.Add(copy[index]);
@@ -1635,7 +1639,7 @@ namespace Crownwood.Magic.Docking
 			if (_insideFill)
 			{
 				// Find the innermost Zone which must be the first one in the collection
-				foreach(Control c in _container.Controls)
+				foreach (Control c in _container.Controls)
 				{
 					Zone z = c as Zone;
 
@@ -1655,7 +1659,7 @@ namespace Crownwood.Magic.Docking
 		protected void RemoveAnyFillStyle()
 		{
 			// Check each Zone in the container
-			foreach(Control c in _container.Controls)
+			foreach (Control c in _container.Controls)
 			{
 				Zone z = c as Zone;
 
@@ -1669,7 +1673,7 @@ namespace Crownwood.Magic.Docking
 
 						// Find relevant values dependant on required state
 						ValuesFromState(z.State, out ds, out direction);
-			
+
 						// Reassign its correct Dock style
 						z.Dock = ds;
 					}
@@ -1677,95 +1681,95 @@ namespace Crownwood.Magic.Docking
 			}
 		}
 
-        protected void OnFormLoaded(object sender, EventArgs e)
-        {
-            // A Form can cause the child controls to be reordered after the initialisation
-            // but before the Form.Load event. To handle this we reorder the auto hide panels
-            // on the Form.Load event to ensure they are correctly positioned.
-            ReorderAutoHidePanels();
-        }
-
-        protected void ReorderAutoHidePanels()
-        {
-            if (_outerControl == null)
-            {
-                int count = _container.Controls.Count;
-
-                // Position the AutoHidePanel's at end of controls
-                _container.Controls.SetChildIndex(_ahpLeft, count - 1);
-                _container.Controls.SetChildIndex(_ahpRight, count - 1);
-                _container.Controls.SetChildIndex(_ahpTop, count - 1);
-                _container.Controls.SetChildIndex(_ahpBottom, count - 1);
-            }
-            else
-            {
-                // Position the AutoHidePanel's as last items before OuterControl
-                RepositionControlBefore(_outerControl, _ahpBottom);
-                RepositionControlBefore(_outerControl, _ahpTop);
-                RepositionControlBefore(_outerControl, _ahpRight);
-                RepositionControlBefore(_outerControl, _ahpLeft);
-            }
-        }
-        
-        protected void OnContainerResized(object sender, EventArgs e)
+		protected void OnFormLoaded(object sender, EventArgs e)
 		{
-		    if (_autoResize)
-		    {
-			    Rectangle inner = InnerResizeRectangle(null);			
+			// A Form can cause the child controls to be reordered after the initialisation
+			// but before the Form.Load event. To handle this we reorder the auto hide panels
+			// on the Form.Load event to ensure they are correctly positioned.
+			ReorderAutoHidePanels();
+		}
 
-			    // Shrink by the minimum size
-			    inner.Width -= _innerMinimum.Width;
-			    inner.Height -= _innerMinimum.Height;
-    			
-			    Form f = _container as Form;
+		protected void ReorderAutoHidePanels()
+		{
+			if (_outerControl == null)
+			{
+				int count = _container.Controls.Count;
 
-			    // If the container is a Form then ignore resizing because of becoming Minimized
-			    if ((f == null) || ((f != null) && (f.WindowState != FormWindowState.Minimized)))
-			    {
-				    if ((inner.Width < 0) || (inner.Height < 0))
-				    {
-					    _container.SuspendLayout();
+				// Position the AutoHidePanel's at end of controls
+				_container.Controls.SetChildIndex(_ahpLeft, count - 1);
+				_container.Controls.SetChildIndex(_ahpRight, count - 1);
+				_container.Controls.SetChildIndex(_ahpTop, count - 1);
+				_container.Controls.SetChildIndex(_ahpBottom, count - 1);
+			}
+			else
+			{
+				// Position the AutoHidePanel's as last items before OuterControl
+				RepositionControlBefore(_outerControl, _ahpBottom);
+				RepositionControlBefore(_outerControl, _ahpTop);
+				RepositionControlBefore(_outerControl, _ahpRight);
+				RepositionControlBefore(_outerControl, _ahpLeft);
+			}
+		}
 
-					    ZoneCollection zcLeft = new ZoneCollection();
-					    ZoneCollection zcRight = new ZoneCollection();
-					    ZoneCollection zcTop = new ZoneCollection();
-					    ZoneCollection zcBottom = new ZoneCollection();
+		protected void OnContainerResized(object sender, EventArgs e)
+		{
+			if (_autoResize)
+			{
+				Rectangle inner = InnerResizeRectangle(null);
 
-					    // Construct a list of the docking windows on the left and right edges
-					    foreach(Control c in _container.Controls)
-					    {
-						    Zone z = c as Zone;
+				// Shrink by the minimum size
+				inner.Width -= _innerMinimum.Width;
+				inner.Height -= _innerMinimum.Height;
 
-						    if (z != null)
-						    {
-							    switch(z.State)
-							    {
-							        case State.DockLeft:
-								        zcLeft.Add(z);
-								        break;
-							        case State.DockRight:
-								        zcRight.Add(z);
-								        break;
-							        case State.DockTop:
-								        zcTop.Add(z);
-								        break;
-							        case State.DockBottom:
-								        zcBottom.Add(z);
-								        break;
-							    }
-						    }
-					    }
+				Form f = _container as Form;
 
-					    if (inner.Width < 0)
-						    ResizeDirection(-inner.Width, zcLeft, zcRight, Direction.Horizontal);
+				// If the container is a Form then ignore resizing because of becoming Minimized
+				if ((f == null) || ((f != null) && (f.WindowState != FormWindowState.Minimized)))
+				{
+					if ((inner.Width < 0) || (inner.Height < 0))
+					{
+						_container.SuspendLayout();
 
-					    if (inner.Height < 0)
-						    ResizeDirection(-inner.Height, zcTop, zcBottom, Direction.Vertical);
+						ZoneCollection zcLeft = new ZoneCollection();
+						ZoneCollection zcRight = new ZoneCollection();
+						ZoneCollection zcTop = new ZoneCollection();
+						ZoneCollection zcBottom = new ZoneCollection();
 
-					    _container.ResumeLayout();
-				    }
-			    }
-	        }
+						// Construct a list of the docking windows on the left and right edges
+						foreach (Control c in _container.Controls)
+						{
+							Zone z = c as Zone;
+
+							if (z != null)
+							{
+								switch (z.State)
+								{
+									case State.DockLeft:
+										zcLeft.Add(z);
+										break;
+									case State.DockRight:
+										zcRight.Add(z);
+										break;
+									case State.DockTop:
+										zcTop.Add(z);
+										break;
+									case State.DockBottom:
+										zcBottom.Add(z);
+										break;
+								}
+							}
+						}
+
+						if (inner.Width < 0)
+							ResizeDirection(-inner.Width, zcLeft, zcRight, Direction.Horizontal);
+
+						if (inner.Height < 0)
+							ResizeDirection(-inner.Height, zcTop, zcBottom, Direction.Vertical);
+
+						_container.ResumeLayout();
+					}
+				}
+			}
 		}
 
 		protected void ResizeDirection(int remainder, ZoneCollection zcAlpha, ZoneCollection zcBeta, Direction dir)
@@ -1775,7 +1779,7 @@ namespace Crownwood.Magic.Docking
 			int half1, half2;
 
 			// Keep going till all space found or nowhere to get it from
-			while((remainder > 0) && ((zcAlpha.Count > 0) || (zcBeta.Count > 0)))
+			while ((remainder > 0) && ((zcAlpha.Count > 0) || (zcBeta.Count > 0)))
 			{
 				if (dir == Direction.Horizontal)
 				{
@@ -1791,12 +1795,12 @@ namespace Crownwood.Magic.Docking
 				// Alternate between left and right getting the remainder
 				if (alter)
 				{
-					half1 = (remainder / 2) + 1;
+					half1 = (remainder/2) + 1;
 					half2 = remainder - half1;
 				}
 				else
 				{
-					half2 = (remainder / 2) + 1;
+					half2 = (remainder/2) + 1;
 					half1 = remainder - half2;
 				}
 
@@ -1866,67 +1870,67 @@ namespace Crownwood.Magic.Docking
 			}
 		}
 
-        protected void OnPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
-        {
-            if (_defaultBackColor)
-            {
-                _backColor = SystemColors.Control;
-                PropogateNameValue(PropogateName.BackColor, (object)SystemColors.Control);
-            }
+		protected void OnPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+		{
+			if (_defaultBackColor)
+			{
+				_backColor = SystemColors.Control;
+				PropogateNameValue(PropogateName.BackColor, (object) SystemColors.Control);
+			}
 
-            if (_defaultActiveColor)
-            {
-                _activeColor = SystemColors.ActiveCaption;
-                PropogateNameValue(PropogateName.ActiveColor, (object)SystemColors.ActiveCaption);
-            }
-            
-            if (_defaultActiveTextColor)
-            {
-                _activeTextColor = SystemColors.ActiveCaptionText;
-                PropogateNameValue(PropogateName.ActiveTextColor, (object)SystemColors.ActiveCaptionText);
-            }
+			if (_defaultActiveColor)
+			{
+				_activeColor = SystemColors.ActiveCaption;
+				PropogateNameValue(PropogateName.ActiveColor, (object) SystemColors.ActiveCaption);
+			}
 
-            if (_defaultInactiveTextColor)
-            {
-                _inactiveTextColor = SystemColors.ControlText;
-                PropogateNameValue(PropogateName.InactiveTextColor, (object)SystemColors.ControlText);
-            }
+			if (_defaultActiveTextColor)
+			{
+				_activeTextColor = SystemColors.ActiveCaptionText;
+				PropogateNameValue(PropogateName.ActiveTextColor, (object) SystemColors.ActiveCaptionText);
+			}
 
-            if (_defaultResizeBarColor)
-            {
-                _resizeBarColor = SystemColors.Control;
-                PropogateNameValue(PropogateName.ResizeBarColor, (object)SystemColors.Control);
-            }
+			if (_defaultInactiveTextColor)
+			{
+				_inactiveTextColor = SystemColors.ControlText;
+				PropogateNameValue(PropogateName.InactiveTextColor, (object) SystemColors.ControlText);
+			}
 
-            if (_defaultCaptionFont)
-            {
-                _captionFont = SystemInformation.MenuFont;
-                PropogateNameValue(PropogateName.CaptionFont, (object)SystemInformation.MenuFont);
-            }
+			if (_defaultResizeBarColor)
+			{
+				_resizeBarColor = SystemColors.Control;
+				PropogateNameValue(PropogateName.ResizeBarColor, (object) SystemColors.Control);
+			}
 
-            if (_defaultTabControlFont)
-            {
-                _tabControlFont = SystemInformation.MenuFont;
-                PropogateNameValue(PropogateName.TabControlFont, (object)SystemInformation.MenuFont);
-            }
-        }
+			if (_defaultCaptionFont)
+			{
+				_captionFont = SystemInformation.MenuFont;
+				PropogateNameValue(PropogateName.CaptionFont, (object) SystemInformation.MenuFont);
+			}
+
+			if (_defaultTabControlFont)
+			{
+				_tabControlFont = SystemInformation.MenuFont;
+				PropogateNameValue(PropogateName.TabControlFont, (object) SystemInformation.MenuFont);
+			}
+		}
 
 		public virtual void OnShowContextMenu(Point screenPos)
 		{
-            PopupMenu context = new PopupMenu();
+			PopupMenu context = new PopupMenu();
 
 			// The order of Content displayed in the context menu is not the same as
 			// the order of Content in the _contents collection. The latter has its
 			// ordering changed to enable Restore functionality to work.
 			ContentCollection temp = new ContentCollection();
 
-			foreach(Content c in _contents)
+			foreach (Content c in _contents)
 			{
 				int count = temp.Count;
 				int index = 0;
 
 				// Find best place to add into the temp collection
-				for(; index<count; index++)
+				for (; index < count; index++)
 				{
 					if (c.Order < temp[index].Order)
 						break;
@@ -1936,7 +1940,7 @@ namespace Crownwood.Magic.Docking
 			}
 
 			// Create a context menu entry per Content
-			foreach(Content t in temp)
+			foreach (Content t in temp)
 			{
 				MenuCommand mc = new MenuCommand(t.Title, new EventHandler(OnToggleContentVisibility));
 				mc.Checked = t.Visible;
@@ -1953,24 +1957,24 @@ namespace Crownwood.Magic.Docking
 			context.MenuCommands.Add(new MenuCommand("Hide All", new EventHandler(OnHideAll)));
 
 			// Ensure menu has same style as the docking windows
-            context.Style = _visualStyle;
+			context.Style = _visualStyle;
 
-            if (OnContextMenu(context))
-            {
-                // Show it!
-                context.TrackPopup(screenPos);
-            }
+			if (OnContextMenu(context))
+			{
+				// Show it!
+				context.TrackPopup(screenPos);
+			}
 		}
 
-        protected bool OnContextMenu(PopupMenu context)
-        {
-            CancelEventArgs cea = new CancelEventArgs();
-        
-            if (ContextMenu != null)
-                ContextMenu(context, cea);
-                
-            return !cea.Cancel;
-        }
+		protected bool OnContextMenu(PopupMenu context)
+		{
+			CancelEventArgs cea = new CancelEventArgs();
+
+			if (ContextMenu != null)
+				ContextMenu(context, cea);
+
+			return !cea.Cancel;
+		}
 
 		protected void OnToggleContentVisibility(object sender, EventArgs e)
 		{
@@ -1999,5 +2003,5 @@ namespace Crownwood.Magic.Docking
 		{
 			HideAllContents();
 		}
-    }
+	}
 }

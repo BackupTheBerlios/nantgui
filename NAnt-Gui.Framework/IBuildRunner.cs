@@ -36,10 +36,10 @@ namespace NAntGui.Framework
 		public abstract void SetProperties(PropertyCollection properties);
 		public abstract void SetTargets(TargetCollection targets);
 		public abstract void ParseBuildScript();
-		
+
 		public void Run()
 		{
-			_thread = new Thread(new ThreadStart(this.DoRun));
+			_thread = new Thread(new ThreadStart(DoRun));
 			_thread.Start();
 		}
 

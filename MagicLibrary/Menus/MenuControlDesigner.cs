@@ -14,22 +14,22 @@ using System.Windows.Forms.Design;
 
 namespace Crownwood.Magic.Menus
 {
-    public class MenuControlDesigner :  ParentControlDesigner
-    {
-        public override ICollection AssociatedComponents
-        {
-            get 
-            {
-                if (base.Control is MenuControl)
-                    return ((MenuControl)base.Control).MenuCommands;
-                else
-                    return base.AssociatedComponents;
-            }
-        }
+	public class MenuControlDesigner : ParentControlDesigner
+	{
+		public override ICollection AssociatedComponents
+		{
+			get
+			{
+				if (base.Control is MenuControl)
+					return ((MenuControl) base.Control).MenuCommands;
+				else
+					return base.AssociatedComponents;
+			}
+		}
 
-        protected override bool DrawGrid
-        {
-            get { return false; }
-        }
-    }
+		protected override bool DrawGrid
+		{
+			get { return false; }
+		}
+	}
 }

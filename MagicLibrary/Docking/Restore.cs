@@ -18,8 +18,8 @@ using Crownwood.Magic.Common;
 
 namespace Crownwood.Magic.Docking
 {
-    public class Restore
-    {
+	public class Restore
+	{
 		// Instance fields
 		protected Restore _child;
 
@@ -35,16 +35,27 @@ namespace Crownwood.Magic.Docking
 			_child = child;
 		}
 
-        public Restore Child
-        {
-            get { return _child; }
-            set { _child = value; }
-        }
+		public Restore Child
+		{
+			get { return _child; }
+			set { _child = value; }
+		}
 
-        public virtual void PerformRestore(DockingManager dm) {}
-		public virtual void PerformRestore(Window w) {}
-        public virtual void PerformRestore(Zone z) {}
-        public virtual void PerformRestore() {}
+		public virtual void PerformRestore(DockingManager dm)
+		{
+		}
+
+		public virtual void PerformRestore(Window w)
+		{
+		}
+
+		public virtual void PerformRestore(Zone z)
+		{
+		}
+
+		public virtual void PerformRestore()
+		{
+		}
 
 		public virtual void Reconnect(DockingManager dm)
 		{
@@ -83,21 +94,26 @@ namespace Crownwood.Magic.Docking
 				throw new ArgumentException("Node 'Child' expected but not found");
 
 			string type = xmlIn.GetAttribute(0);
-			
+
 			if (type != "null")
 				_child = CreateFromXml(xmlIn, false, formatVersion);
 
 			// Move past the end element
 			if (!xmlIn.Read())
 				throw new ArgumentException("Could not read in next expected node");
-		
+
 			// Check it has the expected name
 			if (xmlIn.NodeType != XmlNodeType.EndElement)
 				throw new ArgumentException("EndElement expected but not found");
 		}
 
-		public virtual void SaveInternalToXml(XmlTextWriter xmlOut) {}
-		public virtual void LoadInternalFromXml(XmlTextReader xmlIn, int formatVersion) {}
+		public virtual void SaveInternalToXml(XmlTextWriter xmlOut)
+		{
+		}
+
+		public virtual void LoadInternalFromXml(XmlTextReader xmlIn, int formatVersion)
+		{
+		}
 
 		public static Restore CreateFromXml(XmlTextReader xmlIn, bool readIn, int formatVersion)
 		{
@@ -107,7 +123,7 @@ namespace Crownwood.Magic.Docking
 				if (!xmlIn.Read())
 					throw new ArgumentException("Could not read in next expected node");
 			}
-			
+
 			// Grab type name of the object to create
 			string attrType = xmlIn.GetAttribute(0);
 
@@ -167,7 +183,7 @@ namespace Crownwood.Magic.Docking
 			base.SaveInternalToXml(xmlOut);
 			xmlOut.WriteStartElement("Content");
 			xmlOut.WriteAttributeString("Name", _content.Title);
-			xmlOut.WriteEndElement();				
+			xmlOut.WriteEndElement();
 		}
 
 		public override void LoadInternalFromXml(XmlTextReader xmlIn, int formatVersion)
@@ -186,7 +202,7 @@ namespace Crownwood.Magic.Docking
 			_title = xmlIn.GetAttribute(0);
 		}
 	}
-	
+
 	public class RestoreContentState : RestoreContent
 	{
 		// Instance fields
@@ -216,7 +232,7 @@ namespace Crownwood.Magic.Docking
 			// Use the existing DockingManager method that will create a Window appropriate for 
 			// this Content and then add a new Zone for hosting the Window. It will always place
 			// the Zone at the inner most level
-			dm.AddContentWithState(_content, _state);				
+			dm.AddContentWithState(_content, _state);
 		}
 
 		public override void SaveInternalToXml(XmlTextWriter xmlOut)
@@ -224,7 +240,7 @@ namespace Crownwood.Magic.Docking
 			base.SaveInternalToXml(xmlOut);
 			xmlOut.WriteStartElement("State");
 			xmlOut.WriteAttributeString("Value", _state.ToString());
-			xmlOut.WriteEndElement();				
+			xmlOut.WriteEndElement();
 		}
 
 		public override void LoadInternalFromXml(XmlTextReader xmlIn, int formatVersion)
@@ -243,102 +259,102 @@ namespace Crownwood.Magic.Docking
 			string attrState = xmlIn.GetAttribute(0);
 
 			// Convert from string to enumeration value
-			_state = (State)Enum.Parse(typeof(State), attrState);
+			_state = (State) Enum.Parse(typeof (State), attrState);
 		}
 	}
-	
+
 	public class RestoreAutoHideState : RestoreContentState
 	{
-	    // Instance fields
-	    
-	    public RestoreAutoHideState()
-	        : base()
-	    {
-	    }
-        
-        public RestoreAutoHideState(State state, Content content)
-            : base(state, content)
-        {
-        }
+		// Instance fields
 
-        public RestoreAutoHideState(Restore child, State state, Content content)
-            : base(child, state, content)
-        {
-        }
-    
-        public override void PerformRestore(DockingManager dm)
-        {
-            // Create collection of Contents to auto hide
-            ContentCollection cc = new ContentCollection();
-            
-            // In this case, there is only one
-            cc.Add(_content);
-        
-            // Add to appropriate AutoHidePanel based on _state
-            dm.AutoHideContents(cc, _state);
-        }
-    }
+		public RestoreAutoHideState()
+			: base()
+		{
+		}
 
-    public class RestoreAutoHideAffinity : RestoreAutoHideState
-    {
-        // Instance fields
-        protected StringCollection _next;
-        protected StringCollection _previous;
-        protected StringCollection _nextAll;
-        protected StringCollection _previousAll;
+		public RestoreAutoHideState(State state, Content content)
+			: base(state, content)
+		{
+		}
 
-        public RestoreAutoHideAffinity()
-            : base()
-        {
-            // Must always point to valid reference
-            _next = new StringCollection();
-            _previous = new StringCollection();
-            _nextAll = new StringCollection();
-            _previousAll = new StringCollection();
-        }
+		public RestoreAutoHideState(Restore child, State state, Content content)
+			: base(child, state, content)
+		{
+		}
 
-        public RestoreAutoHideAffinity(Restore child, 
-                                       State state,
-                                       Content content, 
-                                       StringCollection next,
-                                       StringCollection previous,
-                                       StringCollection nextAll,
-                                       StringCollection previousAll)
-        : base(child, state, content)
-        {
-            // Remember parameters
-            _next = next;				
-            _previous = previous;	
-            _nextAll = nextAll;				
-            _previousAll = previousAll;	
-        }
+		public override void PerformRestore(DockingManager dm)
+		{
+			// Create collection of Contents to auto hide
+			ContentCollection cc = new ContentCollection();
 
-        public override void PerformRestore(DockingManager dm)
-        {   
-            // Get the correct target panel from state
-            AutoHidePanel ahp = dm.AutoHidePanelForState(_state);
-            
-            ahp.AddContent(_content, _next, _previous, _nextAll, _previousAll);
-        }
+			// In this case, there is only one
+			cc.Add(_content);
 
-        public override void SaveInternalToXml(XmlTextWriter xmlOut)
-        {
-            base.SaveInternalToXml(xmlOut);
-            _next.SaveToXml("Next", xmlOut);
-            _previous.SaveToXml("Previous", xmlOut);
-            _nextAll.SaveToXml("NextAll", xmlOut);
-            _previousAll.SaveToXml("PreviousAll", xmlOut);
-        }
+			// Add to appropriate AutoHidePanel based on _state
+			dm.AutoHideContents(cc, _state);
+		}
+	}
 
-        public override void LoadInternalFromXml(XmlTextReader xmlIn, int formatVersion)
-        {
-            base.LoadInternalFromXml(xmlIn, formatVersion);
-            _next.LoadFromXml("Next", xmlIn);
-            _previous.LoadFromXml("Previous", xmlIn);
-            _nextAll.LoadFromXml("NextAll", xmlIn);
-            _previousAll.LoadFromXml("PreviousAll", xmlIn);
-        }
-    }
+	public class RestoreAutoHideAffinity : RestoreAutoHideState
+	{
+		// Instance fields
+		protected StringCollection _next;
+		protected StringCollection _previous;
+		protected StringCollection _nextAll;
+		protected StringCollection _previousAll;
+
+		public RestoreAutoHideAffinity()
+			: base()
+		{
+			// Must always point to valid reference
+			_next = new StringCollection();
+			_previous = new StringCollection();
+			_nextAll = new StringCollection();
+			_previousAll = new StringCollection();
+		}
+
+		public RestoreAutoHideAffinity(Restore child,
+		                               State state,
+		                               Content content,
+		                               StringCollection next,
+		                               StringCollection previous,
+		                               StringCollection nextAll,
+		                               StringCollection previousAll)
+			: base(child, state, content)
+		{
+			// Remember parameters
+			_next = next;
+			_previous = previous;
+			_nextAll = nextAll;
+			_previousAll = previousAll;
+		}
+
+		public override void PerformRestore(DockingManager dm)
+		{
+			// Get the correct target panel from state
+			AutoHidePanel ahp = dm.AutoHidePanelForState(_state);
+
+			ahp.AddContent(_content, _next, _previous, _nextAll, _previousAll);
+		}
+
+		public override void SaveInternalToXml(XmlTextWriter xmlOut)
+		{
+			base.SaveInternalToXml(xmlOut);
+			_next.SaveToXml("Next", xmlOut);
+			_previous.SaveToXml("Previous", xmlOut);
+			_nextAll.SaveToXml("NextAll", xmlOut);
+			_previousAll.SaveToXml("PreviousAll", xmlOut);
+		}
+
+		public override void LoadInternalFromXml(XmlTextReader xmlIn, int formatVersion)
+		{
+			base.LoadInternalFromXml(xmlIn, formatVersion);
+			_next.LoadFromXml("Next", xmlIn);
+			_previous.LoadFromXml("Previous", xmlIn);
+			_nextAll.LoadFromXml("NextAll", xmlIn);
+			_previousAll.LoadFromXml("PreviousAll", xmlIn);
+		}
+	}
 
 	public class RestoreContentDockingAffinity : RestoreContentState
 	{
@@ -362,14 +378,14 @@ namespace Crownwood.Magic.Docking
 			_previousAll = new StringCollection();
 		}
 
-		public RestoreContentDockingAffinity(Restore child, 
-										     State state, 
-											 Content content, 
-											 StringCollection best,
-											 StringCollection next,
-											 StringCollection previous,
-											 StringCollection nextAll,
-											 StringCollection previousAll)
+		public RestoreContentDockingAffinity(Restore child,
+		                                     State state,
+		                                     Content content,
+		                                     StringCollection best,
+		                                     StringCollection next,
+		                                     StringCollection previous,
+		                                     StringCollection nextAll,
+		                                     StringCollection previousAll)
 			: base(child, state, content)
 		{
 			// Remember parameters
@@ -401,14 +417,14 @@ namespace Crownwood.Magic.Docking
 			int afterAllIndex = max;
 
 			// Create a collection of the Zones in the appropriate direction
-			for(int index=0; index<count; index++)
+			for (int index = 0; index < count; index++)
 			{
 				Zone z = dm.Container.Controls[index] as Zone;
 
 				if (z != null)
 				{
 					StringCollection sc = ZoneHelper.ContentNames(z);
-					
+
 					if (_state == z.State)
 					{
 						if (sc.Contains(_best))
@@ -430,7 +446,7 @@ namespace Crownwood.Magic.Docking
 							if (index > beforeIndex)
 								beforeIndex = index;
 						}
-						
+
 						// If the WindowContent contains a Content next to the target
 						if (sc.Contains(_next))
 						{
@@ -446,7 +462,7 @@ namespace Crownwood.Magic.Docking
 							if (index > beforeAllIndex)
 								beforeAllIndex = index;
 						}
-						
+
 						// If the WindowContent contains a Content next to the target
 						if (sc.Contains(_nextAll))
 						{
@@ -491,7 +507,7 @@ namespace Crownwood.Magic.Docking
 				// Check against limits
 				if (afterIndex <= min)
 					afterIndex = min + 1;
-				
+
 				if (afterIndex > min)
 					dm.Container.Controls.SetChildIndex(newZ, afterIndex);
 				else
@@ -510,7 +526,7 @@ namespace Crownwood.Magic.Docking
 			xmlOut.WriteStartElement("Position");
 			xmlOut.WriteAttributeString("Size", ConversionHelper.SizeToString(_size));
 			xmlOut.WriteAttributeString("Location", ConversionHelper.PointToString(_location));
-			xmlOut.WriteEndElement();				
+			xmlOut.WriteEndElement();
 			_best.SaveToXml("Best", xmlOut);
 			_next.SaveToXml("Next", xmlOut);
 			_previous.SaveToXml("Previous", xmlOut);
@@ -562,11 +578,11 @@ namespace Crownwood.Magic.Docking
 			_associates = new StringCollection();
 		}
 
-		public RestoreContentFloatingAffinity(Restore child, 
-										      State state, 
-											  Content content, 
-											  StringCollection best,
-											  StringCollection associates)
+		public RestoreContentFloatingAffinity(Restore child,
+		                                      State state,
+		                                      Content content,
+		                                      StringCollection best,
+		                                      StringCollection associates)
 			: base(child, state, content)
 		{
 			// Remember parameters
@@ -592,7 +608,7 @@ namespace Crownwood.Magic.Docking
 			FloatingForm target = null;
 
 			// Find the match to one of our best friends
-			foreach(Form f in owned)
+			foreach (Form f in owned)
 			{
 				FloatingForm ff = f as FloatingForm;
 
@@ -610,7 +626,7 @@ namespace Crownwood.Magic.Docking
 			if (target == null)
 			{
 				// Find the match to one of our best friends
-				foreach(Form f in owned)
+				foreach (Form f in owned)
 				{
 					FloatingForm ff = f as FloatingForm;
 
@@ -648,7 +664,7 @@ namespace Crownwood.Magic.Docking
 			xmlOut.WriteStartElement("Position");
 			xmlOut.WriteAttributeString("Size", ConversionHelper.SizeToString(_size));
 			xmlOut.WriteAttributeString("Location", ConversionHelper.PointToString(_location));
-			xmlOut.WriteEndElement();				
+			xmlOut.WriteEndElement();
 			_best.SaveToXml("Best", xmlOut);
 			_associates.SaveToXml("Associates", xmlOut);
 		}
@@ -698,19 +714,19 @@ namespace Crownwood.Magic.Docking
 			_previous = new StringCollection();
 		}
 
-		public RestoreZoneAffinity(Restore child, 
-								   Content content, 
-								   StringCollection best,
-								   StringCollection next,
-								   StringCollection previous)
+		public RestoreZoneAffinity(Restore child,
+		                           Content content,
+		                           StringCollection best,
+		                           StringCollection next,
+		                           StringCollection previous)
 			: base(child, content)
 		{
 			// Remember parameters
-			_best = best;				
-			_next = next;				
-			_previous = previous;	
-			
-			if (content.Visible)			
+			_best = best;
+			_next = next;
+			_previous = previous;
+
+			if (content.Visible)
 				_space = content.ParentWindowContent.ZoneArea;
 			else
 				_space = 50m;
@@ -721,9 +737,9 @@ namespace Crownwood.Magic.Docking
 			int count = z.Windows.Count;
 			int beforeIndex = - 1;
 			int afterIndex = count;
-		
+
 			// Find the match to one of our best friends
-			for(int index=0; index<count; index++)
+			for (int index = 0; index < count; index++)
 			{
 				WindowContent wc = z.Windows[index] as WindowContent;
 
@@ -753,7 +769,7 @@ namespace Crownwood.Magic.Docking
 						if (index > beforeIndex)
 							beforeIndex = index;
 					}
-					
+
 					// If the WindowContent contains a Content next to the target
 					if (wc.Contents.Contains(_next))
 					{
@@ -765,7 +781,7 @@ namespace Crownwood.Magic.Docking
 
 			// If we get here then we did not find any best friends, this 
 			// means we need to create a new WindowContent to host the Content.
-			Window newW =  z.DockingManager.CreateWindowForContent(_content);
+			Window newW = z.DockingManager.CreateWindowForContent(_content);
 
 			ZoneSequence zs = z as ZoneSequence;
 
@@ -805,7 +821,7 @@ namespace Crownwood.Magic.Docking
 			base.SaveInternalToXml(xmlOut);
 			xmlOut.WriteStartElement("Space");
 			xmlOut.WriteAttributeString("Value", _space.ToString());
-			xmlOut.WriteEndElement();				
+			xmlOut.WriteEndElement();
 			_best.SaveToXml("Best", xmlOut);
 			_next.SaveToXml("Next", xmlOut);
 			_previous.SaveToXml("Previous", xmlOut);
@@ -851,16 +867,16 @@ namespace Crownwood.Magic.Docking
 			_previous = new StringCollection();
 		}
 
-		public RestoreWindowContent(Restore child, 
-									Content content, 
-									StringCollection next, 
-									StringCollection previous,
-									bool selected)
+		public RestoreWindowContent(Restore child,
+		                            Content content,
+		                            StringCollection next,
+		                            StringCollection previous,
+		                            bool selected)
 			: base(child, content)
 		{
 			// Remember parameters
-            _selected = selected;
-            _next = next;
+			_selected = selected;
+			_next = next;
 			_previous = previous;
 		}
 
@@ -871,7 +887,7 @@ namespace Crownwood.Magic.Docking
 
 			int bestIndex = -1;
 
-			foreach(String s in _previous)
+			foreach (String s in _previous)
 			{
 				if (wc.Contents.Contains(s))
 				{
@@ -892,7 +908,7 @@ namespace Crownwood.Magic.Docking
 			{
 				bestIndex = wc.Contents.Count;
 
-				foreach(String s in _next)
+				foreach (String s in _next)
 				{
 					if (wc.Contents.Contains(s))
 					{
@@ -906,10 +922,10 @@ namespace Crownwood.Magic.Docking
 				// Insert before the found entry (or at end if non found)
 				wc.Contents.Insert(bestIndex, _content);
 			}
-			
+
 			// Should this content become selected?
 			if (_selected)
-			    _content.BringToFront();
+				_content.BringToFront();
 		}
 
 		public override void SaveInternalToXml(XmlTextWriter xmlOut)
@@ -917,32 +933,32 @@ namespace Crownwood.Magic.Docking
 			base.SaveInternalToXml(xmlOut);
 			_next.SaveToXml("Next", xmlOut);
 			_previous.SaveToXml("Previous", xmlOut);
-        
-            xmlOut.WriteStartElement("Selected");
-            xmlOut.WriteAttributeString("Value", _selected.ToString());
-            xmlOut.WriteEndElement();				
-        }
+
+			xmlOut.WriteStartElement("Selected");
+			xmlOut.WriteAttributeString("Value", _selected.ToString());
+			xmlOut.WriteEndElement();
+		}
 
 		public override void LoadInternalFromXml(XmlTextReader xmlIn, int formatVersion)
 		{
 			base.LoadInternalFromXml(xmlIn, formatVersion);
 			_next.LoadFromXml("Next", xmlIn);
 			_previous.LoadFromXml("Previous", xmlIn);
-        
-            // _selected added in version 4 format
-            if (formatVersion >= 4)
-            {
-                // Move to next xml node
-                if (!xmlIn.Read())
-                    throw new ArgumentException("Could not read in next expected node");
 
-                // Check it has the expected name
-                if (xmlIn.Name != "Selected")
-                    throw new ArgumentException("Node 'Selected' expected but not found");
+			// _selected added in version 4 format
+			if (formatVersion >= 4)
+			{
+				// Move to next xml node
+				if (!xmlIn.Read())
+					throw new ArgumentException("Could not read in next expected node");
 
-                // Convert attribute value to boolean value
-                _selected = Convert.ToBoolean(xmlIn.GetAttribute(0));
-            }
-        }
+				// Check it has the expected name
+				if (xmlIn.Name != "Selected")
+					throw new ArgumentException("Node 'Selected' expected but not found");
+
+				// Convert attribute value to boolean value
+				_selected = Convert.ToBoolean(xmlIn.GetAttribute(0));
+			}
+		}
 	}
 }

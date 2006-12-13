@@ -38,8 +38,8 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			this.Description = "MenuCommand";
-			this.Text = "&Exit";
+			Description = "MenuCommand";
+			Text = "&Exit";
 		}
 
 		public override void OnClick(EventArgs e)

@@ -15,103 +15,103 @@ using Crownwood.Magic.Docking;
 
 namespace Crownwood.Magic.Collections
 {
-    public class ManagerContentCollection : CollectionWithEvents
-    {
-        // Instance fields
-        protected DockingManager _manager;
+	public class ManagerContentCollection : CollectionWithEvents
+	{
+		// Instance fields
+		protected DockingManager _manager;
 
-        public ManagerContentCollection(DockingManager manager)
-        {
-            // Must provide a valid manager instance
-            if (manager == null)
-                throw new ArgumentNullException("DockingManager");
+		public ManagerContentCollection(DockingManager manager)
+		{
+			// Must provide a valid manager instance
+			if (manager == null)
+				throw new ArgumentNullException("DockingManager");
 
-            // Default the state
-            _manager = manager;
-        }
-		
-  		public Content Add()
-        {
-            Content c = new Content(_manager);
+			// Default the state
+			_manager = manager;
+		}
 
-            // Use base class to process actual collection operation
-            base.List.Add(c as object);
+		public Content Add()
+		{
+			Content c = new Content(_manager);
 
-            return c;
-        }
+			// Use base class to process actual collection operation
+			base.List.Add(c as object);
+
+			return c;
+		}
 
 		// Should only ever be used by Serialization
-  		public Content Add(Content c)
-        {
+		public Content Add(Content c)
+		{
 			// Assign correct docking manager to object
 			c.DockingManager = _manager;
 
-            // Use base class to process actual collection operation
-            base.List.Add(c as object);
+			// Use base class to process actual collection operation
+			base.List.Add(c as object);
 
-            return c;
-        }
+			return c;
+		}
 
-        public Content Add(Control control)
-        {
-            Content c = new Content(_manager, control);
+		public Content Add(Control control)
+		{
+			Content c = new Content(_manager, control);
 
-            // Use base class to process actual collection operation
-            base.List.Add(c as object);
+			// Use base class to process actual collection operation
+			base.List.Add(c as object);
 
-            return c;
-        }
+			return c;
+		}
 
-        public Content Add(Control control, string title)
-        {
-            Content c = new Content(_manager, control, title);
+		public Content Add(Control control, string title)
+		{
+			Content c = new Content(_manager, control, title);
 
-            // Use base class to process actual collection operation
-            base.List.Add(c as object);
+			// Use base class to process actual collection operation
+			base.List.Add(c as object);
 
-            return c;
-        }
+			return c;
+		}
 
-        public Content Add(Control control, string title, ImageList imageList, int imageIndex)
-        {
-            Content c = new Content(_manager, control, title, imageList, imageIndex);
+		public Content Add(Control control, string title, ImageList imageList, int imageIndex)
+		{
+			Content c = new Content(_manager, control, title, imageList, imageIndex);
 
-            // Use base class to process actual collection operation
-            base.List.Add(c as object);
+			// Use base class to process actual collection operation
+			base.List.Add(c as object);
 
-            return c;
-        }
+			return c;
+		}
 
-        public void Remove(Content value)
-        {
-            // Use base class to process actual collection operation
-            base.List.Remove(value as object);
-        }
+		public void Remove(Content value)
+		{
+			// Use base class to process actual collection operation
+			base.List.Remove(value as object);
+		}
 
-        public bool Contains(Content value)
-        {
-            // Use base class to process actual collection operation
-            return base.List.Contains(value as object);
-        }
+		public bool Contains(Content value)
+		{
+			// Use base class to process actual collection operation
+			return base.List.Contains(value as object);
+		}
 
-        public Content this[int index]
-        {
-            // Use base class to process actual collection operation
-            get { return (base.List[index] as Content); }
-        }
+		public Content this[int index]
+		{
+			// Use base class to process actual collection operation
+			get { return (base.List[index] as Content); }
+		}
 
-        public Content this[string title]
-        {
-            get 
-            {
-                // Search for a Content with a matching title
-                foreach(Content c in base.List)
-                    if (c.Title == title)
-                        return c;
+		public Content this[string title]
+		{
+			get
+			{
+				// Search for a Content with a matching title
+				foreach (Content c in base.List)
+					if (c.Title == title)
+						return c;
 
-                return null;
-            }
-        }
+				return null;
+			}
+		}
 
 		public int SetIndex(int newIndex, Content value)
 		{
@@ -125,21 +125,21 @@ namespace Crownwood.Magic.Collections
 			return newIndex;
 		}
 
-        public int IndexOf(Content value)
-        {
-            // Find the 0 based index of the requested entry
-            return base.List.IndexOf(value);
-        }
+		public int IndexOf(Content value)
+		{
+			// Find the 0 based index of the requested entry
+			return base.List.IndexOf(value);
+		}
 
 		public ContentCollection Copy()
 		{
 			ContentCollection clone = new ContentCollection();
 
 			// Copy each reference across
-            foreach(Content c in base.List)
+			foreach (Content c in base.List)
 				clone.Add(c);
 
 			return clone;
 		}
-    }
+	}
 }

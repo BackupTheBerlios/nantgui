@@ -17,269 +17,269 @@ using Crownwood.Magic.Collections;
 
 namespace Crownwood.Magic.Docking
 {
-    [ToolboxItem(false)]
-    public class Window : ContainerControl
-    {
-        // Instance fields
-        protected State _state;
-        protected Zone _parentZone;
-        protected WindowDetailCollection _windowDetails;
-        protected Decimal _zoneArea;
-        protected Size _minimalSize;
-        protected DockingManager _manager;
-        protected bool _autoDispose;
-        protected bool _redockAllowed;
-        protected bool _floatingCaption;
-        protected bool _contentCaption;
-        protected string _fullTitle;
+	[ToolboxItem(false)]
+	public class Window : ContainerControl
+	{
+		// Instance fields
+		protected State _state;
+		protected Zone _parentZone;
+		protected WindowDetailCollection _windowDetails;
+		protected Decimal _zoneArea;
+		protected Size _minimalSize;
+		protected DockingManager _manager;
+		protected bool _autoDispose;
+		protected bool _redockAllowed;
+		protected bool _floatingCaption;
+		protected bool _contentCaption;
+		protected string _fullTitle;
 
-        // Instance events
-        public event EventHandler FullTitleChanged; 
+		// Instance events
+		public event EventHandler FullTitleChanged;
 
-        public Window(DockingManager manager)
-        {
-            // Must provide a valid manager instance
-            if (manager == null)
-                throw new ArgumentNullException("DockingManager");
+		public Window(DockingManager manager)
+		{
+			// Must provide a valid manager instance
+			if (manager == null)
+				throw new ArgumentNullException("DockingManager");
 
-            // Default object state
-            _state = State.Floating;
-            _parentZone = null;
-            _zoneArea = 100m;
-            _minimalSize = new Size(0,0);
-            _manager = manager;
-            _autoDispose = true;
-            _fullTitle = "";
-            _redockAllowed = true;
-            _floatingCaption = true;
-            _contentCaption = true;
+			// Default object state
+			_state = State.Floating;
+			_parentZone = null;
+			_zoneArea = 100m;
+			_minimalSize = new Size(0, 0);
+			_manager = manager;
+			_autoDispose = true;
+			_fullTitle = "";
+			_redockAllowed = true;
+			_floatingCaption = true;
+			_contentCaption = true;
 
-            // Create collection of window details
-            _windowDetails = new WindowDetailCollection();
+			// Create collection of window details
+			_windowDetails = new WindowDetailCollection();
 
-            // We want notification when window details are added/removed/cleared
-            _windowDetails.Clearing += new CollectionClear(OnDetailsClearing);
-            _windowDetails.Inserted += new CollectionChange(OnDetailInserted);
-            _windowDetails.Removing += new CollectionChange(OnDetailRemoving);
-        }
+			// We want notification when window details are added/removed/cleared
+			_windowDetails.Clearing += new CollectionClear(OnDetailsClearing);
+			_windowDetails.Inserted += new CollectionChange(OnDetailInserted);
+			_windowDetails.Removing += new CollectionChange(OnDetailRemoving);
+		}
 
-        public DockingManager DockingManager
-        {
-            get { return _manager; }
-        }
+		public DockingManager DockingManager
+		{
+			get { return _manager; }
+		}
 
-        public State State
-        {
-            get { return _state; }
-			
-            set 
-            {
-                if (_state != value)
-                {
-                    _state = value;
+		public State State
+		{
+			get { return _state; }
 
-                    // Inform each window detail of the change in state
-                    foreach(WindowDetail wd in _windowDetails)
-                        wd.ParentStateChanged(_state);
-                }
-            }
-        }
+			set
+			{
+				if (_state != value)
+				{
+					_state = value;
 
-        public Zone ParentZone
-        {
-            get { return _parentZone; }
-			
-            set 
-            { 
-                if (_parentZone != value)
-                {
-                    _parentZone = value; 
+					// Inform each window detail of the change in state
+					foreach (WindowDetail wd in _windowDetails)
+						wd.ParentStateChanged(_state);
+				}
+			}
+		}
 
-                    // Inform each window detail of the change in zone
-                    foreach(WindowDetail wd in _windowDetails)
-                        wd.ParentZone = _parentZone;
-                }
-            }
-        }
+		public Zone ParentZone
+		{
+			get { return _parentZone; }
 
-        public WindowDetailCollection WindowDetails
-        {
-            get { return _windowDetails; }
-			
-            set
-            {
-                _windowDetails.Clear();
-                _windowDetails = value;
-            }
-        }
+			set
+			{
+				if (_parentZone != value)
+				{
+					_parentZone = value;
 
-        public Decimal ZoneArea
-        {
-            get { return _zoneArea; }
-            set { _zoneArea = value; }
-        }
+					// Inform each window detail of the change in zone
+					foreach (WindowDetail wd in _windowDetails)
+						wd.ParentZone = _parentZone;
+				}
+			}
+		}
 
-        public Size MinimalSize
-        {
-            get { return _minimalSize; }
-            set { _minimalSize = value; }
-        }
+		public WindowDetailCollection WindowDetails
+		{
+			get { return _windowDetails; }
 
-        public bool AutoDispose
-        {
-            get { return _autoDispose; }
-            set { _autoDispose = value; }
-        }
+			set
+			{
+				_windowDetails.Clear();
+				_windowDetails = value;
+			}
+		}
 
-        public string FullTitle
-        {
-            get { return _fullTitle; }
-        }
+		public Decimal ZoneArea
+		{
+			get { return _zoneArea; }
+			set { _zoneArea = value; }
+		}
 
-        public bool RedockAllowed
-        {
-            get { return _redockAllowed; }
-            set { _redockAllowed = value; }
-        }
+		public Size MinimalSize
+		{
+			get { return _minimalSize; }
+			set { _minimalSize = value; }
+		}
 
-        protected void OnDetailsClearing()
-        {
-            // Inform each detail it no longer has a parent
-            foreach(WindowDetail wd in _windowDetails)
-            {
-                // Inform each detail it no longer has a parent
-                wd.ParentWindow = null;
+		public bool AutoDispose
+		{
+			get { return _autoDispose; }
+			set { _autoDispose = value; }
+		}
 
-                // Inform object that it is no longer in a Zone
-                wd.ParentZone = null;
-            }
-        }
+		public string FullTitle
+		{
+			get { return _fullTitle; }
+		}
 
-        protected void OnDetailInserted(int index, object value)
-        {
-            WindowDetail wd = value as WindowDetail;
+		public bool RedockAllowed
+		{
+			get { return _redockAllowed; }
+			set { _redockAllowed = value; }
+		}
 
-            // Inform object we are the new parent
-            wd.ParentWindow = this;
+		protected void OnDetailsClearing()
+		{
+			// Inform each detail it no longer has a parent
+			foreach (WindowDetail wd in _windowDetails)
+			{
+				// Inform each detail it no longer has a parent
+				wd.ParentWindow = null;
 
-            // Inform object that it is in a Zone
-            wd.ParentZone = _parentZone;
-        }
+				// Inform object that it is no longer in a Zone
+				wd.ParentZone = null;
+			}
+		}
 
-        protected void OnDetailRemoving(int index, object value)
-        {
-            WindowDetail wd = value as WindowDetail;
+		protected void OnDetailInserted(int index, object value)
+		{
+			WindowDetail wd = value as WindowDetail;
 
-            // Inform object it no longer has a parent
-            wd.ParentWindow = null;
-			
-            // Inform object that it is no longer in a Zone
-            wd.ParentZone = null;
-        }
-		
-        public virtual void NotifyFullTitleText(string title)
-        {
-            // Inform each detail of change in focus
-            foreach(WindowDetail wd in _windowDetails)
-                wd.NotifyFullTitleText(title);
-                
-            OnFullTitleChanged(title);
-        }
+			// Inform object we are the new parent
+			wd.ParentWindow = this;
 
-        public virtual void NotifyAutoHideImage(bool autoHidden)
-        {
-            // Inform each detail of change in caption bar
-            foreach(WindowDetail wd in _windowDetails)
-                wd.NotifyAutoHideImage(autoHidden);
-        }
+			// Inform object that it is in a Zone
+			wd.ParentZone = _parentZone;
+		}
 
-        public virtual void NotifyShowCaptionBar(bool show)
-        {
-            // Remember the per-content requested caption
-            _contentCaption = show;
-        
-            // If priority value always showing then we can let the
-            // individual content decide on visibility. Otherwise
-            // the priority forces it to remain hidden
-            if (_floatingCaption)
-            {
-                // Inform each detail of change in caption bar
-                foreach(WindowDetail wd in _windowDetails)
-                    wd.NotifyShowCaptionBar(show);
-            }
-        }
+		protected void OnDetailRemoving(int index, object value)
+		{
+			WindowDetail wd = value as WindowDetail;
 
-        public virtual void NotifyCloseButton(bool show)
-        {
-            // Inform each detail of change close button
-            foreach(WindowDetail wd in _windowDetails)
-                wd.NotifyCloseButton(show);
-        }
+			// Inform object it no longer has a parent
+			wd.ParentWindow = null;
 
-        public virtual void NotifyHideButton(bool show)
-        {
-            // Inform each detail of change close button
-            foreach(WindowDetail wd in _windowDetails)
-                wd.NotifyHideButton(show);
-        }
+			// Inform object that it is no longer in a Zone
+			wd.ParentZone = null;
+		}
 
-        public virtual void NotifyContentGotFocus()
-        {
-            // Inform each detail of change in focus
-            foreach(WindowDetail wd in _windowDetails)
-                wd.WindowGotFocus();
-        }
+		public virtual void NotifyFullTitleText(string title)
+		{
+			// Inform each detail of change in focus
+			foreach (WindowDetail wd in _windowDetails)
+				wd.NotifyFullTitleText(title);
 
-        public virtual void NotifyContentLostFocus()
-        {
-            // Inform each detail of change in focus
-            foreach(WindowDetail wd in _windowDetails)
-                wd.WindowLostFocus();
-        }
+			OnFullTitleChanged(title);
+		}
 
-        public virtual void WindowDetailGotFocus(WindowDetail wd)
-        {
-            NotifyContentGotFocus();
-        }
-		
-        public virtual void WindowDetailLostFocus(WindowDetail wd)
-        {
-            NotifyContentLostFocus();
-        }
-        
-        public void HideDetails()
-        {
-            // Inform each detail of change in visibility
-            foreach(WindowDetail wd in _windowDetails)
-                wd.Hide();
-                
-            // Remember priority state for caption
-            _floatingCaption = false;
-        }
+		public virtual void NotifyAutoHideImage(bool autoHidden)
+		{
+			// Inform each detail of change in caption bar
+			foreach (WindowDetail wd in _windowDetails)
+				wd.NotifyAutoHideImage(autoHidden);
+		}
 
-        public void ShowDetails()
-        {
-            // Inform each detail of change in visibility
-            foreach(WindowDetail wd in _windowDetails)
-                wd.Show();
+		public virtual void NotifyShowCaptionBar(bool show)
+		{
+			// Remember the per-content requested caption
+			_contentCaption = show;
 
-            // Remember priority state for caption
-            _floatingCaption = true;
-            
-            // If the content requested the caption be hidden
-            if (!_contentCaption)
-                NotifyShowCaptionBar(_contentCaption);
-        }
-        
-        public virtual void OnFullTitleChanged(String fullTitle)
-        {
-            _fullTitle = fullTitle;
-            
-            if (FullTitleChanged != null)
-                FullTitleChanged((object)fullTitle, EventArgs.Empty);
-        }
+			// If priority value always showing then we can let the
+			// individual content decide on visibility. Otherwise
+			// the priority forces it to remain hidden
+			if (_floatingCaption)
+			{
+				// Inform each detail of change in caption bar
+				foreach (WindowDetail wd in _windowDetails)
+					wd.NotifyShowCaptionBar(show);
+			}
+		}
 
-		public virtual Restore RecordRestore(object child) 
+		public virtual void NotifyCloseButton(bool show)
+		{
+			// Inform each detail of change close button
+			foreach (WindowDetail wd in _windowDetails)
+				wd.NotifyCloseButton(show);
+		}
+
+		public virtual void NotifyHideButton(bool show)
+		{
+			// Inform each detail of change close button
+			foreach (WindowDetail wd in _windowDetails)
+				wd.NotifyHideButton(show);
+		}
+
+		public virtual void NotifyContentGotFocus()
+		{
+			// Inform each detail of change in focus
+			foreach (WindowDetail wd in _windowDetails)
+				wd.WindowGotFocus();
+		}
+
+		public virtual void NotifyContentLostFocus()
+		{
+			// Inform each detail of change in focus
+			foreach (WindowDetail wd in _windowDetails)
+				wd.WindowLostFocus();
+		}
+
+		public virtual void WindowDetailGotFocus(WindowDetail wd)
+		{
+			NotifyContentGotFocus();
+		}
+
+		public virtual void WindowDetailLostFocus(WindowDetail wd)
+		{
+			NotifyContentLostFocus();
+		}
+
+		public void HideDetails()
+		{
+			// Inform each detail of change in visibility
+			foreach (WindowDetail wd in _windowDetails)
+				wd.Hide();
+
+			// Remember priority state for caption
+			_floatingCaption = false;
+		}
+
+		public void ShowDetails()
+		{
+			// Inform each detail of change in visibility
+			foreach (WindowDetail wd in _windowDetails)
+				wd.Show();
+
+			// Remember priority state for caption
+			_floatingCaption = true;
+
+			// If the content requested the caption be hidden
+			if (!_contentCaption)
+				NotifyShowCaptionBar(_contentCaption);
+		}
+
+		public virtual void OnFullTitleChanged(String fullTitle)
+		{
+			_fullTitle = fullTitle;
+
+			if (FullTitleChanged != null)
+				FullTitleChanged((object) fullTitle, EventArgs.Empty);
+		}
+
+		public virtual Restore RecordRestore(object child)
 		{
 			// Do we have a Zone as our parent?
 			if (_parentZone != null)
@@ -291,17 +291,17 @@ namespace Crownwood.Magic.Docking
 			return null;
 		}
 
-        public virtual void PropogateNameValue(PropogateName name, object value)
-        {
-            if (name == PropogateName.BackColor)
-            {
-                this.BackColor = (Color)value;
-                Invalidate();
-            }
+		public virtual void PropogateNameValue(PropogateName name, object value)
+		{
+			if (name == PropogateName.BackColor)
+			{
+				BackColor = (Color) value;
+				Invalidate();
+			}
 
-            // Pass onto each of our child Windows
-            foreach(WindowDetail wd in _windowDetails)
-                wd.PropogateNameValue(name, value);
-        }
-    }
+			// Pass onto each of our child Windows
+			foreach (WindowDetail wd in _windowDetails)
+				wd.PropogateNameValue(name, value);
+		}
+	}
 }

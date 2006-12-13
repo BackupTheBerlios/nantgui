@@ -13,55 +13,57 @@ using System.Windows.Forms;
 
 namespace Crownwood.Magic.Docking
 {
-    public class Redocker
-    {
-        // Instance fields
-        protected bool _tracking;
+	public class Redocker
+	{
+		// Instance fields
+		protected bool _tracking;
 
-        public Redocker()
-        {
-            // Default the state
-            _tracking = false;
-        }
+		public Redocker()
+		{
+			// Default the state
+			_tracking = false;
+		}
 
-        public bool Tracking
-        {
-            get { return _tracking; }
-        }
+		public bool Tracking
+		{
+			get { return _tracking; }
+		}
 
-        public virtual void EnterTrackingMode()
-        {
-            if (!_tracking)
-                _tracking = true;
-        }
+		public virtual void EnterTrackingMode()
+		{
+			if (!_tracking)
+				_tracking = true;
+		}
 
-        public virtual bool ExitTrackingMode(MouseEventArgs e)
-        {
-            if (_tracking)
-                _tracking = false;
+		public virtual bool ExitTrackingMode(MouseEventArgs e)
+		{
+			if (_tracking)
+				_tracking = false;
 
-            return false;
-        }
+			return false;
+		}
 
-        public virtual void QuitTrackingMode(MouseEventArgs e)
-        {
-            if (_tracking)
-                _tracking = false;
-        }
+		public virtual void QuitTrackingMode(MouseEventArgs e)
+		{
+			if (_tracking)
+				_tracking = false;
+		}
 
-        public virtual void OnMouseMove(MouseEventArgs e) {}
+		public virtual void OnMouseMove(MouseEventArgs e)
+		{
+		}
 
-        public virtual bool OnMouseUp(MouseEventArgs e)
-        {
-            if (_tracking)
-            {
-                if (e.Button == MouseButtons.Left)
-                    return ExitTrackingMode(e);
-                else
-                    QuitTrackingMode(e);
-            }
+		public virtual bool OnMouseUp(MouseEventArgs e)
+		{
+			if (_tracking)
+			{
+				if (e.Button == MouseButtons.Left)
+					return ExitTrackingMode(e);
+				else
+					QuitTrackingMode(e);
+			}
 
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 }

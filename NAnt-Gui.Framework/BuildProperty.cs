@@ -33,7 +33,9 @@ namespace NAntGui.Framework
 		protected string _category = "Global";
 		protected bool _isReadOnly = false;
 
-		public BuildProperty(){}
+		public BuildProperty()
+		{
+		}
 
 		public BuildProperty(string name)
 		{
@@ -53,15 +55,15 @@ namespace NAntGui.Framework
 			_expandedValue = expandedValue;
 		}
 
-		public BuildProperty(string name, string value, string expandedValue, 
-			string category) : this(name, value, expandedValue)
+		public BuildProperty(string name, string value, string expandedValue,
+		                     string category) : this(name, value, expandedValue)
 		{
 			Assert.NotNull(category, "category");
 			_category = category;
 		}
 
-		public BuildProperty(string name, string value, string expandedValue, 
-			string category, bool isReadOnly) : this(name, value, expandedValue, category)
+		public BuildProperty(string name, string value, string expandedValue,
+		                     string category, bool isReadOnly) : this(name, value, expandedValue, category)
 		{
 			_isReadOnly = isReadOnly;
 		}

@@ -13,14 +13,19 @@ using System.Drawing;
 
 namespace Crownwood.Magic.Docking
 {
-    public class HotZoneNull : HotZone
-    {
-        public HotZoneNull(Rectangle hotArea)
-            : base(hotArea, hotArea)
-        {
-        }
+	public class HotZoneNull : HotZone
+	{
+		public HotZoneNull(Rectangle hotArea)
+			: base(hotArea, hotArea)
+		{
+		}
 
-        public override void DrawIndicator(Point mousePos) {}
-        public override void RemoveIndicator(Point mousePos) {}
-    }
+		public override void DrawIndicator(Point mousePos)
+		{
+		}
+
+		public override void RemoveIndicator(Point mousePos)
+		{
+		}
+	}
 }

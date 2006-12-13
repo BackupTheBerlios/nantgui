@@ -25,7 +25,6 @@ using Crownwood.Magic.Common;
 
 #endregion
 
-
 namespace NAntGui.Core
 {
 	/// <summary>
@@ -44,8 +43,8 @@ namespace NAntGui.Core
 		{
 			_options = options;
 
-			_imageList = ResourceHelper.LoadBitmapStrip(typeof(NAntGuiApp), 
-				IMAGE_PATH, new Size(16, 16), new Point(0, 0));
+			_imageList = ResourceHelper.LoadBitmapStrip(typeof (NAntGuiApp),
+			                                            IMAGE_PATH, new Size(16, 16), new Point(0, 0));
 
 			MainFormMediator mediator = new MainFormMediator();
 			mediator.RunApplication();

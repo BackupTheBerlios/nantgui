@@ -14,11 +14,12 @@ namespace NAntGui.Core.Controls
 	public class OutputBox : RichTextBox, ILogsMessage, IEditCommands
 	{
 		private delegate void MessageEventHandler(string message);
+
 		public event VoidBool WordWrapChanged;
 
 		private const int RICH_TEXT_INDEX = 2;
 		private const int PLAIN_TEXT_INDEX = 1;
-		
+
 		private PopupMenu _outputContextMenu = new PopupMenu();
 		private SaveFileDialog _saveDialog = new SaveFileDialog();
 		private MainFormMediator _mediator;
@@ -27,8 +28,8 @@ namespace NAntGui.Core.Controls
 		{
 			Assert.NotNull(mediator, "value");
 			_mediator = mediator;
-			this.Initialize();
-			this.CreateOutputContextMenu();
+			Initialize();
+			CreateOutputContextMenu();
 		}
 
 		private void Initialize()
@@ -40,13 +41,13 @@ namespace NAntGui.Core.Controls
 			_saveDialog.FileName = "Output";
 			_saveDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
 
-			this.Dock = DockStyle.Fill;
-			this.BorderStyle = BorderStyle.FixedSingle;
-			this.DetectUrls = false;
-			this.ReadOnly = true;
-			this.WordWrap = false;
-			this.MouseUp += new MouseEventHandler(this.OutputTextBox_MouseUp);
-			this.Enter += new EventHandler(this.DoEnter);
+			Dock = DockStyle.Fill;
+			BorderStyle = BorderStyle.FixedSingle;
+			DetectUrls = false;
+			ReadOnly = true;
+			WordWrap = false;
+			MouseUp += new MouseEventHandler(OutputTextBox_MouseUp);
+			Enter += new EventHandler(DoEnter);
 		}
 
 		private void CreateOutputContextMenu()
@@ -68,8 +69,8 @@ namespace NAntGui.Core.Controls
 
 		private void DoEnter(object sender, EventArgs e)
 		{
-			if (this.WordWrapChanged != null)
-				this.WordWrapChanged(this.WordWrap);
+			if (WordWrapChanged != null)
+				WordWrapChanged(WordWrap);
 		}
 
 		public void SaveOutput()
@@ -79,7 +80,7 @@ namespace NAntGui.Core.Controls
 
 			if (result == DialogResult.OK)
 			{
-				this.Save();
+				Save();
 			}
 		}
 
@@ -89,11 +90,11 @@ namespace NAntGui.Core.Controls
 
 			if (filterIndex == PLAIN_TEXT_INDEX)
 			{
-				this.SavePlainTextOutput(_saveDialog.FileName);
+				SavePlainTextOutput(_saveDialog.FileName);
 			}
 			else if (filterIndex == RICH_TEXT_INDEX)
 			{
-				this.SaveRichTextOutput(_saveDialog.FileName);
+				SaveRichTextOutput(_saveDialog.FileName);
 			}
 
 			FileInfo file = new FileInfo(_saveDialog.FileName);
@@ -102,35 +103,35 @@ namespace NAntGui.Core.Controls
 
 		private void SavePlainTextOutput(string fileName)
 		{
-			this.SaveFile(fileName,
-				RichTextBoxStreamType.PlainText);
+			SaveFile(fileName,
+			         RichTextBoxStreamType.PlainText);
 		}
 
 		private void SaveRichTextOutput(string fileName)
 		{
-			this.SaveFile(fileName,
-				RichTextBoxStreamType.RichText);
+			SaveFile(fileName,
+			         RichTextBoxStreamType.RichText);
 		}
 
 		private void WriteOutput(string pMessage)
 		{
 			lock (this)
 			{
-				if (!this.Focused) this.Focus();
+				if (!Focused) Focus();
 
 				Outputter.AppendRtfText(OutputHighlighter.Highlight(pMessage));
 
-				this.SelectionStart = this.TextLength;
-				this.SelectedRtf = Outputter.RtfDocument;
-				this.ScrollToCaret();
+				SelectionStart = TextLength;
+				SelectedRtf = Outputter.RtfDocument;
+				ScrollToCaret();
 			}
 		}
 
 		public void DoWordWrap()
 		{
-			this.WordWrap = !this.WordWrap;
-			if (this.WordWrapChanged != null)
-				this.WordWrapChanged(this.WordWrap);
+			WordWrap = !WordWrap;
+			if (WordWrapChanged != null)
+				WordWrapChanged(WordWrap);
 		}
 
 		public new void Clear()
@@ -141,16 +142,16 @@ namespace NAntGui.Core.Controls
 
 		public void LogMessage(string message)
 		{
-			if (this.InvokeRequired)
+			if (InvokeRequired)
 			{
 				MessageEventHandler messageEH =
-					new MessageEventHandler(this.WriteOutput);
+					new MessageEventHandler(WriteOutput);
 
-				this.BeginInvoke(messageEH, new Object[1] {message});
+				BeginInvoke(messageEH, new Object[1] {message});
 			}
 			else
 			{
-				this.WriteOutput(message);
+				WriteOutput(message);
 			}
 		}
 
@@ -173,9 +174,9 @@ namespace NAntGui.Core.Controls
 
 		public void ReHightlight()
 		{
-			string text = this.Text;
-			this.Clear();
-			this.WriteOutput(text);
+			string text = Text;
+			Clear();
+			WriteOutput(text);
 		}
 	}
 }

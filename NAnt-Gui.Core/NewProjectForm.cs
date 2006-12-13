@@ -87,7 +87,7 @@ namespace NAntGui.Core
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(NewProjectForm));
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof (NewProjectForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -198,31 +198,30 @@ namespace NAntGui.Core
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(400, 224);
 			this.Name = "NewProjectForm";
 			this.Text = "New Project";
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion
 
 		private void CloseButton_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 		private void OKButton_Click(object sender, EventArgs e)
 		{
-			if (this.NameEntered)
+			if (NameEntered)
 			{
 				project proj = new project();
-				proj.name = this.NameTextBox.Text;
-				proj.@default = this.DefaultTextBox.Text;
-				proj.basedir = this.BasedirTextBox.Text;
+				proj.name = NameTextBox.Text;
+				proj.@default = DefaultTextBox.Text;
+				proj.basedir = BasedirTextBox.Text;
 
 				XmlSerializer serial = new XmlSerializer(typeof (project));
 				MemoryStream stream = new MemoryStream();
@@ -245,7 +244,7 @@ namespace NAntGui.Core
 
 		private bool NameEntered
 		{
-			get { return this.NameTextBox.Text.Length == 0; }
+			get { return NameTextBox.Text.Length == 0; }
 		}
 	}
 }

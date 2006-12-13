@@ -9,18 +9,16 @@
 //  Magic Version 1.7.4.0 	www.dotnetmagic.com
 // *****************************************************************************
 
-using System;
 using System.Drawing;
 
 namespace Crownwood.Magic.Common
 {
-    public class ConversionHelper
-    {
+	public class ConversionHelper
+	{
 		// Faster performance to cache the converters and type objects, rather
 		// than keep recreating them each time a conversion is required
 		protected static SizeConverter _sc = new SizeConverter();
 		protected static PointConverter _pc = new PointConverter();
-		protected static Type _stringType = Type.GetType("System.String");
 
 		public static string SizeToString(Size size)
 		{
@@ -29,17 +27,17 @@ namespace Crownwood.Magic.Common
 
 		public static Size StringToSize(string str)
 		{
-			return (Size)_sc.ConvertFromInvariantString(str);
+			return (Size) _sc.ConvertFromInvariantString(str);
 		}
 
 		public static string PointToString(Point point)
 		{
-			return (string)_pc.ConvertTo(point, _stringType);
+			return _pc.ConvertToInvariantString(point);
 		}
 
 		public static Point StringToPoint(string str)
 		{
-			return (Point)_pc.ConvertFrom(str);
+			return (Point) _pc.ConvertFromInvariantString(str);
 		}
-    }
+	}
 }

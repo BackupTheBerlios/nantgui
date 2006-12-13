@@ -53,22 +53,22 @@ namespace NAntGui.Core.Controls.Menu.FileMenu
 			_exit = new ExitMenuCommand(mediator);
 
 
-			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_new, _open, _save, _saveAs, _reload, _close,
-					_saveOutput, new MenuCommand("-"), _recent,
-					new MenuCommand("-"), _exit
-				});
-			this.Text = "&File";
+			Description = "MenuCommand";
+			MenuCommands.AddRange(new MenuCommand[]
+			                      	{
+			                      		_new, _open, _save, _saveAs, _reload, _close,
+			                      		_saveOutput, new MenuCommand("-"), _recent,
+			                      		new MenuCommand("-"), _exit
+			                      	});
+			Text = "&File";
 		}
 
 		public void Enable()
 		{
 			_reload.Enabled =
 				_save.Enabled =
-					_saveAs.Enabled =
-						_close.Enabled = true;
+				_saveAs.Enabled =
+				_close.Enabled = true;
 		}
 
 		public void Disable()

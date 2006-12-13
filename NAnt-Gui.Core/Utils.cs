@@ -19,7 +19,7 @@ namespace NAntGui.Core
 		{
 			return text.TrimEnd(new char[] {'*'});
 		}
-		
+
 		public static string AddAsterisk(string text)
 		{
 			return text += "*";
@@ -49,8 +49,8 @@ namespace NAntGui.Core
 
 		public static void ShowFileNotFoundError(string recentItem)
 		{
-			MessageBox.Show(recentItem + " was not found.", "Build File Not Found", 
-				MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			MessageBox.Show(recentItem + " was not found.", "Build File Not Found",
+			                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		public static string GetDragFilename(DragEventArgs e)

@@ -39,8 +39,8 @@ namespace NAntGui.Framework
 		public Watcher()
 		{
 			_watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
-			_watcher.Changed += new FileSystemEventHandler(this.OnFileChanged);
-			_watcher.Deleted += new FileSystemEventHandler(this.OnFileDeleted);
+			_watcher.Changed += new FileSystemEventHandler(OnFileChanged);
+			_watcher.Deleted += new FileSystemEventHandler(OnFileDeleted);
 		}
 
 		public void WatchBuildFile(FileInfo buildFile)
@@ -54,26 +54,26 @@ namespace NAntGui.Framework
 
 		private void OnFileChanged(object sender, FileSystemEventArgs e)
 		{
-			this.DisableEvents();
+			DisableEvents();
 			// without this the file changed event 
 			// seems to be fired twice\
 			Application.DoEvents();
 
 			Thread.Sleep(100);
 
-			if (this.BuildFileChanged != null)
-				this.BuildFileChanged();
+			if (BuildFileChanged != null)
+				BuildFileChanged();
 		}
 
 		private void OnFileDeleted(object sender, FileSystemEventArgs e)
 		{
-			this.DisableEvents();
+			DisableEvents();
 			// without this the file changed event 
 			// seems to be fired twice\
 			Application.DoEvents();
 
-			if (this.BuildFileDeleted != null)
-				this.BuildFileDeleted();
+			if (BuildFileDeleted != null)
+				BuildFileDeleted();
 		}
 
 		public void DisableEvents()

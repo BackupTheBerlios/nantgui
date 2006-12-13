@@ -44,20 +44,20 @@ namespace NAntGui.Core
 		private Content _outputContent;
 		private OutputBox _outputBox;
 
-		public MainDockManager(MainForm mainForm, ScriptTabs scriptTabs, TargetsTreeView targetsTree, 
-			OutputBox outputBox, MainPropertyGrid propertyGrid, MainStatusBar statusBar)
+		public MainDockManager(MainForm mainForm, ScriptTabs scriptTabs, TargetsTreeView targetsTree,
+		                       OutputBox outputBox, MainPropertyGrid propertyGrid, MainStatusBar statusBar)
 		{
 			Assert.NotNull(outputBox, "outputBox");
 			_outputBox = outputBox;
 			// Create the object that manages the docking state
 			_dockManager = new DockingManager(mainForm, VisualStyle.IDE);
 			// Ensure that the RichTextBox is always the innermost control
-			
+
 			scriptTabs.SetToDockManager(this);
 
-			_targetsContent		= _dockManager.Contents.Add(targetsTree, "Targets");
-			_outputContent		= _dockManager.Contents.Add(outputBox, "Output");
-			_propertiesContent	= _dockManager.Contents.Add(propertyGrid, "Properties");
+			_targetsContent = _dockManager.Contents.Add(targetsTree, "Targets");
+			_outputContent = _dockManager.Contents.Add(outputBox, "Output");
+			_propertiesContent = _dockManager.Contents.Add(propertyGrid, "Properties");
 
 			_targetsContent.ImageList = NAntGuiApp.ImageList;
 			_targetsContent.ImageIndex = 9;
@@ -74,16 +74,16 @@ namespace NAntGui.Core
 
 			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
 
-			_dockManager.ContentShown += new DockingManager.ContentHandler(this.ContentShown);
+			_dockManager.ContentShown += new DockingManager.ContentHandler(ContentShown);
 
 			_dockManager.OuterControl = statusBar;
 
-			_dockManager.LoadConfigFromFile(DOCKING_CONFIG);			
+			_dockManager.LoadConfigFromFile(DOCKING_CONFIG);
 		}
 
 		public void SaveConfig()
 		{
-			_dockManager.SaveConfigToFile(DOCKING_CONFIG);	
+			_dockManager.SaveConfigToFile(DOCKING_CONFIG);
 		}
 
 		public void ShowTargets()

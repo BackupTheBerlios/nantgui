@@ -85,7 +85,7 @@ namespace NAntGui.Core
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(About));
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof (About));
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.OKButton = new System.Windows.Forms.Button();
@@ -100,7 +100,9 @@ namespace NAntGui.Core
 			// 
 			// label1
 			// 
-			this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label1.Font =
+				new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.label1.Location = new System.Drawing.Point(8, 8);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(80, 16);
@@ -109,7 +111,9 @@ namespace NAntGui.Core
 			// 
 			// label2
 			// 
-			this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label2.Font =
+				new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.label2.Location = new System.Drawing.Point(312, 8);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(64, 16);
@@ -118,7 +122,9 @@ namespace NAntGui.Core
 			// 
 			// OKButton
 			// 
-			this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.OKButton.Anchor =
+				((System.Windows.Forms.AnchorStyles)
+				 ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.OKButton.Location = new System.Drawing.Point(312, 168);
 			this.OKButton.Name = "OKButton";
@@ -127,7 +133,9 @@ namespace NAntGui.Core
 			// 
 			// VersionLabel
 			// 
-			this.VersionLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.VersionLabel.Font =
+				new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.VersionLabel.Location = new System.Drawing.Point(312, 24);
 			this.VersionLabel.Name = "VersionLabel";
 			this.VersionLabel.Size = new System.Drawing.Size(64, 16);
@@ -135,7 +143,9 @@ namespace NAntGui.Core
 			// 
 			// label5
 			// 
-			this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label5.Font =
+				new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.label5.Location = new System.Drawing.Point(8, 32);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(256, 16);
@@ -144,29 +154,37 @@ namespace NAntGui.Core
 			// 
 			// EmailLinkLabel
 			// 
-			this.EmailLinkLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.EmailLinkLabel.Font =
+				new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.EmailLinkLabel.Location = new System.Drawing.Point(248, 56);
 			this.EmailLinkLabel.Name = "EmailLinkLabel";
 			this.EmailLinkLabel.Size = new System.Drawing.Size(136, 16);
 			this.EmailLinkLabel.TabIndex = 7;
 			this.EmailLinkLabel.TabStop = true;
 			this.EmailLinkLabel.Text = "nantgui@swoogan.com";
-			this.EmailLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+			this.EmailLinkLabel.LinkClicked +=
+				new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
 			// WebLinkLabel
 			// 
-			this.WebLinkLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.WebLinkLabel.Font =
+				new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.WebLinkLabel.Location = new System.Drawing.Point(8, 56);
 			this.WebLinkLabel.Name = "WebLinkLabel";
 			this.WebLinkLabel.Size = new System.Drawing.Size(152, 16);
 			this.WebLinkLabel.TabIndex = 8;
 			this.WebLinkLabel.TabStop = true;
 			this.WebLinkLabel.Text = "http://nantgui.berlios.de";
-			this.WebLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.WebLinkLabel_LinkClicked);
+			this.WebLinkLabel.LinkClicked +=
+				new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.WebLinkLabel_LinkClicked);
 			// 
 			// label6
 			// 
-			this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label6.Font =
+				new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.label6.Location = new System.Drawing.Point(88, 8);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(200, 16);
@@ -183,13 +201,17 @@ namespace NAntGui.Core
 			// 
 			// listBox1
 			// 
-			this.listBox1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.listBox1.Font =
+				new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point,
+				                        ((System.Byte) (0)));
 			this.listBox1.HorizontalScrollbar = true;
-			this.listBox1.Items.AddRange(new object[] {
-														  "ICSharpCode.TextEditor Copyright © 2000-2005 icsharpcode.net",
-														  "PropertyBag Copyright © 2002  Tony Allowatt",
-														  "NAnt 0.8.5 Copyright © 2001-2004 Gerry Shaw",
-														  "Magic Library 1.7.4"});
+			this.listBox1.Items.AddRange(new object[]
+			                             	{
+			                             		"ICSharpCode.TextEditor Copyright © 2000-2005 icsharpcode.net",
+			                             		"PropertyBag Copyright © 2002  Tony Allowatt",
+			                             		"NAnt 0.8.5 Copyright © 2001-2004 Gerry Shaw",
+			                             		"Magic Library 1.7.4"
+			                             	});
 			this.listBox1.Location = new System.Drawing.Point(8, 88);
 			this.listBox1.Name = "listBox1";
 			this.listBox1.Size = new System.Drawing.Size(376, 69);
@@ -210,7 +232,7 @@ namespace NAntGui.Core
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.listBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "About";
@@ -218,14 +240,13 @@ namespace NAntGui.Core
 			this.Text = "About NAnt-Gui";
 			this.Load += new System.EventHandler(this.About_Load);
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion
 
 		private void About_Load(object sender, EventArgs e)
 		{
-			this.VersionLabel.Text = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+			VersionLabel.Text = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
 		}
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

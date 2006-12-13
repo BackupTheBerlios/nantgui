@@ -13,14 +13,15 @@ using System.Collections;
 
 namespace Crownwood.Magic.Collections
 {
-    // Declare the event signatures
-    public delegate void CollectionClear();
-    public delegate void CollectionChange(int index, object value);
+	// Declare the event signatures
+	public delegate void CollectionClear();
+
+	public delegate void CollectionChange(int index, object value);
 
 	public class CollectionWithEvents : CollectionBase
 	{
 		// Instance fields
-		private int _suspendCount; 
+		private int _suspendCount;
 
 		// Collection change events
 		public event CollectionClear Clearing;
@@ -63,7 +64,7 @@ namespace Crownwood.Magic.Collections
 				if (Clearing != null)
 					Clearing();
 			}
-		}	
+		}
 
 		protected override void OnClearComplete()
 		{
@@ -73,7 +74,7 @@ namespace Crownwood.Magic.Collections
 				if (Cleared != null)
 					Cleared();
 			}
-		}	
+		}
 
 		protected override void OnInsert(int index, object value)
 		{
@@ -122,4 +123,3 @@ namespace Crownwood.Magic.Collections
 		}
 	}
 }
-	

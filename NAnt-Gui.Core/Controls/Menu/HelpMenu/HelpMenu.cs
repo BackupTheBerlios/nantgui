@@ -44,16 +44,16 @@ namespace NAntGui.Core.Controls.Menu.HelpMenu
 			_nantSDK = new NAntSDKMenuCommand(mediator);
 			_about = new AboutMenuCommand(mediator);
 
-			this.Description = "MenuCommand";
-			this.MenuCommands.AddRange(new MenuCommand[]
-				{
-					_nant,
-					_nantSDK,
-					_nantContrib,
-					new MenuCommand("-"),
-					_about
-				});
-			this.Text = "&Help";
+			Description = "MenuCommand";
+			MenuCommands.AddRange(new MenuCommand[]
+			                      	{
+			                      		_nant,
+			                      		_nantSDK,
+			                      		_nantContrib,
+			                      		new MenuCommand("-"),
+			                      		_about
+			                      	});
+			Text = "&Help";
 		}
 	}
 }
