@@ -1,5 +1,5 @@
 <project name="CreateAssemblyInfo" default="main" basedir="." xmlns="http://nant.sf.net/release/0.85-rc4/nant.xsd">
-  <loadtasks assembly="..\Tools\nantcontrib-0.85-rc4\bin\NAnt.Contrib.Tasks.dll" />
+  <loadtasks assembly="..\Tools\nantcontrib-0.85\bin\NAnt.Contrib.Tasks.dll" />
 
 	<target name="main" description="main">
 		<loadfile file="..\build_number.txt" property="nantgui.version" />
