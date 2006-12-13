@@ -134,43 +134,29 @@ namespace NAntGui.Core
 		{
 			_scriptEditor.SaveFile(fileName);
 
-			_file = new SourceFile(fileName, _scriptEditor.Text,
+			_file				= new SourceFile(fileName, _scriptEditor.Text,
 			                       _file.MessageLogger, NAntGuiApp.Options);
+			_buildRunner		= BuildRunnerFactory.Create(_file);
+			_fileType			= FileType.Existing;
+			_scriptTab.Title	= _file.Name;
 
-			_buildRunner = BuildRunnerFactory.Create(_file);
-
-			//ReInitialize();
 			ParseBuildFile();
-			_mediator.UpdateDisplayAfterSaveAs();
 		}
 
 		public void Save()
 		{
 			if (_fileType == FileType.Existing)
 			{
-				Save(true);
+				_scriptEditor.SaveFile(_file.FullName);
+				_file.Contents = _scriptEditor.Text;
+				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
+				ParseBuildFile();
+				_mediator.UpdateDisplay(false);
 			}
 			else if (_fileType == FileType.New)
 			{
 				_mediator.SaveAsClicked();
 			}
-		}
-
-		public void Save(bool reInit)
-		{
-			_scriptEditor.SaveFile(_file.FullName);
-			_file.Contents = _scriptEditor.Text;
-
-			if (reInit) ReInitialize();
-		}
-
-		private void ReInitialize()
-		{
-			_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
-
-			ParseBuildFile();
-
-			_mediator.UpdateDisplay(false);
 		}
 
 		private void ParseBuildFile()

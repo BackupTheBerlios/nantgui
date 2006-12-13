@@ -59,8 +59,8 @@ namespace NAntGui.Core
 			InitMainForm();
 
 			_dockManager = new MainDockManager(_form, _sourceTabs,
-			                                   _targetsTree, _outputBox, 
-											   _propertyGrid, _statusBar);
+				_targetsTree, _outputBox, 
+				_propertyGrid, _statusBar);
 
 			LoadInitialBuildFile();
 		}
@@ -96,12 +96,12 @@ namespace NAntGui.Core
 			_outputBox.Clear();
 			_dockManager.ShowOutput();
 
-			ScriptTabPage selectedTab = _sourceTabs.SelectedTab;
+			ScriptTabPage tab = _sourceTabs.SelectedTab;
 
-			selectedTab.SetProperties(_propertyGrid.GetProperties());
-			selectedTab.SetTargets(_targetsTree.GetTargets());
-			selectedTab.Save(false);
-			selectedTab.Run();
+			tab.Save();
+			tab.SetProperties(_propertyGrid.GetProperties());
+			tab.SetTargets(_targetsTree.GetTargets());			
+			tab.Run();
 		}
 
 		private void Tab_BuildFinished()
@@ -120,6 +120,25 @@ namespace NAntGui.Core
 			_sourceTabs.SelectedTab.Save();
 			_mainMenu.Enable();
 			_toolBar.Enable();
+		}
+
+		public void SaveAsClicked()
+		{
+			string file = BuildFileBrowser.BrowseForSave();
+			if (file != null)
+			{
+				_sourceTabs.SelectedTab.SaveAs(file);
+				_sourceTabs.SelectedTab.BuildFinished = new VoidVoid(Tab_BuildFinished);
+
+				Settings.OpenInitialDir = _sourceTabs.SelectedTab.FilePath;
+
+				_mainMenu.AddRecentItem(file);
+
+				_mainMenu.Enable();
+				_toolBar.Enable();
+
+				UpdateDisplay(true);
+			}
 		}
 
 		public void ReloadClicked()
@@ -174,15 +193,7 @@ namespace NAntGui.Core
 			_dockManager.SaveConfig();
 		}
 
-		public void SaveAsClicked()
-		{
-			string file = BuildFileBrowser.BrowseForSave();
-			if (file != null)
-			{
-				_sourceTabs.SelectedTab.SaveAs(file);
-				LoadBuildFile(file);
-			}
-		}
+
 
 		public void SaveOutputClicked()
 		{
@@ -332,21 +343,6 @@ namespace NAntGui.Core
 				Utils.ShowFileNotFoundError(filename);
 				return false;
 			}
-		}
-
-		public void UpdateDisplayAfterSaveAs()
-		{
-			IBuildScript buildScript = _sourceTabs.SelectedTab.BuildScript;
-
-			_form.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
-
-			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.FileName;
-
-			_statusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
-			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.FileFullName;
-
-			_targetsTree.AddTargets(projectName, buildScript.Targets);
-			_propertyGrid.AddProperties(buildScript.Properties, firstLoad);
 		}
 
 		public void UpdateDisplay(bool firstLoad)

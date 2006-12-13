@@ -106,6 +106,7 @@ namespace NAntGui.NAnt
 			catch (BuildException error)
 			{
 				_sourceFile.MessageLogger.LogMessage(error.Message);
+				FinishBuild();
 			}
 		}
 
@@ -205,11 +206,17 @@ namespace NAntGui.NAnt
 
 		private void Build_Finished(object sender, BuildEventArgs e)
 		{
+			FinishBuild();
+		}
+
+		private void FinishBuild()
+		{
 			if (BuildFinished != null)
 			{
 				BuildFinished();
 			}
 		}
+
 
 		#region Properties
 

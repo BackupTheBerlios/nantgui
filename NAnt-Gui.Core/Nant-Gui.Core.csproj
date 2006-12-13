@@ -304,7 +304,7 @@
                 />
                 <File
                     RelPath = "Controls\Menu\MainMenuControl.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -314,37 +314,37 @@
                 />
                 <File
                     RelPath = "Controls\Menu\BuildMenu\BuildMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\BuildMenu\RunMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\BuildMenu\StopMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\CopyMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\CutMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\DeleteMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\EditMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -354,37 +354,37 @@
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\PasteMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\RedoMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\SelectAllMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\UndoMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\WordWrapMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\CloseMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\ExitMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -394,97 +394,97 @@
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\NewMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\OpenMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\RecentItemMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\RecentItemsMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\ReloadMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\SaveAsMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\SaveMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\SaveOutputMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\HelpMenu\AboutMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\HelpMenu\HelpMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\HelpMenu\NAntContribMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\HelpMenu\NAntHelpMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\HelpMenu\NAntSDKMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\ToolsMenu\OptionsMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\ToolsMenu\ToolsMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\ViewMenu\OutputMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\ViewMenu\PropertiesMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\ViewMenu\TargetsMenuCommand.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\Menu\ViewMenu\ViewMenu.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
