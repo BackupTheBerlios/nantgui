@@ -49,17 +49,18 @@ namespace NAntGui.Core
 
 		public MainFormMediator()
 		{
-			_form = new MainForm(this);
-			_mainMenu = new MainMenuControl(this);
-			_toolBar = new ToolBarControl(this);
-			_sourceTabs = new ScriptTabs(this);
-			_outputBox = new OutputBox(this);
-			_targetsTree = new TargetsTreeView(this);
+			_form			= new MainForm(this);
+			_mainMenu		= new MainMenuControl(this);
+			_toolBar		= new ToolBarControl(this);
+			_sourceTabs		= new ScriptTabs(this);
+			_outputBox		= new OutputBox(this);
+			_targetsTree	= new TargetsTreeView(this);
 
 			InitMainForm();
 
 			_dockManager = new MainDockManager(_form, _sourceTabs,
-			                                   _targetsTree, _outputBox, _propertyGrid, _statusBar);
+			                                   _targetsTree, _outputBox, 
+											   _propertyGrid, _statusBar);
 
 			LoadInitialBuildFile();
 		}
@@ -179,7 +180,7 @@ namespace NAntGui.Core
 			if (file != null)
 			{
 				_sourceTabs.SelectedTab.SaveAs(file);
-				//LoadBuildFile(XMLSaveFileDialog.FileName);
+				LoadBuildFile(file);
 			}
 		}
 
@@ -289,7 +290,7 @@ namespace NAntGui.Core
 			_sourceTabs.Clear();
 
 			ScriptTabPage page = new ScriptTabPage(_outputBox, this);
-			
+			// commented because it causes a crash.  
 			//page.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
 			_sourceTabs.AddTab(page);			
