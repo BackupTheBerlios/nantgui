@@ -61,14 +61,15 @@ namespace NAntGui.Framework
 			Assert.NotNull(contents, "contents");
 			Assert.NotNull(options, "options");
 
-			_fullName = buildFile;
-			_contents = contents;
-			_options = options;
-			FileInfo info = new FileInfo(_fullName);
-			_name = info.Name;
-			_path = info.DirectoryName;
-			_extension = info.Extension;
-			_messageLogger = messageLogger;
+			_fullName		= buildFile;
+			_contents		= contents;
+			_messageLogger	= messageLogger;
+			_options		= options;
+
+			FileInfo info	= new FileInfo(_fullName);
+			_name			= info.Name;
+			_path			= info.DirectoryName;
+			_extension		= info.Extension;
 
 			_watcher.WatchBuildFile(info);
 		}

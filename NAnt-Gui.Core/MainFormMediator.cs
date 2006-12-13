@@ -334,6 +334,21 @@ namespace NAntGui.Core
 			}
 		}
 
+		public void UpdateDisplayAfterSaveAs()
+		{
+			IBuildScript buildScript = _sourceTabs.SelectedTab.BuildScript;
+
+			_form.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
+
+			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.FileName;
+
+			_statusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
+			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.FileFullName;
+
+			_targetsTree.AddTargets(projectName, buildScript.Targets);
+			_propertyGrid.AddProperties(buildScript.Properties, firstLoad);
+		}
+
 		public void UpdateDisplay(bool firstLoad)
 		{
 			_outputBox.Clear();

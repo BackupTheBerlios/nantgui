@@ -139,7 +139,9 @@ namespace NAntGui.Core
 
 			_buildRunner = BuildRunnerFactory.Create(_file);
 
-			ReInitialize();
+			//ReInitialize();
+			ParseBuildFile();
+			_mediator.UpdateDisplayAfterSaveAs();
 		}
 
 		public void Save()
