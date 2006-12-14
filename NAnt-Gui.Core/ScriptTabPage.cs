@@ -128,6 +128,7 @@ namespace NAntGui.Core
 			_scriptTab.Title = _file.Name;
 
 			ParseBuildFile();
+			_mediator.UpdateDisplay(false);
 		}
 
 		public void SaveAs(string fileName)

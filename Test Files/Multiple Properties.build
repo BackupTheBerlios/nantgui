@@ -1,13 +1,12 @@
 <project default="Main">
 	<target name="Main" description="Main">
-		<tstamp property="tmp" pattern="yyyyMMdd" verbose="true" />
-		<!-- unless="${property::exists('tmp')}" -->
+		<tstamp property="tmp" pattern="yyyyMMdd" verbose="true" />		
 		<echo message="${tmp}" />
 		<call target="Not Main" />
 	</target>
 	
 	<target name="Not Main" description="not main">
 		<tstamp property="tmp" pattern="ddMMyyyy" verbose="true" />		
-		<echo message="${tmp}" />		
+		<echo message="${tmp}" />
 	</target>	
 </project>
