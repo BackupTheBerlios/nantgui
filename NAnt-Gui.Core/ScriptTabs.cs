@@ -38,15 +38,18 @@ namespace NAntGui.Core
 		public ScriptTabs(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
-			_tabControl = new MainTabControl(mediator);
-			_tabControl.ClosePressed += new EventHandler(Close_Pressed);
+			_tabControl = new MainTabControl(mediator);			
 			_tabControl.TabIndexChanged += new EventHandler(TabIndex_Changed);
+
+			// Comment because close doesn't do anything right now
+			//_tabControl.ClosePressed += new EventHandler(Close_Pressed);
 		}
 
-		private void Close_Pressed(object sender, EventArgs e)
-		{
-			Clear();
-		}
+		// Comment because close doesn't do anything right now
+//		private void Close_Pressed(object sender, EventArgs e)
+//		{
+//			Clear();
+//		}
 
 		private void TabIndex_Changed(object sender, EventArgs e)
 		{

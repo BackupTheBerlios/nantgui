@@ -44,6 +44,7 @@ namespace NAntGui.Core.Controls
 			Dock = DockStyle.Fill;
 			IDEPixelArea = true;
 			IDEPixelBorder = false;
+			ShowClose = false;
 
 			ResumeLayout(false);
 		}

@@ -1,11 +1,12 @@
-- If you click the close button on the tab collection, the file *sort of* closes. Should 
-  be disabled
+- 
 - If you sticky or unsticky the output box it loses it's formatting/highlighting
 - If using a different regional setting for currency and numbers (ie: Italian) the targets window 
   docks with 0 height
 
 
 1.3.3:
+FIXED:  If you click the close button on the tab collection, the file *sort of* closes. Should 
+		be disabled (NOTE: Removed close button from control and disabled it)
 FIXED:	If you load a file when you have changes to an open file, the file is loaded and your 
 		changes are lost!
 FIXED:  If you change a file, click new, click cancel, a new file is still created (changes are 
