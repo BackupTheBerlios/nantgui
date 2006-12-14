@@ -417,12 +417,6 @@ namespace Flobbster.Windows.Forms
 			set { type = value; }
 		}
 
-		public object Tag
-		{
-			get { return tag; }
-			set { tag = value; }
-		}
-
 		public string Key
 		{
 			get { return string.Format("{0}.{1}", category, name); }

@@ -36,29 +36,32 @@ namespace NAntGui.Core.Controls
 	{
 		private PropertyTable _propertyTable = new PropertyTable();
 		private NameValueCollection _commandLineProperties;
+		private PropertyCollection _properties;
 
 		public MainPropertyGrid()
 		{
 			_commandLineProperties = NAntGuiApp.Options.Properties;
+			_propertyTable.SetValue += new PropertySpecEventHandler(this.SetValue);
 
-			CommandsVisibleIfAvailable = true;
-			Dock = DockStyle.Fill;
-			LargeButtons = false;
-			LineColor = SystemColors.ScrollBar;
-			Location = new Point(0, 252);
-			Name = "ProjectPropertyGrid";
-			Size = new Size(175, 351);
-			TabIndex = 4;
-			Text = "Build Properties";
-			ViewBackColor = SystemColors.Window;
-			ViewForeColor = SystemColors.WindowText;
+			this.CommandsVisibleIfAvailable = true;
+			this.Dock		= DockStyle.Fill;
+			LargeButtons	= false;
+			LineColor		= SystemColors.ScrollBar;
+			Location		= new Point(0, 252);
+			Name			= "ProjectPropertyGrid";
+			Size			= new Size(175, 351);
+			TabIndex		= 4;
+			this.Text		= "Build Properties";
+			ViewBackColor	= SystemColors.Window;
+			ViewForeColor	= SystemColors.WindowText;
 		}
 
 		public void AddProperties(PropertyCollection properties, bool firstLoad)
 		{
 			_propertyTable.Properties.Clear();
+			_properties = properties;
 
-			foreach (BuildProperty property in properties)
+			foreach (BuildProperty property in _properties)
 			{
 				PropertySpec spec = new PropertySpec(property);
 				_propertyTable.Properties.Add(spec);
@@ -76,18 +79,23 @@ namespace NAntGui.Core.Controls
 			SelectedObject = _propertyTable;
 		}
 
+		private void SetValue(object sender, PropertySpecEventArgs e)
+		{			
+			_properties[e.Property.Name].Value = e.Value.ToString();			
+		}
+
 		public PropertyCollection GetProperties()
 		{
-			PropertyCollection properties = new PropertyCollection();
+//			PropertyCollection properties = new PropertyCollection();
+//
+//			foreach (PropertySpec spec in _propertyTable.Properties)
+//			{
+//				BuildProperty prop = (BuildProperty) spec.Tag;
+//				prop.Value = _propertyTable[spec.Key].ToString();
+//				properties.Add(prop);
+//			}
 
-			foreach (PropertySpec spec in _propertyTable.Properties)
-			{
-				BuildProperty prop = (BuildProperty) spec.Tag;
-				prop.Value = _propertyTable[spec.Key].ToString();
-				properties.Add(prop);
-			}
-
-			return properties;
+			return _properties;
 		}
 
 		public void Clear()
