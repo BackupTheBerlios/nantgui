@@ -117,7 +117,7 @@ namespace NAntGui.NAnt
 			try
 			{
 				expandedValue = _project.ExpandProperties(property.Value,
-				                                          new Location(_sourceFile.FullName));
+					new Location(_sourceFile.FullName));
 			}
 			catch (BuildException)
 			{
@@ -129,8 +129,7 @@ namespace NAntGui.NAnt
 			Regex regex = new Regex(@"\$\{.+\}");
 			if (!regex.IsMatch(expandedValue))
 			{
-				//_project.Properties.AddReadOnly(property.Name, expandedValue);
-				_project.Properties.Add(property.Name, expandedValue);
+				_project.Properties.AddReadOnly(property.Name, expandedValue);
 			}
 		}
 

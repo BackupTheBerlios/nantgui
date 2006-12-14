@@ -133,7 +133,7 @@ namespace NAntGui.NAnt
 
 						NAntProperty lNAntProperty =
 							new NAntProperty(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value,
-							                 false);
+							                 true);
 						lNAntProperty.ExpandedValue = lNAntProperty.Value;
 						_properties.Add(lNAntProperty);
 					}
