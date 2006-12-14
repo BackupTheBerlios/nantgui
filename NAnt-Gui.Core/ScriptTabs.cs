@@ -74,12 +74,7 @@ namespace NAntGui.Core
 		/// </summary>
 		public void Clear()
 		{
-			CancelEventArgs e = new CancelEventArgs();
-			foreach (ScriptTabPage page in _tabs)
-			{
-				page.Close(e);
-			}
-
+			//CloseTabs(new CancelEventArgs());
 			_tabControl.TabPages.Clear();
 			_tabs.Clear();
 		}

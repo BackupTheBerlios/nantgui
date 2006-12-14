@@ -77,16 +77,19 @@ namespace NAntGui.Core
 
 		public void NewClicked()
 		{
-			_form.Text = "NAnt-Gui";
+			if (CloseTabs())
+			{
+				_form.Text = "NAnt-Gui";
 
-			_propertyGrid.Clear();
-			_outputBox.Clear();
-			_targetsTree.Clear();
+				_propertyGrid.Clear();
+				_outputBox.Clear();
+				_targetsTree.Clear();
 
-			_mainMenu.Disable();
-			_toolBar.Disable();
+				_mainMenu.Disable();
+				_toolBar.Disable();
 
-			AddBlankTab();
+				AddBlankTab();
+			}
 		}
 
 		public void RunClicked()
@@ -169,13 +172,14 @@ namespace NAntGui.Core
 		/// </summary>
 		public void CloseClicked()
 		{
-			CancelEventArgs e = new CancelEventArgs();
-			_sourceTabs.CloseSelectedTab(e);
-
-			if (!e.Cancel)
-			{
-				NewClicked();
-			}
+//			CancelEventArgs e = new CancelEventArgs();
+//			_sourceTabs.CloseSelectedTab(e);
+//
+//			if (!e.Cancel)
+//			{
+//				NewClicked();
+//			}
+			NewClicked();
 		}
 
 		public void AboutClicked()
@@ -292,14 +296,17 @@ namespace NAntGui.Core
 			}
 		}
 
-		public void AddBlankTab()
+		private bool CloseTabs()
+		{
+			CancelEventArgs e = new CancelEventArgs();
+			_sourceTabs.CloseTabs(e);
+			return !e.Cancel;
+		}
+
+		private void AddBlankTab()
 		{
 			_sourceTabs.Clear();
-
 			ScriptTabPage page = new ScriptTabPage(_outputBox, this);
-			// commented because it causes a crash.  
-			//page.BuildFinished = new VoidVoid(Tab_BuildFinished);
-
 			_sourceTabs.AddTab(page);			
 		}
 
