@@ -82,7 +82,9 @@ namespace NAntGui.Core.Controls
 
 			foreach (PropertySpec spec in _propertyTable.Properties)
 			{
-				properties.Add((BuildProperty) spec.Tag);
+				BuildProperty prop = (BuildProperty) spec.Tag;
+				prop.Value = _propertyTable[spec.Key].ToString();
+				properties.Add(prop);
 			}
 
 			return properties;

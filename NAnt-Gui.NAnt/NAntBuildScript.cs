@@ -129,15 +129,15 @@ namespace NAntGui.NAnt
 			Regex regex = new Regex(@"\$\{.+\}");
 			if (!regex.IsMatch(expandedValue))
 			{
-				if (property.IsReadOnly) 
-				{
-					_project.Properties.AddReadOnly(property.Name, expandedValue); 
-				}
-				else 
-				{
-					_project.Properties.Add(property.Name, expandedValue); 
-				}
-//				_project.Properties.AddReadOnly(property.Name, expandedValue);
+//				if (property.IsReadOnly) 
+//				{
+//					_project.Properties.AddReadOnly(property.Name, expandedValue); 
+//				}
+//				else 
+//				{
+//					_project.Properties.Add(property.Name, expandedValue); 
+//				}
+				_project.Properties.AddReadOnly(property.Name, expandedValue);
 			}
 		}
 
