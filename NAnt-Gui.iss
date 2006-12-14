@@ -93,6 +93,12 @@ Source: NAnt-Gui.Unittests\*.resx; DestDir: {app}\src\Nant-Gui.Unittests; Flags:
 Source: NAnt-Gui.Unittests\*.csproj; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\*.build; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\*.bat; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
+; NAnt-Gui.Gui
+Source: NAnt-Gui.Gui\*.cs; DestDir: {app}\src\Nant-Gui.Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Gui\*.resx; DestDir: {app}\src\Nant-Gui.Gui; Flags: ignoreversion skipifsourcedoesntexist; Components: src
+Source: NAnt-Gui.Gui\*.csproj; DestDir: {app}\src\NAnt-Gui.Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Gui\*.build; DestDir: {app}\src\NAnt-Gui.Gui; Flags: ignoreversion; Components: src
+Source: NAnt-Gui.Gui\*.bat; DestDir: {app}\src\NAnt-Gui.Gui; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Core
 Source: NAnt-Gui.Core\Images\*; DestDir: {app}\src\Nant-Gui.Core\Images; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.cs; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion recursesubdirs; Components: src
