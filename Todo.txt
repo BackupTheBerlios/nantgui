@@ -1,3 +1,5 @@
++ Clean up how property bag works.  AKA, the events should change the values of the properties and the Tag property of the propertyspec class
+  can be removed as you don't need to store the actual nant property in the propertybag.properties collection
 + Modify the app.config file so that it points to the nant directory, then modify the app and 
   installer so that it loads the tasks from the nant directory instead of having to have the
   nant bin directory copied into the nant-gui bin directory
