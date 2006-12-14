@@ -312,38 +312,45 @@ namespace NAntGui.Core
 
 		private bool LoadBuildFile(string filename)
 		{
-			if (File.Exists(filename))
+			if (CloseTabs())
 			{
-				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
-				page.BuildFinished = new VoidVoid(Tab_BuildFinished);
-
-				Settings.OpenInitialDir = page.FilePath;
-
-				_sourceTabs.Clear();
-				_sourceTabs.AddTab(page);
-
-				string file = _sourceTabs.SelectedTab.FileFullName;
-				_mainMenu.AddRecentItem(file);
-
-				try
+				if (File.Exists(filename))
 				{
-					page.ParseBuildScript();
+					ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
+					page.BuildFinished = new VoidVoid(Tab_BuildFinished);
+
+					Settings.OpenInitialDir = page.FilePath;
+
+					_sourceTabs.Clear();
+					_sourceTabs.AddTab(page);
+
+					string file = _sourceTabs.SelectedTab.FileFullName;
+					_mainMenu.AddRecentItem(file);
+
+					try
+					{
+						page.ParseBuildScript();
+					}
+					catch (BuildFileLoadException error)
+					{
+						MessageBox.Show(error.Message, "Error Loading Build File",
+							MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					}
+
+					_mainMenu.Enable();
+					_toolBar.Enable();
+					UpdateDisplay(true);
+
+					return true;
 				}
-				catch (BuildFileLoadException error)
+				else
 				{
-					MessageBox.Show(error.Message, "Error Loading Build File",
-					                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					Utils.ShowFileNotFoundError(filename);
+					return false;
 				}
-
-				_mainMenu.Enable();
-				_toolBar.Enable();
-				UpdateDisplay(true);
-
-				return true;
 			}
 			else
 			{
-				Utils.ShowFileNotFoundError(filename);
 				return false;
 			}
 		}

@@ -1,5 +1,4 @@
 <project default="main">	
-
 	<property name="wak" value="10" unless="${property::exists('wak')}"/>
 	
 	<target name="main" description="main">
