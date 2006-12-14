@@ -27,45 +27,42 @@ namespace NAntGui.Framework
 {
 	public class BuildProperty
 	{
-		protected string _name = "";
-		protected string _value = "";
-		protected string _expandedValue = "";
-		protected string _category = "Global";
-		protected bool _isReadOnly = false;
+		private const string KEY = "{0}.{1}";
 
-		public BuildProperty()
-		{
-		}
+		private string _name;
+		private string _value;
+		private string _expandedValue;
+		private string _category;
+		private string _key;
+		private bool _readOnly;
 
-		public BuildProperty(string name)
+		public BuildProperty() : this("") {}
+
+		public BuildProperty(string name) : this(name, "") {}
+
+		public BuildProperty(string name, string value) : this(name, value, "Global") {}
+
+		public BuildProperty(string name, string value, string category) : 
+			this(name, value, category, false) {}
+
+		public BuildProperty(string name, string value, string category, bool readOnly) : 
+			this(name, value, category, readOnly, "") {}
+
+		public BuildProperty(string name, string value, string category, 
+			bool readOnly, string expandedValue)
 		{
 			Assert.NotNull(name, "name");
-			_name = name;
-		}
-
-		public BuildProperty(string name, string value) : this(name)
-		{
-			Assert.NotNull(value, "value");
-			_value = value;
-		}
-
-		public BuildProperty(string name, string value, string expandedValue) : this(name, value)
-		{
+			Assert.NotNull(value, "value");			
 			Assert.NotNull(expandedValue, "expandedValue");
-			_expandedValue = expandedValue;
-		}
-
-		public BuildProperty(string name, string value, string expandedValue,
-		                     string category) : this(name, value, expandedValue)
-		{
 			Assert.NotNull(category, "category");
-			_category = category;
-		}
 
-		public BuildProperty(string name, string value, string expandedValue,
-		                     string category, bool isReadOnly) : this(name, value, expandedValue, category)
-		{
-			_isReadOnly = isReadOnly;
+			_name = name;
+			_value = value;			
+			_expandedValue = expandedValue;			
+			_category = category;
+			_readOnly = readOnly;
+
+			_key = string.Format(KEY, category, name);
 		}
 
 		public virtual string Name
@@ -85,9 +82,14 @@ namespace NAntGui.Framework
 			set { _category = value; }
 		}
 
-		public virtual bool IsReadOnly
+		public virtual bool ReadOnly
 		{
-			get { return _isReadOnly; }
+			get { return _readOnly; }
+		}
+
+		public virtual string Key
+		{
+			get { return _key; }
 		}
 
 		public virtual Type Type

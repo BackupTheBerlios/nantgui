@@ -9,5 +9,5 @@
 	<target name="Not Main" description="not main">
 		<tstamp property="tmp" pattern="ddMMyyyy" verbose="true" />		
 		<echo message="${tmp}" />		
-	</target>
+	</target>	
 </project>

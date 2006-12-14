@@ -81,7 +81,7 @@ namespace NAntGui.Core.Controls
 
 		private void SetValue(object sender, PropertySpecEventArgs e)
 		{			
-			_properties[e.Property.Name].Value = e.Value.ToString();			
+			_properties[e.Property.Key].Value = e.Value.ToString();			
 		}
 
 		public PropertyCollection GetProperties()

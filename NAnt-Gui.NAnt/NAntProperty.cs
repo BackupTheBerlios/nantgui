@@ -31,58 +31,27 @@ namespace NAntGui.NAnt
 	/// </summary>
 	public class NAntProperty : BuildProperty
 	{
-//		private static int Count = 1;
-//		private int _rank;
+		public NAntProperty(XmlElement element) : 
+			this(element.GetAttribute("name"), 
+			element.GetAttribute("value"), 
+            GetCategory(element),
+			GetReadonly(element)) {}
 
-		public NAntProperty(XmlElement element)
+		public NAntProperty(string name, string value, string category, bool readOnly) :
+			base(name, value, category, readOnly) {}
+
+		private static bool GetReadonly(XmlElement element)
 		{
-			_category = "Global";
-			_isReadOnly = false;
-			_name = element.GetAttribute("name");
-			_value = element.GetAttribute("value");
-			SetIsReadonly(element);
-			SetCategory(element);
-//			_rank = Count++;
+			return element.HasAttribute("readonly") ? 
+				bool.Parse(element.GetAttribute("readonly")) :
+				false;
 		}
 
-		public NAntProperty(string name, string value, string category, bool isReadOnly)
+		private static string GetCategory(XmlElement element)
 		{
-			_name = name;
-			_value = value;
-			_category = category;
-			_isReadOnly = isReadOnly;
-//			_rank		= Count++;
+			return element.ParentNode.Name == "target" ?
+				element.ParentNode.Attributes["name"].Value :
+				"Global";
 		}
-
-		private void SetIsReadonly(XmlElement element)
-		{
-			if (element.HasAttribute("readonly"))
-			{
-				_isReadOnly = element.GetAttribute("readonly").Equals("true");
-			}
-		}
-
-		private void SetCategory(XmlElement element)
-		{
-			if (element.ParentNode.Name == "target")
-			{
-				foreach (XmlAttribute attribute in element.ParentNode.Attributes)
-				{
-					if (attribute.Name == "name")
-					{
-						_category = attribute.Value;
-					}
-				}
-			}
-		}
-
-//		#region Properties
-//
-//		public int Rank
-//		{
-//			get { return _rank; }
-//		}
-//
-//		#endregion
 	}
 }

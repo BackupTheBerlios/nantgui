@@ -334,7 +334,7 @@ namespace Flobbster.Windows.Forms
 		{
 			tag = property;
 
-			if (property.IsReadOnly)
+			if (property.ReadOnly)
 			{
 				attributes = new Attribute[] {ReadOnlyAttribute.Yes};
 			}
