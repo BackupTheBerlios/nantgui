@@ -1,7 +1,7 @@
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
-// Copyright (C) 2004-2005 Colin Svingen
+// Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -129,14 +129,6 @@ namespace NAntGui.NAnt
 			Regex regex = new Regex(@"\$\{.+\}");
 			if (!regex.IsMatch(expandedValue))
 			{
-//				if (property.IsReadOnly) 
-//				{
-//					_project.Properties.AddReadOnly(property.Name, expandedValue); 
-//				}
-//				else 
-//				{
-//					_project.Properties.Add(property.Name, expandedValue); 
-//				}
 				_project.Properties.AddReadOnly(property.Name, expandedValue);
 			}
 		}
