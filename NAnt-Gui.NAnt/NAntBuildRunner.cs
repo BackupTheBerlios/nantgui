@@ -46,7 +46,7 @@ namespace NAntGui.NAnt
 			{
 				_script.ParseBuildScript();
 			}
-			catch (ApplicationException error)
+			catch (Exception error)
 			{
 				throw new BuildFileLoadException(GetErrorMessage(error));
 			}
@@ -61,14 +61,12 @@ namespace NAntGui.NAnt
 #endif
 		}
 
-		private static string GetErrorMessage(ApplicationException error)
+		private static string GetErrorMessage(Exception error)
 		{
 			string message = "";
 #if DEBUG
-			string errorType = error.GetType().ToString()
-			                   + Environment.NewLine + error.StackTrace;
-
-			message += errorType;
+			message += error.GetType().ToString()
+				+ Environment.NewLine + error.StackTrace;
 #endif
 
 			if (error.InnerException != null && error.InnerException.Message != null)
