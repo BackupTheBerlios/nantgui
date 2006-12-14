@@ -435,6 +435,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Docking\TabStub.resx"
+                    DependentUpon = "TabStub.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Docking\Window.cs"
                     SubType = "Component"
                     BuildAction = "Compile"

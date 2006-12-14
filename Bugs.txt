@@ -1,4 +1,3 @@
-- 
 - If you sticky or unsticky the output box it loses it's formatting/highlighting
 - If using a different regional setting for currency and numbers (ie: Italian) the targets window 
   docks with 0 height

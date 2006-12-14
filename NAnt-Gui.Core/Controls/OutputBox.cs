@@ -25,7 +25,7 @@ namespace NAntGui.Core.Controls
 		private MainFormMediator _mediator;
 
 		public OutputBox(MainFormMediator mediator)
-		{
+		{			
 			Assert.NotNull(mediator, "value");
 			_mediator = mediator;
 			Initialize();
@@ -178,5 +178,15 @@ namespace NAntGui.Core.Controls
 			Clear();
 			WriteOutput(text);
 		}
+
+//		protected override void OnFontChanged(EventArgs e)
+//		{
+//			MessageBox.Show(this.Font.FontFamily.Name);
+//		}
+
+//		protected override void OnTextChanged(EventArgs e)
+//		{
+//			MessageBox.Show(this.Rtf);
+//		}
 	}
 }

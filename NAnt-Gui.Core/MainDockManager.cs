@@ -51,7 +51,6 @@ namespace NAntGui.Core
 			_outputBox = outputBox;
 			// Create the object that manages the docking state
 			_dockManager = new DockingManager(mainForm, VisualStyle.IDE);
-			// Ensure that the RichTextBox is always the innermost control
 
 			scriptTabs.SetToDockManager(this);
 
@@ -72,9 +71,20 @@ namespace NAntGui.Core
 			_targetWindowContent = _dockManager.AddContentWithState(_targetsContent, State.DockLeft) as WindowContent;
 			_dockManager.AddContentToZone(_propertiesContent, _targetWindowContent.ParentZone, 1);
 
-			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
+			WindowContent con = _dockManager.AddContentWithState(_outputContent, State.DockBottom);
 
-			_dockManager.ContentShown += new DockingManager.ContentHandler(ContentShown);
+//			Window wak = _dockManager.CreateWindowForContent(_outputContent, null, null, 
+//				new EventHandler(this.AutoHide), null);
+
+
+
+			// commented because it doesn't work.  event isn't fired when the sticky button
+			// is clicked
+//			_dockManager.ContentShown += new DockingManager.ContentHandler(ContentChanged);
+
+			// commented because it doesn't actually work.  The contents are changed after
+			// the event fires.
+//			_dockManager.ContentHidden += new DockingManager.ContentHandler(ContentChanged);
 
 			_dockManager.OuterControl = statusBar;
 
@@ -109,15 +119,21 @@ namespace NAntGui.Core
 			_dockManager.InnerControl = tabControl;
 		}
 
-		private void ContentShown(Content c, EventArgs cea)
+		private void AutoHide(object sender, EventArgs e)
 		{
-			if (c == _outputContent)
-			{
-				// have to do this because the highlighting is undone when
-				// the toolbox is reshown.  Didn't feel like wasting any time
-				// figuring out exactly why that happens.
-				_outputBox.ReHightlight();
-			}
+			_outputBox.ReHightlight();
 		}
+
+		// commented because it doesn't work
+//		private void ContentChanged(Content c, EventArgs cea)
+//		{
+//			if (c == _outputContent)
+//			{
+//				// have to do this because the highlighting is undone when
+//				// the toolbox is reshown.  Didn't feel like wasting any time
+//				// figuring out exactly why that happens.
+//				_outputBox.ReHightlight();
+//			}
+//		}
 	}
 }
