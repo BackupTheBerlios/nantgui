@@ -1,5 +1,5 @@
-<project default="main">
-	<target name="main" description="main">
+<project default="Main">
+	<target name="Main" description="Main">
 		<tstamp property="tmp" pattern="yyyyMMdd" verbose="true" />
 		<!-- unless="${property::exists('tmp')}" -->
 		<echo message="${tmp}" />

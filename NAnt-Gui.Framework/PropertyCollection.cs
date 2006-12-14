@@ -30,7 +30,6 @@ namespace NAntGui.Framework
 	/// </summary>
 	public class PropertyCollection : IEnumerable
 	{
-		private const string KEY = "{0}.{1}";
 		private Hashtable _properties;
 
 		public PropertyCollection()
@@ -38,25 +37,10 @@ namespace NAntGui.Framework
 			_properties = new Hashtable();
 		}
 
-//		public PropertyCollection(int size)
-//		{
-//			_properties = new Hashtable(size);
-//		}
-
 		public void Add(BuildProperty prop)
 		{
-			string key = string.Format(KEY, prop.Category, prop.Name);
-			_properties.Add(key, prop);
+			_properties.Add(prop.Key, prop);
 		}
-
-//		public void AddRange(PropertyCollection properties)
-//		{
-//			foreach (BuildProperty property in properties)
-//			{
-//				string key = string.Format(KEY, property.Category, property.Name);
-//				_properties.Add(key, property);
-//			}
-//		}
 
 		public IEnumerator GetEnumerator()
 		{

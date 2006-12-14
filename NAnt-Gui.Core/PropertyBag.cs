@@ -44,7 +44,7 @@ namespace Flobbster.Windows.Forms
 		private string name;
 		private string type;
 		private string typeConverter;
-		private object tag;
+		private string key;
 
 		/// <summary>
 		/// Initializes a new instance of the PropertySpec class.
@@ -332,7 +332,7 @@ namespace Flobbster.Windows.Forms
 		public PropertySpec(BuildProperty property) : this(property.Name, property.Type,
 		                                                   property.Category, property.ExpandedValue, property.Value)
 		{
-			tag = property;
+			key = property.Key;
 
 			if (property.ReadOnly)
 			{
@@ -419,7 +419,7 @@ namespace Flobbster.Windows.Forms
 
 		public string Key
 		{
-			get { return string.Format("{0}.{1}", category, name); }
+			get { return key; }
 		}
 	}
 
