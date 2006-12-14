@@ -1,5 +1,3 @@
-- If a target is "called" or is depended on, you can't override the values of its properties 
-  because it doesn't show up in the list of valid targets
 - Tabs don't actually get closed (change a file, click new, close app, you'll get file not saved 
   dialog)
 - If you sticky or unsticky the output box it loses it's formatting/highlighting
@@ -8,6 +6,8 @@
 
 
 1.3.3:
+FIXED:  If a target is "called" or is depended on, you can't override the values of its properties
+		because it doesn't show up in the list of valid targets
 FIXED:  If you change a value on the propertygrid, then hit reload, the value doesn't change back 
 		to the files value. If you hit reload again the value will change back.
 FIXED:  If you delete a property, or create a new one and save the file it doesn't reload the 

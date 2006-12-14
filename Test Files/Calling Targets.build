@@ -1,12 +1,24 @@
 <project default="main">	
-	<target name="main" description="main">
+	<target name="main" description="main" depends="mainDepends">
 		<property name="wak" value="10" />
 		<echo message="${wak}" />	
 		<call target="second" />
 	</target>
 	
-	<target name="second" description="not main">
+	<target name="mainDepends">
+		<property name="wak4" value="40" />
+		<echo message="${wak4}" />
+	</target>
+	
+	<target name="second" description="not main" depends="third">
 		<property name="wak2" value="20" />		
 		<echo message="${wak2}" />
 	</target>
+	
+	<target name="third">
+		<property name="wak3" value="30" />
+		<echo message="${wak3}" />
+	</target>
+	
+	
 </project>

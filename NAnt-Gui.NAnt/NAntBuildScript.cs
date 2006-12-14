@@ -75,7 +75,7 @@ namespace NAntGui.NAnt
 				{
 					_project.BaseDirectory = property.Value;
 				}
-				else if (property.Category == "Global" || ValidTarget(property.Category))
+				else //if (property.Category == "Global" || ValidTarget(property.Category))
 				{
 					LoadNonProjectProperty(property);
 				}
@@ -138,10 +138,10 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		private bool ValidTarget(string category)
-		{
-			return _project.BuildTargets.Contains(category);
-		}
+//		private bool ValidTarget(string category)
+//		{
+//			return _project.BuildTargets.Contains(category);
+//		}
 
 		/// <summary>
 		/// Add the listeners specified in the command line arguments,
