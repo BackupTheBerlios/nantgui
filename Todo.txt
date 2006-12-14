@@ -1,3 +1,6 @@
++ Change the way that NAntBuildScript.cs:LoadNonProjectProperty:134 works.  Right now it adds all
+  properties from the Gui regardless of whether the property's value has change.  Only propertys 
+  with changed values should be added.
 + Clean up how property bag works.  AKA, the events should change the values of the properties and the Tag property of the propertyspec class
   can be removed as you don't need to store the actual nant property in the propertybag.properties collection
 + Modify the app.config file so that it points to the nant directory, then modify the app and 

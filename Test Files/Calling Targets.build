@@ -1,0 +1,12 @@
+<project default="main">	
+	<target name="main" description="main">
+		<property name="wak" value="10" />
+		<echo message="${wak}" />	
+		<call target="second" />
+	</target>
+	
+	<target name="second" description="not main">
+		<property name="wak2" value="20" />		
+		<echo message="${wak2}" />
+	</target>
+</project>

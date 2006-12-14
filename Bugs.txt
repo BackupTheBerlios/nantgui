@@ -5,10 +5,11 @@
 - If you sticky or unsticky the output box it loses it's formatting/highlighting
 - If using a different regional setting for currency and numbers (ie: Italian) the targets window 
   docks with 0 height
-- If you change a value on the propertygrid, then hit reload, the value doesn't change back to the 
-  files value. If you hit reload again the value will change back.
+
 
 1.3.3:
+FIXED:  If you change a value on the propertygrid, then hit reload, the value doesn't change back 
+		to the files value. If you hit reload again the value will change back.
 FIXED:  If you delete a property, or create a new one and save the file it doesn't reload the 
 		properties. This is true even if you reload the file.
 FIXED:  008651 Exception raised parsing 2 tstamps for to the same property

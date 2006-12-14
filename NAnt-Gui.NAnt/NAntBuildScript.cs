@@ -129,6 +129,8 @@ namespace NAntGui.NAnt
 			Regex regex = new Regex(@"\$\{.+\}");
 			if (!regex.IsMatch(expandedValue))
 			{
+				// TODO: should change the following to add the property only 
+				// if it changed.  This would fix a lot of weird behaviour.
 				if (!property.ReadOnly)
 				{
 					_project.Properties.AddReadOnly(property.Name, expandedValue);
