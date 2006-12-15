@@ -183,6 +183,11 @@ Name: examples; Description: Example NAnt build files; Types: full
 Name: docs; Description: NAnt documentation files; Types: custom full
 Name: src; Description: Source code files; Types: full
 
+[InstallDelete]
+Name: {app}\src\Tools\ispack-5.1.6.exe; Type: files; Components: src
+Name: {app}\src\Tools\nant-0.85-rc3; Type: filesandordirs; Components: src
+Name: {app}\src\Tools\nantcontrib-0.85-rc3; Type: filesandordirs; Components: src
+
 [Code]
 function GetENVPath(Param: string) : string;
 var
