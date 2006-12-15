@@ -19,7 +19,7 @@
 
   <target name="Release" description="Build Release App">
   	<version path="build_number.txt" prefix="nantgui" revisiontype="Increment" buildtype="NoIncrement" />
-	<solution configuration="release" solutionfile="NAnt-Gui.sln" />
+	<solution configuration="release" solutionfile="NAnt-Gui.sln" verbose="true" />
   </target>
 
   <target name="Clean" description="Delete all the binaries">

@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = "$(ProjectDir)\PreBuild.bat"
+                PreBuildEvent = '"$(ProjectDir)\PreBuild.bat"'
                 PostBuildEvent = ""
                 RootNamespace = "NAnt_Gui.Gui"
                 RunPostBuildEvent = "OnBuildSuccess"
