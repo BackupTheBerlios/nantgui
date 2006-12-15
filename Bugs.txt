@@ -19,7 +19,7 @@ FIXED:  If you delete a property, or create a new one and save the file it doesn
 FIXED:  008651 Exception raised parsing 2 tstamps for to the same property
 FIXED:  If the app crashes when it's loading it should remove the file from the list so it 
 		doesn't keep reloading the file and crashing
-FIXED: 008276 Exception Error when open NHibernateSolution.build
+FIXED:  008276 Exception Error when open NHibernateSolution.build
 FIXED:  007607 Crash using Italian regional settings
 FIXED:  007388 Global props set via GUI don't "take"? 
 FIXED:  008322 Error parsing Nant 0.85 rc4
