@@ -151,9 +151,12 @@ namespace NAntGui.NAnt
 					if (task != null && task.PropertyName != null)
 					{
 						task.Execute();
-
+						
+						object val = task.Properties[task.PropertyName];
+						string value = val == null ? "" : val.ToString();
+						
 						NAntProperty nAntProperty = new NAntProperty(
-							task.PropertyName, task.Properties[task.PropertyName],
+							task.PropertyName, value,
 							element.ParentNode.Attributes["name"].Value, false);
 
 						nAntProperty.ExpandedValue = nAntProperty.Value;

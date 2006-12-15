@@ -8,7 +8,7 @@
     <innosetup script="NAnt-Gui.iss" />
   </target>
 
-  <target name="RunInstaller" description="Run's the InnoSetup Installer">
+  <target name="RunInstaller" description="Run the InnoSetup Installer">
   	<loadfile file="build_number.txt" property="nantgui.version" />
     <exec program="installer\NAnt-Gui-${nantgui.version}.exe" />
   </target>
