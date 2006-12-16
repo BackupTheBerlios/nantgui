@@ -19,7 +19,7 @@ namespace Crownwood.Magic.Collections
 		public HotZone Add(HotZone value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Add(value as object);
+			List.Add(value);
 
 			return value;
 		}
@@ -34,36 +34,36 @@ namespace Crownwood.Magic.Collections
 		public void Remove(HotZone value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public void Insert(int index, HotZone value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Insert(index, value as object);
+			List.Insert(index, value);
 		}
 
 		public bool Contains(HotZone value)
 		{
 			// Use base class to process actual collection operation
-			return base.List.Contains(value as object);
+			return List.Contains(value);
 		}
 
 		public HotZone this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as HotZone); }
+			get { return (List[index] as HotZone); }
 		}
 
 		public int IndexOf(HotZone value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 
 		public HotZone Contains(Point pt)
 		{
-			foreach (HotZone hz in base.List)
+			foreach (HotZone hz in List)
 			{
 				if (hz.HotArea.Contains(pt))
 					return hz;

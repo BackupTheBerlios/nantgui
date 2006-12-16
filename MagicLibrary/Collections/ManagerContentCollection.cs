@@ -35,7 +35,7 @@ namespace Crownwood.Magic.Collections
 			Content c = new Content(_manager);
 
 			// Use base class to process actual collection operation
-			base.List.Add(c as object);
+			List.Add(c);
 
 			return c;
 		}
@@ -47,7 +47,7 @@ namespace Crownwood.Magic.Collections
 			c.DockingManager = _manager;
 
 			// Use base class to process actual collection operation
-			base.List.Add(c as object);
+			List.Add(c);
 
 			return c;
 		}
@@ -57,7 +57,7 @@ namespace Crownwood.Magic.Collections
 			Content c = new Content(_manager, control);
 
 			// Use base class to process actual collection operation
-			base.List.Add(c as object);
+			List.Add(c);
 
 			return c;
 		}
@@ -67,7 +67,7 @@ namespace Crownwood.Magic.Collections
 			Content c = new Content(_manager, control, title);
 
 			// Use base class to process actual collection operation
-			base.List.Add(c as object);
+			List.Add(c);
 
 			return c;
 		}
@@ -77,7 +77,7 @@ namespace Crownwood.Magic.Collections
 			Content c = new Content(_manager, control, title, imageList, imageIndex);
 
 			// Use base class to process actual collection operation
-			base.List.Add(c as object);
+			List.Add(c);
 
 			return c;
 		}
@@ -85,19 +85,19 @@ namespace Crownwood.Magic.Collections
 		public void Remove(Content value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public bool Contains(Content value)
 		{
 			// Use base class to process actual collection operation
-			return base.List.Contains(value as object);
+			return List.Contains(value);
 		}
 
 		public Content this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as Content); }
+			get { return (List[index] as Content); }
 		}
 
 		public Content this[string title]
@@ -105,7 +105,7 @@ namespace Crownwood.Magic.Collections
 			get
 			{
 				// Search for a Content with a matching title
-				foreach (Content c in base.List)
+				foreach (Content c in List)
 					if (c.Title == title)
 						return c;
 
@@ -117,8 +117,8 @@ namespace Crownwood.Magic.Collections
 		{
 			SuspendEvents();
 
-			base.List.Remove(value);
-			base.List.Insert(newIndex, value);
+			List.Remove(value);
+			List.Insert(newIndex, value);
 
 			ResumeEvents();
 
@@ -128,7 +128,7 @@ namespace Crownwood.Magic.Collections
 		public int IndexOf(Content value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 
 		public ContentCollection Copy()
@@ -136,7 +136,7 @@ namespace Crownwood.Magic.Collections
 			ContentCollection clone = new ContentCollection();
 
 			// Copy each reference across
-			foreach (Content c in base.List)
+			foreach (Content c in List)
 				clone.Add(c);
 
 			return clone;

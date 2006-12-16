@@ -37,8 +37,8 @@ namespace Crownwood.Magic.Docking
 			_newSize.Width = floatSize.Width;
 			_newSize.Height = floatSize.Height + SystemInformation.ToolWindowCaptionHeight;
 
-			_offset.X = (int) ((float) _offset.X*widthPercentage);
-			_offset.Y = (int) ((float) _offset.Y*heightPercentage);
+			_offset.X = (int) (_offset.X * widthPercentage);
+			_offset.Y = (int) (_offset.Y*heightPercentage);
 
 			// We do not want the indicator to be too far away from the cursor, so limit check the offset
 			if (_offset.X > newSize.Width)
@@ -187,7 +187,7 @@ namespace Crownwood.Magic.Docking
 			Size floatingSize = new Size(0, 0);
 
 			// Get specific redocker type
-			RedockerContent redock = _redocker as RedockerContent;
+			RedockerContent redock = _redocker;
 
 			switch (redock.DockingSource)
 			{

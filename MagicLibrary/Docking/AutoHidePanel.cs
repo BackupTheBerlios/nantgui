@@ -975,8 +975,6 @@ namespace Crownwood.Magic.Docking
 			_currentWCT.Width = _slideRect.Width;
 			_currentWCT.Height = _slideRect.Height;
 
-			Size barSize = _currentPanel.ResizeBarSize();
-
 			// Set the initial size/location of Panel and hosted WCT
 			switch (Dock)
 			{

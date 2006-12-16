@@ -68,24 +68,11 @@ namespace NAntGui.Core
 			_outputContent.ImageIndex = 6;
 
 			// Request a new Docking window be created for the above Content on the left edge
-			_targetWindowContent = _dockManager.AddContentWithState(_targetsContent, State.DockLeft) as WindowContent;
+			_targetWindowContent = _dockManager.AddContentWithState(_targetsContent, State.DockLeft);
 			_dockManager.AddContentToZone(_propertiesContent, _targetWindowContent.ParentZone, 1);
 
-			WindowContent con = _dockManager.AddContentWithState(_outputContent, State.DockBottom);
-
-//			Window wak = _dockManager.CreateWindowForContent(_outputContent, null, null, 
-//				new EventHandler(this.AutoHide), null);
-
-
-
-			// commented because it doesn't work.  event isn't fired when the sticky button
-			// is clicked
-//			_dockManager.ContentShown += new DockingManager.ContentHandler(ContentChanged);
-
-			// commented because it doesn't actually work.  The contents are changed after
-			// the event fires.
-//			_dockManager.ContentHidden += new DockingManager.ContentHandler(ContentChanged);
-
+			_dockManager.AddContentWithState(_outputContent, State.DockBottom);
+			
 			_dockManager.OuterControl = statusBar;
 
 			_dockManager.LoadConfigFromFile(DOCKING_CONFIG);

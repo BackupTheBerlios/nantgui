@@ -119,7 +119,7 @@ namespace Crownwood.Magic.Collections
 		protected int IndexOf(object value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 	}
 }
