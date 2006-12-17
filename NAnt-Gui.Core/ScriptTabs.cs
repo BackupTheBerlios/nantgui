@@ -25,9 +25,9 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using NAntGui.Core.Controls;
+using NAntGui.Gui.Controls;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	public class ScriptTabs
 	{

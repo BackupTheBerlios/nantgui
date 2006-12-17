@@ -25,7 +25,7 @@ using Crownwood.Magic.Common;
 
 #endregion
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for NAntGuiApp.

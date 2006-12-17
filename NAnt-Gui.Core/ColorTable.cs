@@ -25,7 +25,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for ColorTable.

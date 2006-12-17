@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for Utils.

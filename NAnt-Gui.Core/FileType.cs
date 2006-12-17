@@ -1,4 +1,4 @@
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for FileType.

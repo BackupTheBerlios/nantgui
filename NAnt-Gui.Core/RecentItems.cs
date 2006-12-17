@@ -24,7 +24,7 @@
 using System.Collections;
 using Microsoft.Win32;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for RecentItems.

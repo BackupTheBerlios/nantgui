@@ -33,7 +33,7 @@ using NAntGui.Framework;
 using TabPage = Crownwood.Magic.Controls.TabPage;
 using TargetCollection = NAntGui.Framework.TargetCollection;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// This class needs to be separated.  Currently there is a mingling between
