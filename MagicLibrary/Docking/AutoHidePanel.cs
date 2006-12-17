@@ -1207,7 +1207,7 @@ namespace Crownwood.Magic.Docking
 		protected void UnAutoHideWindowContent(WindowContentTabbed wct, bool forceKill)
 		{
 			// Do not generate hiding/hidden/shown events
-			_manager.SurpressVisibleEvents += 1;
+			//_manager.SurpressVisibleEvents += 1;
 
 			// Find the TabStub instance for the showing WCT
 			foreach (TabStub ts in Controls)
@@ -1262,7 +1262,7 @@ namespace Crownwood.Magic.Docking
 				Hide();
 
 			// Enable generation hiding/hidden/shown events
-			_manager.SurpressVisibleEvents -= 1;
+			//_manager.SurpressVisibleEvents -= 1;
 		}
 
 		protected void OnPageContextMenu(Point screenPos)

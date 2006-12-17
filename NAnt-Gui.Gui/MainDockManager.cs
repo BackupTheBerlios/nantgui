@@ -38,7 +38,7 @@ namespace NAntGui.Gui
 	{
 		private static readonly string DOCKING_CONFIG = Application.StartupPath + "\\MainFormDocking.config";
 
-		private DockingManager _dockManager;
+		private NAntGuiDockingManager _dockManager;
 		private WindowContent _targetWindowContent;
 		private Content _targetsContent;
 		private Content _propertiesContent;
@@ -51,7 +51,8 @@ namespace NAntGui.Gui
 			Assert.NotNull(outputBox, "outputBox");
 			_outputBox = outputBox;
 			// Create the object that manages the docking state
-			_dockManager = new DockingManager(mainForm, VisualStyle.IDE);
+			_dockManager = new NAntGuiDockingManager(mainForm, VisualStyle.IDE);
+			_dockManager.InvertAutoHide += new EventHandler(AutoHide);
 
 			scriptTabs.SetToDockManager(this);
 

@@ -77,19 +77,19 @@ namespace NAntGui.Gui
 
 		public void NewClicked()
 		{
-			if (CloseTabs())
-			{
-				_form.Text = "NAnt-Gui";
+//			if (CloseTabs())
+//			{
+//				_form.Text = "NAnt-Gui";
 
-				_propertyGrid.Clear();
-				_outputBox.Clear();
-				_targetsTree.Clear();
-
-				_mainMenu.Disable();
-				_toolBar.Disable();
+//				_propertyGrid.Clear();
+//				_outputBox.Clear();
+//				_targetsTree.Clear();
+//
+//				_mainMenu.Disable();
+//				_toolBar.Disable();
 
 				AddBlankTab();
-			}
+//			}
 		}
 
 		public void RunClicked()
@@ -172,14 +172,13 @@ namespace NAntGui.Gui
 		/// </summary>
 		public void CloseClicked()
 		{
-//			CancelEventArgs e = new CancelEventArgs();
-//			_sourceTabs.CloseSelectedTab(e);
-//
-//			if (!e.Cancel)
-//			{
-//				NewClicked();
-//			}
-			NewClicked();
+			CancelEventArgs e = new CancelEventArgs();
+			_sourceTabs.CloseSelectedTab(e);
+
+			if (!e.Cancel && _sourceTabs.TabCount == 0)
+			{
+				NewClicked();
+			}
 		}
 
 		public void AboutClicked()
@@ -305,7 +304,7 @@ namespace NAntGui.Gui
 
 		private void AddBlankTab()
 		{
-			_sourceTabs.Clear();
+//			_sourceTabs.Clear();
 			ScriptTabPage page = new ScriptTabPage(_outputBox, this);
 			_sourceTabs.AddTab(page);			
 		}
@@ -321,7 +320,7 @@ namespace NAntGui.Gui
 
 					Settings.OpenInitialDir = page.FilePath;
 
-					_sourceTabs.Clear();
+//					_sourceTabs.Clear();
 					_sourceTabs.AddTab(page);
 
 					string file = _sourceTabs.SelectedTab.FileFullName;
@@ -432,6 +431,11 @@ namespace NAntGui.Gui
 		public void DeleteClicked()
 		{
 			_editCommands.Delete();
+		}
+
+		public void TabIndexChanged()
+		{
+			;
 		}
 	}
 }

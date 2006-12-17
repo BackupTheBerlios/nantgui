@@ -1,8 +1,3 @@
-using System.Drawing;
-using System.Windows.Forms;
-using Crownwood.Magic.Common;
-using NAntGui.Framework;
-
 #region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
@@ -26,39 +21,40 @@ using NAntGui.Framework;
 
 #endregion
 
+using System;
+using System.Windows.Forms;
+using Crownwood.Magic.Common;
+using Crownwood.Magic.Docking;
+
 namespace NAntGui.Gui
 {
 	/// <summary>
-	/// Summary description for NAntGuiApp.
+	/// Summary description for NAntGuiDockingManager.
 	/// </summary>
-	public class NAntGuiApp
+	public class NAntGuiDockingManager : DockingManager
 	{
-		private const string IMAGE_PATH = "NAntGui.Gui.Images.MenuItems.bmp";
-		private static CommandLineOptions _options;
-		private static ImageList _imageList;
-
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		public static void Run(CommandLineOptions options)
+		public event EventHandler InvertAutoHide;
+		
+		public NAntGuiDockingManager(ContainerControl container, VisualStyle vs) : base(container, vs) {}
+		
+		protected override void OnInvertAutoHide(object sender, EventArgs e)
 		{
-			_options = options;
-
-			_imageList = ResourceHelper.LoadBitmapStrip(typeof (NAntGuiApp),
-			                                            IMAGE_PATH, new Size(16, 16), new Point(0, 0));
-
-			MainFormMediator mediator = new MainFormMediator();
-			mediator.RunApplication();
+			base.OnInvertAutoHide(sender, e);
+			
+			if (InvertAutoHide != null)
+			{
+				InvertAutoHide(sender, e);
+			}
 		}
-
-		public static CommandLineOptions Options
+		
+		public override bool ShowContent(Content c)
 		{
-			get { return _options; }
-		}
-
-		public static ImageList ImageList
-		{
-			get { return _imageList; }
+			if (InvertAutoHide != null)
+			{
+				InvertAutoHide(this, EventArgs.Empty);
+			}
+			
+			return base.ShowContent(c);
 		}
 	}
 }

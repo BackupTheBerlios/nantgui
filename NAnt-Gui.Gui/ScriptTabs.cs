@@ -35,39 +35,45 @@ namespace NAntGui.Gui
 		private ArrayList _tabs = new ArrayList();
 		private MainTabControl _tabControl;
 		private ScriptTabPage _selectedTab;
+		private MainFormMediator _mediator;
 
 		public ScriptTabs(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
+			_mediator	= mediator;
 			_tabControl = new MainTabControl(mediator);			
+			
 			_tabControl.TabIndexChanged += new EventHandler(TabIndex_Changed);
-
-			// Comment because close doesn't do anything right now
-			//_tabControl.ClosePressed += new EventHandler(Close_Pressed);
+			_tabControl.ClosePressed += new EventHandler(Close_Pressed);
 		}
 
 		// Comment because close doesn't do anything right now
-//		private void Close_Pressed(object sender, EventArgs e)
-//		{
-//			Clear();
-//		}
+		private void Close_Pressed(object sender, EventArgs e)
+		{
+			CancelEventArgs ce = new CancelEventArgs();
+			_selectedTab.Close(ce);
+		}
 
 		private void TabIndex_Changed(object sender, EventArgs e)
 		{
-			foreach (ScriptTabPage page in _tabs)
-			{
-				if (page.Equals(_tabControl.SelectedTab))
-				{
-					_selectedTab = page;
-				}
-			}
+//			foreach (ScriptTabPage page in _tabs)
+//			{
+//				if (page.Equals(_tabControl.SelectedTab))
+//				{
+//					_selectedTab = page;
+//				}
+//			}
+			
+			int index = _tabs.IndexOf(_tabControl.SelectedTab);
+			_selectedTab = _tabs[index] as ScriptTabPage;
+			_mediator.TabIndexChanged();
 		}
 
 		public void AddTab(ScriptTabPage tab)
 		{
 			Assert.NotNull(tab, "tab");
 			_tabs.Add(tab);
-			tab.AddTabToControl(_tabControl.TabPages);
+			_tabControl.TabPages.Add(tab.ScriptTab);
 			_selectedTab = tab;
 			_selectedTab.Focus();
 			//_tabControl.SelectedTab = tab.ScriptTab;
@@ -76,12 +82,12 @@ namespace NAntGui.Gui
 		/// <summary>
 		/// Temporary. To be removed when multiple tabs are allowed.
 		/// </summary>
-		public void Clear()
-		{
-			//CloseTabs(new CancelEventArgs());
-			_tabControl.TabPages.Clear();
-			_tabs.Clear();
-		}
+//		public void Clear()
+//		{
+//			//CloseTabs(new CancelEventArgs());
+//			_tabControl.TabPages.Clear();
+//			_tabs.Clear();
+//		}
 
 		/// <summary>
 		/// Called when the application is closing and
@@ -119,11 +125,18 @@ namespace NAntGui.Gui
 		public void CloseSelectedTab(CancelEventArgs e)
 		{
 			_selectedTab.Close(e);
+			_tabControl.TabPages.Remove(_selectedTab.ScriptTab);
+			_tabs.Remove(_selectedTab);
 		}
 
 		public ScriptTabPage SelectedTab
 		{
 			get { return _selectedTab; }
+		}
+
+		public int TabCount
+		{
+			get { return _tabs.Count; }
 		}
 	}
 }

@@ -225,11 +225,12 @@ namespace NAntGui.Gui
 
 		public void Close(CancelEventArgs e)
 		{
+			DialogResult result;
+			
 			if (IsDirty)
 			{
-				DialogResult result =
-					MessageBox.Show("You have unsaved changes to " + _file.Name + ".  Save?", "Save Changes?",
-					                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+				result = MessageBox.Show("You have unsaved changes to " + _file.Name + ".  Save?", 
+							"Save Changes?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
 
 				if (result == DialogResult.Yes)
 				{
@@ -239,20 +240,24 @@ namespace NAntGui.Gui
 				{
 					e.Cancel = true;
 				}
-
-				if (result != DialogResult.Cancel)
-				{
-					_file.Close();
-					_file = null;
-					_buildRunner = null;
-				}
+			}
+			else
+			{
+				result = DialogResult.Yes;
+			}
+			
+			if (result != DialogResult.Cancel)
+			{
+				_file.Close();
+				_file = null;
+				_buildRunner = null;
 			}
 		}
 
-		public void AddTabToControl(TabPageCollection tabPages)
-		{
-			tabPages.Add(_scriptTab);
-		}
+//		public void AddTabToControl(TabPageCollection tabPages)
+//		{
+//			tabPages.Add(_scriptTab);
+//		}
 
 		public bool Equals(TabPage page)
 		{
@@ -332,6 +337,11 @@ namespace NAntGui.Gui
 		public bool IsDirty
 		{
 			get { return _file.Contents != _scriptEditor.Text; }
+		}
+		
+		public TabPage ScriptTab
+		{
+			get { return _scriptTab; }
 		}
 
 		#endregion
