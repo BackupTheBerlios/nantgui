@@ -90,13 +90,13 @@
                     HintPath = "..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "NAnt-Gui.Framework"
-                    Project = "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
+                    Name = "NAnt-Gui.NAnt"
+                    Project = "{B42F3791-EDD7-494A-9229-A565588F2EF0}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "NAnt-Gui.NAnt"
-                    Project = "{B42F3791-EDD7-494A-9229-A565588F2EF0}"
+                    Name = "NAnt-Gui.Framework"
+                    Project = "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>

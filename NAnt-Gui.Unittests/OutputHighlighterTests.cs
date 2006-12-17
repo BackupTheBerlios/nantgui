@@ -21,7 +21,7 @@
 
 #endregion
 
-using NAntGui.Core;
+using NAntGui.Gui;
 using NUnit.Framework;
 
 namespace NAntGui.Unittests
@@ -32,10 +32,6 @@ namespace NAntGui.Unittests
 	[TestFixture]
 	public class OutputHighlighterTests
 	{
-		public OutputHighlighterTests()
-		{
-		}
-
 		[Test]
 		public void ModifyBuildFailed()
 		{

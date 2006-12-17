@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using NAntGui.Framework;
 using NAntGui.Gui.Controls;
 
 namespace NAntGui.Gui

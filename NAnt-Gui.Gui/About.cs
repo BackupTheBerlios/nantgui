@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for About.
@@ -41,9 +41,9 @@ namespace NAntGui.Core
 		private Label label5;
 		private LinkLabel EmailLinkLabel;
 		private LinkLabel WebLinkLabel;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.ListBox listBox1;
+		private Label label6;
+		private GroupBox groupBox1;
+		private ListBox listBox1;
 
 		/// <summary>
 		/// Required designer variable.

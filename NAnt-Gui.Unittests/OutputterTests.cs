@@ -21,7 +21,7 @@
 
 #endregion
 
-using NAntGui.Core;
+using NAntGui.Gui;
 using NUnit.Framework;
 
 namespace NAntGui.Unittests
@@ -32,13 +32,6 @@ namespace NAntGui.Unittests
 	[TestFixture]
 	public class OutputterTests
 	{
-		public OutputterTests()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
 		[Test]
 		public void Document()
 		{

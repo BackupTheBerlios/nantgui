@@ -25,7 +25,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for Options.

@@ -25,10 +25,11 @@ using System;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
-using NAntGui.Core.Controls;
+using NAntGui.Framework;
+using NAntGui.Gui.Controls;
 using TabControl = Crownwood.Magic.Controls.TabControl;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for MainDockManager.
