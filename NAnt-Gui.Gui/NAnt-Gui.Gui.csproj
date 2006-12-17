@@ -148,6 +148,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NAntGuiApp.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NewProjectForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -170,6 +175,16 @@
                 <File
                     RelPath = "PreBuild.bat"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "ScriptTabPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ScriptTabs.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\MainPropertyGrid.cs"

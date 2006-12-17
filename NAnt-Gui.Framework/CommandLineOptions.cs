@@ -22,7 +22,7 @@ using System.Collections.Specialized;
 using System.IO;
 using NAnt.Core.Util;
 
-namespace NAntGui
+namespace NAntGui.Framework
 {
 	/// <summary>
 	/// Represents the set of command-line options supported by NAnt.

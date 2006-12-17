@@ -23,7 +23,7 @@
 
 using System;
 
-namespace NAntGui
+namespace NAntGui.Framework
 {
 	/// <summary>
 	/// Summary description for Assert.

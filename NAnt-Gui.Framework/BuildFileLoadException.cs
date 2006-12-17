@@ -1,6 +1,6 @@
 using System;
 
-namespace NAntGui
+namespace NAntGui.Framework
 {
 	public class BuildFileLoadException : ApplicationException
 	{

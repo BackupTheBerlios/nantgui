@@ -90,11 +90,6 @@
                     HintPath = "..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "ICSharpCode.TextEditor"
-                    AssemblyName = "ICSharpCode.TextEditor"
-                    HintPath = "..\ThirdParty Libraries\ICSharpCode.TextEditor.dll"
-                />
-                <Reference
                     Name = "NAnt-Gui.Framework"
                     Project = "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -102,16 +97,6 @@
                 <Reference
                     Name = "NAnt-Gui.NAnt"
                     Project = "{B42F3791-EDD7-494A-9229-A565588F2EF0}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "NAnt.Core"
-                    AssemblyName = "NAnt.Core"
-                    HintPath = "..\Tools\nant-0.85\bin\NAnt.Core.dll"
-                />
-                <Reference
-                    Name = "MagicLibrary"
-                    Project = "{92F94EA0-9910-4895-B8A1-FED1543A9DA1}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
@@ -158,21 +143,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MainFormMediator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MainFormSerializer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NAntGuiApp.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "OutputHighlighter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -198,16 +168,6 @@
                 />
                 <File
                     RelPath = "RunStateEnum.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ScriptTabPage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ScriptTabs.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
+using NAntGui.Framework;
 
 #region Copyleft and Copyright
 

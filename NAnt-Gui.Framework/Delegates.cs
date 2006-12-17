@@ -21,7 +21,7 @@
 
 #endregion
 
-namespace NAntGui
+namespace NAntGui.Framework
 {
 	public delegate void VoidVoid();
 

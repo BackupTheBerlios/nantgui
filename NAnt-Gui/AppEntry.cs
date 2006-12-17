@@ -24,7 +24,8 @@
 using System;
 using System.Reflection;
 using NAnt.Core.Util;
-using NAntGui.Core;
+using NAntGui.Framework;
+using NAntGui.Gui;
 
 namespace NAntGui
 {
