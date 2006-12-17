@@ -594,8 +594,6 @@ namespace Crownwood.Magic.Docking
 		{
 			foreach (Control c in fillList)
 			{
-				bool ignoreType = (c is AutoHidePanel);
-
 				int controlIndex = _container.Controls.IndexOf(c);
 
 				if (controlIndex < outerIndex)

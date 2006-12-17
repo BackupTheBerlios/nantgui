@@ -28,7 +28,7 @@ using Crownwood.Magic.Common;
 namespace NAntGui.Core
 {
 	/// <summary>
-	/// Summary description for AppEntry.
+	/// Summary description for NAntGuiApp.
 	/// </summary>
 	public class NAntGuiApp
 	{

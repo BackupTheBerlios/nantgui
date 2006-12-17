@@ -33,7 +33,7 @@ namespace Crownwood.Magic.Collections
 		public WizardPage Add(WizardPage value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Add(value as object);
+			List.Add(value);
 
 			return value;
 		}
@@ -48,25 +48,25 @@ namespace Crownwood.Magic.Collections
 		public void Remove(WizardPage value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public void Insert(int index, WizardPage value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Insert(index, value as object);
+			List.Insert(index, value);
 		}
 
 		public bool Contains(WizardPage value)
 		{
 			// Use base class to process actual collection operation
-			return base.List.Contains(value as object);
+			return List.Contains(value);
 		}
 
 		public WizardPage this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as WizardPage); }
+			get { return (List[index] as WizardPage); }
 		}
 
 		public WizardPage this[string title]
@@ -74,7 +74,7 @@ namespace Crownwood.Magic.Collections
 			get
 			{
 				// Search for a Page with a matching title
-				foreach (WizardPage page in base.List)
+				foreach (WizardPage page in List)
 					if (page.Title == title)
 						return page;
 
@@ -85,7 +85,7 @@ namespace Crownwood.Magic.Collections
 		public int IndexOf(WizardPage value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace Crownwood.Magic.Collections
 		public String Add(String value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Add(value as object);
+			List.Add(value);
 
 			return value;
 		}
@@ -34,19 +34,19 @@ namespace Crownwood.Magic.Collections
 		public void Remove(String value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public void Insert(int index, String value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Insert(index, value as object);
+			List.Insert(index, value);
 		}
 
 		public bool Contains(String value)
 		{
 			// Value comparison
-			foreach (String s in base.List)
+			foreach (String s in List)
 				if (value.Equals(s))
 					return true;
 
@@ -68,13 +68,13 @@ namespace Crownwood.Magic.Collections
 		public String this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as String); }
+			get { return (List[index] as String); }
 		}
 
 		public int IndexOf(String value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 
 		public void SaveToXml(string name, XmlTextWriter xmlOut)
@@ -82,7 +82,7 @@ namespace Crownwood.Magic.Collections
 			xmlOut.WriteStartElement(name);
 			xmlOut.WriteAttributeString("Count", Count.ToString());
 
-			foreach (String s in base.List)
+			foreach (String s in List)
 			{
 				xmlOut.WriteStartElement("Item");
 				xmlOut.WriteAttributeString("Name", s);

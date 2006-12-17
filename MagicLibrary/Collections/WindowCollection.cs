@@ -18,7 +18,7 @@ namespace Crownwood.Magic.Collections
 		public Window Add(Window value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Add(value as object);
+			List.Add(value);
 
 			return value;
 		}
@@ -33,31 +33,31 @@ namespace Crownwood.Magic.Collections
 		public void Remove(Window value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public void Insert(int index, Window value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Insert(index, value as object);
+			List.Insert(index, value);
 		}
 
 		public bool Contains(Window value)
 		{
 			// Use base class to process actual collection operation
-			return base.List.Contains(value as object);
+			return List.Contains(value);
 		}
 
 		public Window this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as Window); }
+			get { return (List[index] as Window); }
 		}
 
 		public int IndexOf(Window value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 	}
 }

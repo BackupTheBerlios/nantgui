@@ -1177,8 +1177,9 @@ namespace Crownwood.Magic.Docking
 				// Let the location of the control be updated for us
 				_maxButton.Anchor = AnchorStyles.Right;
 
+				// commented because it doesn't do anything
 				// Define start of next button
-				buttonX -= _buttonWidth;
+				//buttonX -= _buttonWidth;
 
 				UpdateMaximizeImage();
 			}

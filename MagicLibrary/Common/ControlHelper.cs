@@ -92,7 +92,7 @@ namespace Crownwood.Magic.Common
 
 		public static void RemoveForm(Control source, Form form)
 		{
-			ContainerControl container = source.FindForm() as ContainerControl;
+			ContainerControl container = source.FindForm();
 
 			if (container == null)
 				container = source as ContainerControl;

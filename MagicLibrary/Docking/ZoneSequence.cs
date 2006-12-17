@@ -1100,8 +1100,6 @@ namespace Crownwood.Magic.Docking
 					// Look for minor errors due not all fractions can be accurately represented in binary!
 					if (totalAllocated > 100m)
 					{
-						Decimal correction = totalAllocated - 100m;
-
 						// Remove from first entry
 						foreach (Window entry in _windows)
 						{
@@ -1115,8 +1113,6 @@ namespace Crownwood.Magic.Docking
 					}
 					else if (totalAllocated < 100m)
 					{
-						Decimal correction = 100m - totalAllocated;
-
 						// Remove from first entry
 						foreach (Window entry in _windows)
 						{
@@ -1172,7 +1168,6 @@ namespace Crownwood.Magic.Docking
 					space = 0;
 
 				int barSpace = 0;
-				int allocation = space;
 
 				// Create temporary array of working values
 				Position[] positions = new Position[Controls.Count - 1];

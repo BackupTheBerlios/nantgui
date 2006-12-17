@@ -852,7 +852,7 @@ namespace Crownwood.Magic.Menus
 			// Show the window without activating it (i.e. do not take focus)
 			User32.ShowWindow(Handle, (short) ShowWindowStyles.SW_SHOWNOACTIVATE);
 
-			int stepDelay = (int) (_animateTime/_blendSteps);
+			int stepDelay = _animateTime/_blendSteps;
 
 			for (int i = 0; i < _blendSteps; i++)
 			{
@@ -1120,10 +1120,8 @@ namespace Crownwood.Magic.Menus
 			Rectangle screenRect = Screen.GetWorkingArea(_screenPos);
 			Point screenPos = _screenPos;
 
-			int screenWidth = screenRect.Width;
 			int screenLeft = screenRect.Left;
 			int screenRight = screenRect.Right;
-			int screenHeight = screenRect.Height;
 			int screenBottom = screenRect.Bottom;
 			int screenTop = screenRect.Top;
 
@@ -1400,8 +1398,8 @@ namespace Crownwood.Magic.Menus
 						continue;
 					}
 
-					int cellWidth = 0;
-					int cellHeight = 0;
+					int cellWidth;
+					int cellHeight;
 
 					// Shift across to the next column?
 					if (command.Break)
@@ -1962,7 +1960,7 @@ namespace Crownwood.Magic.Menus
 			                                   _extraSize - _position[(int) _style, (int) PI.ExtraRightGap],
 			                                   main.Height);
 
-			Brush backBrush = null;
+			Brush backBrush;
 			bool disposeBack = true;
 
 			if (_menuCommands.ExtraBackBrush != null)
@@ -1999,7 +1997,7 @@ namespace Crownwood.Magic.Menus
 			format.Alignment = StringAlignment.Near;
 			format.LineAlignment = StringAlignment.Center;
 
-			Brush textBrush = null;
+			Brush textBrush;
 			bool disposeText = true;
 
 			if (_menuCommands.ExtraTextBrush != null)
@@ -2031,10 +2029,6 @@ namespace Crownwood.Magic.Menus
 
 			// Calculate some common values
 			int imageColWidth = imageGapLeft + _imageWidth + imageGapRight;
-
-			int subMenuWidth = _position[(int) _style, (int) PI.SubMenuGapLeft] +
-			                   _position[(int) _style, (int) PI.SubMenuWidth] +
-			                   _position[(int) _style, (int) PI.SubMenuGapRight];
 
 			int subMenuX = drawRect.Right -
 			               _position[(int) _style, (int) PI.SubMenuGapRight] -
@@ -2432,7 +2426,7 @@ namespace Crownwood.Magic.Menus
 							if ((hotCommand) && (!mc.Checked) && (_style == VisualStyle.IDE))
 							{
 								// Draw a gray icon offset down and right
-								Bitmap shadowImage = new Bitmap((Bitmap) image);
+								Bitmap shadowImage = new Bitmap(image);
 								Color shadowColor = Color.FromArgb(154, 156, 146);
 								Color transparent = Color.FromArgb(0, 0, 0, 0);
 
@@ -2597,7 +2591,6 @@ namespace Crownwood.Magic.Menus
 		protected bool ProcessKeyDown()
 		{
 			int newItem = _trackItem;
-			int startItem = newItem;
 
 			for (int i = 0; i < _drawCommands.Count; i++)
 			{

@@ -977,7 +977,7 @@ namespace Crownwood.Magic.Menus
 			if (_trackItem != -1)
 			{
 				// Is it also selected?
-				if (_selected == true)
+				if (_selected)
 				{
 					// Is it also showing a submenu
 					if (_popupMenu == null)
@@ -1048,7 +1048,7 @@ namespace Crownwood.Magic.Menus
 				{
 					Point pos = new Point(xPos, yPos);
 
-					int i = 0;
+					int i;
 
 					for (i = 0; i < _drawCommands.Count; i++)
 					{
@@ -1199,9 +1199,6 @@ namespace Crownwood.Magic.Menus
 				// Minimum length is a gap on either side of the text
 				int cellMinLength = _lengthGap*2;
 
-				// Each cell is as broad as the whole control
-				int cellBreadth = Height;
-
 				// Accumulate starting position of each cell
 				int lengthStart = 0;
 
@@ -1270,7 +1267,7 @@ namespace Crownwood.Magic.Menus
 						if (!command.Visible)
 							continue;
 
-						int cellLength = 0;
+						int cellLength;
 
 						// Is this a separator?
 						if (command.Text == "-")
@@ -1542,7 +1539,6 @@ namespace Crownwood.Magic.Menus
 										{
 											// Right shadow
 											int rightTop = boxRect.Top;
-											int leftLeft = boxRect.Left + _shadowGap;
 
 											// Bottom shadow
 											int top = boxRect.Bottom + 1;
@@ -1948,7 +1944,7 @@ namespace Crownwood.Magic.Menus
 			int returnDir = 0;
 
 			// Command selected by the PopupMenu
-			MenuCommand returnCommand = null;
+			MenuCommand returnCommand;
 
 			// Should the PopupMenu tell the collection to remember expansion state
 			_popupMenu.RememberExpansion = _rememberExpansion;
@@ -2284,7 +2280,6 @@ namespace Crownwood.Magic.Menus
 			if (_popupMenu == null)
 			{
 				int newItem = _trackItem;
-				int startItem = newItem;
 
 				for (int i = 0; i < _drawCommands.Count; i++)
 				{
@@ -2546,11 +2541,11 @@ namespace Crownwood.Magic.Menus
 							int code = (int) msg.WParam;
 
 							// ...plus the modifier for SHIFT...
-							if (((int) shiftKey & 0x00008000) != 0)
+							if ((shiftKey & 0x00008000) != 0)
 								code += 0x00010000;
 
 							// ...plus the modifier for CONTROL
-							if (((int) controlKey & 0x00008000) != 0)
+							if ((controlKey & 0x00008000) != 0)
 								code += 0x00020000;
 
 							// Construct shortcut from keystate and keychar
@@ -2655,11 +2650,11 @@ namespace Crownwood.Magic.Menus
 					int code = basecode;
 
 					// ...plus the modifier for SHIFT...
-					if (((int) shiftKey & 0x00008000) != 0)
+					if ((shiftKey & 0x00008000) != 0)
 						code += 0x00010000;
 
 					// ...plus the modifier for CONTROL
-					if (((int) controlKey & 0x00008000) != 0)
+					if ((controlKey & 0x00008000) != 0)
 						code += 0x00020000;
 
 					if (code == (int) VirtualKeys.VK_ESCAPE)

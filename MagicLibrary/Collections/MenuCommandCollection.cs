@@ -41,7 +41,7 @@ namespace Crownwood.Magic.Collections
 		public MenuCommand Add(MenuCommand value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Add(value as object);
+			List.Add(value);
 
 			return value;
 		}
@@ -56,25 +56,25 @@ namespace Crownwood.Magic.Collections
 		public void Remove(MenuCommand value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public void Insert(int index, MenuCommand value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Insert(index, value as object);
+			List.Insert(index, value);
 		}
 
 		public bool Contains(MenuCommand value)
 		{
 			// Use base class to process actual collection operation
-			return base.List.Contains(value as object);
+			return List.Contains(value);
 		}
 
 		public MenuCommand this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as MenuCommand); }
+			get { return (List[index] as MenuCommand); }
 		}
 
 		public MenuCommand this[string text]
@@ -82,7 +82,7 @@ namespace Crownwood.Magic.Collections
 			get
 			{
 				// Search for a MenuCommand with a matching title
-				foreach (MenuCommand mc in base.List)
+				foreach (MenuCommand mc in List)
 					if (mc.Text == text)
 						return mc;
 
@@ -93,12 +93,12 @@ namespace Crownwood.Magic.Collections
 		public int IndexOf(MenuCommand value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 
 		public bool VisibleItems()
 		{
-			foreach (MenuCommand mc in base.List)
+			foreach (MenuCommand mc in List)
 			{
 				// Is the item visible?
 				if (mc.Visible)

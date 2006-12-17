@@ -18,7 +18,7 @@ namespace Crownwood.Magic.Collections
 		public TabPage Add(TabPage value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Add(value as object);
+			List.Add(value);
 
 			return value;
 		}
@@ -33,25 +33,25 @@ namespace Crownwood.Magic.Collections
 		public void Remove(TabPage value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public void Insert(int index, TabPage value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Insert(index, value as object);
+			List.Insert(index, value);
 		}
 
 		public bool Contains(TabPage value)
 		{
 			// Use base class to process actual collection operation
-			return base.List.Contains(value as object);
+			return List.Contains(value);
 		}
 
 		public TabPage this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as TabPage); }
+			get { return (List[index] as TabPage); }
 		}
 
 		public TabPage this[string title]
@@ -59,7 +59,7 @@ namespace Crownwood.Magic.Collections
 			get
 			{
 				// Search for a Page with a matching title
-				foreach (TabPage page in base.List)
+				foreach (TabPage page in List)
 					if (page.Title == title)
 						return page;
 
@@ -70,7 +70,7 @@ namespace Crownwood.Magic.Collections
 		public int IndexOf(TabPage value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace NAntGui.Core
 
 		public static string AddAsterisk(string text)
 		{
-			return text += "*";
+			return text + "*";
 		}
 
 		public static void LoadHelpFile(string filename)

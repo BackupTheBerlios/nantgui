@@ -19,7 +19,7 @@ namespace Crownwood.Magic.Collections
 		public Target Add(Target value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Add(value as object);
+			List.Add(value);
 
 			return value;
 		}
@@ -34,36 +34,36 @@ namespace Crownwood.Magic.Collections
 		public void Remove(Target value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Remove(value as object);
+			List.Remove(value);
 		}
 
 		public void Insert(int index, Target value)
 		{
 			// Use base class to process actual collection operation
-			base.List.Insert(index, value as object);
+			List.Insert(index, value);
 		}
 
 		public bool Contains(Target value)
 		{
 			// Use base class to process actual collection operation
-			return base.List.Contains(value as object);
+			return List.Contains(value);
 		}
 
 		public Target this[int index]
 		{
 			// Use base class to process actual collection operation
-			get { return (base.List[index] as Target); }
+			get { return (List[index] as Target); }
 		}
 
 		public int IndexOf(Target value)
 		{
 			// Find the 0 based index of the requested entry
-			return base.List.IndexOf(value);
+			return List.IndexOf(value);
 		}
 
 		public Target Contains(Point pt)
 		{
-			foreach (Target t in base.List)
+			foreach (Target t in List)
 			{
 				if (t.HotRect.Contains(pt))
 					return t;
