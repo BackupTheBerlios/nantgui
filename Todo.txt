@@ -1,18 +1,21 @@
++ Put load and save of buildfiles into threads
 + Change the way that NAntBuildScript.cs:LoadNonProjectProperty:134 works.  Right now it adds all
   properties from the Gui regardless of whether the property's value has change.  Only propertys 
   with changed values should be added.
 + Clean up how property bag works.  AKA, the events should change the values of the properties and the Tag property of the propertyspec class
   can be removed as you don't need to store the actual nant property in the propertybag.properties collection
-+ Modify the app.config file so that it points to the nant directory, then modify the app and 
-  installer so that it loads the tasks from the nant directory instead of having to have the
-  nant bin directory copied into the nant-gui bin directory
-+ Reorder projects.  Add a Gui project and move the UI code into it
 + Multiple tabs
 + Add a property window to change nant settings after nant-gui is loaded
 + Add SLiNgshoT tool window to tools menu
 - Create custom commandline options that make sense for msbuild and nant
 
-1.3.3:
+1.5.0:
+(DONE): Reorder projects.  Add a Gui project and move the UI code into it
+(CANCELLED: Didn't work): Modify the app.config file so that it points to the nant directory, then 
+	modify the app and installer so that it loads the tasks from the nant directory instead of 
+	having to have the nant bin directory copied into the nant-gui bin directory
+
+1.4.0:
 (DONE) New build file functionality (test to make sure save, reload, build, either work, or ignored on new files)
 
 PRE 1.3.3:

@@ -79,28 +79,19 @@ namespace NAntGui.Gui.Controls
 			SelectedObject = _propertyTable;
 		}
 
-		private void SetValue(object sender, PropertySpecEventArgs e)
-		{			
-			_properties[e.Property.Key].Value = e.Value.ToString();			
-		}
-
 		public PropertyCollection GetProperties()
 		{
-//			PropertyCollection properties = new PropertyCollection();
-//
-//			foreach (PropertySpec spec in _propertyTable.Properties)
-//			{
-//				BuildProperty prop = (BuildProperty) spec.Tag;
-//				prop.Value = _propertyTable[spec.Key].ToString();
-//				properties.Add(prop);
-//			}
-
 			return _properties;
 		}
 
 		public void Clear()
 		{
 			SelectedObject = null;
+		}
+
+		private void SetValue(object sender, PropertySpecEventArgs e)
+		{			
+			_properties[e.Property.Key].Value = e.Value.ToString();			
 		}
 
 		private bool CommandLinePropertiesContains(string name)

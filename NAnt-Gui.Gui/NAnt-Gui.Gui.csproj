@@ -114,6 +114,11 @@
                     AssemblyName = "ICSharpCode.TextEditor"
                     HintPath = "..\ThirdParty Libraries\ICSharpCode.TextEditor.dll"
                 />
+                <Reference
+                    Name = "SLiNgshoT.Core"
+                    AssemblyName = "SLiNgshoT.Core"
+                    HintPath = "..\Tools\nantcontrib-0.85\bin\SLiNgshoT.Core.dll"
+                />
             </References>
         </Build>
         <Files>
