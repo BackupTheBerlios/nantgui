@@ -77,19 +77,16 @@ namespace NAntGui.Gui
 
 		public void NewClicked()
 		{
-//			if (CloseTabs())
-//			{
-//				_form.Text = "NAnt-Gui";
-
-//				_propertyGrid.Clear();
-//				_outputBox.Clear();
-//				_targetsTree.Clear();
+//			_form.Text = "NAnt-Gui";
 //
-//				_mainMenu.Disable();
-//				_toolBar.Disable();
+//			_propertyGrid.Clear();
+//			_outputBox.Clear();
+//			_targetsTree.Clear();
+//
+//			_mainMenu.Disable();
+//			_toolBar.Disable();
 
-				AddBlankTab();
-//			}
+			AddBlankTab();
 		}
 
 		public void RunClicked()
@@ -300,61 +297,45 @@ namespace NAntGui.Gui
 			}
 		}
 
-		private bool CloseTabs()
-		{
-			CancelEventArgs e = new CancelEventArgs();
-			_sourceTabs.CloseTabs(e);
-			return !e.Cancel;
-		}
-
 		private void AddBlankTab()
 		{
-//			_sourceTabs.Clear();
 			ScriptTabPage page = new ScriptTabPage(_outputBox, this);
 			_sourceTabs.AddTab(page);			
 		}
 
 		private bool LoadBuildFile(string filename)
 		{
-			if (CloseTabs())
+			if (File.Exists(filename))
 			{
-				if (File.Exists(filename))
+				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
+				page.BuildFinished = new VoidVoid(Tab_BuildFinished);
+
+				Settings.OpenInitialDir = page.FilePath;
+
+				_sourceTabs.AddTab(page);
+
+				string file = _sourceTabs.SelectedTab.FileFullName;
+				_mainMenu.AddRecentItem(file);
+
+				try
 				{
-					ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
-					page.BuildFinished = new VoidVoid(Tab_BuildFinished);
-
-					Settings.OpenInitialDir = page.FilePath;
-
-//					_sourceTabs.Clear();
-					_sourceTabs.AddTab(page);
-
-					string file = _sourceTabs.SelectedTab.FileFullName;
-					_mainMenu.AddRecentItem(file);
-
-					try
-					{
-						page.ParseBuildScript();
-					}
-					catch (BuildFileLoadException error)
-					{
-						MessageBox.Show(error.Message, "Error Loading Build File",
-							MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					}
-
-					_mainMenu.Enable();
-					_toolBar.Enable();
-					UpdateDisplay(true);
-
-					return true;
+					page.ParseBuildScript();
 				}
-				else
+				catch (BuildFileLoadException error)
 				{
-					Utils.ShowFileNotFoundError(filename);
-					return false;
+					MessageBox.Show(error.Message, "Error Loading Build File",
+						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
+
+				_mainMenu.Enable();
+				_toolBar.Enable();
+				UpdateDisplay(true);
+
+				return true;
 			}
 			else
 			{
+				Utils.ShowFileNotFoundError(filename);
 				return false;
 			}
 		}

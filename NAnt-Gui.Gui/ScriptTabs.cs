@@ -43,7 +43,7 @@ namespace NAntGui.Gui
 			_mediator	= mediator;
 			_tabControl = new MainTabControl(mediator);			
 			
-			_tabControl.TabIndexChanged += new EventHandler(TabIndex_Changed);
+			_tabControl.SelectionChanged += new EventHandler(TabIndex_Changed);
 			_tabControl.ClosePressed += new EventHandler(Close_Pressed);
 		}
 
@@ -54,18 +54,7 @@ namespace NAntGui.Gui
 			_tabControl.TabPages.Add(tab.ScriptTab);
 			_selectedTab = tab;
 			_selectedTab.Focus();
-			//_tabControl.SelectedTab = tab.ScriptTab;
 		}
-
-		/// <summary>
-		/// Temporary. To be removed when multiple tabs are allowed.
-		/// </summary>
-//		public void Clear()
-//		{
-//			//CloseTabs(new CancelEventArgs());
-//			_tabControl.TabPages.Clear();
-//			_tabs.Clear();
-//		}
 
 		/// <summary>
 		/// Called when the application is closing and
@@ -77,7 +66,9 @@ namespace NAntGui.Gui
 		/// </param>
 		public void CloseTabs(CancelEventArgs e)
 		{
-			foreach (ScriptTabPage page in _tabs)
+			object[] pages = _tabs.ToArray();
+            
+			foreach (ScriptTabPage page in pages)
 			{
 				CloseTab(page, e);
 			}
@@ -105,7 +96,7 @@ namespace NAntGui.Gui
 			CloseTab(_selectedTab, e);
 		}
 
-		private void CloseTab(ScriptTab tab, CancelEventArgs e)
+		private void CloseTab(ScriptTabPage tab, CancelEventArgs e)
 		{
 			tab.Close(e);
 			_tabControl.TabPages.Remove(tab.ScriptTab);
@@ -119,17 +110,15 @@ namespace NAntGui.Gui
 
 		private void TabIndex_Changed(object sender, EventArgs e)
 		{
-			//			foreach (ScriptTabPage page in _tabs)
-			//			{
-			//				if (page.Equals(_tabControl.SelectedTab))
-			//				{
-			//					_selectedTab = page;
-			//				}
-			//			}
-			
-			int index = _tabs.IndexOf(_tabControl.SelectedTab);
-			_selectedTab = _tabs[index] as ScriptTabPage;
-			_mediator.TabIndexChanged();
+			foreach (ScriptTabPage page in _tabs)
+			{
+				if (page.ScriptTab == _tabControl.SelectedTab)
+				{
+					_selectedTab = page;
+					_mediator.TabIndexChanged();
+					break;
+				}
+			}
 		}
 
 		#region Properties

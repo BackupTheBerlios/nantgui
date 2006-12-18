@@ -255,16 +255,6 @@ namespace NAntGui.Gui
 			}
 		}
 
-//		public void AddTabToControl(TabPageCollection tabPages)
-//		{
-//			tabPages.Add(_scriptTab);
-//		}
-
-		public bool Equals(TabPage page)
-		{
-			return page == _scriptTab;
-		}
-
 		public void Cut()
 		{
 			_clipboardHandler.Cut(this, new EventArgs());
