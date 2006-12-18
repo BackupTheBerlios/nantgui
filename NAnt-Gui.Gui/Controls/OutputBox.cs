@@ -178,15 +178,5 @@ namespace NAntGui.Gui.Controls
 			Clear();
 			WriteOutput(text);
 		}
-
-//		protected override void OnFontChanged(EventArgs e)
-//		{
-//			MessageBox.Show(this.Font.FontFamily.Name);
-//		}
-
-//		protected override void OnTextChanged(EventArgs e)
-//		{
-//			MessageBox.Show(this.Rtf);
-//		}
 	}
 }

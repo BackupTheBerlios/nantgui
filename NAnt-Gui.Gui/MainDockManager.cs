@@ -112,17 +112,5 @@ namespace NAntGui.Gui
 		{
 			_outputBox.ReHightlight();
 		}
-
-		// commented because it doesn't work
-//		private void ContentChanged(Content c, EventArgs cea)
-//		{
-//			if (c == _outputContent)
-//			{
-//				// have to do this because the highlighting is undone when
-//				// the toolbox is reshown.  Didn't feel like wasting any time
-//				// figuring out exactly why that happens.
-//				_outputBox.ReHightlight();
-//			}
-//		}
 	}
 }
