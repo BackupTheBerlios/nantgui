@@ -47,28 +47,6 @@ namespace NAntGui.Gui
 			_tabControl.ClosePressed += new EventHandler(Close_Pressed);
 		}
 
-		// Comment because close doesn't do anything right now
-		private void Close_Pressed(object sender, EventArgs e)
-		{
-			CancelEventArgs ce = new CancelEventArgs();
-			_selectedTab.Close(ce);
-		}
-
-		private void TabIndex_Changed(object sender, EventArgs e)
-		{
-//			foreach (ScriptTabPage page in _tabs)
-//			{
-//				if (page.Equals(_tabControl.SelectedTab))
-//				{
-//					_selectedTab = page;
-//				}
-//			}
-			
-			int index = _tabs.IndexOf(_tabControl.SelectedTab);
-			_selectedTab = _tabs[index] as ScriptTabPage;
-			_mediator.TabIndexChanged();
-		}
-
 		public void AddTab(ScriptTabPage tab)
 		{
 			Assert.NotNull(tab, "tab");
@@ -101,7 +79,7 @@ namespace NAntGui.Gui
 		{
 			foreach (ScriptTabPage page in _tabs)
 			{
-				page.Close(e);
+				CloseTab(page, e);
 			}
 		}
 
@@ -124,10 +102,37 @@ namespace NAntGui.Gui
 		/// </param>
 		public void CloseSelectedTab(CancelEventArgs e)
 		{
-			_selectedTab.Close(e);
-			_tabControl.TabPages.Remove(_selectedTab.ScriptTab);
-			_tabs.Remove(_selectedTab);
+			CloseTab(_selectedTab, e);
 		}
+
+		private void CloseTab(ScriptTab tab, CancelEventArgs e)
+		{
+			tab.Close(e);
+			_tabControl.TabPages.Remove(tab.ScriptTab);
+			_tabs.Remove(tab);
+		}
+
+		private void Close_Pressed(object sender, EventArgs e)
+		{
+			_mediator.CloseClicked();
+		}
+
+		private void TabIndex_Changed(object sender, EventArgs e)
+		{
+			//			foreach (ScriptTabPage page in _tabs)
+			//			{
+			//				if (page.Equals(_tabControl.SelectedTab))
+			//				{
+			//					_selectedTab = page;
+			//				}
+			//			}
+			
+			int index = _tabs.IndexOf(_tabControl.SelectedTab);
+			_selectedTab = _tabs[index] as ScriptTabPage;
+			_mediator.TabIndexChanged();
+		}
+
+		#region Properties
 
 		public ScriptTabPage SelectedTab
 		{
@@ -138,5 +143,7 @@ namespace NAntGui.Gui
 		{
 			get { return _tabs.Count; }
 		}
+
+		#endregion
 	}
 }
