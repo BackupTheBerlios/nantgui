@@ -25,7 +25,7 @@ using System;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
-using NAntGui.Gui.Controls;
+//using NAntGui.Gui.Controls;
 
 namespace NAntGui.Gui
 {
@@ -48,14 +48,14 @@ namespace NAntGui.Gui
 			}
 		}
 		
-		public override bool ShowContent(Content c)
-		{
-			if (InvertAutoHide != null && c.Control is OutputBox)
-			{
-				InvertAutoHide(this, EventArgs.Empty);
-			}
-			
-			return base.ShowContent(c);
-		}
+//		public override bool ShowContent(Content c)
+//		{
+//			if (InvertAutoHide != null && c.Control is OutputBox)
+//			{
+//				InvertAutoHide(this, EventArgs.Empty);
+//			}
+//			
+//			return base.ShowContent(c);
+//		}
 	}
 }

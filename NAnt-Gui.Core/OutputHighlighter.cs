@@ -92,10 +92,7 @@ namespace NAntGui.Gui
 						         + match.Value + Tags.BLACK + Tags.SPACE;
 
 						highlightedText = highlightedText.Replace(match.Value, output);
-
-						// OMG! I used a goto
-						goto done;
-
+						break;
 					case "error":
 					case "ERROR":
 						output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
@@ -105,8 +102,7 @@ namespace NAntGui.Gui
 						break;
 				}
 			}
-
-			done:
+			
 			return highlightedText;
 		}
 

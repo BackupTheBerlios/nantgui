@@ -25,7 +25,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Collections;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Gui.Controls;
@@ -157,8 +156,10 @@ namespace NAntGui.Gui
 			}
 			else if (_fileType == FileType.New)
 			{
-				_mediator.SaveAsClicked();		
-				if (update) _mediator.UpdateDisplay(true);
+				if (_mediator.SaveAsClicked() && update)
+				{
+					 _mediator.UpdateDisplay(true);
+				}
 			}
 		}
 

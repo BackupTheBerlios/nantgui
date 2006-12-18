@@ -125,7 +125,7 @@ namespace NAntGui.Gui
 			_toolBar.Enable();
 		}
 
-		public void SaveAsClicked()
+		public bool SaveAsClicked()
 		{
 			string file = BuildFileBrowser.BrowseForSave();
 			if (file != null)
@@ -139,6 +139,11 @@ namespace NAntGui.Gui
 
 				_mainMenu.Enable();
 				_toolBar.Enable();
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 
