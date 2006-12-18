@@ -168,6 +168,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NAntGuiDockingManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NewProjectForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
