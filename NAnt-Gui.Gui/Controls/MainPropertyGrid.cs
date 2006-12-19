@@ -34,29 +34,28 @@ namespace NAntGui.Gui.Controls
 	/// </summary>
 	public class MainPropertyGrid : PropertyGrid
 	{
-		private PropertyTable _propertyTable = new PropertyTable();
-		private NameValueCollection _commandLineProperties;
+		private PropertyBag _propertyTable = new PropertyBag();
 		private PropertyCollection _properties;
 
 		public MainPropertyGrid()
 		{
-			_commandLineProperties = NAntGuiApp.Options.Properties;
 			_propertyTable.SetValue += new PropertySpecEventHandler(this.SetValue);
+			_propertyTable.GetValue += new PropertySpecEventHandler(this.GetValue);
 
-			this.CommandsVisibleIfAvailable = true;
-			this.Dock		= DockStyle.Fill;
+			CommandsVisibleIfAvailable = true;
+			Dock			= DockStyle.Fill;
 			LargeButtons	= false;
 			LineColor		= SystemColors.ScrollBar;
 			Location		= new Point(0, 252);
 			Name			= "ProjectPropertyGrid";
 			Size			= new Size(175, 351);
 			TabIndex		= 4;
-			this.Text		= "Build Properties";
+			Text			= "Build Properties";
 			ViewBackColor	= SystemColors.Window;
 			ViewForeColor	= SystemColors.WindowText;
 		}
 
-		public void AddProperties(PropertyCollection properties, bool firstLoad)
+		public void AddProperties(PropertyCollection properties)
 		{
 			_propertyTable.Properties.Clear();
 			_properties = properties;
@@ -65,15 +64,6 @@ namespace NAntGui.Gui.Controls
 			{
 				PropertySpec spec = new PropertySpec(property);
 				_propertyTable.Properties.Add(spec);
-
-				if (firstLoad && CommandLinePropertiesContains(spec.Name))
-				{
-					_propertyTable[spec.Key] = _commandLineProperties[spec.Name];
-				}
-				else
-				{
-					_propertyTable[spec.Key] = property.Value;
-				}
 			}
 
 			SelectedObject = _propertyTable;
@@ -94,13 +84,9 @@ namespace NAntGui.Gui.Controls
 			_properties[e.Property.Key].Value = e.Value.ToString();			
 		}
 
-		private bool CommandLinePropertiesContains(string name)
-		{
-			foreach (string key in _commandLineProperties.AllKeys)
-				if (key == name)
-					return true;
-
-			return false;
+		private void GetValue(object sender, PropertySpecEventArgs e)
+		{			
+			e.Value = _properties[e.Property.Key].Value;
 		}
 	}
 }

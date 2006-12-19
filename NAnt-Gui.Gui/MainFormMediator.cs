@@ -329,7 +329,7 @@ namespace NAntGui.Gui
 
 				_mainMenu.Enable();
 				_toolBar.Enable();
-				UpdateDisplay(true);
+				UpdateDisplay();
 
 				return true;
 			}
@@ -340,7 +340,7 @@ namespace NAntGui.Gui
 			}
 		}
 
-		public void UpdateDisplay(bool firstLoad)
+		public void UpdateDisplay()
 		{
 			_outputBox.Clear();
 
@@ -354,7 +354,7 @@ namespace NAntGui.Gui
 			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.FileFullName;
 
 			_targetsTree.AddTargets(projectName, buildScript.Targets);
-			_propertyGrid.AddProperties(buildScript.Properties, firstLoad);
+			_propertyGrid.AddProperties(buildScript.Properties);
 		}
 
 		public void DragDrop(DragEventArgs e)

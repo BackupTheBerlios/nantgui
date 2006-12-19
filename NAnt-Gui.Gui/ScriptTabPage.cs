@@ -117,7 +117,7 @@ namespace NAntGui.Gui
 			// Can't parse a file that doesn't exist on the harddrive
 			if (_fileType == FileType.Existing)
 			{
-				_mediator.UpdateDisplay(false);
+				_mediator.UpdateDisplay();
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace NAntGui.Gui
 			_scriptTab.Title = _file.Name;
 
 			ParseBuildFile();
-			_mediator.UpdateDisplay(false);
+			_mediator.UpdateDisplay();
 		}
 
 		public void SaveAs(string fileName)
@@ -152,13 +152,13 @@ namespace NAntGui.Gui
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
 				ParseBuildFile();				
 
-				if (update) _mediator.UpdateDisplay(false);
+				if (update) _mediator.UpdateDisplay();
 			}
 			else if (_fileType == FileType.New)
 			{
 				if (_mediator.SaveAsClicked() && update)
 				{
-					 _mediator.UpdateDisplay(true);
+					 _mediator.UpdateDisplay();
 				}
 			}
 		}
