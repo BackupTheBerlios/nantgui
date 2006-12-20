@@ -99,13 +99,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		Ant.ico = Ant.ico
-		Bugs.txt = Bugs.txt
-		build_number.txt = build_number.txt
-		License.txt = License.txt
+		NAnt-Gui.Docs\Bugs.txt = NAnt-Gui.Docs\Bugs.txt
+		NAnt-Gui.Docs\Install.txt = NAnt-Gui.Docs\Install.txt
+		NAnt-Gui.Docs\License.txt = NAnt-Gui.Docs\License.txt
 		NAnt-Gui.build = NAnt-Gui.build
 		NAnt-Gui.iss = NAnt-Gui.iss
-		Readme.Txt = Readme.Txt
-		Todo.txt = Todo.txt
+		NAnt-Gui.Docs\Readme.Txt = NAnt-Gui.Docs\Readme.Txt
+		NAnt-Gui.Docs\Todo.txt = NAnt-Gui.Docs\Todo.txt
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
