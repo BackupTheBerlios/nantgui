@@ -299,8 +299,7 @@ namespace NAntGui.Gui
 
 		private void AddBlankTab()
 		{
-			ScriptTabPage page = new ScriptTabPage(_outputBox, this);
-			_sourceTabs.AddTab(page);			
+			_sourceTabs.AddTab(new ScriptTabPage(_outputBox, this));			
 		}
 
 		private bool LoadBuildFile(string filename)
@@ -421,7 +420,7 @@ namespace NAntGui.Gui
 
 		public void TabIndexChanged()
 		{
-			;
+			UpdateDisplay();
 		}
 	}
 }

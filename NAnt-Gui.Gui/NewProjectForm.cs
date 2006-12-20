@@ -29,7 +29,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using NAntGui.NAnt.NAnt;
 
-namespace NAntGui.Core
+namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for NewProjectForm.
