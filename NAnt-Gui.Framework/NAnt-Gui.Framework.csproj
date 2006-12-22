@@ -118,6 +118,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "BuildRunnerBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "BuildTarget.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -134,11 +139,6 @@
                 />
                 <File
                     RelPath = "DependsCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IBuildRunner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
