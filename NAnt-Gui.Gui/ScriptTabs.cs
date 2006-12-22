@@ -33,8 +33,7 @@ namespace NAntGui.Gui
 	public class ScriptTabs
 	{
 		private ArrayList _tabs = new ArrayList();
-		private MainTabControl _tabControl;
-		private ScriptTabPage _selectedTab;
+		private MainTabControl _tabControl;		
 		private MainFormMediator _mediator;
 
 		public ScriptTabs(MainFormMediator mediator)
@@ -52,8 +51,7 @@ namespace NAntGui.Gui
 			Assert.NotNull(tab, "tab");
 			_tabs.Add(tab);
 			_tabControl.TabPages.Add(tab.ScriptTab);
-			_selectedTab = tab;
-			_selectedTab.Focus();
+			tab.Focus();
 		}
 
 		/// <summary>
@@ -91,12 +89,12 @@ namespace NAntGui.Gui
 		/// Passed in to cancel the close if the user made 
 		/// a mistake (when the file isn't saved.
 		/// </param>
-		public void CloseSelectedTab(CancelEventArgs e)
-		{
-			CloseTab(_selectedTab, e);
-		}
+//		public void CloseSelectedTab(CancelEventArgs e)
+//		{
+//			CloseTab(_selectedTab, e);
+//		}
 
-		private void CloseTab(ScriptTabPage tab, CancelEventArgs e)
+		public void CloseTab(ScriptTabPage tab, CancelEventArgs e)
 		{
 			tab.Close(e);
 			_tabControl.TabPages.Remove(tab.ScriptTab);
@@ -114,8 +112,7 @@ namespace NAntGui.Gui
 			{
 				if (page.ScriptTab == _tabControl.SelectedTab)
 				{
-					_selectedTab = page;
-					_mediator.TabIndexChanged();
+					_mediator.TabIndexChanged(page);
 					break;
 				}
 			}
@@ -123,10 +120,10 @@ namespace NAntGui.Gui
 
 		#region Properties
 
-		public ScriptTabPage SelectedTab
-		{
-			get { return _selectedTab; }
-		}
+//		public ScriptTabPage SelectedTab
+//		{
+//			get { return _selectedTab; }
+//		}
 
 		public int TabCount
 		{

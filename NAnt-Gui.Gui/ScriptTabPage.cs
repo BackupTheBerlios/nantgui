@@ -29,6 +29,7 @@ using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Gui.Controls;
 using NAntGui.Framework;
+using NAntGui.Core;
 using TabPage = Crownwood.Magic.Controls.TabPage;
 using TargetCollection = NAntGui.Framework.TargetCollection;
 

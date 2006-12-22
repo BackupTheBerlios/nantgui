@@ -2,7 +2,7 @@ using System;
 using NAntGui.Framework;
 using NAntGui.NAnt;
 
-namespace NAntGui.Gui
+namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for BuildRunnerFactory.

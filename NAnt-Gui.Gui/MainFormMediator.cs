@@ -47,6 +47,8 @@ namespace NAntGui.Gui
 		private IEditCommands _editCommands;
 		private MainMenuControl _mainMenu;
 
+		private ScriptTabPage _selectedTab;
+
 		public MainFormMediator()
 		{
 			_form			= new MainForm(this);
@@ -96,7 +98,7 @@ namespace NAntGui.Gui
 			_outputBox.Clear();
 			_dockManager.ShowOutput();
 
-			ScriptTabPage tab = _sourceTabs.SelectedTab;
+			ScriptTabPage tab = _selectedTab;
 
 			tab.Save(false);
 			tab.SetProperties(_propertyGrid.GetProperties());
@@ -111,13 +113,13 @@ namespace NAntGui.Gui
 
 		public void StopClicked()
 		{
-			_sourceTabs.SelectedTab.Stop();
+			_selectedTab.Stop();
 			SetStateStopped();
 		}
 
 		public void SaveClicked()
 		{
-			_sourceTabs.SelectedTab.Save(true);
+			_selectedTab.Save(true);
 			_mainMenu.Enable();
 			_toolBar.Enable();
 		}
@@ -127,10 +129,10 @@ namespace NAntGui.Gui
 			string file = BuildFileBrowser.BrowseForSave();
 			if (file != null)
 			{
-				_sourceTabs.SelectedTab.SaveAs(file);
-				_sourceTabs.SelectedTab.BuildFinished = new VoidVoid(Tab_BuildFinished);
+				_selectedTab.SaveAs(file);
+				_selectedTab.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
-				Settings.OpenInitialDir = _sourceTabs.SelectedTab.FilePath;
+				Settings.OpenInitialDir = _selectedTab.FilePath;
 
 				_mainMenu.AddRecentItem(file);
 
@@ -147,7 +149,7 @@ namespace NAntGui.Gui
 		public void ReloadClicked()
 		{
 			SetStateStopped();
-			_sourceTabs.SelectedTab.ReLoad();
+			_selectedTab.ReLoad();
 		}
 
 		private void SetStateStopped()
@@ -175,7 +177,7 @@ namespace NAntGui.Gui
 		public void CloseClicked()
 		{
 			CancelEventArgs e = new CancelEventArgs();
-			_sourceTabs.CloseSelectedTab(e);
+			_sourceTabs.CloseTab(_selectedTab, e);
 
 			if (!e.Cancel && _sourceTabs.TabCount == 0)
 			{
@@ -191,7 +193,7 @@ namespace NAntGui.Gui
 
 		public void MainFormClosing(CancelEventArgs e)
 		{
-			_sourceTabs.SelectedTab.Stop();
+			_selectedTab.Stop();
 			_sourceTabs.CloseTabs(e);
 			_dockManager.SaveConfig();
 		}
@@ -236,12 +238,12 @@ namespace NAntGui.Gui
 
 		public void RedoClicked()
 		{
-			_sourceTabs.SelectedTab.Redo();
+			_selectedTab.Redo();
 		}
 
 		public void UndoClicked()
 		{
-			_sourceTabs.SelectedTab.Undo();
+			_selectedTab.Undo();
 		}
 
 		public void NAntHelpClicked()
@@ -313,7 +315,7 @@ namespace NAntGui.Gui
 
 				_sourceTabs.AddTab(page);
 
-				string file = _sourceTabs.SelectedTab.FileFullName;
+				string file = _selectedTab.FileFullName;
 				_mainMenu.AddRecentItem(file);
 
 				try
@@ -328,7 +330,7 @@ namespace NAntGui.Gui
 
 				_mainMenu.Enable();
 				_toolBar.Enable();
-				UpdateDisplay();
+//				UpdateDisplay();
 
 				return true;
 			}
@@ -341,16 +343,16 @@ namespace NAntGui.Gui
 
 		public void UpdateDisplay()
 		{
-			_outputBox.Clear();
+//			_outputBox.Clear();
 
-			IBuildScript buildScript = _sourceTabs.SelectedTab.BuildScript;
+			IBuildScript buildScript = _selectedTab.BuildScript;
 
-			_form.Text = string.Format("NAnt-Gui - {0}", _sourceTabs.SelectedTab.Title);
+			_form.Text = string.Format("NAnt-Gui - {0}", _selectedTab.Title);
 
-			string projectName = buildScript.HasName ? buildScript.Name : _sourceTabs.SelectedTab.FileName;
+			string projectName = buildScript.HasName ? buildScript.Name : _selectedTab.FileName;
 
 			_statusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
-			_statusBar.Panels[1].Text = _sourceTabs.SelectedTab.FileFullName;
+			_statusBar.Panels[1].Text = _selectedTab.FileFullName;
 
 			_targetsTree.AddTargets(projectName, buildScript.Targets);
 			_propertyGrid.AddProperties(buildScript.Properties);
@@ -382,7 +384,7 @@ namespace NAntGui.Gui
 		public void TabGotFocus()
 		{
 			_mainMenu.EditState = EditState.TabFocused;
-			_editCommands = _sourceTabs.SelectedTab;
+			_editCommands = _selectedTab;
 		}
 
 		public void TabLostFocus()
@@ -418,8 +420,9 @@ namespace NAntGui.Gui
 			_editCommands.Delete();
 		}
 
-		public void TabIndexChanged()
+		public void TabIndexChanged(ScriptTabPage tab)
 		{
+			_selectedTab = tab;
 			UpdateDisplay();
 		}
 	}
