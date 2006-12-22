@@ -47,7 +47,9 @@ namespace NAntGui.Gui
 		private ScriptEditor _scriptEditor;
 		private SourceFile _file;
 		private BuildRunnerBase _buildRunner;
+		private IBuildScript _buildScript;
 		private MainFormMediator _mediator;
+		private ILogsMessage _logger;
 		private TextAreaClipboardHandler _clipboardHandler;
 		// this might be better moved to the SourceFile class
 		private FileType _fileType;
@@ -57,38 +59,42 @@ namespace NAntGui.Gui
 			Assert.NotNull(logger, "logger");
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
+			_logger = logger;
+
 			_scriptEditor = new ScriptEditor(mediator);
 			_scriptEditor.SetHighlighting("XML");
 
-			_file = new SourceFile(logger);
+			_file = new SourceFile();
 			_fileType = FileType.New;
 
 			Initialize();
 
-			//_buildRunner
+			_buildScript = new BlankBuildScript();
 		}
 
-		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator)
+		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator, CommandLineOptions options)
 		{
 			Assert.NotNull(filename, "filename");
 			Assert.NotNull(logger, "logger");
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
+			_logger = logger;
 
 			_scriptEditor = new ScriptEditor(mediator);
 			_scriptEditor.LoadFile(filename);
 
-			_file = new SourceFile(filename, _scriptEditor.Text, logger, NAntGuiApp.Options);
+			_file = new SourceFile(filename, _scriptEditor.Text);
 			_fileType = FileType.Existing;
 
 			Initialize();
 
-			_buildRunner = BuildRunnerFactory.Create(_file);
+			_buildRunner = BuildRunnerFactory.Create(_file, logger, options);
+			_buildScript = ScriptParserFactory.Create(_file);
 		}
 
 		public void ParseBuildScript()
 		{
-			_buildRunner.ParseBuildScript();
+			_buildScript.Parse();
 		}
 
 		private void Initialize()
@@ -137,9 +143,8 @@ namespace NAntGui.Gui
 		{
 			_scriptEditor.SaveFile(fileName);
 
-			_file				= new SourceFile(fileName, _scriptEditor.Text,
-			                       _file.MessageLogger, NAntGuiApp.Options);
-			_buildRunner		= BuildRunnerFactory.Create(_file);
+			_file				= new SourceFile(fileName, _scriptEditor.Text);
+			_buildRunner		= BuildRunnerFactory.Create(_file, _logger, NAntGuiApp.Options);
 			_fileType			= FileType.Existing;
 			_scriptTab.Title	= _file.Name;
 
@@ -173,7 +178,7 @@ namespace NAntGui.Gui
 			// shouldn't be ignored.
 			try
 			{
-				_buildRunner.ParseBuildScript();
+				_buildScript.Parse();
 			}
 			catch
 			{
@@ -218,13 +223,13 @@ namespace NAntGui.Gui
 		public void SetProperties(PropertyCollection properties)
 		{
 			Assert.NotNull(properties, "properties");
-			_buildRunner.SetProperties(properties);
+			_buildRunner.AddProperties(properties);
 		}
 
 		public void SetTargets(TargetCollection targets)
 		{
 			Assert.NotNull(targets, "targets");
-			_buildRunner.SetTargets(targets);
+			_buildRunner.AddTargets(targets);
 		}
 
 		public void Close(CancelEventArgs e)
@@ -292,20 +297,12 @@ namespace NAntGui.Gui
 
 		public IBuildScript BuildScript
 		{
-			get
-			{
-				Assert.NotNull(_buildRunner, "_buildRunner");
-				return _buildRunner.BuildScript;
-			}
+			get { return _buildScript; }
 		}
 
 		public VoidVoid BuildFinished
 		{
-			set
-			{
-				Assert.NotNull(_buildRunner, "_buildRunner");
-				_buildRunner.BuildFinished = value;
-			}
+			set { _buildRunner.BuildFinished += value; }
 		}
 
 		public string FileName

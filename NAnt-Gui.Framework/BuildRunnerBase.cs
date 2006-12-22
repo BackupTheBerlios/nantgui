@@ -27,15 +27,26 @@ namespace NAntGui.Framework
 {
 	public abstract class BuildRunnerBase
 	{
-		private Thread _thread;
+		public event VoidVoid BuildFinished;
 
-		public abstract VoidVoid BuildFinished { set; }
-		public abstract IBuildScript BuildScript { get; }
+		protected ILogsMessage _logger;
+		protected CommandLineOptions _options;
+
+		private Thread _thread;
+//		protected IBuildScript _script;		
 
 		protected abstract void DoRun();
-		public abstract void SetProperties(PropertyCollection properties);
-		public abstract void SetTargets(TargetCollection targets);
-		public abstract void ParseBuildScript();
+
+		public BuildRunnerBase(ILogsMessage logger, CommandLineOptions options)
+		{
+//			Assert.NotNull(script, "script");
+			Assert.NotNull(logger, "logger");
+			Assert.NotNull(options, "options");
+
+//			_script = script;
+			_logger = logger;
+			_options = options;
+		}
 
 		public void Run()
 		{
@@ -48,6 +59,18 @@ namespace NAntGui.Framework
 			if (_thread != null)
 			{
 				_thread.Abort();
+			}
+		}
+
+		public abstract void AddProperties(PropertyCollection properties);
+
+		public abstract void AddTargets(TargetCollection targets);
+
+		protected void FinishBuild()
+		{
+			if (BuildFinished != null)
+			{
+				BuildFinished();
 			}
 		}
 	}

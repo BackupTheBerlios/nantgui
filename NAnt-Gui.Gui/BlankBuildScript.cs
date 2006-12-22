@@ -13,7 +13,7 @@ namespace NAntGui.Gui
 			get { return ""; }
 		}
 
-		public void ParseBuildScript(){ /* do nothing */ }
+		public void Parse(){ /* do nothing */ }
 
 		public string Name
 		{

@@ -18,7 +18,7 @@ namespace NAntGui.Gui
 
 			_openDialog.Filter =
 				_saveDialog.Filter =
-				"Build Files (*.build)|*.build|NAnt Includes (*.inc)|*.inc|All Files (*.*)|*.*";
+				"Build Files (*.build; *.nant)|*.build;*.nant|NAnt Includes (*.inc)|*.inc|All Files (*.*)|*.*";
 		}
 
 		public static string[] BrowseForLoad()

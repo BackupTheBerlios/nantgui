@@ -308,7 +308,7 @@ namespace NAntGui.Gui
 		{
 			if (File.Exists(filename))
 			{
-				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
+				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this, NAntGuiApp.Options);
 				page.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
 				Settings.OpenInitialDir = page.FilePath;

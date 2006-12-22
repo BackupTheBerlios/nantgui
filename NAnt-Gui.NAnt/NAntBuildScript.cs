@@ -22,11 +22,18 @@
 #endregion
 
 using System;
+using System.IO;
+using System.Xml;
 using System.Text.RegularExpressions;
+
 using NAnt.Core;
 using NAnt.Core.Util;
+using NAnt.Core.Tasks;
+using NAnt.Win32.Tasks;
 using NAntGui.Framework;
+
 using TargetCollection = NAntGui.Framework.TargetCollection;
+//using CmdOptions = NAntGui.Framework.CommandLineOptions;
 
 namespace NAntGui.NAnt
 {
@@ -35,192 +42,232 @@ namespace NAntGui.NAnt
 	/// </summary>
 	public class NAntBuildScript : IBuildScript
 	{
-		public event VoidVoid BuildFinished;
-
-		private string _description = "";
 		private Project _project;
-		private SourceFile _sourceFile;
+
+		private string _filePath;
+		private string _fileName;
+		private string _description = "";
+		//private CmdOptions _options;
 
 		private TargetCollection _targets = new TargetCollection();
-		private PropertyCollection _properties = new PropertyCollection();
 		private DependsCollection _depends = new DependsCollection();
+		private PropertyCollection _properties = new PropertyCollection();
 
 		/// <summary>
 		/// Create a new project parser.
 		/// </summary>
-		public NAntBuildScript(SourceFile sourceFile)
+		public NAntBuildScript(string filePath, string fileName)
 		{
-			Assert.NotNull(sourceFile, "sourceFile");
-			_sourceFile = sourceFile;
+			Assert.NotNull(filePath, "filePath");
+			Assert.NotNull(fileName, "fileName");
+			//Assert.NotNull(options, "options");
+
+			_filePath = filePath;
+			_fileName = fileName;
+			//_options = options;
 		}
 
-		public void ParseBuildScript()
+		public void Parse()
 		{
-			_project = new Project(_sourceFile.FullName, GetThreshold(), 0);
-			ScriptParser parser = new ScriptParser(_project);
-			parser.Parse();
+			_project = new Project(_filePath, Level.Info, 0);
 
-			_description = parser.Description;
-			_targets = parser.Targets;
-			_depends = parser.Depends;
-			_properties = parser.Properties;
+			ParseDescription();
+			ParseTargetsAndDependencies();
+			ParseProperties();
+			ParseNonPropertyProperties();
+			FollowIncludes();
+			ParseBaseDir();
 		}
 
-
-		private void AddProperties()
-		{
-			foreach (BuildProperty property in _properties)
-			{
-				if (property.Category == "Project")
-				{
-					_project.BaseDirectory = property.Value;
-				}
-				else //if (property.Category == "Global" || ValidTarget(property.Category))
-				{
-					LoadNonProjectProperty(property);
-				}
-			}
-		}
-
-		private void AddTargets()
-		{
-			foreach (BuildTarget target in _targets)
-			{
-				_project.BuildTargets.Add(target.Name);
-			}
-		}
-
-		public void Run()
-		{
-			try
-			{
-				_project = new Project(_sourceFile.FullName, GetThreshold(), 0);
-				_project.BuildFinished += new BuildEventHandler(Build_Finished);
-				SetTargetFramework();
-				AddBuildListeners();
-				AddTargets();
-				AddProperties();
-
-				_project.Run();
-			}
-			catch (BuildException error)
-			{
-				_sourceFile.MessageLogger.LogMessage(error.Message);
-				FinishBuild();
-			}
-		}
-
-		private void LoadNonProjectProperty(BuildProperty property)
-		{
-			string expandedValue = property.Value;
-
-			try
-			{
-				expandedValue = _project.ExpandProperties(property.Value,
-					new Location(_sourceFile.FullName));
-			}
-			catch (BuildException)
-			{
-				/* ignore */
-			}
-
-			// If the expanded value doesn't have any "unexpanded" values
-			// add it to the project.
-			Regex regex = new Regex(@"\$\{.+\}");
-			if (!regex.IsMatch(expandedValue))
-			{
-				// TODO: should change the following to add the property only 
-				// if it changed.  This would fix a lot of weird behaviour.
-				if (!property.ReadOnly)
-				{
-					_project.Properties.AddReadOnly(property.Name, expandedValue);
-				}
-			}
-		}
-
-//		private bool ValidTarget(string category)
+//		private Level GetThreshold()
 //		{
-//			return _project.BuildTargets.Contains(category);
+//			Level projectThreshold = Level.Info;
+//			// determine the project message threshold
+//			if (_options.Debug)
+//			{
+//				projectThreshold = Level.Debug;
+//			}
+//			else if (_options.Verbose)
+//			{
+//				projectThreshold = Level.Verbose;
+//			}
+//			else if (_options.Quiet)
+//			{
+//				projectThreshold = Level.Warning;
+//			}
+//			return projectThreshold;
 //		}
 
-		/// <summary>
-		/// Add the listeners specified in the command line arguments,
-		/// along with the default listener, to the specified project.
-		/// </summary>
-		private void AddBuildListeners()
+		private void ParseDescription()
 		{
-			Assert.NotNull(_project, "project");
-			BuildListenerCollection listeners = new BuildListenerCollection();
-			IBuildLogger buildLogger = new GuiLogger(_sourceFile.MessageLogger);
-
-			// set threshold of build logger equal to threshold of project
-			buildLogger.Threshold = _project.Threshold;
-
-			// add build logger to listeners collection
-			listeners.Add(buildLogger);
-
-			// attach listeners to project
-			_project.AttachBuildListeners(listeners);
+			foreach (XmlElement element in _project.Document.GetElementsByTagName("description"))
+			{
+				_description += element.InnerText + " ";
+			}
 		}
 
-		private Level GetThreshold()
+		private void ParseTargetsAndDependencies()
 		{
-			Level projectThreshold = Level.Info;
-			// determine the project message threshold
-			if (_sourceFile.Options.Debug)
-			{
-				projectThreshold = Level.Debug;
-			}
-			else if (_sourceFile.Options.Verbose)
-			{
-				projectThreshold = Level.Verbose;
-			}
-			else if (_sourceFile.Options.Quiet)
-			{
-				projectThreshold = Level.Warning;
-			}
-			return projectThreshold;
+			ParseTargetsAndDependencies(_project.Document);
 		}
 
-		private void SetTargetFramework()
+		private void ParseTargetsAndDependencies(XmlDocument doc)
 		{
-			if (_sourceFile.Options.TargetFramework != null)
+			foreach (XmlElement element in doc.GetElementsByTagName("target"))
 			{
-				if (_project.Frameworks.Count == 0)
-				{
-					const string message = "There are no supported frameworks available on your system.";
-					throw new ApplicationException(message);
-				}
-				else
-				{
-					FrameworkInfo frameworkInfo = _project.Frameworks[_sourceFile.Options.TargetFramework];
+				NAntTarget nantTarget = new NAntTarget(element);
+				if (nantTarget.Name == _project.DefaultTargetName) nantTarget.Default = true;
+				_targets.Add(nantTarget);
+				_depends.Add(nantTarget.Depends);
+			}
 
-					if (frameworkInfo != null)
-					{
-						_project.TargetFramework = frameworkInfo;
-					}
-					else
-					{
-						const string format = "Invalid framework '{0}' specified.";
-						string message = string.Format(format, _sourceFile.Options.TargetFramework);
-						throw new CommandLineArgumentException(message);
-					}
+			_targets.Sort();
+		}
+
+		private void FollowIncludes()
+		{
+			foreach (XmlElement element in _project.Document.GetElementsByTagName("include"))
+			{
+				string buildFile = element.GetAttribute("buildfile");
+				string filename = _project.ExpandProperties(buildFile, new Location("Buildfile"));
+
+				if (File.Exists(filename))
+				{
+					ParseIncludeFile(filename);
 				}
 			}
 		}
 
-		private void Build_Finished(object sender, BuildEventArgs e)
+		private void ParseIncludeFile(string filename)
 		{
-			FinishBuild();
+			XmlDocument document = new XmlDocument();
+			document.Load(filename);
+			ParseTargetsAndDependencies(document);
+			ParseProperties(document);
+			ParseNonPropertyProperties(_project);
 		}
 
-		private void FinishBuild()
+		private void ParseBaseDir()
 		{
-			if (BuildFinished != null)
+			NAntProperty nAntProperty = new NAntProperty("BaseDir", _project.BaseDirectory, "Project", false);
+			_project.Properties.AddReadOnly(nAntProperty.Name, _project.BaseDirectory);
+			_properties.Add(nAntProperty);
+		}
+
+		private void ParseProperties()
+		{
+			ParseProperties(_project.Document);
+		}
+
+		private void ParseProperties(XmlDocument doc)
+		{
+			foreach (XmlElement element in doc.GetElementsByTagName("property"))
 			{
-				BuildFinished();
+				NAntProperty nantProperty = new NAntProperty(element);
+				try
+				{
+					nantProperty.ExpandedValue = _project.ExpandProperties(nantProperty.Value, new Location("Buildfile"));
+				}
+				catch (BuildException)
+				{
+					/* ignore */
+				}
+
+				if (!_project.Properties.Contains(nantProperty.Name))
+				{
+					_project.Properties.AddReadOnly(nantProperty.Name, nantProperty.ExpandedValue);
+					_properties.Add(nantProperty);
+				}
 			}
 		}
+
+		private void ParseNonPropertyProperties()
+		{
+			ParseNonPropertyProperties(_project);
+		}
+
+		private void ParseNonPropertyProperties(Project project)
+		{
+			ParseTstamps(project);
+			AddReadRegistrys(project);
+			//			AddRegex(project);
+		}
+
+		private void ParseTstamps(Project project)
+		{
+			foreach (XmlElement lElement in project.Document.GetElementsByTagName("tstamp"))
+			{
+				if (TypeFactory.TaskBuilders.Contains(lElement.Name))
+				{
+					TStampTask task = (TStampTask) project.CreateTask(lElement);
+					if (task != null)
+					{
+						task.Execute();
+
+						NAntProperty lNAntProperty =
+							new NAntProperty(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value,
+							true);
+						lNAntProperty.ExpandedValue = lNAntProperty.Value;
+						_properties.Add(lNAntProperty);
+					}
+				}
+			}
+		}
+
+		private void AddReadRegistrys(Project project)
+		{
+			foreach (XmlElement element in project.Document.GetElementsByTagName("readregistry"))
+			{
+				if (TypeFactory.TaskBuilders.Contains(element.Name))
+				{
+					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
+					if (task != null && task.PropertyName != null)
+					{
+						task.Execute();
+						
+						object val = task.Properties[task.PropertyName];
+						string value = val == null ? "" : val.ToString();
+						
+						NAntProperty nAntProperty = new NAntProperty(
+							task.PropertyName, value,
+							element.ParentNode.Attributes["name"].Value, false);
+
+						nAntProperty.ExpandedValue = nAntProperty.Value;
+						_properties.Add(nAntProperty);
+					}
+				}
+			}
+		}
+
+		/*
+				/// <summary>
+				/// Not in use right now because it opens a can of worms.
+				/// The only way to know what value the input attribute has 
+				/// is to run the program.  
+				/// </summary>
+				/// <param name="project"></param>
+				private void AddRegex(Project project)
+				{
+					foreach (XmlElement element in project.Document.GetElementsByTagName("regex"))
+					{
+						if (TypeFactory.TaskBuilders.Contains(element.Name))
+						{
+							ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
+							if (task != null && task.PropertyName != null)
+							{
+								task.Execute();
+
+								NAntProperty nAntProperty = new NAntProperty(
+									task.PropertyName, task.Properties[task.PropertyName], 
+									element.ParentNode.Attributes["name"].Value, false);
+
+								nAntProperty.ExpandedValue = nAntProperty.Value;
+								_properties.Add(nAntProperty);
+							}
+						}
+					}
+				}
+		*/
 
 		private bool HasName()
 		{
@@ -229,11 +276,6 @@ namespace NAntGui.NAnt
 
 		#region Properties
 
-		public SourceFile SourceFile
-		{
-			get { return _sourceFile; }
-		}
-
 		public string DefaultTarget
 		{
 			get { return _project.DefaultTargetName; }
@@ -241,29 +283,27 @@ namespace NAntGui.NAnt
 
 		public string Name
 		{
-			get { return HasName() ? _project.ProjectName : _sourceFile.Name; }
-		}
-
-		public TargetCollection Targets
-		{
-			get { return _targets; }
-			set { _targets = value; }
-		}
-
-		public PropertyCollection Properties
-		{
-			get { return _properties; }
-			set { _properties = value; }
-		}
-
-		public DependsCollection Depends
-		{
-			get { return _depends; }
+			get { return HasName() ? _project.ProjectName : _fileName; }
 		}
 
 		public string Description
 		{
 			get { return _description; }
+		}
+
+		public TargetCollection Targets
+		{
+			get { return _targets; }
+		}
+
+		public PropertyCollection Properties
+		{
+			get { return _properties; }
+		}
+
+		public DependsCollection Depends
+		{
+			get { return _depends; }
 		}
 
 		#endregion

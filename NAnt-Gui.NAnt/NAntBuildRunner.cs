@@ -22,43 +22,26 @@
 #endregion
 
 using System;
+using System.Text.RegularExpressions;
 using NAnt.Core;
+using NAnt.Core.Util;
 using NAntGui.Framework;
 using TargetCollection = NAntGui.Framework.TargetCollection;
+using CmdOptions = NAntGui.Framework.CommandLineOptions;
+
 
 namespace NAntGui.NAnt
 {
 	public class NAntBuildRunner : BuildRunnerBase
-	{
-		private NAntBuildScript _script;
-		private ILogsMessage _messageLogger;
+	{		
+		private Project _project;
+		private SourceFile _sourceFile;
 
-		public NAntBuildRunner(SourceFile sourceFile)
+		public NAntBuildRunner(SourceFile sourceFile, ILogsMessage logger, CmdOptions options) : 
+			base(logger, options)
 		{
 			Assert.NotNull(sourceFile, "sourceFile");
-			_messageLogger = sourceFile.MessageLogger;
-			_script = new NAntBuildScript(sourceFile);
-		}
-
-		public override void ParseBuildScript()
-		{
-			try
-			{
-				_script.ParseBuildScript();
-			}
-			catch (Exception error)
-			{
-				throw new BuildFileLoadException(GetErrorMessage(error));
-			}
-#if RELEASE
-			catch (Exception error)
-			{
-				// all other exceptions should have been caught
-				string message = error.Message + Environment.NewLine + 
-					error.StackTrace;
-				throw new BuildFileLoadException(message);
-			}
-#endif
+			_sourceFile = sourceFile;
 		}
 
 		private static string GetErrorMessage(Exception error)
@@ -85,35 +68,147 @@ namespace NAntGui.NAnt
 		{
 			try
 			{
-				Environment.CurrentDirectory = _script.SourceFile.Path;
-				_script.Run();
+				Environment.CurrentDirectory = _sourceFile.Path;
+
+				_project = new Project(_sourceFile.FullName, GetThreshold(), 0);
+				_project.BuildFinished += new BuildEventHandler(Build_Finished);
+				SetTargetFramework();
+				AddBuildListeners();
+
+				_project.Run();
 			}
 			catch (BuildException error)
 			{
-				_messageLogger.LogMessage(error.Message);
+				_logger.LogMessage(error.Message);
+				FinishBuild();
 			}
 		}
 
-		public override void SetProperties(PropertyCollection properties)
+		private Level GetThreshold()
 		{
-			Assert.NotNull(properties, "properties");
-			_script.Properties = properties;
+			Level projectThreshold = Level.Info;
+			// determine the project message threshold
+			if (_options.Debug)
+			{
+				projectThreshold = Level.Debug;
+			}
+			else if (_options.Verbose)
+			{
+				projectThreshold = Level.Verbose;
+			}
+			else if (_options.Quiet)
+			{
+				projectThreshold = Level.Warning;
+			}
+			return projectThreshold;
 		}
 
-		public override void SetTargets(TargetCollection targets)
+		public override void AddProperties(PropertyCollection properties)
 		{
-			Assert.NotNull(targets, "targets");
-			_script.Targets = targets;
+			foreach (BuildProperty property in properties)
+			{
+				if (property.Category == "Project")
+				{
+					_project.BaseDirectory = property.Value;
+				}
+				else //if (property.Category == "Global" || ValidTarget(property.Category))
+				{
+					LoadNonProjectProperty(property);
+				}
+			}
 		}
 
-		public override VoidVoid BuildFinished
+		public override void AddTargets(TargetCollection targets)
 		{
-			set { _script.BuildFinished += value; }
+			foreach (BuildTarget target in targets)
+			{
+				_project.BuildTargets.Add(target.Name);
+			}
 		}
 
-		public override IBuildScript BuildScript
+		private void LoadNonProjectProperty(BuildProperty property)
 		{
-			get { return _script; }
+			string expandedValue = property.Value;
+
+			try
+			{
+				expandedValue = _project.ExpandProperties(property.Value,
+					new Location(_sourceFile.FullName));
+			}
+			catch (BuildException)
+			{
+				/* ignore */
+			}
+
+			// If the expanded value doesn't have any "unexpanded" values
+			// add it to the project.
+			Regex regex = new Regex(@"\$\{.+\}");
+			if (!regex.IsMatch(expandedValue))
+			{
+				// TODO: should change the following to add the property only 
+				// if it changed.  This would fix a lot of weird behaviour.
+				if (!property.ReadOnly)
+				{
+					_project.Properties.AddReadOnly(property.Name, expandedValue);
+				}
+			}
+		}
+
+		//		private bool ValidTarget(string category)
+		//		{
+		//			return _project.BuildTargets.Contains(category);
+		//		}
+
+		/// <summary>
+		/// Add the listeners specified in the command line arguments,
+		/// along with the default listener, to the specified project.
+		/// </summary>
+		private void AddBuildListeners()
+		{
+			Assert.NotNull(_project, "project");
+			BuildListenerCollection listeners = new BuildListenerCollection();
+			IBuildLogger buildLogger = new GuiLogger(_logger);
+
+			// set threshold of build logger equal to threshold of project
+			buildLogger.Threshold = _project.Threshold;
+
+			// add build logger to listeners collection
+			listeners.Add(buildLogger);
+
+			// attach listeners to project
+			_project.AttachBuildListeners(listeners);
+		}
+
+		private void SetTargetFramework()
+		{
+			if (_options.TargetFramework != null)
+			{
+				if (_project.Frameworks.Count == 0)
+				{
+					const string message = "There are no supported frameworks available on your system.";
+					throw new ApplicationException(message);
+				}
+				else
+				{
+					FrameworkInfo frameworkInfo = _project.Frameworks[_options.TargetFramework];
+
+					if (frameworkInfo != null)
+					{
+						_project.TargetFramework = frameworkInfo;
+					}
+					else
+					{
+						const string format = "Invalid framework '{0}' specified.";
+						string message = string.Format(format, _options.TargetFramework);
+						throw new CommandLineArgumentException(message);
+					}
+				}
+			}
+		}
+
+		private void Build_Finished(object sender, BuildEventArgs e)
+		{
+			FinishBuild();
 		}
 	}
 }

@@ -141,11 +141,6 @@
                     RelPath = "PreBuild.bat"
                     BuildAction = "None"
                 />
-                <File
-                    RelPath = "ScriptParser.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
             </Include>
         </Files>
     </CSHARP>

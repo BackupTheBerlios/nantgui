@@ -9,14 +9,14 @@ namespace NAntGui.Core
 	/// </summary>
 	public class BuildRunnerFactory
 	{
-		public static BuildRunnerBase Create(SourceFile sourceFile)
+		public static BuildRunnerBase Create(SourceFile sourceFile, ILogsMessage logger, CommandLineOptions options)
 		{
 			switch (sourceFile.Extension)
 			{
 				default:
 				case "nant":
 				case "build":
-					return new NAntBuildRunner(sourceFile);
+					return new NAntBuildRunner(sourceFile, logger, options);
 				case "proj":
 					throw new NotImplementedException("Pete's code goes here :)");
 			}
