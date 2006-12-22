@@ -9,7 +9,7 @@ namespace NAntGui.Core
 	/// </summary>
 	public class BuildRunnerFactory
 	{
-		public static IBuildRunner Create(SourceFile sourceFile)
+		public static BuildRunnerBase Create(SourceFile sourceFile)
 		{
 			switch (sourceFile.Extension)
 			{

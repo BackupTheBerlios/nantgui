@@ -46,7 +46,7 @@ namespace NAntGui.Gui
 		private TabPage _scriptTab = new TabPage();
 		private ScriptEditor _scriptEditor;
 		private SourceFile _file;
-		private IBuildRunner _buildRunner;
+		private BuildRunnerBase _buildRunner;
 		private MainFormMediator _mediator;
 		private TextAreaClipboardHandler _clipboardHandler;
 		// this might be better moved to the SourceFile class
@@ -65,7 +65,7 @@ namespace NAntGui.Gui
 
 			Initialize();
 
-			_buildRunner
+			//_buildRunner
 		}
 
 		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator)

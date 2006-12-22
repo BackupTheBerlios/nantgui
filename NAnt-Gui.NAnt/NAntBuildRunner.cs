@@ -28,7 +28,7 @@ using TargetCollection = NAntGui.Framework.TargetCollection;
 
 namespace NAntGui.NAnt
 {
-	public class NAntBuildRunner : IBuildRunner
+	public class NAntBuildRunner : BuildRunnerBase
 	{
 		private NAntBuildScript _script;
 		private ILogsMessage _messageLogger;
