@@ -108,11 +108,12 @@ namespace NAntGui.NAnt
 
 		private void ParseTargetsAndDependencies()
 		{
+			_targets.Clear();
 			ParseTargetsAndDependencies(_project.Document);
 		}
 
 		private void ParseTargetsAndDependencies(XmlDocument doc)
-		{
+		{			
 			foreach (XmlElement element in doc.GetElementsByTagName("target"))
 			{
 				NAntTarget nantTarget = new NAntTarget(element);

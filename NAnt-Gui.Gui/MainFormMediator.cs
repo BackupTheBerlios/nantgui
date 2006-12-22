@@ -330,7 +330,7 @@ namespace NAntGui.Gui
 
 				_mainMenu.Enable();
 				_toolBar.Enable();
-//				UpdateDisplay();
+				UpdateDisplay();
 
 				return true;
 			}

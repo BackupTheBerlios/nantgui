@@ -23,13 +23,11 @@ namespace NAntGui.Gui
 		public PropertyCollection Properties
 		{
 			get { return new PropertyCollection(); }
-			set	{ /* do nothing */ }
 		}
 
 		public TargetCollection Targets
 		{
 			get { return new TargetCollection(); }
-			set	{ /* do nothing */ }
 		}
 	}
 }

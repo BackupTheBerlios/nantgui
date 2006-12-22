@@ -33,17 +33,14 @@ namespace NAntGui.Framework
 		protected CommandLineOptions _options;
 
 		private Thread _thread;
-//		protected IBuildScript _script;		
 
 		protected abstract void DoRun();
 
 		public BuildRunnerBase(ILogsMessage logger, CommandLineOptions options)
 		{
-//			Assert.NotNull(script, "script");
 			Assert.NotNull(logger, "logger");
 			Assert.NotNull(options, "options");
 
-//			_script = script;
 			_logger = logger;
 			_options = options;
 		}
@@ -62,10 +59,6 @@ namespace NAntGui.Framework
 			}
 		}
 
-		public abstract void AddProperties(PropertyCollection properties);
-
-		public abstract void AddTargets(TargetCollection targets);
-
 		protected void FinishBuild()
 		{
 			if (BuildFinished != null)
@@ -73,5 +66,9 @@ namespace NAntGui.Framework
 				BuildFinished();
 			}
 		}
+
+		public abstract PropertyCollection Properties { set; }
+
+		public abstract TargetCollection Targets { set; }
 	}
 }

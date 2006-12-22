@@ -36,6 +36,8 @@ namespace NAntGui.NAnt
 	{		
 		private Project _project;
 		private SourceFile _sourceFile;
+		private TargetCollection _targets;
+		private PropertyCollection _properties;
 
 		public NAntBuildRunner(SourceFile sourceFile, ILogsMessage logger, CmdOptions options) : 
 			base(logger, options)
@@ -74,6 +76,8 @@ namespace NAntGui.NAnt
 				_project.BuildFinished += new BuildEventHandler(Build_Finished);
 				SetTargetFramework();
 				AddBuildListeners();
+				AddProperties();
+				AddTargets();
 
 				_project.Run();
 			}
@@ -103,9 +107,9 @@ namespace NAntGui.NAnt
 			return projectThreshold;
 		}
 
-		public override void AddProperties(PropertyCollection properties)
+		private void AddProperties()
 		{
-			foreach (BuildProperty property in properties)
+			foreach (BuildProperty property in _properties)
 			{
 				if (property.Category == "Project")
 				{
@@ -118,9 +122,9 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		public override void AddTargets(TargetCollection targets)
+		private void AddTargets()
 		{
-			foreach (BuildTarget target in targets)
+			foreach (BuildTarget target in _targets)
 			{
 				_project.BuildTargets.Add(target.Name);
 			}
@@ -209,6 +213,16 @@ namespace NAntGui.NAnt
 		private void Build_Finished(object sender, BuildEventArgs e)
 		{
 			FinishBuild();
+		}
+
+		public override PropertyCollection Properties
+		{
+			set { _properties = value; }
+		}
+
+		public override TargetCollection Targets
+		{
+			set { _targets = value; }
 		}
 	}
 }

@@ -61,5 +61,10 @@ namespace NAntGui.Framework
 		{
 			_targets.Sort();
 		}
+
+		public void Clear()
+		{
+			_targets.Clear();
+		}
 	}
 }

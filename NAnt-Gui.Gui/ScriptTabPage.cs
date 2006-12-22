@@ -223,13 +223,13 @@ namespace NAntGui.Gui
 		public void SetProperties(PropertyCollection properties)
 		{
 			Assert.NotNull(properties, "properties");
-			_buildRunner.AddProperties(properties);
+			_buildRunner.Properties = properties;
 		}
 
 		public void SetTargets(TargetCollection targets)
 		{
 			Assert.NotNull(targets, "targets");
-			_buildRunner.AddTargets(targets);
+			_buildRunner.Targets = targets;
 		}
 
 		public void Close(CancelEventArgs e)
