@@ -32,6 +32,5 @@ namespace NAntGui.Framework
 
 		string Name { get; }
 		string Description { get; }
-		bool HasName { get; }
 	}
 }

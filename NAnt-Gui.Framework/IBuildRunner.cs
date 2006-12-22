@@ -25,7 +25,7 @@ using System.Threading;
 
 namespace NAntGui.Framework
 {
-	public abstract class IBuildRunner
+	public abstract class BuildRunnerBase
 	{
 		private Thread _thread;
 

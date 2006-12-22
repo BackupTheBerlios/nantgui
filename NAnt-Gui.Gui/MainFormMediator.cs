@@ -343,18 +343,16 @@ namespace NAntGui.Gui
 
 		public void UpdateDisplay()
 		{
-//			_outputBox.Clear();
-
-			IBuildScript buildScript = _selectedTab.BuildScript;
+//			_outputBox.Clear();			
 
 			_form.Text = string.Format("NAnt-Gui - {0}", _selectedTab.Title);
 
-			string projectName = buildScript.HasName ? buildScript.Name : _selectedTab.FileName;
+			IBuildScript buildScript = _selectedTab.BuildScript;
 
-			_statusBar.Panels[0].Text = string.Format("{0} ({1})", projectName, buildScript.Description);
+			_statusBar.Panels[0].Text = string.Format("{0} ({1})", buildScript.Name, buildScript.Description);
 			_statusBar.Panels[1].Text = _selectedTab.FileFullName;
 
-			_targetsTree.AddTargets(projectName, buildScript.Targets);
+			_targetsTree.AddTargets(buildScript.Name, buildScript.Targets);
 			_propertyGrid.AddProperties(buildScript.Properties);
 		}
 

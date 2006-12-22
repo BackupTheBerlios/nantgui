@@ -64,6 +64,8 @@ namespace NAntGui.Gui
 			_fileType = FileType.New;
 
 			Initialize();
+
+			_buildRunner
 		}
 
 		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator)

@@ -222,6 +222,10 @@ namespace NAntGui.NAnt
 			}
 		}
 
+		private bool HasName()
+		{
+			return _project != null && _project.ProjectName.Length > 0;
+		}
 
 		#region Properties
 
@@ -237,7 +241,7 @@ namespace NAntGui.NAnt
 
 		public string Name
 		{
-			get { return _project.ProjectName; }
+			get { return HasName() ? _project.ProjectName : _sourceFile.Name; }
 		}
 
 		public TargetCollection Targets
@@ -260,11 +264,6 @@ namespace NAntGui.NAnt
 		public string Description
 		{
 			get { return _description; }
-		}
-
-		public bool HasName
-		{
-			get { return _project != null && _project.ProjectName.Length > 0; }
 		}
 
 		#endregion
