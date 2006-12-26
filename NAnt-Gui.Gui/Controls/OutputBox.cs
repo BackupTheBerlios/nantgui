@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 using NAntGui.Gui.Controls.Menu.EditMenu;
@@ -156,6 +157,23 @@ namespace NAntGui.Gui.Controls
 				WriteOutput(message);
 			}
 		}
+		
+		public int GetLineAtCursor()
+		{
+			return GetLineFromCharIndex(SelectionStart);
+		}
+
+		public void Delete()
+		{
+			/* delete not supported, just ignore */
+		}
+
+		public void ReHightlight()
+		{
+			string text = Text;
+			Clear();
+			WriteOutput(text);
+		}
 
 		protected override void OnEnter(EventArgs e)
 		{
@@ -182,41 +200,28 @@ namespace NAntGui.Gui.Controls
 			{
 				string file = GetFile(line);
 				_mediator.LoadBuildFile(file);
-				_mediator.SetCursor();
+//				_mediator.SetCursor();
 			}
 		}
 
 		private string GetFile(string line)
 		{
-			return "";
+			const string FILE_REG = @"[a-zA-Z]:(\\[^\\\(\),]*)+";
+			Regex reg = new Regex(FILE_REG);
+			return reg.Match(line).Value;
 		}
 
 		private bool HasFile(string line)
 		{
-			return false;
+			const string FILE_REG = @"[a-zA-Z]:(\\[^\\]*)+(\.[\\\.]+)*\(\d+,\d+\)";
+			Regex reg = new Regex(FILE_REG);
+			return reg.IsMatch(line);
 		}
 
 		private string GetLine()
 		{
 			int lineNumber = GetLineAtCursor();
 			return Lines[lineNumber];
-		}
-
-		public int GetLineAtCursor()
-		{
-			return GetLineFromCharIndex(SelectionStart);
-		}
-
-		public void Delete()
-		{
-			/* delete not supported, just ignore */
-		}
-
-		public void ReHightlight()
-		{
-			string text = Text;
-			Clear();
-			WriteOutput(text);
 		}
 	}
 }
