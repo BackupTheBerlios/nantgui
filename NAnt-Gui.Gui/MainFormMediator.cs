@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
@@ -304,7 +305,7 @@ namespace NAntGui.Gui
 			_sourceTabs.AddTab(new ScriptTabPage(_outputBox, this));			
 		}
 
-		private bool LoadBuildFile(string filename)
+		public bool LoadBuildFile(string filename)
 		{
 			if (File.Exists(filename))
 			{
@@ -422,6 +423,11 @@ namespace NAntGui.Gui
 		{
 			_selectedTab = tab;
 			UpdateDisplay();
+		}
+
+		public void SetCursor()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

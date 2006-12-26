@@ -237,6 +237,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\OutputBox.resx"
+                    DependentUpon = "OutputBox.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Controls\ScriptEditor.cs"
                     SubType = "UserControl"
                     BuildAction = "Compile"

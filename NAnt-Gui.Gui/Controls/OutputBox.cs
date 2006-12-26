@@ -29,7 +29,6 @@ namespace NAntGui.Gui.Controls
 			Assert.NotNull(mediator, "value");
 			_mediator = mediator;
 			Initialize();
-			CreateOutputContextMenu();
 		}
 
 		private void Initialize()
@@ -41,6 +40,7 @@ namespace NAntGui.Gui.Controls
 			_saveDialog.FileName = "Output";
 			_saveDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
 
+			SetStyle(ControlStyles.StandardClick, true);
 			Dock = DockStyle.Fill;
 			BorderStyle = BorderStyle.FixedSingle;
 			DetectUrls = false;
@@ -48,6 +48,8 @@ namespace NAntGui.Gui.Controls
 			WordWrap = false;
 			MouseUp += new MouseEventHandler(OutputTextBox_MouseUp);
 			Enter += new EventHandler(DoEnter);
+			
+			CreateOutputContextMenu();
 		}
 
 		private void CreateOutputContextMenu()
@@ -165,6 +167,44 @@ namespace NAntGui.Gui.Controls
 		{
 			base.OnLeave(e);
 			_mediator.OutputLostFocused();
+		}
+		
+		protected override void OnDoubleClick(EventArgs e)
+		{
+			CheckLineForFile();
+			base.OnDoubleClick(e);
+		}
+
+		private void CheckLineForFile()
+		{
+			string line = GetLine();
+			if (HasFile(line))
+			{
+				string file = GetFile(line);
+				_mediator.LoadBuildFile(file);
+				_mediator.SetCursor();
+			}
+		}
+
+		private string GetFile(string line)
+		{
+			return "";
+		}
+
+		private bool HasFile(string line)
+		{
+			return false;
+		}
+
+		private string GetLine()
+		{
+			int lineNumber = GetLineAtCursor();
+			return Lines[lineNumber];
+		}
+
+		public int GetLineAtCursor()
+		{
+			return GetLineFromCharIndex(SelectionStart);
 		}
 
 		public void Delete()
