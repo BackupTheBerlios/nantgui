@@ -58,6 +58,7 @@ namespace NAntGui.Gui
 		{
 			Assert.NotNull(logger, "logger");
 			Assert.NotNull(mediator, "mediator");
+
 			_mediator = mediator;
 			_logger = logger;
 
@@ -89,45 +90,12 @@ namespace NAntGui.Gui
 			Initialize();
 
 			_buildRunner = BuildRunnerFactory.Create(_file, logger, options);
-			_buildScript = ScriptParserFactory.Create(_file);
+			_buildScript = ScriptParserFactory.Create(_file);			
 		}
 
 		public void ParseBuildScript()
 		{
 			_buildScript.Parse();
-		}
-
-		private void Initialize()
-		{
-			TextArea textArea = _scriptEditor.ActiveTextAreaControl.TextArea;
-			_clipboardHandler = textArea.ClipboardHandler;
-			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(Editor_TextChanged);
-			textArea.Enter += new EventHandler(GotFocus);
-			textArea.Leave += new EventHandler(LostFocus);
-
-			_scriptTab.Controls.Add(_scriptEditor);
-			_scriptTab.Location = new Point(0, 0);
-			_scriptTab.Selected = true;
-			_scriptTab.Size = new Size(824, 453);
-			_scriptTab.Title = _file.Name;
-		}
-
-		private void Editor_TextChanged(object sender, DocumentEventArgs e)
-		{
-			if (IsDirty && !Utils.HasAsterisk(_scriptTab.Title))
-			{
-				_scriptTab.Title = Utils.AddAsterisk(_scriptTab.Title);
-			}
-			else if (!IsDirty && Utils.HasAsterisk(_scriptTab.Title))
-			{
-				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
-			}
-
-			// Can't parse a file that doesn't exist on the harddrive
-			if (_fileType == FileType.Existing)
-			{
-				_mediator.UpdateDisplay();
-			}
 		}
 
 		public void ReLoad()
@@ -171,25 +139,7 @@ namespace NAntGui.Gui
 			}
 		}
 
-		private void ParseBuildFile()
-		{
-			// Might want a more specific exception type to be caught here.
-			// For example, a NullReferenceException on _buildRunner 
-			// shouldn't be ignored.
-			try
-			{
-				_buildScript.Parse();
-			}
-			catch
-			{
-				/* ignore */
-			}
-		}
 
-		private void GotFocus(object sender, EventArgs e)
-		{
-			_mediator.TabGotFocus();
-		}
 
 		public void LostFocus(object sender, EventArgs e)
 		{
@@ -304,6 +254,59 @@ namespace NAntGui.Gui
 		public void SetCursor(int x, int y)
 		{
 			_scriptEditor.ActiveTextAreaControl.JumpTo(x, y);
+		}
+
+		private void Initialize()
+		{
+			TextArea textArea = _scriptEditor.ActiveTextAreaControl.TextArea;
+			_clipboardHandler = textArea.ClipboardHandler;
+			_scriptEditor.Document.DocumentChanged += new DocumentEventHandler(Editor_TextChanged);
+			textArea.Enter += new EventHandler(GotFocus);
+			textArea.Leave += new EventHandler(LostFocus);
+
+			_scriptTab.Controls.Add(_scriptEditor);
+			_scriptTab.Location = new Point(0, 0);
+			_scriptTab.Selected = true;
+			_scriptTab.Size = new Size(824, 453);
+			_scriptTab.Title = _file.Name;
+		}
+
+		private void Editor_TextChanged(object sender, DocumentEventArgs e)
+		{
+			if (IsDirty && !Utils.HasAsterisk(_scriptTab.Title))
+			{
+				_scriptTab.Title = Utils.AddAsterisk(_scriptTab.Title);
+			}
+			else if (!IsDirty && Utils.HasAsterisk(_scriptTab.Title))
+			{
+				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
+			}
+
+			// Can't parse a file that doesn't exist on the harddrive
+			if (_fileType == FileType.Existing)
+			{
+				_mediator.UpdateDisplay();
+			}
+		}
+
+		private void ParseBuildFile()
+		{
+			// Might want a more specific exception type to be caught here.
+			// For example, a NullReferenceException on _buildRunner 
+			// shouldn't be ignored.
+			try
+			{
+				_buildScript.Parse();
+			}
+			catch
+			{
+				/* ignore */
+			}
+		}
+
+		private void GotFocus(object sender, EventArgs e)
+		{
+			_mediator.TabGotFocus();
 		}
 
 		#region Properties

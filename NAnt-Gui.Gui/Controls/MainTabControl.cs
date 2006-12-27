@@ -45,7 +45,10 @@ namespace NAntGui.Gui.Controls
 			Dock = DockStyle.Fill;
 			IDEPixelArea = true;
 			IDEPixelBorder = false;
-			ShowClose = true;
+
+			ContextPopupMenu = new Crownwood.Magic.Menus.PopupMenu();
+			ContextPopupMenu.MenuCommands.Add(new Menu.FileMenu.CloseMenuCommand(_mediator));
+			this.PopupMenuDisplay += new System.ComponentModel.CancelEventHandler(PopupCancel);
 
 			ResumeLayout(false);
 		}
@@ -60,6 +63,11 @@ namespace NAntGui.Gui.Controls
 		{
 			base.OnDragDrop(e);
 			_mediator.DragDrop(e);
+		}
+
+		protected void PopupCancel(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			MessageBox.Show("hello");
 		}
 	}
 }

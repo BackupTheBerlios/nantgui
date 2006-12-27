@@ -81,7 +81,7 @@ namespace NAntGui.NAnt
 			{
 				_project = new Project(_filePath, Level.Info, 0);
 			}
-			catch (BuildException error)
+			catch (Exception error)
 			{
 				if (error.InnerException != null)
 				{

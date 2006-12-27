@@ -1,8 +1,12 @@
++ Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
+  control.  Would give access to syntax highlighting, code completion, add-in architecture, 
+  find/replace dialog, etc...  Only for .Net 2.0 though.
 + Multiple tabs
 	* Store open files in registry and when NAnt-Gui is loaded, load all the previously loaded 
 	  build files
 	* Allow only one instance of NAnt-Gui to load
 	* Only allow one copy of a file to be loaded at a time
+	* Add right-click context menu on tabs
 + Add a property window to change nant settings after nant-gui is loaded	  
 + Remove ScriptTabs, MainTabControl, and ScriptEditor.  Overuse of the mediator pattern, use 
   events instead

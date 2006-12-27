@@ -45,6 +45,7 @@ namespace NAntGui
 //			AppDomain.CurrentDomain.AssemblyResolve +=
 //				new ResolveEventHandler(ResolveHandler);
 
+
 			NAntGuiApp.Run(ParseCommandLine(args));
 		}
 

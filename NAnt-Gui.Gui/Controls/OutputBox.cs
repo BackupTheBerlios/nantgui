@@ -33,6 +33,8 @@ namespace NAntGui.Gui.Controls
 			Initialize();
 		}
 
+		#region Initialize
+
 		private void Initialize()
 		{
 			// 
@@ -43,16 +45,18 @@ namespace NAntGui.Gui.Controls
 			_saveDialog.Filter = "Text Document|*.txt|Rich Text Format (RTF)|*.rtf";
 
 			SetStyle(ControlStyles.StandardClick, true);
-			Dock = DockStyle.Fill;
+
+			Dock		= DockStyle.Fill;
 			BorderStyle = BorderStyle.FixedSingle;
-			DetectUrls = false;
-			ReadOnly = true;
-			WordWrap = false;
-			MouseUp += new MouseEventHandler(OutputTextBox_MouseUp);
-			Enter += new EventHandler(DoEnter);
-			
+			DetectUrls	= false;
+			ReadOnly	= true;
+			BackColor	= Color.White;
+			WordWrap	= false;
+
 			CreateOutputContextMenu();
 		}
+
+		#endregion
 
 		private void CreateOutputContextMenu()
 		{
@@ -62,19 +66,12 @@ namespace NAntGui.Gui.Controls
 			_outputContextMenu.MenuCommands.AddRange(new MenuCommand[] {copy, selectAll});
 		}
 
-		private void OutputTextBox_MouseUp(object sender, MouseEventArgs e)
+		protected override void OnMouseUp(MouseEventArgs e)
 		{
-			RichTextBox box = sender as RichTextBox;
 			if (e.Button == MouseButtons.Right)
 			{
-				_outputContextMenu.TrackPopup(box.PointToScreen(new Point(e.X, e.Y)));
+				_outputContextMenu.TrackPopup(PointToScreen(new Point(e.X, e.Y)));
 			}
-		}
-
-		private void DoEnter(object sender, EventArgs e)
-		{
-			if (WordWrapChanged != null)
-				WordWrapChanged(WordWrap);
 		}
 
 		public void SaveOutput()
@@ -179,6 +176,11 @@ namespace NAntGui.Gui.Controls
 		protected override void OnEnter(EventArgs e)
 		{
 			base.OnEnter(e);
+
+			// this might not be used
+			if (WordWrapChanged != null)
+				WordWrapChanged(WordWrap);
+
 			_mediator.OutputGotFocused();
 		}
 
