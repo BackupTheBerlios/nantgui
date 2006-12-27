@@ -47,7 +47,6 @@ namespace NAntGui.NAnt
 		private string _filePath;
 		private string _fileName;
 		private string _description = "";
-		//private CmdOptions _options;
 
 		private TargetCollection _targets = new TargetCollection();
 		private DependsCollection _depends = new DependsCollection();
@@ -60,17 +59,14 @@ namespace NAntGui.NAnt
 		{
 			Assert.NotNull(filePath, "filePath");
 			Assert.NotNull(fileName, "fileName");
-			//Assert.NotNull(options, "options");
 
 			_filePath = filePath;
 			_fileName = fileName;
-			//_options = options;
 		}
 
 		public void Parse()
 		{
-			_project = new Project(_filePath, Level.Info, 0);
-
+			CreateProject();
 			ParseDescription();
 			ParseTargetsAndDependencies();
 			ParseProperties();
@@ -79,24 +75,24 @@ namespace NAntGui.NAnt
 			ParseBaseDir();
 		}
 
-//		private Level GetThreshold()
-//		{
-//			Level projectThreshold = Level.Info;
-//			// determine the project message threshold
-//			if (_options.Debug)
-//			{
-//				projectThreshold = Level.Debug;
-//			}
-//			else if (_options.Verbose)
-//			{
-//				projectThreshold = Level.Verbose;
-//			}
-//			else if (_options.Quiet)
-//			{
-//				projectThreshold = Level.Warning;
-//			}
-//			return projectThreshold;
-//		}
+		private void CreateProject()
+		{
+			try
+			{
+				_project = new Project(_filePath, Level.Info, 0);
+			}
+			catch (BuildException error)
+			{
+				if (error.InnerException != null)
+				{
+					throw new BuildFileLoadException(error.InnerException.Message);
+				}
+				else
+				{
+					throw new BuildFileLoadException(error.Message);
+				}
+			}
+		}
 
 		private void ParseDescription()
 		{

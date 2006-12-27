@@ -42,8 +42,8 @@ namespace NAntGui
 		[STAThread]
 		private static void Main(string[] args)
 		{
-			AppDomain.CurrentDomain.AssemblyResolve +=
-				new ResolveEventHandler(ResolveHandler);
+//			AppDomain.CurrentDomain.AssemblyResolve +=
+//				new ResolveEventHandler(ResolveHandler);
 
 			NAntGuiApp.Run(ParseCommandLine(args));
 		}
@@ -101,11 +101,11 @@ namespace NAntGui
 				*/
 		}
 
-		private static Assembly ResolveHandler(object sender, ResolveEventArgs args)
-		{
-			const string nantCoreAssembly = "NAnt.Core.dll";
-			string nantPath = @"C:\Program Files\nant-0.85\bin\";
-			return Assembly.LoadFrom(nantPath + nantCoreAssembly);
-		}
+//		private static Assembly ResolveHandler(object sender, ResolveEventArgs args)
+//		{
+//			const string nantCoreAssembly = "NAnt.Core.dll";
+//			string nantPath = @"C:\Program Files\nant-0.85\bin\";
+//			return Assembly.LoadFrom(nantPath + nantCoreAssembly);
+//		}
 	}
 }

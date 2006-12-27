@@ -27,7 +27,6 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using NAntGui.NAnt.NAnt;
 
 namespace NAntGui.Gui
 {
@@ -218,23 +217,23 @@ namespace NAntGui.Gui
 		{
 			if (NameEntered)
 			{
-				project proj = new project();
-				proj.name = NameTextBox.Text;
-				proj.@default = DefaultTextBox.Text;
-				proj.basedir = BasedirTextBox.Text;
-
-				XmlSerializer serial = new XmlSerializer(typeof (project));
-				MemoryStream stream = new MemoryStream();
-
-				serial.Serialize(stream, proj);
-
-				byte[] buffer = new byte[stream.Length];
-
-				stream.Read(buffer, 0, (int) stream.Length - 1);
-
-				string xml = Encoding.Unicode.GetString(buffer);
-
-				MessageBox.Show(xml);
+//				project proj = new project();
+//				proj.name = NameTextBox.Text;
+//				proj.@default = DefaultTextBox.Text;
+//				proj.basedir = BasedirTextBox.Text;
+//
+//				XmlSerializer serial = new XmlSerializer(typeof (project));
+//				MemoryStream stream = new MemoryStream();
+//
+//				serial.Serialize(stream, proj);
+//
+//				byte[] buffer = new byte[stream.Length];
+//
+//				stream.Read(buffer, 0, (int) stream.Length - 1);
+//
+//				string xml = Encoding.Unicode.GetString(buffer);
+//
+//				MessageBox.Show(xml);
 			}
 			else
 			{
