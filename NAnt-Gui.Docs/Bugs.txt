@@ -1,3 +1,5 @@
+- Got some kind of weird bug when I was editing a file.  Had saved it, but it complained, when
+  I closed the file that it wasn't saved
 - If you run an unsaved new file and cancel the file save dialog, the run should be aborted
 - Reload shouldn't be enabled on a new file
 - If you sticky the output box it loses it's formatting/highlighting
