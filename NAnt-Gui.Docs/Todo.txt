@@ -2,7 +2,8 @@
 	* Store open files in registry and when NAnt-Gui is loaded, load all the previously loaded 
 	  build files
 	* Allow only one instance of NAnt-Gui to load
-	* Only allow one copy of a file to be loaded at a time	
+	* Only allow one copy of a file to be loaded at a time(Will use Ghengis now, but can switch to
+	  Microsoft.VisualBasic.ApplicationServices for the .Net 2.0 version)
 	* Enable drag and drop reordering of tabs (PROBABLY NOT GOING TO BE ABLE TO DO THIS BECAUSE
 	  MAGICLIBRARY ISN'T SO MAGICAL.  NO EASY WAY TO ENABLE THIS)
 + Add a property window to change nant settings after nant-gui is loaded	  

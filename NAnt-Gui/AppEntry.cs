@@ -26,6 +26,7 @@ using System.Reflection;
 using NAnt.Core.Util;
 using NAntGui.Framework;
 using NAntGui.Gui;
+using OICallback = Genghis.Windows.Forms.OtherInstanceCallback;
 
 namespace NAntGui
 {
@@ -45,8 +46,12 @@ namespace NAntGui
 //			AppDomain.CurrentDomain.AssemblyResolve +=
 //				new ResolveEventHandler(ResolveHandler);
 
-
-			NAntGuiApp.Run(ParseCommandLine(args));
+//			OICallback callback = new OICallback(NAntGuiApp.OnOtherInstance);
+//
+//			if (!InitialInstanceActivator.Activate(mainForm, callback, args)) 
+//			{
+				NAntGuiApp.Run(ParseCommandLine(args));
+//			}
 		}
 
 		private static CommandLineOptions ParseCommandLine(string[] args)

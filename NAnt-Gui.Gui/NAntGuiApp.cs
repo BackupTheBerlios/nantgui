@@ -36,6 +36,7 @@ namespace NAntGui.Gui
 		private const string IMAGE_PATH = "NAntGui.Gui.Images.MenuItems.bmp";
 		private static CommandLineOptions _options;
 		private static ImageList _imageList;
+		private static MainFormMediator _mediator;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -47,9 +48,16 @@ namespace NAntGui.Gui
 			_imageList = ResourceHelper.LoadBitmapStrip(typeof (NAntGuiApp),
 			                                            IMAGE_PATH, new Size(16, 16), new Point(0, 0));
 
-			MainFormMediator mediator = new MainFormMediator();
-			mediator.RunApplication();
+			_mediator = new MainFormMediator();
+			_mediator.RunApplication();
 		}
+
+		// Called from other instances
+//		public static void OnOtherInstance(CommandLineOptions options) 
+//		{
+//			_options = options;
+//			_mediator.LoadInitialBuildFile();
+//		}
 
 		public static CommandLineOptions Options
 		{

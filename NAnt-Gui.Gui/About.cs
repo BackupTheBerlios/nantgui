@@ -120,7 +120,7 @@ namespace NAntGui.Gui
 			// 
 			this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OKButton.Location = new System.Drawing.Point(374, 194);
+			this.OKButton.Location = new System.Drawing.Point(376, 232);
 			this.OKButton.Name = "OKButton";
 			this.OKButton.Size = new System.Drawing.Size(90, 26);
 			this.OKButton.TabIndex = 4;
@@ -148,7 +148,7 @@ namespace NAntGui.Gui
 			this.EmailLinkLabel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.EmailLinkLabel.Location = new System.Drawing.Point(298, 65);
 			this.EmailLinkLabel.Name = "EmailLinkLabel";
-			this.EmailLinkLabel.Size = new System.Drawing.Size(163, 18);
+			this.EmailLinkLabel.Size = new System.Drawing.Size(174, 18);
 			this.EmailLinkLabel.TabIndex = 7;
 			this.EmailLinkLabel.TabStop = true;
 			this.EmailLinkLabel.Text = "nantgui@swoogan.com";
@@ -176,14 +176,19 @@ namespace NAntGui.Gui
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox1.Location = new System.Drawing.Point(10, 83);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(451, 9);
+			this.groupBox1.Size = new System.Drawing.Size(454, 9);
 			this.groupBox1.TabIndex = 11;
 			this.groupBox1.TabStop = false;
 			// 
 			// listBox1
 			// 
+			this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.listBox1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.listBox1.HorizontalScrollbar = true;
 			this.listBox1.ItemHeight = 17;
@@ -191,16 +196,17 @@ namespace NAntGui.Gui
 														  "ICSharpCode.TextEditor Copyright © 2000-2005 icsharpcode.net",
 														  "PropertyBag Copyright © 2002  Tony Allowatt",
 														  "NAnt 0.8.5 Copyright © 2001-2004 Gerry Shaw",
-														  "Magic Library 1.7.4"});
+														  "Magic Library 1.7.4",
+														  "Portions copyright 2002-2004 The Genghis Group (http://www.genghisgroup.com/)"});
 			this.listBox1.Location = new System.Drawing.Point(10, 102);
 			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(451, 72);
+			this.listBox1.Size = new System.Drawing.Size(453, 123);
 			this.listBox1.TabIndex = 13;
 			// 
 			// About
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
-			this.ClientSize = new System.Drawing.Size(472, 229);
+			this.ClientSize = new System.Drawing.Size(474, 267);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.WebLinkLabel);
