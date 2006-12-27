@@ -1,7 +1,11 @@
-- If you sticky or unsticky the output box it loses it's formatting/highlighting
+- If you run an unsaved new file and cancel the file save dialog, the run should be aborted
+- Reload shouldn't be enabled on a new file
+- If you sticky the output box it loses it's formatting/highlighting
 - If using a different regional setting for currency and numbers (ie: Italian) the targets window 
   docks with 0 height
 
+1.5.0:
+FIXED:	If you unsticky the output box it loses it's formatting/highlighting
 
 1.4.0:
 FIXED:  If you click the close button on the tab collection, the file *sort of* closes. Should 

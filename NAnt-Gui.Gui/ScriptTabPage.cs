@@ -216,20 +216,28 @@ namespace NAntGui.Gui
 
 		public void Run()
 		{
-			Assert.NotNull(_buildRunner, "_buildRunner");
-			_buildRunner.Run();
+			if (_buildRunner != null)
+			{
+				_buildRunner.Run();
+			}
 		}
 
 		public void SetProperties(PropertyCollection properties)
 		{
 			Assert.NotNull(properties, "properties");
-			_buildRunner.Properties = properties;
+			if (_buildRunner != null)
+			{
+				_buildRunner.Properties = properties;	
+			}
 		}
 
 		public void SetTargets(TargetCollection targets)
 		{
 			Assert.NotNull(targets, "targets");
-			_buildRunner.Targets = targets;
+			if (_buildRunner != null)
+			{
+				_buildRunner.Targets = targets;
+			}
 		}
 
 		public void Close(CancelEventArgs e)
@@ -291,6 +299,11 @@ namespace NAntGui.Gui
 		public void Focus()
 		{
 			_scriptEditor.Focus();
+		}
+		
+		public void SetCursor(int x, int y)
+		{
+			_scriptEditor.ActiveTextAreaControl.JumpTo(x, y);
 		}
 
 		#region Properties

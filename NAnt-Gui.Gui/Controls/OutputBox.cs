@@ -21,6 +21,7 @@ namespace NAntGui.Gui.Controls
 		private const int RICH_TEXT_INDEX = 2;
 		private const int PLAIN_TEXT_INDEX = 1;
 
+		private PointConverter _pc = new PointConverter();
 		private PopupMenu _outputContextMenu = new PopupMenu();
 		private SaveFileDialog _saveDialog = new SaveFileDialog();
 		private MainFormMediator _mediator;
@@ -200,8 +201,19 @@ namespace NAntGui.Gui.Controls
 			{
 				string file = GetFile(line);
 				_mediator.LoadBuildFile(file);
-//				_mediator.SetCursor();
+				Point p = GetPoint(line);
+				_mediator.SetCursor(p.X, p.Y);
 			}
+		}
+
+		private Point GetPoint(string line)
+		{
+			const string FILE_REG = @"[a-zA-Z]:(\\[^\\]*)+(\.[\\\.]+)*\((\d+,\d+)\)";
+			Regex reg = new Regex(FILE_REG);
+			Match m = reg.Match(line);
+			Group g = m.Groups[3];
+			string coords = g.Value;
+			return (Point) _pc.ConvertFromString(coords);
 		}
 
 		private string GetFile(string line)

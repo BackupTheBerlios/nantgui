@@ -10,7 +10,7 @@ using System.Reflection;
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: AssemblyVersionAttribute("1.5.0.1")]
+[assembly: AssemblyVersionAttribute("1.5.0.2")]
 [assembly: AssemblyTitleAttribute("NAnt-Gui")]
 [assembly: AssemblyDescriptionAttribute("Executes and edits NAnt build scripts")]
 [assembly: AssemblyCopyrightAttribute("Copyright © 2005, Colin Svingen")]

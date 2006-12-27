@@ -1,3 +1,4 @@
++ Only allow one copy of a file to load at a time
 + Put load and save of buildfiles into threads
 + Change the way that NAntBuildScript.cs:LoadNonProjectProperty:134 works.  Right now it adds all
   properties from the Gui regardless of whether the property's value has change.  Only propertys 

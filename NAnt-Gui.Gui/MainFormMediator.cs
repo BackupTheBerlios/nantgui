@@ -425,9 +425,9 @@ namespace NAntGui.Gui
 			UpdateDisplay();
 		}
 
-		public void SetCursor()
+		public void SetCursor(int x, int y)
 		{
-			throw new NotImplementedException();
+			_selectedTab.SetCursor(x - 1, y - 1);
 		}
 	}
 }
