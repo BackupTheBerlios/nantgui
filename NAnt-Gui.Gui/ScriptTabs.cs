@@ -82,18 +82,6 @@ namespace NAntGui.Gui
 			controls.Add(_tabControl);
 		}
 
-		/// <summary>
-		/// Called with the Close File menu item is clicked.
-		/// </summary>
-		/// <param name="e">
-		/// Passed in to cancel the close if the user made 
-		/// a mistake (when the file isn't saved.
-		/// </param>
-//		public void CloseSelectedTab(CancelEventArgs e)
-//		{
-//			CloseTab(_selectedTab, e);
-//		}
-
 		public void CloseTab(ScriptTabPage tab, CancelEventArgs e)
 		{
 			tab.Close(e);

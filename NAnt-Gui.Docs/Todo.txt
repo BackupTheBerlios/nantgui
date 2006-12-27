@@ -1,14 +1,18 @@
++ Dynamic help in the text editor with NAnt
++ Make NAnt-Gui work with other .Net framework versions besides 1.1
++ Version of NAnt-Gui for .Net 2.0
 + Only allow one copy of a file to load at a time
 + Put load and save of buildfiles into threads
 + Change the way that NAntBuildScript.cs:LoadNonProjectProperty:134 works.  Right now it adds all
   properties from the Gui regardless of whether the property's value has change.  Only propertys 
   with changed values should be added.
-+ Clean up how property bag works.  AKA, the events should change the values of the properties and the Tag property of the propertyspec class
-  can be removed as you don't need to store the actual nant property in the propertybag.properties collection
++ Clean up how property bag works.  AKA, the events should change the values of the properties and
+  the Tag property of the propertyspec class can be removed as you don't need to store the actual 
+  nant property in the propertybag.properties collection
 + Multiple tabs
 + Add a property window to change nant settings after nant-gui is loaded
-+ Add SLiNgshoT tool window to tools menu
-- Create custom commandline options that make sense for msbuild and nant
++ Create custom commandline options that make sense for msbuild, nant, and multiple tabs
+- Add SLiNgshoT tool window to tools menu
 
 1.5.0:
 (DONE): Reorder projects.  Add a Gui project and move the UI code into it
