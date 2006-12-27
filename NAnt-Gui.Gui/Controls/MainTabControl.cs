@@ -21,6 +21,7 @@
 
 #endregion
 
+using System.Drawing;
 using System.Windows.Forms;
 using NAntGui.Framework;
 using TabControl = Crownwood.Magic.Controls.TabControl;
@@ -33,6 +34,7 @@ namespace NAntGui.Gui.Controls
 	public class MainTabControl : TabControl
 	{
 		private MainFormMediator _mediator;
+		private Point _mousePosition = Point.Empty;
 
 		public MainTabControl(MainFormMediator mediator)
 		{
@@ -48,7 +50,6 @@ namespace NAntGui.Gui.Controls
 
 			ContextPopupMenu = new Crownwood.Magic.Menus.PopupMenu();
 			ContextPopupMenu.MenuCommands.Add(new Menu.FileMenu.CloseMenuCommand(_mediator));
-			this.PopupMenuDisplay += new System.ComponentModel.CancelEventHandler(PopupCancel);
 
 			ResumeLayout(false);
 		}
@@ -65,9 +66,22 @@ namespace NAntGui.Gui.Controls
 			_mediator.DragDrop(e);
 		}
 
-		protected void PopupCancel(object sender, System.ComponentModel.CancelEventArgs e)
+		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			MessageBox.Show("hello");
+			base.OnMouseDown(e);
+			_mousePosition = new Point(e.X, e.Y);
+		}
+
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			base.OnMouseUp(e);
+			_mousePosition = Point.Empty;
+		}
+
+		protected override void OnPopupMenuDisplay(System.ComponentModel.CancelEventArgs e)
+		{
+			e.Cancel = TabPageFromPoint(_mousePosition) == null;
+			base.OnPopupMenuDisplay(e);
 		}
 	}
 }

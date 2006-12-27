@@ -1558,77 +1558,77 @@ namespace Crownwood.Magic.Controls
 			base.OnSizeChanged(e);
 		}
 
-		public virtual void OnPopupMenuDisplay(CancelEventArgs e)
+		protected virtual void OnPopupMenuDisplay(CancelEventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (PopupMenuDisplay != null)
 				PopupMenuDisplay(this, e);
 		}
 
-		public virtual void OnSelectionChanging(EventArgs e)
+		protected virtual void OnSelectionChanging(EventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (SelectionChanging != null)
 				SelectionChanging(this, e);
 		}
 
-		public virtual void OnSelectionChanged(EventArgs e)
+		protected virtual void OnSelectionChanged(EventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (SelectionChanged != null)
 				SelectionChanged(this, e);
 		}
 
-		public virtual void OnClosePressed(EventArgs e)
+		protected virtual void OnClosePressed(EventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (ClosePressed != null)
 				ClosePressed(this, e);
 		}
 
-		public virtual void OnPageGotFocus(EventArgs e)
+		protected virtual void OnPageGotFocus(EventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (PageGotFocus != null)
 				PageGotFocus(this, e);
 		}
 
-		public virtual void OnPageLostFocus(EventArgs e)
+		protected virtual void OnPageLostFocus(EventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (PageLostFocus != null)
 				PageLostFocus(this, e);
 		}
 
-		public virtual void OnPageDragStart(MouseEventArgs e)
+		protected virtual void OnPageDragStart(MouseEventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (PageDragStart != null)
 				PageDragStart(this, e);
 		}
 
-		public virtual void OnPageDragMove(MouseEventArgs e)
+		protected virtual void OnPageDragMove(MouseEventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (PageDragMove != null)
 				PageDragMove(this, e);
 		}
 
-		public virtual void OnPageDragEnd(MouseEventArgs e)
+		protected virtual void OnPageDragEnd(MouseEventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (PageDragEnd != null)
 				PageDragEnd(this, e);
 		}
 
-		public virtual void OnPageDragQuit(MouseEventArgs e)
+		protected virtual void OnPageDragQuit(MouseEventArgs e)
 		{
 			// Has anyone registered for the event?
 			if (PageDragQuit != null)
 				PageDragQuit(this, e);
 		}
 
-		public virtual void OnDoubleClickTab(TabPage page)
+		protected virtual void OnDoubleClickTab(TabPage page)
 		{
 			// Has anyone registered for the event?
 			if (DoubleClickTab != null)
