@@ -88,6 +88,23 @@ namespace NAntGui.Gui
 			_tabControl.TabPages.Remove(tab.ScriptTab);
 			_tabs.Remove(tab);
 		}
+		
+		public bool HasFileOpen(string file)
+		{
+			foreach (ScriptTabPage page in _tabs)
+			{
+				if (page.FileFullName == file)
+				{
+					// this shouldn't be in here based on the method name, but
+					// it's the easiest way to do this (otherwise the page has to be
+					// returned and the method name still won't make sense
+					page.Focus();
+					return true;
+				}
+			}
+			
+			return false;
+		}
 
 		private void Close_Pressed(object sender, EventArgs e)
 		{
