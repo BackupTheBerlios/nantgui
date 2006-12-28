@@ -362,21 +362,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\Menu\ViewMenu\OutputMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\ViewMenu\PropertiesMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\ViewMenu\TargetsMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\Menu\ViewMenu\ViewMenu.cs"
                     SubType = "Component"
                     BuildAction = "Compile"

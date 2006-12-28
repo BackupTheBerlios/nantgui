@@ -31,26 +31,41 @@ namespace NAntGui.Gui.Controls.Menu.ViewMenu
 	/// </summary>
 	public class ViewMenu : MenuCommand
 	{
-		private TargetsMenuCommand _targets;
-		private PropertiesMenuCommand _properties;
-		private OutputMenuCommand _output;
+		private MainFormMediator _mediator;
 
 		public ViewMenu(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
 
-			_targets = new TargetsMenuCommand(mediator);
-			_properties = new PropertiesMenuCommand(mediator);
-			_output = new OutputMenuCommand(mediator);
+			GuiUtils utils = GuiUtils.Instance();
 
 			Description = "MenuCommand";
 			MenuCommands.AddRange(new MenuCommand[]
 			                      	{
-			                      		_targets,
-			                      		_properties,
-			                      		_output
+			                      		new MenuCommand("&Targets", utils.ImageList, 9, 
+											new System.EventHandler(Targets_Click)),
+										new MenuCommand("&Properties", utils.ImageList, 0, 
+											new System.EventHandler(Properties_Click)),
+										new MenuCommand("&Output", utils.ImageList, 6, 
+											new System.EventHandler(Output_Click))
 			                      	});
 			Text = "&View";
+		}
+
+		private void Targets_Click(object sender, System.EventArgs e)
+		{
+			_mediator.TargetsClicked();
+		}
+
+		private void Properties_Click(object sender, System.EventArgs e)
+		{
+			_mediator.PropertiesClicked();
+		}
+
+		private void Output_Click(object sender, System.EventArgs e)
+		{
+			_mediator.OutputClicked();
 		}
 	}
 }
