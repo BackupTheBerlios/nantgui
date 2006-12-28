@@ -33,6 +33,10 @@ namespace NAntGui.Core
 	public class RegUtil
 	{
 		public const string KEY_PATH = @"Software\NAnt-Gui";
+		public const string OLD_KEY_PATH = @"Software\Business Watch\NAnt-Gui";
+
+		public const string RECENT_ITEMS_KEY_PATH = @"Software\NAnt-Gui\Recent Items";
+		public const string WINDOW_KEY_PATH = @"Software\NAnt-Gui\Window";
 
 		private RegistryKey _currentUser = Registry.CurrentUser;
 

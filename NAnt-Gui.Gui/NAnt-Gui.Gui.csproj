@@ -173,11 +173,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "NAntGuiApp.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "NAntGuiDockingManager.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -25,7 +25,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 
-namespace NAntGui.Gui
+namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for Settings.
@@ -34,14 +34,12 @@ namespace NAntGui.Gui
 	{
 		private const int DEFAULT_MAX_ITEMS = 6;
 		private const string IMAGE_PATH = "NAntGui.Gui.Images.MenuItems.bmp";
-		public const string OLD_KEY_PATH = @"Software\Business Watch\NAnt-Gui";
-		public const string RECENT_ITEMS_KEY_PATH = @"Software\NAnt-Gui\Recent Items";
-		public const string WINDOW_KEY_PATH = @"Software\NAnt-Gui\Window";
 		
 
 		private static Settings _settings;
 
-		private ImageList _imageList;		
+		private ImageList _imageList;	
+		private RegUtil _regUtil;
 
 		#region Window
 
@@ -86,7 +84,7 @@ namespace NAntGui.Gui
 
 		#endregion
 
-		public Settings Instance()
+		public static Settings Instance()
 		{
 			if (_settings == null)
 				_settings = new Settings();
@@ -102,29 +100,29 @@ namespace NAntGui.Gui
 
 		public int MaxRecentItems
 		{
-			get { return GetRegKeyIntValue("MaxRecentItems", DEFAULT_MAX_ITEMS); }
-			set { SetRegKeyValue("MaxRecentItems", value); }
+			get { return _regUtil.GetRegKeyIntValue("MaxRecentItems", DEFAULT_MAX_ITEMS); }
+			set { _regUtil.SetRegKeyValue("MaxRecentItems", value); }
 		}
 
 		public bool HideTargetsWithoutDescription
 		{
-			get { return GetRegKeyBoolValue("HideTargets"); }
-			set { SetRegKeyValue("HideTargets", value); }
+			get { return _regUtil.GetRegKeyBoolValue("HideTargets"); }
+			set { _regUtil.SetRegKeyValue("HideTargets", value); }
 		}
 
 		public string OpenInitialDir
 		{
-			get { return GetRegKeyStringValue("OpenInitialDirectory", "C:\\"); }
-			set { SetRegKeyValue("OpenInitialDirectory", value); }
+			get { return _regUtil.GetRegKeyStringValue("OpenInitialDirectory", "C:\\"); }
+			set { _regUtil.SetRegKeyValue("OpenInitialDirectory", value); }
 		}
 
 		public string SaveOutputInitialDir
 		{
-			get { return GetRegKeyStringValue("SaveOutputInitialDir", "C:\\"); }
-			set { SetRegKeyValue("SaveOutputInitialDir", value); }
+			get { return _regUtil.GetRegKeyStringValue("SaveOutputInitialDir", "C:\\"); }
+			set { _regUtil.SetRegKeyValue("SaveOutputInitialDir", value); }
 		}
 
-		public static ImageList ImageList
+		public ImageList ImageList
 		{
 			get { return _imageList; }
 		}
