@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Common;
 using NAntGui.Framework;
 
 #region Copyleft and Copyright
@@ -33,9 +32,6 @@ namespace NAntGui.Gui
 	/// </summary>
 	public class NAntGuiApp
 	{
-		private const string IMAGE_PATH = "NAntGui.Gui.Images.MenuItems.bmp";
-		private static CommandLineOptions _options;
-		private static ImageList _imageList;
 		private static MainFormMediator _mediator;
 
 		/// <summary>
@@ -43,30 +39,9 @@ namespace NAntGui.Gui
 		/// </summary>
 		public static void Run(CommandLineOptions options)
 		{
-			_options = options;
-
-			_imageList = ResourceHelper.LoadBitmapStrip(typeof (NAntGuiApp),
-			                                            IMAGE_PATH, new Size(16, 16), new Point(0, 0));
-
-			_mediator = new MainFormMediator();
-			_mediator.RunApplication();
+			
 		}
 
-		// Called from other instances
-//		public static void OnOtherInstance(CommandLineOptions options) 
-//		{
-//			_options = options;
-//			_mediator.LoadInitialBuildFile();
-//		}
 
-		public static CommandLineOptions Options
-		{
-			get { return _options; }
-		}
-
-		public static ImageList ImageList
-		{
-			get { return _imageList; }
-		}
 	}
 }

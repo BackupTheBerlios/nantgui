@@ -21,9 +21,9 @@
 
 #endregion
 
-using System;
+using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.Win32;
+using Crownwood.Magic.Common;
 
 namespace NAntGui.Gui
 {
@@ -32,12 +32,18 @@ namespace NAntGui.Gui
 	/// </summary>
 	public class Settings
 	{
-		private static RegistryKey _currentUser = Registry.CurrentUser;
 		private const int DEFAULT_MAX_ITEMS = 6;
+		private const string IMAGE_PATH = "NAntGui.Gui.Images.MenuItems.bmp";
 		public const string OLD_KEY_PATH = @"Software\Business Watch\NAnt-Gui";
 		public const string RECENT_ITEMS_KEY_PATH = @"Software\NAnt-Gui\Recent Items";
 		public const string WINDOW_KEY_PATH = @"Software\NAnt-Gui\Window";
-		public const string KEY_PATH = @"Software\NAnt-Gui";
+		
+
+		private static Settings _settings;
+
+		private ImageList _imageList;		
+
+		#region Window
 
 		public class Window
 		{
@@ -78,64 +84,49 @@ namespace NAntGui.Gui
 			}
 		}
 
-		public static int MaxRecentItems
+		#endregion
+
+		public Settings Instance()
+		{
+			if (_settings == null)
+				_settings = new Settings();
+
+			return _settings;
+		}
+
+		private Settings()
+		{
+			_imageList = ResourceHelper.LoadBitmapStrip(typeof (Settings),
+				IMAGE_PATH, new Size(16, 16), new Point(0, 0));
+		}
+
+		public int MaxRecentItems
 		{
 			get { return GetRegKeyIntValue("MaxRecentItems", DEFAULT_MAX_ITEMS); }
 			set { SetRegKeyValue("MaxRecentItems", value); }
 		}
 
-		public static bool HideTargetsWithoutDescription
+		public bool HideTargetsWithoutDescription
 		{
 			get { return GetRegKeyBoolValue("HideTargets"); }
 			set { SetRegKeyValue("HideTargets", value); }
 		}
 
-		public static string OpenInitialDir
+		public string OpenInitialDir
 		{
 			get { return GetRegKeyStringValue("OpenInitialDirectory", "C:\\"); }
 			set { SetRegKeyValue("OpenInitialDirectory", value); }
 		}
 
-		public static string SaveOutputInitialDir
+		public string SaveOutputInitialDir
 		{
 			get { return GetRegKeyStringValue("SaveOutputInitialDir", "C:\\"); }
 			set { SetRegKeyValue("SaveOutputInitialDir", value); }
 		}
 
-		private static bool GetRegKeyBoolValue(string keyName)
+		public static ImageList ImageList
 		{
-			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
-			return Convert.ToBoolean(key.GetValue(keyName, false));
-		}
-
-		private static string GetRegKeyStringValue(string keyName, string defaultValue)
-		{
-			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
-			return key.GetValue(keyName, defaultValue).ToString();
-		}
-
-		private static int GetRegKeyIntValue(string keyName, int defaultValue)
-		{
-			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
-			return Convert.ToInt32(key.GetValue(keyName, defaultValue));
-		}
-
-		private static PropertySort GetRegKeyPropertySortValue(string keyName, PropertySort defaultValue)
-		{
-			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
-			return (PropertySort) Enum.Parse(typeof (PropertySort), regKeyStringValue);
-		}
-
-		private static FormWindowState GetRegKeyWindowStateValue(string keyName, FormWindowState defaultValue)
-		{
-			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
-			return (FormWindowState) Enum.Parse(typeof (FormWindowState), regKeyStringValue);
-		}
-
-		private static void SetRegKeyValue(string keyName, object value)
-		{
-			RegistryKey key = Registry.CurrentUser.CreateSubKey(KEY_PATH);
-			key.SetValue(keyName, value);
+			get { return _imageList; }
 		}
 	}
 }

@@ -35,8 +35,6 @@ namespace NAntGui
 	/// </summary>
 	public class AppEntry
 	{
-		private static CommandLineParser _commandLineParser;
-
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -46,44 +44,46 @@ namespace NAntGui
 //			AppDomain.CurrentDomain.AssemblyResolve +=
 //				new ResolveEventHandler(ResolveHandler);
 
-//			OICallback callback = new OICallback(NAntGuiApp.OnOtherInstance);
-//
-//			if (!InitialInstanceActivator.Activate(mainForm, callback, args)) 
-//			{
-				NAntGuiApp.Run(ParseCommandLine(args));
-//			}
+			CommandLineOptions options = ParseCommandLine(args);
+
+			MainFormMediator mediator = new MainFormMediator(options);
+			mediator.RunApplication();
 		}
 
 		private static CommandLineOptions ParseCommandLine(string[] args)
 		{
+			CommandLineParser parser;
 			CommandLineOptions cmdLineOptions = new CommandLineOptions();
 
 			try
 			{
-				_commandLineParser = new CommandLineParser(typeof (CommandLineOptions), false);
-				_commandLineParser.Parse(args, cmdLineOptions);
+				parser = new CommandLineParser(typeof (CommandLineOptions), false);
+				parser.Parse(args, cmdLineOptions);
 			}
 			catch (CommandLineArgumentException ex)
 			{
-				HandleError(ex);
+				HandleError(ex, parser);
 			}
 
 			return cmdLineOptions;
 		}
 
-		private static void HandleError(CommandLineArgumentException ex)
+		private static void HandleError(CommandLineArgumentException ex, CommandLineParser parser)
 		{
 			// Write logo banner to console if parser was created successfully
-			if (_commandLineParser != null)
+			if (parser != null)
 			{
-				Console.WriteLine(_commandLineParser.LogoBanner);
+				Console.WriteLine(parser.LogoBanner);
 				// insert empty line
 				Console.Error.WriteLine();
 			}
+
 			// Write message of exception to console
 			Console.Error.WriteLine(ex.Message);
+			
 			// get first nested exception
 			Exception nestedException = ex.InnerException;
+
 			// set initial indentation level for the nested exceptions
 			int exceptionIndentationLevel = 0;
 			while (nestedException != null && !StringUtils.IsNullOrEmpty(nestedException.Message))

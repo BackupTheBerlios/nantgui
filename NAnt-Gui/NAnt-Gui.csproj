@@ -104,11 +104,6 @@
                     Project = "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
-                <Reference
-                    Name = "Genghis"
-                    AssemblyName = "Genghis"
-                    HintPath = "..\ThirdParty Libraries\Genghis.dll"
-                />
             </References>
         </Build>
         <Files>

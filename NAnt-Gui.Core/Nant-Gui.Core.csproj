@@ -99,6 +99,11 @@
                     Project = "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "MagicLibrary"
+                    Project = "{92F94EA0-9910-4895-B8A1-FED1543A9DA1}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -163,6 +168,11 @@
                 />
                 <File
                     RelPath = "RecentItems.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "RegUtil.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

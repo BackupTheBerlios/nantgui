@@ -49,8 +49,13 @@ namespace NAntGui.Gui
 
 		private ScriptTabPage _selectedTab;
 
-		public MainFormMediator()
+		private CommandLineOptions _options;		
+
+		public MainFormMediator(CommandLineOptions options)
 		{
+			Assert.NotNull(options, "options");
+			_options = options;
+
 			_form			= new MainForm(this);
 			_mainMenu		= new MainMenuControl(this);
 			_toolBar		= new ToolBarControl(this);
@@ -79,12 +84,6 @@ namespace NAntGui.Gui
 
 		public void NewClicked()
 		{
-//			_form.Text = "NAnt-Gui";
-//
-//			_propertyGrid.Clear();
-//			_outputBox.Clear();
-//			_targetsTree.Clear();
-//
 //			_mainMenu.Disable();
 //			_toolBar.Disable();
 
@@ -434,6 +433,11 @@ namespace NAntGui.Gui
 		public void SetCursor(int x, int y)
 		{
 			_selectedTab.SetCursor(x - 1, y - 1);
+		}
+
+		public CommandLineOptions Options
+		{
+			get { return _options; }
 		}
 	}
 }
