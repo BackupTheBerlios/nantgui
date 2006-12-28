@@ -246,14 +246,14 @@ namespace NAntGui.Gui
 			_clipboardHandler.SelectAll(this, new EventArgs());
 		}
 
-		public void Focus()
-		{
-			_scriptEditor.Focus();
-		}
+//		public void Focus()
+//		{
+//			_scriptEditor.Focus();
+//		}
 		
-		public void SetCursor(int x, int y)
+		public void SetCursor(int line, int column)
 		{
-			_scriptEditor.ActiveTextAreaControl.JumpTo(x, y);
+			_scriptEditor.ActiveTextAreaControl.JumpTo(line, column);
 		}
 
 		private void Initialize()

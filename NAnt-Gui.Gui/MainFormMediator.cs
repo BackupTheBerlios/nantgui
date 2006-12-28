@@ -21,13 +21,12 @@
 
 #endregion
 
-using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using NAntGui.Framework;
 using NAntGui.Gui.Controls;
 using NAntGui.Gui.Controls.Menu;
-using NAntGui.Framework;
 
 namespace NAntGui.Gui
 {
@@ -307,38 +306,45 @@ namespace NAntGui.Gui
 
 		public bool LoadBuildFile(string filename)
 		{
-			if (File.Exists(filename))
+			if (!_sourceTabs.HasFileOpen(filename))
 			{
-				ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this, NAntGuiApp.Options);
-				page.BuildFinished = new VoidVoid(Tab_BuildFinished);
-
-				Settings.OpenInitialDir = page.FilePath;
-
-				_sourceTabs.AddTab(page);
-
-				string file = _selectedTab.FileFullName;
-				_mainMenu.AddRecentItem(file);
-
-				try
+				if (File.Exists(filename))
 				{
-					page.ParseBuildScript();
+					ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this, NAntGuiApp.Options);
+					page.BuildFinished = new VoidVoid(Tab_BuildFinished);
+
+					Settings.OpenInitialDir = page.FilePath;
+
+					_sourceTabs.AddTab(page);
+					_mainMenu.AddRecentItem(_selectedTab.FileFullName);
+
+					ParseBuildFile(page);
+
+					_mainMenu.Enable();
+					_toolBar.Enable();
+					UpdateDisplay();
+
+					return true;
 				}
-				catch (BuildFileLoadException error)
+				else
 				{
-					MessageBox.Show(error.Message, "Error Loading Build File",
-						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					Utils.ShowFileNotFoundError(filename);
 				}
-
-				_mainMenu.Enable();
-				_toolBar.Enable();
-				UpdateDisplay();
-
-				return true;
 			}
-			else
+			
+			return false;
+		}
+
+		private static void ParseBuildFile(ScriptTabPage page)
+		{
+			try
 			{
-				Utils.ShowFileNotFoundError(filename);
-				return false;
+				page.ParseBuildScript();
+			}
+			catch (BuildFileLoadException error)
+			{
+				MessageBox.Show(error.Message, "Error Loading Build File",
+				                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 

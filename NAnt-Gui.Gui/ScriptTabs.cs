@@ -51,7 +51,7 @@ namespace NAntGui.Gui
 			Assert.NotNull(tab, "tab");
 			_tabs.Add(tab);
 			_tabControl.TabPages.Add(tab.ScriptTab);
-			tab.Focus();
+//			tab.Focus();
 		}
 
 		/// <summary>
@@ -98,7 +98,7 @@ namespace NAntGui.Gui
 					// this shouldn't be in here based on the method name, but
 					// it's the easiest way to do this (otherwise the page has to be
 					// returned and the method name still won't make sense
-					page.Focus();
+					_tabControl.SelectedTab = page.ScriptTab;
 					return true;
 				}
 			}
