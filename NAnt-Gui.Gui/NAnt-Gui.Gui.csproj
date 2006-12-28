@@ -357,11 +357,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\Menu\ToolsMenu\OptionsMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\Menu\ToolsMenu\ToolsMenu.cs"
                     SubType = "Component"
                     BuildAction = "Compile"

@@ -31,19 +31,24 @@ namespace NAntGui.Gui.Controls.Menu.ToolsMenu
 	/// </summary>
 	public class ToolsMenu : MenuCommand
 	{
-		private OptionsMenuCommand _options;
+		private MainFormMediator _mediator;
 
 		public ToolsMenu(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
-			_options = new OptionsMenuCommand(mediator);
+			_mediator = mediator;
 
 			Description = "MenuCommand";
 			MenuCommands.AddRange(new MenuCommand[]
 			                      	{
-			                      		_options
+			                      		new MenuCommand("&Options", new System.EventHandler(Options_Click))
 			                      	});
 			Text = "&Tools";
+		}
+
+		private void Options_Click(object sender, System.EventArgs e)
+		{
+			_mediator.OptionsClicked();
 		}
 	}
 }
