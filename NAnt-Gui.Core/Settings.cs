@@ -39,46 +39,48 @@ namespace NAntGui.Core
 		private static Settings _settings;
 
 		private ImageList _imageList;	
-		private RegUtil _regUtil;
+		private RegUtil _regUtil = new RegUtil();
 
 		#region Window
 
 		public class Window
 		{
-			public static int Left
+			private RegUtil _regUtil = new RegUtil();
+
+			public int Left
 			{
-				get { return GetRegKeyIntValue("Left", 100); }
-				set { SetRegKeyValue("Left", value); }
+				get { return _regUtil.GetRegKeyIntValue("Left", 100); }
+				set { _regUtil.SetRegKeyValue("Left", value); }
 			}
 
-			public static int Top
+			public int Top
 			{
-				get { return GetRegKeyIntValue("Top", 100); }
-				set { SetRegKeyValue("Top", value); }
+				get { return _regUtil.GetRegKeyIntValue("Top", 100); }
+				set { _regUtil.SetRegKeyValue("Top", value); }
 			}
 
-			public static int Width
+			public int Width
 			{
-				get { return GetRegKeyIntValue("Width", 800); }
-				set { SetRegKeyValue("Width", value); }
+				get { return _regUtil.GetRegKeyIntValue("Width", 800); }
+				set { _regUtil.SetRegKeyValue("Width", value); }
 			}
 
-			public static int Height
+			public int Height
 			{
-				get { return GetRegKeyIntValue("Height", 600); }
-				set { SetRegKeyValue("Height", value); }
+				get { return _regUtil.GetRegKeyIntValue("Height", 600); }
+				set { _regUtil.SetRegKeyValue("Height", value); }
 			}
 
-			public static PropertySort PropertySort
+			public PropertySort PropertySort
 			{
-				get { return GetRegKeyPropertySortValue("PropertySort", PropertySort.Categorized); }
-				set { SetRegKeyValue("PropertySort", value); }
+				get { return _regUtil.GetRegKeyPropertySortValue("PropertySort", PropertySort.Categorized); }
+				set { _regUtil.SetRegKeyValue("PropertySort", value); }
 			}
 
-			public static FormWindowState WindowState
+			public FormWindowState WindowState
 			{
-				get { return GetRegKeyWindowStateValue("WindowState", FormWindowState.Normal); }
-				set { SetRegKeyValue("WindowState", value); }
+				get { return _regUtil.GetRegKeyWindowStateValue("WindowState", FormWindowState.Normal); }
+				set { _regUtil.SetRegKeyValue("WindowState", value); }
 			}
 		}
 

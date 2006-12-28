@@ -118,11 +118,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BuildFileBrowser.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BuildRunnerFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -40,37 +40,37 @@ namespace NAntGui.Core
 
 		private RegistryKey _currentUser = Registry.CurrentUser;
 
-		private bool GetRegKeyBoolValue(string keyName)
+		public bool GetRegKeyBoolValue(string keyName)
 		{
 			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
 			return Convert.ToBoolean(key.GetValue(keyName, false));
 		}
 
-		private string GetRegKeyStringValue(string keyName, string defaultValue)
+		public string GetRegKeyStringValue(string keyName, string defaultValue)
 		{
 			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
 			return key.GetValue(keyName, defaultValue).ToString();
 		}
 
-		private int GetRegKeyIntValue(string keyName, int defaultValue)
+		public int GetRegKeyIntValue(string keyName, int defaultValue)
 		{
 			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
 			return Convert.ToInt32(key.GetValue(keyName, defaultValue));
 		}
 
-		private PropertySort GetRegKeyPropertySortValue(string keyName, PropertySort defaultValue)
+		public PropertySort GetRegKeyPropertySortValue(string keyName, PropertySort defaultValue)
 		{
 			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
 			return (PropertySort) Enum.Parse(typeof (PropertySort), regKeyStringValue);
 		}
 
-		private FormWindowState GetRegKeyWindowStateValue(string keyName, FormWindowState defaultValue)
+		public FormWindowState GetRegKeyWindowStateValue(string keyName, FormWindowState defaultValue)
 		{
 			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
 			return (FormWindowState) Enum.Parse(typeof (FormWindowState), regKeyStringValue);
 		}
 
-		private void SetRegKeyValue(string keyName, object value)
+		public void SetRegKeyValue(string keyName, object value)
 		{
 			RegistryKey key = Registry.CurrentUser.CreateSubKey(KEY_PATH);
 			key.SetValue(keyName, value);
