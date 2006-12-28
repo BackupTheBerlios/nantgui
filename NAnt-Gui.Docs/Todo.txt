@@ -1,39 +1,40 @@
 + Multiple tabs
 	* Store open files in registry and when NAnt-Gui is loaded, load all the previously loaded 
 	  build files
-	* Allow only one instance of NAnt-Gui to load
-	* Only allow one copy of a file to be loaded at a time(Will use Ghengis now, but can switch to
-	  Microsoft.VisualBasic.ApplicationServices for the .Net 2.0 version)
+	* Allow only one instance of NAnt-Gui to load (Will use custom code now, but can switch to
+	  Microsoft.VisualBasic.ApplicationServices for the .Net 2.0 version)	
 	* Enable drag and drop reordering of tabs (PROBABLY NOT GOING TO BE ABLE TO DO THIS BECAUSE
 	  MAGICLIBRARY ISN'T SO MAGICAL.  NO EASY WAY TO ENABLE THIS)
 + Add a property window to change nant settings after nant-gui is loaded	  
 + Update website to show that NAnt-Gui runs in .Net 2.0
-+ Test to make sure NAnt-Gui works in .Net 1.1 then update website to show that
++ Test to make sure NAnt-Gui works in .Net 1.0 then update website to show that
 + Remove ScriptTabs, MainTabControl, and ScriptEditor.  Overuse of the mediator pattern, use 
   events instead
 + Dynamic help in the text editor with NAnt
-+ Version of NAnt-Gui for .Net 2.0
 + Put load and save of buildfiles into threads
 + Change the way that NAntBuildScript.cs:LoadNonProjectProperty:134 works.  Right now it adds all
   properties from the Gui regardless of whether the property's value has change.  Only propertys 
   with changed values should be added.
-+ Clean up how property bag works.  AKA, the events should change the values of the properties and
-  the Tag property of the propertyspec class can be removed as you don't need to store the actual 
-  nant property in the propertybag.properties collection
 + Create custom commandline options that make sense for msbuild, nant, and multiple tabs
-+ Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
-  control.  Would give access to syntax highlighting, code completion, add-in architecture, 
-  find/replace dialog, etc...  Only for .Net 2.0 though.
-- Add SLiNgshoT tool window to tools menu
++ DOTNET 2.0:
+	* Version of NAnt-Gui for .Net 2.0
+	* Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
+	  control.  Would give access to syntax highlighting, code completion, add-in architecture, 
+	  find/replace dialog, etc...  Only for .Net 2.0 though.
 
 1.5.0:
+(DONE): Clean up how property bag works.  AKA, the events should change the values of the properties and
+  the Tag property of the propertyspec class can be removed as you don't need to store the actual 
+  nant property in the propertybag.properties collection
 (DONE): Multiple Tabs
 	* Adjust right-click context menu on tabs so it only shows on tabs
+	* Only allow one copy of a file to be loaded at a time
 (DONE): Made sure NAnt-Gui works with .Net 2.0
 (DONE): Reorder projects.  Add a Gui project and move the UI code into it
 (CANCELLED: Didn't work): Modify the app.config file so that it points to the nant directory, then 
 	modify the app and installer so that it loads the tasks from the nant directory instead of 
 	having to have the nant bin directory copied into the nant-gui bin directory
+(CANCELLED: SLiNgshoT is deprecated): Add SLiNgshoT tool window to tools menu
 
 1.4.0:
 (DONE) New build file functionality (test to make sure save, reload, build, either work, or ignored on new files)

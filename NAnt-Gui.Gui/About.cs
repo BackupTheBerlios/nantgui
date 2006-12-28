@@ -120,7 +120,7 @@ namespace NAntGui.Gui
 			// 
 			this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OKButton.Location = new System.Drawing.Point(376, 232);
+			this.OKButton.Location = new System.Drawing.Point(376, 208);
 			this.OKButton.Name = "OKButton";
 			this.OKButton.Size = new System.Drawing.Size(90, 26);
 			this.OKButton.TabIndex = 4;
@@ -194,19 +194,17 @@ namespace NAntGui.Gui
 			this.listBox1.ItemHeight = 17;
 			this.listBox1.Items.AddRange(new object[] {
 														  "ICSharpCode.TextEditor Copyright © 2000-2005 icsharpcode.net",
-														  "PropertyBag Copyright © 2002  Tony Allowatt",
 														  "NAnt 0.8.5 Copyright © 2001-2004 Gerry Shaw",
-														  "Magic Library 1.7.4",
-														  "Portions copyright 2002-2004 The Genghis Group (http://www.genghisgroup.com/)"});
+														  "Magic Library 1.7.4"});
 			this.listBox1.Location = new System.Drawing.Point(10, 102);
 			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(453, 123);
+			this.listBox1.Size = new System.Drawing.Size(453, 89);
 			this.listBox1.TabIndex = 13;
 			// 
 			// About
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
-			this.ClientSize = new System.Drawing.Size(474, 267);
+			this.ClientSize = new System.Drawing.Size(474, 243);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.WebLinkLabel);
