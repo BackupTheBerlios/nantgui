@@ -352,27 +352,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\Menu\HelpMenu\AboutMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\Menu\HelpMenu\HelpMenu.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\HelpMenu\NAntContribMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\HelpMenu\NAntHelpMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\HelpMenu\NAntSDKMenuCommand.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
                 />

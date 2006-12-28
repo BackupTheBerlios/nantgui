@@ -31,30 +31,47 @@ namespace NAntGui.Gui.Controls.Menu.HelpMenu
 	/// </summary>
 	public class HelpMenu : MenuCommand
 	{
-		private NAntContribMenuCommand _nantContrib;
-		private NAntHelpMenuCommand _nant;
-		private NAntSDKMenuCommand _nantSDK;
-		private AboutMenuCommand _about;
+		MainFormMediator _mediator;
 
 		public HelpMenu(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
-
-			_nantContrib = new NAntContribMenuCommand(mediator);
-			_nant = new NAntHelpMenuCommand(mediator);
-			_nantSDK = new NAntSDKMenuCommand(mediator);
-			_about = new AboutMenuCommand(mediator);
+			_mediator = mediator;
 
 			Description = "MenuCommand";
 			MenuCommands.AddRange(new MenuCommand[]
 			                      	{
-			                      		_nant,
-			                      		_nantSDK,
-			                      		_nantContrib,
+			                      		new MenuCommand("NAnt &Help",
+											new System.EventHandler(NAnt_Click)),
+			                      		new MenuCommand("NAnt &SDK Help", 
+											new System.EventHandler(NAntSDK_Click)),
+			                      		new MenuCommand("NAnt-&Contrib Help", 
+											new System.EventHandler(NAntContrib_Click)),
 			                      		new MenuCommand("-"),
-			                      		_about
+			                      		new MenuCommand("&About NAnt-Gui", 
+											new System.EventHandler(About_Click))
 			                      	});
 			Text = "&Help";
+		}
+
+		private void NAnt_Click(object sender, System.EventArgs e)
+		{
+			_mediator.NAntHelpClicked();
+		}
+
+		private void NAntSDK_Click(object sender, System.EventArgs e)
+		{
+			_mediator.NAntSDKClicked();
+		}
+
+		private void NAntContrib_Click(object sender, System.EventArgs e)
+		{
+			_mediator.NAntContribClicked();
+		}
+
+		private void About_Click(object sender, System.EventArgs e)
+		{
+			_mediator.AboutClicked();
 		}
 	}
 }
