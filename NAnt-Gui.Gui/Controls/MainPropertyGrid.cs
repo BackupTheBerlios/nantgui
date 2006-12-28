@@ -24,7 +24,6 @@
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Windows.Forms;
-using Flobbster.Windows.Forms;
 using NAntGui.Framework;
 
 namespace NAntGui.Gui.Controls
@@ -34,7 +33,7 @@ namespace NAntGui.Gui.Controls
 	/// </summary>
 	public class MainPropertyGrid : PropertyGrid
 	{
-		private PropertyBag _propertyTable = new PropertyBag();
+		private PropertyShelf _propertyTable = new PropertyShelf();
 		private PropertyCollection _properties;
 
 		public MainPropertyGrid()

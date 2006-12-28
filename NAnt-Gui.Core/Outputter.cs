@@ -21,7 +21,7 @@
 
 #endregion
 
-namespace NAntGui.Gui
+namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for Outputter.

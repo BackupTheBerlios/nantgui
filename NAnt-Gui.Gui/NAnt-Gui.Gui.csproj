@@ -153,7 +153,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "EditStateEnum.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "FileType.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "GuiUtils.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IEditCommands.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -210,6 +225,16 @@
                 <File
                     RelPath = "PreBuild.bat"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "PropertyShelf.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "RunStateEnum.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "ScriptTabPage.cs"

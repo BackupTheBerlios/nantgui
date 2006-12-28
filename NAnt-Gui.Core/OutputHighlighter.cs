@@ -23,7 +23,7 @@
 
 using System.Text.RegularExpressions;
 
-namespace NAntGui.Gui
+namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for SyntaxHighlighter.
