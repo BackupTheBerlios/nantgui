@@ -64,7 +64,8 @@ namespace NAntGui.Gui.Controls
 						new MenuCommand("&Delete", _utils.ImageList, 15, 
 						Shortcut.Del, new System.EventHandler(Delete_Click)),
 						new MenuCommand("-"),
-						new SelectAllMenuCommand(_mediator)
+						new MenuCommand("Select &All", Shortcut.CtrlA, 
+						new System.EventHandler(SelectAll_Click))
 					});
 
 			Dock = DockStyle.Fill;
@@ -101,6 +102,11 @@ namespace NAntGui.Gui.Controls
 		private void Delete_Click(object sender, System.EventArgs e)
 		{
 			_mediator.DeleteClicked();
+		}
+
+		private void SelectAll_Click(object sender, System.EventArgs e)
+		{
+			_mediator.SelectAllClicked();
 		}
 
 		private void PopupMenu(object sender, MouseEventArgs e)

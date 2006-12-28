@@ -62,7 +62,8 @@ namespace NAntGui.Gui.Controls
 				new MenuCommand[] {
 									  new MenuCommand("&Copy", utils.ImageList, 13,
 									  Shortcut.CtrlC, new System.EventHandler(Copy_Click)), 
-									  new SelectAllMenuCommand(_mediator)});
+									  new MenuCommand("Select &All", Shortcut.CtrlA, 
+									  new System.EventHandler(SelectAll_Click))});
 		}
 
 		#endregion
@@ -70,6 +71,11 @@ namespace NAntGui.Gui.Controls
 		private void Copy_Click(object sender, System.EventArgs e)
 		{
 			_mediator.CopyClicked();
+		}
+
+		private void SelectAll_Click(object sender, System.EventArgs e)
+		{
+			_mediator.SelectAllClicked();
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)

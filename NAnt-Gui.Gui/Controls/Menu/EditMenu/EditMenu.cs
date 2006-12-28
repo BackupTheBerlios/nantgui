@@ -48,10 +48,7 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 		public EditMenu(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
-			_mediator = mediator;
-
-			_selectAll = new MenuCommand();
-			_wordWrap = new MenuCommand();
+			_mediator = mediator;		
 
 			Initialize();
 		}
@@ -89,6 +86,14 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 			_delete = new MenuCommand("&Delete", _utils.ImageList, 15, 
 				Shortcut.Del, new System.EventHandler(Delete_Click));
 			_delete.Description = "Delete the selected text";
+
+			// _selectAll
+			_selectAll = new MenuCommand("Select &All", Shortcut.CtrlA, 
+				new System.EventHandler(SelectAll_Click));
+
+			// _wordWrap
+			_wordWrap = new MenuCommand("&Word Wrap", 
+				new System.EventHandler(WordWrap_Click));
 
 
 			MenuCommands.AddRange(new MenuCommand[]
@@ -139,6 +144,16 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 		private void Delete_Click(object sender, System.EventArgs e)
 		{
 			_mediator.DeleteClicked();
+		}
+
+		private void SelectAll_Click(object sender, System.EventArgs e)
+		{
+			_mediator.SelectAllClicked();
+		}
+
+		private void WordWrap_Click(object sender, System.EventArgs e)
+		{
+			_mediator.WordWrapClicked();
 		}
 
 		#endregion

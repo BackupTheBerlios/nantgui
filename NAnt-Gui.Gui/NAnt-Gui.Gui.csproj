@@ -297,16 +297,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "Controls\Menu\EditMenu\SelectAllMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\EditMenu\WordWrapMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Controls\Menu\FileMenu\CloseMenuCommand.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
