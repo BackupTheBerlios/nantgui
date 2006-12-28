@@ -30,50 +30,159 @@ namespace NAntGui.Core
 	/// <summary>
 	/// Summary description for RegUtil.
 	/// </summary>
-	public class RegUtil
+	public abstract class RegUtil
 	{
-		public const string KEY_PATH = @"Software\NAnt-Gui";
-		public const string OLD_KEY_PATH = @"Software\Business Watch\NAnt-Gui";
+		protected const string KEY_PATH = @"Software\NAnt-Gui";
+		protected static RegistryKey _currentUser = Registry.CurrentUser;
 
-		public const string RECENT_ITEMS_KEY_PATH = @"Software\NAnt-Gui\Recent Items";
-		public const string WINDOW_KEY_PATH = @"Software\NAnt-Gui\Window";
+		protected string _saveKeyRoot;
+		protected string _loadKeyRoot;
+		protected string _windowSubKey;
+		protected string _recentItemsSubKey;
 
-		private RegistryKey _currentUser = Registry.CurrentUser;
-
-		public bool GetRegKeyBoolValue(string keyName)
+		protected RegUtil(string saveKeyRoot, string loadKeyRoot, string windowSubKey, string recentItemsSubKey)
 		{
-			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
+			_saveKeyRoot = saveKeyRoot;
+			_loadKeyRoot = loadKeyRoot;
+			_windowSubKey = windowSubKey;
+			_recentItemsSubKey = recentItemsSubKey;
+		}
+
+		public virtual string GetRecentItem(string keyName, string defaultValue)
+		{
+			return GetString(keyName, defaultValue, _recentItemsSubKey);
+		}
+
+		public virtual void SetRecentItem(string keyName, string value)
+		{
+			SetValue(keyName, value, _recentItemsSubKey);
+		}
+
+		public virtual object GetWindowValue(string keyName, object defaultValue)
+		{
+			RegistryKey key = _currentUser.CreateSubKey(GetLoadPath(_windowSubKey));
+			return key.GetValue(keyName, defaultValue);
+		}
+
+		public virtual void SetWindowValue(string keyName, object value)
+		{
+			SetValue(keyName, value, _windowSubKey);
+		}
+
+		public virtual bool GetBool(string keyName)
+		{
+			return GetBool(keyName, "");
+		}
+
+		protected virtual bool GetBool(string keyName, string subDir)
+		{
+			RegistryKey key = _currentUser.CreateSubKey(GetLoadPath(subDir));
 			return Convert.ToBoolean(key.GetValue(keyName, false));
 		}
 
-		public string GetRegKeyStringValue(string keyName, string defaultValue)
+		public virtual string GetString(string keyName, string defaultValue)
 		{
-			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
+			return GetString(keyName, defaultValue, "");
+		}
+
+		protected virtual string GetString(string keyName, string defaultValue, string subDir)
+		{
+			RegistryKey key = _currentUser.CreateSubKey(GetLoadPath(subDir));
 			return key.GetValue(keyName, defaultValue).ToString();
 		}
 
-		public int GetRegKeyIntValue(string keyName, int defaultValue)
+		public virtual int GetInt(string keyName, int defaultValue)
 		{
-			RegistryKey key = _currentUser.CreateSubKey(KEY_PATH);
+			return GetInt(keyName, defaultValue, "");
+		}
+
+		protected virtual int GetInt(string keyName, int defaultValue, string subDir)
+		{
+			RegistryKey key = _currentUser.CreateSubKey(GetLoadPath(subDir));
 			return Convert.ToInt32(key.GetValue(keyName, defaultValue));
 		}
 
-		public PropertySort GetRegKeyPropertySortValue(string keyName, PropertySort defaultValue)
+		public virtual PropertySort GetPropertySort(string keyName, PropertySort defaultValue)
 		{
-			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
+			return GetPropertySort(keyName, defaultValue, "");
+		}
+
+		public virtual PropertySort GetPropertySort(string keyName, PropertySort defaultValue, string subDir)
+		{
+			string regKeyStringValue = GetString(keyName, defaultValue.ToString(), subDir);
 			return (PropertySort) Enum.Parse(typeof (PropertySort), regKeyStringValue);
 		}
 
-		public FormWindowState GetRegKeyWindowStateValue(string keyName, FormWindowState defaultValue)
+		public virtual FormWindowState GetWindowState(string keyName, FormWindowState defaultValue)
 		{
-			string regKeyStringValue = GetRegKeyStringValue(keyName, defaultValue.ToString());
-			return (FormWindowState) Enum.Parse(typeof (FormWindowState), regKeyStringValue);
+			return GetWindowState(keyName, defaultValue, "");
 		}
 
-		public void SetRegKeyValue(string keyName, object value)
+		public virtual FormWindowState GetWindowState(string keyName, FormWindowState defaultValue, string subDir)
 		{
-			RegistryKey key = Registry.CurrentUser.CreateSubKey(KEY_PATH);
+			string regKeyStringValue = GetString(keyName, defaultValue.ToString(), subDir);
+			return (FormWindowState) Enum.Parse(typeof (FormWindowState), regKeyStringValue);
+		}	
+
+		public virtual void SetValue(string keyName, object value)
+		{
+			SetValue(keyName, value, "");
+		}
+
+		public virtual void SetValue(string keyName, object value, string subDir)
+		{
+			RegistryKey key = _currentUser.CreateSubKey(GetSavePath(subDir));
 			key.SetValue(keyName, value);
 		}
+
+		public void DeleteValue(string keyName)
+		{
+			DeleteValue(keyName, "");
+		}
+
+		public void DeleteValue(string keyName, string subDir)
+		{
+			RegistryKey key = _currentUser.CreateSubKey(GetSavePath(subDir));
+			key.DeleteValue(keyName, false);
+		}
+
+		protected static bool KeyRootExists(string keyName)
+		{
+			RegistryKey key = _currentUser.OpenSubKey(keyName);
+			return key != null;
+		}
+
+		#region Paths
+
+		protected virtual string GetWindowLoadPath()
+		{
+			return GetPath(_loadKeyRoot, _windowSubKey);
+		}
+
+		protected virtual string GetRecentItemsLoadPath()
+		{
+			return GetPath(_loadKeyRoot, _recentItemsSubKey);
+		}
+
+		protected virtual string GetLoadPath(string subDirectory)
+		{
+			return GetPath(_loadKeyRoot, subDirectory);
+		}
+
+		protected virtual string GetSavePath(string subDirectory)
+		{
+			return GetPath(_saveKeyRoot, subDirectory);
+		}
+
+		protected virtual string GetPath(string keyRoot, string subDirectory)
+		{
+			if (subDirectory != "")
+				return keyRoot + "\\" + subDirectory;
+			else
+				return keyRoot;
+		}
+
+		#endregion
 	}
 }
+

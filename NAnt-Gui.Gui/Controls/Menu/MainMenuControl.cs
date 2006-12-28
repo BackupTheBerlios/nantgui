@@ -97,30 +97,35 @@ namespace NAntGui.Gui.Controls.Menu
 			_buildMenu.Disable();
 		}
 
-		public void AddRecentItem(string file)
+		public void CreateRecentItemsMenu(RecentItems items)
 		{
-			_fileMenu.AddRecentItem(file);
+			_fileMenu.CreateRecentItemsMenu(items);
 		}
 
-		public void RemoveRecentItem(string file)
-		{
-			_fileMenu.RemoveRecentItem(file);
-		}
+//		public void AddRecentItem(string file)
+//		{
+//			_fileMenu.AddRecentItem(file);
+//		}
+//
+//		public void RemoveRecentItem(string file)
+//		{
+//			_fileMenu.RemoveRecentItem(file);
+//		}
 
 		public RunState RunState
 		{
 			set { _buildMenu.State = value; }
 		}
 
-		public bool HasRecentItems
-		{
-			get { return _fileMenu.HasRecentItems; }
-		}
-
-		public string FirstRecentItem
-		{
-			get { return _fileMenu.FirstRecentItem; }
-		}
+//		public bool HasRecentItems
+//		{
+//			get { return _fileMenu.HasRecentItems; }
+//		}
+//
+//		public string FirstRecentItem
+//		{
+//			get { return _fileMenu.FirstRecentItem; }
+//		}
 
 		public EditState EditState
 		{

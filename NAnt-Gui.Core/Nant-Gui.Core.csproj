@@ -128,6 +128,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NewRegistry.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "OldRegistry.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "OutputHighlighter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -168,6 +178,11 @@
                 />
                 <File
                     RelPath = "Utils.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Window.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

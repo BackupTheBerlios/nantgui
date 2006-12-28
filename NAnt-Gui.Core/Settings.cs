@@ -21,8 +21,6 @@
 
 #endregion
 
-using System.Windows.Forms;
-
 namespace NAntGui.Core
 {
 	/// <summary>
@@ -31,55 +29,8 @@ namespace NAntGui.Core
 	public class Settings
 	{
 		private const int DEFAULT_MAX_ITEMS = 6;	
-		
+		private RegUtil _regUtil;
 		private static Settings _settings;
-
-		private RegUtil _regUtil = new RegUtil();
-
-		#region Window
-
-		public class Window
-		{
-			private RegUtil _regUtil = new RegUtil();
-
-			public int Left
-			{
-				get { return _regUtil.GetRegKeyIntValue("Left", 100); }
-				set { _regUtil.SetRegKeyValue("Left", value); }
-			}
-
-			public int Top
-			{
-				get { return _regUtil.GetRegKeyIntValue("Top", 100); }
-				set { _regUtil.SetRegKeyValue("Top", value); }
-			}
-
-			public int Width
-			{
-				get { return _regUtil.GetRegKeyIntValue("Width", 800); }
-				set { _regUtil.SetRegKeyValue("Width", value); }
-			}
-
-			public int Height
-			{
-				get { return _regUtil.GetRegKeyIntValue("Height", 600); }
-				set { _regUtil.SetRegKeyValue("Height", value); }
-			}
-
-			public PropertySort PropertySort
-			{
-				get { return _regUtil.GetRegKeyPropertySortValue("PropertySort", PropertySort.Categorized); }
-				set { _regUtil.SetRegKeyValue("PropertySort", value); }
-			}
-
-			public FormWindowState WindowState
-			{
-				get { return _regUtil.GetRegKeyWindowStateValue("WindowState", FormWindowState.Normal); }
-				set { _regUtil.SetRegKeyValue("WindowState", value); }
-			}
-		}
-
-		#endregion
 
 		public static Settings Instance()
 		{
@@ -89,36 +40,67 @@ namespace NAntGui.Core
 			return _settings;
 		}
 
-		private Settings() {}
+		private Settings() 
+		{
+			if (NewRegistry.KeyRootExists())
+				_regUtil = new NewRegistry();
+			else
+				_regUtil = new OldRegistry();
+		}
 
 		public int MaxRecentItems
 		{
-			get { return _regUtil.GetRegKeyIntValue("MaxRecentItems", DEFAULT_MAX_ITEMS); }
-			set { _regUtil.SetRegKeyValue("MaxRecentItems", value); }
+			get { return _regUtil.GetInt("MaxRecentItems", DEFAULT_MAX_ITEMS); }
+			set { _regUtil.SetValue("MaxRecentItems", value); }
 		}
 
 		public bool HideTargetsWithoutDescription
 		{
-			get { return _regUtil.GetRegKeyBoolValue("HideTargets"); }
-			set { _regUtil.SetRegKeyValue("HideTargets", value); }
+			get { return _regUtil.GetBool("HideTargets"); }
+			set { _regUtil.SetValue("HideTargets", value); }
 		}
 
 		public string OpenScriptDir
 		{
-			get { return _regUtil.GetRegKeyStringValue("OpenInitialDirectory", "C:\\"); }
-			set { _regUtil.SetRegKeyValue("OpenInitialDirectory", value); }
+			get { return _regUtil.GetString("OpenInitialDirectory", "C:\\"); }
+			set { _regUtil.SetValue("OpenInitialDirectory", value); }
 		}
 
 		public string SaveScriptInitialDir
 		{
-			get { return _regUtil.GetRegKeyStringValue("SaveScriptInitialDir", "C:\\"); }
-			set { _regUtil.SetRegKeyValue("SaveScriptInitialDir", value); }
+			get { return _regUtil.GetString("SaveScriptInitialDir", "C:\\"); }
+			set { _regUtil.SetValue("SaveScriptInitialDir", value); }
 		}
 
 		public string SaveOutputInitialDir
 		{
-			get { return _regUtil.GetRegKeyStringValue("SaveOutputInitialDir", "C:\\"); }
-			set { _regUtil.SetRegKeyValue("SaveOutputInitialDir", value); }
+			get { return _regUtil.GetString("SaveOutputInitialDir", "C:\\"); }
+			set { _regUtil.SetValue("SaveOutputInitialDir", value); }
+		}
+
+		public void SaveRecentItem(string name, string value)
+		{
+			_regUtil.SetRecentItem(name, value);
+		}
+
+		public string LoadRecentItem(string name, string defaultValue)
+		{
+			return _regUtil.GetRecentItem(name, defaultValue);
+		}
+
+		public void DeleteRecentItem(string name)
+		{
+			_regUtil.DeleteValue(name);
+		}
+
+		public void SaveWindowValue(string name, object value)
+		{
+			_regUtil.SetWindowValue(name, value);
+		}
+
+		public object LoadWindowValue(string name, object defaultValue)
+		{
+			return _regUtil.GetWindowValue(name, defaultValue);
 		}
 	}
 }

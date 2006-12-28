@@ -31,55 +31,44 @@ namespace NAntGui.Gui.Controls.Menu.FileMenu
 	/// </summary>
 	public class RecentItemsMenu : MenuCommand
 	{
-		private RecentItems _recentItems = new RecentItems();
-		private MainFormMediator _mediator;
+//		private RecentItems _recentItems = new RecentItems();
+//		private MainFormMediator _mediator;
 
-		public RecentItemsMenu(MainFormMediator mediator)
+		public RecentItemsMenu(/* MainFormMediator mediator */)
 		{
-			Assert.NotNull(mediator, "mediator");
-			_mediator = mediator;
-			Description = "MenuCommand";
+//			Assert.NotNull(mediator, "mediator");
+//			_mediator = mediator;
+
 			Text = "Recent &Items";
-			CreateMenuCommands();
+			//CreateMenuCommands();
 		}
 
-		public void AddRecentItem(string file)
-		{
-			_recentItems.Add(file);
-			_recentItems.Save();
+//		public void AddRecentItem(string file)
+//		{
+//			_recentItems.Add(file);
+//			_recentItems.Save();
+//
+//			CreateMenuCommands();
+//		}
+//
+//		public void RemoveRecentItem(string file)
+//		{
+//			_recentItems.Remove(file);
+//			_recentItems.Save();
+//
+//			CreateMenuCommands();
+//		}
 
-			CreateMenuCommands();
-		}
 
-		public void RemoveRecentItem(string file)
-		{
-			_recentItems.Remove(file);
-			_recentItems.Save();
 
-			CreateMenuCommands();
-		}
+//		public bool HasRecentItems
+//		{
+//			get { return _recentItems.HasRecentItems; }
+//		}
 
-		private void CreateMenuCommands()
-		{
-			MenuCommands.Clear();
-
-			int count = 1;
-			foreach (string item in _recentItems)
-			{
-				string name = count++ + " " + item;
-				RecentItemMenuCommand recentItem = new RecentItemMenuCommand(name, _mediator);
-				MenuCommands.Add(recentItem);
-			}
-		}
-
-		public bool HasRecentItems
-		{
-			get { return _recentItems.HasRecentItems; }
-		}
-
-		public string FirstRecentItem
-		{
-			get { return _recentItems[0]; }
-		}
+//		public string FirstRecentItem
+//		{
+//			get { return _recentItems[0]; }
+//		}
 	}
 }

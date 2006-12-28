@@ -21,6 +21,7 @@
 
 #endregion
 
+using NAntGui.Framework;
 using Crownwood.Magic.Menus;
 
 namespace NAntGui.Gui.Controls.Menu.FileMenu
@@ -40,8 +41,13 @@ namespace NAntGui.Gui.Controls.Menu.FileMenu
 		private RecentItemsMenu _recent;
 		private ExitMenuCommand _exit;
 
+		private MainFormMediator _mediator;
+
 		public FileMenu(MainFormMediator mediator)
 		{
+			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
+
 			_new = new NewMenuCommand(mediator);
 			_open = new OpenMenuCommand(mediator);
 			_save = new SaveMenuCommand(mediator);
@@ -49,7 +55,7 @@ namespace NAntGui.Gui.Controls.Menu.FileMenu
 			_reload = new ReloadMenuCommand(mediator);
 			_close = new CloseMenuCommand(mediator);
 			_saveOutput = new SaveOutputMenuCommand(mediator);
-			_recent = new RecentItemsMenu(mediator);
+			_recent = new RecentItemsMenu();
 			_exit = new ExitMenuCommand(mediator);
 
 
@@ -81,25 +87,37 @@ namespace NAntGui.Gui.Controls.Menu.FileMenu
 //			_close.Enabled = false;
 		}
 
-
-		public void AddRecentItem(string file)
+		public void CreateRecentItemsMenu(RecentItems items)
 		{
-			_recent.AddRecentItem(file);
+			_recent.MenuCommands.Clear();
+
+			int count = 1;
+			foreach (string item in items)
+			{
+				string name = count++ + " " + item;
+				RecentItemMenuCommand recentItem = new RecentItemMenuCommand(name, _mediator);
+				_recent.MenuCommands.Add(recentItem);
+			}
 		}
 
-		public void RemoveRecentItem(string file)
-		{
-			_recent.RemoveRecentItem(file);
-		}
-
-		public bool HasRecentItems
-		{
-			get { return _recent.HasRecentItems; }
-		}
-
-		public string FirstRecentItem
-		{
-			get { return _recent.FirstRecentItem; }
-		}
+//		public void AddRecentItem(string file)
+//		{
+//			_recent.AddRecentItem(file);
+//		}
+//
+//		public void RemoveRecentItem(string file)
+//		{
+//			_recent.RemoveRecentItem(file);
+//		}
+//
+//		public bool HasRecentItems
+//		{
+//			get { return _recent.HasRecentItems; }
+//		}
+//
+//		public string FirstRecentItem
+//		{
+//			get { return _recent.FirstRecentItem; }
+//		}
 	}
 }

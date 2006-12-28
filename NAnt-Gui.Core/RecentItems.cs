@@ -22,7 +22,6 @@
 #endregion
 
 using System.Collections;
-using Microsoft.Win32;
 using NAntGui.Core;
 
 namespace NAntGui.Gui
@@ -30,46 +29,30 @@ namespace NAntGui.Gui
 	/// <summary>
 	/// Summary description for RecentItems.
 	/// </summary>
-	public class RecentItems : IEnumerable
+	public class RecentItems : CollectionBase
 	{
-		private const string LOOP_ESCAPE = "DONE";
-		private ArrayList _items;
 		private Settings _settings = Settings.Instance();
 
-		public RecentItems()
+		public RecentItems() : base() {}
+
+//		public string this[int index]
+//		{
+//			get { return List[index].ToString(); }
+//		}
+
+		public string FirstItem
 		{
-			_items = new ArrayList(_settings.MaxRecentItems);
-
-			RegistryKey key = GetRegKey(RegUtil.RECENT_ITEMS_KEY_PATH);
-
-			if (KeyExists(key))
-			{
-				LoadRecentItemsFromReg(key);
-			}
-			else
-			{
-				LoadRecentItemsFromOldRegKey();
-			}
+			get { return List[0].ToString(); }
 		}
 
-		public string this[int index]
+		public bool HasItems
 		{
-			get { return _items[index].ToString(); }
-		}
-
-		public bool HasRecentItems
-		{
-			get { return _items.Count > 0; }
-		}
-
-		public IEnumerator GetEnumerator()
-		{
-			return _items.GetEnumerator();
+			get { return Count > 0; }
 		}
 
 		public void Add(string item)
 		{
-			if (Exists(item))
+			if (List.Contains(item))
 			{
 				ReplaceItem(item);
 			}
@@ -79,19 +62,6 @@ namespace NAntGui.Gui
 			}
 		}
 
-		public void Remove(string item)
-		{
-			if (Exists(item))
-			{
-				_items.Remove(item);
-			}
-		}
-
-		private void InsertItem(string itemName, int count)
-		{
-			_items.Insert(count, itemName);
-		}
-
 		private void AddItem(string item)
 		{
 			if (TooManyItems)
@@ -99,98 +69,36 @@ namespace NAntGui.Gui
 				RemoveLast();
 			}
 
-			_items.Insert(0, item);
+			List.Insert(0, item);
+		}
+
+		public void Remove(string item)
+		{
+			if (List.Contains(item))
+			{
+				List.Remove(item);
+			}
 		}
 
 		private bool TooManyItems
 		{
-			get { return _items.Count >= _settings.MaxRecentItems; }
+			get { return List.Count >= _settings.MaxRecentItems; }
 		}
 
 		private void RemoveLast()
 		{
-			int lastItem = _items.Count - 1;
+			int lastItem = List.Count - 1;
 
 			if (lastItem >= 0)
 			{
-				_items.RemoveAt(lastItem);
+				List.RemoveAt(lastItem);
 			}
 		}
 
-		private bool Exists(string item)
+		private void ReplaceItem(string item)
 		{
-			foreach (string recentItem in _items)
-			{
-				if (recentItem == item) return true;
-			}
-
-			return false;
+			List.Remove(item);
+			List.Insert(0, item);
 		}
-
-		private void ReplaceItem(string pItem)
-		{
-			int index = _items.IndexOf(pItem);
-			object temp = _items[index];
-			_items.RemoveAt(index);
-			_items.Insert(0, temp);
-		}
-
-		#region Registry Code
-
-		private void LoadRecentItemsFromOldRegKey()
-		{
-			RegistryKey key = GetRegKey(RegUtil.OLD_KEY_PATH);
-
-			if (KeyExists(key))
-			{
-				LoadRecentItemsFromReg(key);
-			}
-		}
-
-		public void Save()
-		{
-			RegistryKey key = Registry.CurrentUser.CreateSubKey(RegUtil.RECENT_ITEMS_KEY_PATH);
-
-			int count = 0;
-			foreach (string item in _items)
-			{
-				key.SetValue("Recent" + count++, item);
-			}
-
-			for (int i = count; i < _settings.MaxRecentItems; i++)
-			{
-				key.DeleteValue("Recent" + i, false);
-			}
-		}
-
-		private static string GetItemName(RegistryKey key, int count)
-		{
-			return key.GetValue("Recent" + count, LOOP_ESCAPE).ToString();
-		}
-
-		private static RegistryKey GetRegKey(string oldKeyPath)
-		{
-			return Registry.CurrentUser.OpenSubKey(oldKeyPath);
-		}
-
-		private static bool KeyExists(RegistryKey key)
-		{
-			return key != null;
-		}
-
-		private void LoadRecentItemsFromReg(RegistryKey key)
-		{
-			int itemsAddedCount = 0;
-			for (int count = 0; count < _settings.MaxRecentItems; count++)
-			{
-				string name = GetItemName(key, count);
-
-				if (name == LOOP_ESCAPE) break;
-
-				InsertItem(name, itemsAddedCount++);
-			}
-		}
-
-		#endregion
 	}
 }

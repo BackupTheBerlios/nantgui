@@ -34,10 +34,10 @@ namespace NAntGui.Gui
 	public class MainFormSerializer
 	{
 		private const bool ALLOW_SAVE_MINIMIZED = false;
-		private readonly RegistryKey _currentUser = Registry.CurrentUser;
 
 		private MainForm _mainForm;
 		private MainPropertyGrid _propertyGrid;
+		private Settings _settings = Settings.Instance();
 
 		public static void Attach(MainForm form, MainPropertyGrid propertyGrid)
 		{
@@ -53,27 +53,15 @@ namespace NAntGui.Gui
 
 		private void OnLoad(object sender, EventArgs e)
 		{
-			RegistryKey key = _currentUser.CreateSubKey(RegUtil.WINDOW_KEY_PATH);
+			int left = Convert.ToInt32(_settings.LoadWindowValue("Left", _mainForm.Left));
+			int top = Convert.ToInt32(_settings.LoadWindowValue("Top", _mainForm.Top));
+			int width = Convert.ToInt32(_settings.LoadWindowValue("Width", _mainForm.Width));
+			int height = Convert.ToInt32(_settings.LoadWindowValue("Height", _mainForm.Height));
 
-			if (KeyExists(key))
-			{
-				LoadStateFromReg(key);
-			}
-			else
-			{
-				LoadStateFromOldRegKey();
-			}
-		}
-
-		private void LoadStateFromReg(RegistryKey key)
-		{
-			int left = Convert.ToInt32(key.GetValue("Left", _mainForm.Left));
-			int top = Convert.ToInt32(key.GetValue("Top", _mainForm.Top));
-			int width = Convert.ToInt32(key.GetValue("Width", _mainForm.Width));
-			int height = Convert.ToInt32(key.GetValue("Height", _mainForm.Height));
-
-			FormWindowState windowState = (FormWindowState) key.GetValue("WindowState", (int) _mainForm.WindowState);
-			PropertySort propertySort = (PropertySort) key.GetValue("PropertySort", (int) _propertyGrid.PropertySort);
+			FormWindowState windowState = (FormWindowState) 
+				_settings.LoadWindowValue("WindowState", (int) _mainForm.WindowState);
+			PropertySort propertySort = (PropertySort) 
+				_settings.LoadWindowValue("PropertySort", (int) _propertyGrid.PropertySort);
 
 			_mainForm.Location = new Point(left, top);
 			_mainForm.Size = new Size(width, height);
@@ -91,38 +79,21 @@ namespace NAntGui.Gui
 			_mainForm.Closing += new CancelEventHandler(OnClosing);
 		}
 
-		private void LoadStateFromOldRegKey()
-		{
-			RegistryKey key = _currentUser.OpenSubKey(RegUtil.OLD_KEY_PATH);
-
-			if (KeyExists(key))
-			{
-				LoadStateFromReg(key);
-			}
-		}
-
-		private static bool KeyExists(RegistryKey key)
-		{
-			return key != null;
-		}
-
 		/// <summary>
 		/// save position, size and state
 		/// </summary>
 		private void OnClosing(object sender, CancelEventArgs e)
 		{
-			RegistryKey key = _currentUser.CreateSubKey(RegUtil.WINDOW_KEY_PATH);
-
 			if (_mainForm.WindowState != FormWindowState.Maximized)
 			{
-				key.SetValue("Left", _mainForm.Left);
-				key.SetValue("Top", _mainForm.Top);
-				key.SetValue("Width", _mainForm.Width);
-				key.SetValue("Height", _mainForm.Height);
+				_settings.SaveWindowValue("Left", _mainForm.Left);
+				_settings.SaveWindowValue("Top", _mainForm.Top);
+				_settings.SaveWindowValue("Width", _mainForm.Width);
+				_settings.SaveWindowValue("Height", _mainForm.Height);
 			}
 
-			key.SetValue("WindowState", AdjustWindowState());
-			key.SetValue("PropertySort", (int) _propertyGrid.PropertySort);
+			_settings.SaveWindowValue("WindowState", AdjustWindowState());
+			_settings.SaveWindowValue("PropertySort", (int) _propertyGrid.PropertySort);
 		}
 
 		private int AdjustWindowState()

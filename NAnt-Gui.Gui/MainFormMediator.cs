@@ -52,6 +52,8 @@ namespace NAntGui.Gui
 
 		private CommandLineOptions _options;
 		private Settings _settings = Settings.Instance();
+		private RecentItems _recentItems = new RecentItems();
+		private RecentItemsStore _recentItemsStore;
 
 		public MainFormMediator(CommandLineOptions options)
 		{
@@ -70,6 +72,9 @@ namespace NAntGui.Gui
 			_dockManager = new MainDockManager(_form, _sourceTabs,
 				_targetsTree, _outputBox, 
 				_propertyGrid, _statusBar);
+
+			_recentItemsStore = new RecentItemsStore(_recentItems);
+			_recentItemsStore.Load();
 
 			LoadInitialBuildFile();
 		}
@@ -134,8 +139,9 @@ namespace NAntGui.Gui
 				_selectedTab.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
 				_settings.SaveScriptInitialDir = _selectedTab.FilePath;
-
-				_mainMenu.AddRecentItem(file);
+	
+				_recentItems.Add(file);
+				_mainMenu.CreateRecentItemsMenu(_recentItems);
 
 				_mainMenu.Enable();
 				_toolBar.Enable();
@@ -196,6 +202,7 @@ namespace NAntGui.Gui
 		{
 			_selectedTab.Stop();
 			_sourceTabs.CloseTabs(e);
+			_recentItemsStore.Save();
 			_dockManager.SaveConfig();
 		}
 
@@ -212,7 +219,8 @@ namespace NAntGui.Gui
 			}
 			else
 			{
-				_mainMenu.RemoveRecentItem(file);
+				_recentItems.Remove(file);
+				_mainMenu.CreateRecentItemsMenu(_recentItems);
 				Utils.ShowFileNotFoundError(file);
 			}
 		}
@@ -293,7 +301,7 @@ namespace NAntGui.Gui
 		{
 			if (_options.BuildFile == null || !LoadBuildFile(_options.BuildFile))
 			{
-				if (!_mainMenu.HasRecentItems || !LoadBuildFile(_mainMenu.FirstRecentItem))
+				if (!_recentItems.HasItems || !LoadBuildFile(_recentItems.FirstItem))
 				{
 					AddBlankTab();
 				}
@@ -317,7 +325,8 @@ namespace NAntGui.Gui
 					_settings.OpenScriptDir = page.FilePath;
 
 					_sourceTabs.AddTab(page);
-					_mainMenu.AddRecentItem(_selectedTab.FileFullName);
+					_recentItems.Add(_selectedTab.FileFullName);
+					_mainMenu.CreateRecentItemsMenu(_recentItems);
 
 					ParseBuildFile(page);
 
