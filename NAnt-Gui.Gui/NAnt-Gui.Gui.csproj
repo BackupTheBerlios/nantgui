@@ -232,11 +232,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "RecentItemsStore.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "RunStateEnum.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
