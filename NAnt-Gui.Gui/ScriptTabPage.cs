@@ -91,6 +91,8 @@ namespace NAntGui.Gui
 
 			_buildRunner = BuildRunnerFactory.Create(_file, logger, _mediator.Options);
 			_buildScript = ScriptParserFactory.Create(_file);			
+
+			_buildRunner.Properties = _buildScript.Properties;
 		}
 
 		public void ParseBuildScript()
@@ -172,14 +174,14 @@ namespace NAntGui.Gui
 			}
 		}
 
-		public void SetProperties(PropertyCollection properties)
-		{
-			Assert.NotNull(properties, "properties");
-			if (_buildRunner != null)
-			{
-				_buildRunner.Properties = properties;	
-			}
-		}
+//		public void SetProperties(PropertyCollection properties)
+//		{
+//			Assert.NotNull(properties, "properties");
+//			if (_buildRunner != null)
+//			{
+//				_buildRunner.Properties = properties;	
+//			}
+//		}
 
 		public void SetTargets(TargetCollection targets)
 		{

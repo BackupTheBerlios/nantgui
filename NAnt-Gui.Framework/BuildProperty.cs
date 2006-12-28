@@ -59,7 +59,7 @@ namespace NAntGui.Framework
 
 			_name = name;
 			_value = value;
-			_defaultValue = expandedValue;
+			_defaultValue = value;
 			_expandedValue = expandedValue;
 			_category = category;
 			_readOnly = readOnly;
@@ -111,7 +111,7 @@ namespace NAntGui.Framework
 		public virtual string ExpandedValue
 		{
 			get { return _expandedValue; }
-			set { _expandedValue = value; }
+			set { _expandedValue = _defaultValue = value; }
 		}
 
 		public override string ToString()

@@ -107,7 +107,7 @@ namespace NAntGui.Gui
 			ScriptTabPage tab = _selectedTab;
 
 			tab.Save(false);
-			//tab.SetProperties(_propertyGrid.GetProperties());
+//			tab.SetProperties(_propertyGrid.GetProperties());
 			tab.SetTargets(_targetsTree.GetTargets());			
 			tab.Run();
 		}
@@ -370,7 +370,7 @@ namespace NAntGui.Gui
 			_statusBar.Panels[1].Text = _selectedTab.FileFullName;
 
 			_targetsTree.AddTargets(buildScript.Name, buildScript.Targets);
-			_propertyGrid.SelectedObject = buildScript.Properties;
+			_propertyGrid.AddProperties(buildScript.Properties);
 		}
 
 		public void DragDrop(DragEventArgs e)
