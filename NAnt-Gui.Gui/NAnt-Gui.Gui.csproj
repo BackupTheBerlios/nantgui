@@ -277,14 +277,9 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\Menu\BuildMenu\RunMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\BuildMenu\StopMenuCommand.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
+                    RelPath = "Controls\Menu\BuildMenu\BuildMenu.resx"
+                    DependentUpon = "BuildMenu.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "Controls\Menu\EditMenu\CopyMenuCommand.cs"

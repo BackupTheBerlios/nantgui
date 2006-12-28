@@ -40,7 +40,8 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			ImageList = NAntGuiApp.ImageList;
+			NAntGui.Core.Settings settings = NAntGui.Core.Settings.Instance();
+			ImageList = settings.ImageList;
 			ImageIndex = 11;
 			Description = "MenuCommand";
 			Shortcut = Shortcut.CtrlY;

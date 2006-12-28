@@ -39,10 +39,11 @@ namespace NAntGui.Gui.Controls.Menu.ViewMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
+			NAntGui.Core.Settings settings = NAntGui.Core.Settings.Instance();
 			Description = "MenuCommand";
 			ImageIndex = 6;
 			Text = "&Output";
-			ImageList = NAntGuiApp.ImageList;
+			ImageList = settings.ImageList;
 		}
 
 		public override void OnClick(EventArgs e)

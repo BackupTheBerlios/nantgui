@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
@@ -37,17 +38,26 @@ namespace NAntGui.Gui.Controls
 	{
 		private ToolTip ToolTip = new ToolTip();
 		private PopupMenu _targetsPopupMenu = new PopupMenu();
-		private RunMenuCommand _runMenu;
+		private MenuCommand _runMenu;
+		private MainFormMediator _mediator;
+		
 
 		public TargetsTreeView(MainFormMediator mediator)
 		{
-			Assert.NotNull(mediator, "mediator");
-			_runMenu = new RunMenuCommand(mediator);
+			Assert.NotNull(_mediator, "mediator");
+			_mediator = mediator;
 			Initialize();
 		}
 
 		private void Initialize()
 		{
+			Settings settings = Settings.Instance();
+
+			_runMenu = new MenuCommand("&Run", settings.ImageList, 7, 
+				Shortcut.F5, new EventHandler(Run_Click));
+
+			_runMenu.Description = "Builds the current build file";
+
 			CheckBoxes = true;
 			Dock = DockStyle.Top;
 			ImageIndex = -1;
@@ -61,6 +71,11 @@ namespace NAntGui.Gui.Controls
 			MouseMove += new MouseEventHandler(BuildTreeView_MouseMove);
 
 			_targetsPopupMenu.MenuCommands.AddRange(new MenuCommand[] {_runMenu});
+		}
+
+		private void Run_Click(object sender, EventArgs e)
+		{
+			_mediator.RunClicked();
 		}
 
 		private void BuildTreeView_AfterCheck(object sender, TreeViewEventArgs e)

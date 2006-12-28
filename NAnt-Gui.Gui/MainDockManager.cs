@@ -25,6 +25,7 @@ using System;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Docking;
+using NAntGui.Core;
 using NAntGui.Framework;
 using NAntGui.Gui.Controls;
 using TabControl = Crownwood.Magic.Controls.TabControl;
@@ -60,13 +61,15 @@ namespace NAntGui.Gui
 			_outputContent = _dockManager.Contents.Add(outputBox, "Output");
 			_propertiesContent = _dockManager.Contents.Add(propertyGrid, "Properties");
 
-			_targetsContent.ImageList = NAntGuiApp.ImageList;
+			Settings settings = Settings.Instance();
+
+			_targetsContent.ImageList = settings.ImageList;
 			_targetsContent.ImageIndex = 9;
 
-			_propertiesContent.ImageList = NAntGuiApp.ImageList;
+			_propertiesContent.ImageList = settings.ImageList;
 			_propertiesContent.ImageIndex = 0;
 
-			_outputContent.ImageList = NAntGuiApp.ImageList;
+			_outputContent.ImageList = settings.ImageList;
 			_outputContent.ImageIndex = 6;
 
 			// Request a new Docking window be created for the above Content on the left edge

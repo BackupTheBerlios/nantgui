@@ -40,11 +40,12 @@ namespace NAntGui.Gui.Controls.Menu.FileMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
+			NAntGui.Core.Settings settings = NAntGui.Core.Settings.Instance();
 			Description = "MenuCommand";
 			ImageIndex = 4;
 			Shortcut = Shortcut.CtrlR;
 			Text = "&Reload";
-			ImageList = NAntGuiApp.ImageList;
+			ImageList = settings.ImageList;
 		}
 
 		public override void OnClick(EventArgs e)

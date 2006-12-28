@@ -291,7 +291,7 @@ namespace NAntGui.Gui
 
 		public void LoadInitialBuildFile()
 		{
-			if (NAntGuiApp.Options.BuildFile == null || !LoadBuildFile(NAntGuiApp.Options.BuildFile))
+			if (_options.BuildFile == null || !LoadBuildFile(_options.BuildFile))
 			{
 				if (!_mainMenu.HasRecentItems || !LoadBuildFile(_mainMenu.FirstRecentItem))
 				{

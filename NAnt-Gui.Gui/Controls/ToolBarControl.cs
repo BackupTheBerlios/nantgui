@@ -23,6 +23,7 @@
 
 using System.Drawing;
 using System.Windows.Forms;
+using NAntGui.Core;
 using NAntGui.Framework;
 
 namespace NAntGui.Gui.Controls
@@ -102,9 +103,11 @@ namespace NAntGui.Gui.Controls
 			Name = "MainToolBar";
 			ShowToolTips = true;
 			Size = new Size(824, 28);
-			TabIndex = 4;
-			ImageList = NAntGuiApp.ImageList;
+			TabIndex = 4;			
 			ButtonClick += new ToolBarButtonClickEventHandler(Button_Click);
+
+			Settings settings = Settings.Instance();
+			ImageList = settings.ImageList;
 		}
 
 		#endregion

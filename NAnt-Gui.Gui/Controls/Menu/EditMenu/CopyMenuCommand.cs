@@ -39,7 +39,8 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 			Assert.NotNull(value, "value");
 			_mediator = value;
 
-			ImageList = NAntGuiApp.ImageList;
+			NAntGui.Core.Settings settings = NAntGui.Core.Settings.Instance();
+			ImageList = settings.ImageList;
 			ImageIndex = 13;
 			Description = "MenuCommand";
 			Shortcut = Shortcut.CtrlC;
