@@ -24,6 +24,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using NAntGui.Core;
 
 namespace NAntGui.Gui
 {
@@ -38,6 +39,8 @@ namespace NAntGui.Gui
 		private NumericUpDown MaxRecentItemsUpDown;
 		private CheckBox HideTargetsCheckBox;
 		private IContainer components = null;
+
+		private Settings _settings = Settings.Instance();
 
 		public OptionsForm()
 		{
@@ -164,14 +167,14 @@ namespace NAntGui.Gui
 
 		private void OptionsForm_Load(object sender, EventArgs e)
 		{
-			HideTargetsCheckBox.Checked = Settings.HideTargetsWithoutDescription;
-			MaxRecentItemsUpDown.Value = Settings.MaxRecentItems;
+			HideTargetsCheckBox.Checked = _settings.HideTargetsWithoutDescription;
+			MaxRecentItemsUpDown.Value = _settings.MaxRecentItems;
 		}
 
 		private void OKButton_Click(object sender, EventArgs e)
 		{
-			Settings.HideTargetsWithoutDescription = HideTargetsCheckBox.Checked;
-			Settings.MaxRecentItems = (int) MaxRecentItemsUpDown.Value;
+			_settings.HideTargetsWithoutDescription = HideTargetsCheckBox.Checked;
+			_settings.MaxRecentItems = (int) MaxRecentItemsUpDown.Value;
 		}
 	}
 }

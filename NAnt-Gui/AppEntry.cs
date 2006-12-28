@@ -26,7 +26,6 @@ using System.Reflection;
 using NAnt.Core.Util;
 using NAntGui.Framework;
 using NAntGui.Gui;
-using OICallback = Genghis.Windows.Forms.OtherInstanceCallback;
 
 namespace NAntGui
 {
@@ -52,7 +51,7 @@ namespace NAntGui
 
 		private static CommandLineOptions ParseCommandLine(string[] args)
 		{
-			CommandLineParser parser;
+			CommandLineParser parser = null;
 			CommandLineOptions cmdLineOptions = new CommandLineOptions();
 
 			try

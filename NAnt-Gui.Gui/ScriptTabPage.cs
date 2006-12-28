@@ -73,7 +73,7 @@ namespace NAntGui.Gui
 			_buildScript = new BlankBuildScript();
 		}
 
-		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator, CommandLineOptions options)
+		public ScriptTabPage(string filename, ILogsMessage logger, MainFormMediator mediator)
 		{
 			Assert.NotNull(filename, "filename");
 			Assert.NotNull(logger, "logger");
@@ -89,7 +89,7 @@ namespace NAntGui.Gui
 
 			Initialize();
 
-			_buildRunner = BuildRunnerFactory.Create(_file, logger, options);
+			_buildRunner = BuildRunnerFactory.Create(_file, logger, _mediator.Options);
 			_buildScript = ScriptParserFactory.Create(_file);			
 		}
 
@@ -112,7 +112,7 @@ namespace NAntGui.Gui
 			_scriptEditor.SaveFile(fileName);
 
 			_file				= new SourceFile(fileName, _scriptEditor.Text);
-			_buildRunner		= BuildRunnerFactory.Create(_file, _logger, NAntGuiApp.Options);
+			_buildRunner		= BuildRunnerFactory.Create(_file, _logger, _mediator.Options);
 			_fileType			= FileType.Existing;
 			_scriptTab.Title	= _file.Name;
 

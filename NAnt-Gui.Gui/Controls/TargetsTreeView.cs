@@ -24,8 +24,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
-using NAntGui.Gui.Controls.Menu.BuildMenu;
+using NAntGui.Core;
 using NAntGui.Framework;
+using NAntGui.Gui.Controls.Menu.BuildMenu;
 
 namespace NAntGui.Gui.Controls
 {
@@ -128,7 +129,9 @@ namespace NAntGui.Gui.Controls
 
 		private void AddTargetTreeNode(BuildTarget buildTarget)
 		{
-			if (!(Settings.HideTargetsWithoutDescription && !HasDescription(buildTarget.Description)))
+			Settings settings = Settings.Instance();
+			if (!(settings.HideTargetsWithoutDescription && 
+				!HasDescription(buildTarget.Description)))
 			{
 				string targetName = FormatTargetName(buildTarget.Name, buildTarget.Description);
 				TreeNode node = new TreeNode(targetName);

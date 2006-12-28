@@ -24,6 +24,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using NAntGui.Core;
 using NAntGui.Framework;
 using NAntGui.Gui.Controls;
 using NAntGui.Gui.Controls.Menu;
@@ -49,7 +50,8 @@ namespace NAntGui.Gui
 
 		private ScriptTabPage _selectedTab;
 
-		private CommandLineOptions _options;		
+		private CommandLineOptions _options;
+		private Settings _settings = Settings.Instance();
 
 		public MainFormMediator(CommandLineOptions options)
 		{
@@ -131,7 +133,7 @@ namespace NAntGui.Gui
 				_selectedTab.SaveAs(file);
 				_selectedTab.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
-				Settings.OpenInitialDir = _selectedTab.FilePath;
+				_settings.OpenInitialDir = _selectedTab.FilePath;
 
 				_mainMenu.AddRecentItem(file);
 
@@ -309,10 +311,10 @@ namespace NAntGui.Gui
 			{
 				if (File.Exists(filename))
 				{
-					ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this, NAntGuiApp.Options);
+					ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
 					page.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
-					Settings.OpenInitialDir = page.FilePath;
+					_settings.OpenInitialDir = page.FilePath;
 
 					_sourceTabs.AddTab(page);
 					_mainMenu.AddRecentItem(_selectedTab.FileFullName);

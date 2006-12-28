@@ -4,8 +4,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Crownwood.Magic.Menus;
-using NAntGui.Gui.Controls.Menu.EditMenu;
+using NAntGui.Core;
 using NAntGui.Framework;
+using NAntGui.Gui.Controls.Menu.EditMenu;
 
 namespace NAntGui.Gui.Controls
 {
@@ -24,7 +25,9 @@ namespace NAntGui.Gui.Controls
 		private PointConverter _pc = new PointConverter();
 		private PopupMenu _outputContextMenu = new PopupMenu();
 		private SaveFileDialog _saveDialog = new SaveFileDialog();
-		private MainFormMediator _mediator;
+		private Settings _settings = Settings.Instance();
+
+		private MainFormMediator _mediator;		
 
 		public OutputBox(MainFormMediator mediator)
 		{			
@@ -75,8 +78,8 @@ namespace NAntGui.Gui.Controls
 		}
 
 		public void SaveOutput()
-		{
-			_saveDialog.InitialDirectory = Settings.SaveOutputInitialDir;
+		{			
+			_saveDialog.InitialDirectory = _settings.SaveOutputInitialDir;
 			DialogResult result = _saveDialog.ShowDialog();
 
 			if (result == DialogResult.OK)
@@ -99,7 +102,7 @@ namespace NAntGui.Gui.Controls
 			}
 
 			FileInfo file = new FileInfo(_saveDialog.FileName);
-			Settings.SaveOutputInitialDir = file.DirectoryName;
+			_settings.SaveOutputInitialDir = file.DirectoryName;
 		}
 
 		private void SavePlainTextOutput(string fileName)

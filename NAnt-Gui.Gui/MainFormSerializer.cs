@@ -27,6 +27,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using NAntGui.Gui.Controls;
+using NAntGui.Core;
 
 namespace NAntGui.Gui
 {
@@ -52,7 +53,7 @@ namespace NAntGui.Gui
 
 		private void OnLoad(object sender, EventArgs e)
 		{
-			RegistryKey key = _currentUser.CreateSubKey(Settings.WINDOW_KEY_PATH);
+			RegistryKey key = _currentUser.CreateSubKey(RegUtil.WINDOW_KEY_PATH);
 
 			if (KeyExists(key))
 			{
@@ -92,7 +93,7 @@ namespace NAntGui.Gui
 
 		private void LoadStateFromOldRegKey()
 		{
-			RegistryKey key = _currentUser.OpenSubKey(Settings.OLD_KEY_PATH);
+			RegistryKey key = _currentUser.OpenSubKey(RegUtil.OLD_KEY_PATH);
 
 			if (KeyExists(key))
 			{
@@ -110,18 +111,18 @@ namespace NAntGui.Gui
 		/// </summary>
 		private void OnClosing(object sender, CancelEventArgs e)
 		{
-			RegistryKey lKey = _currentUser.CreateSubKey(Settings.WINDOW_KEY_PATH);
+			RegistryKey key = _currentUser.CreateSubKey(RegUtil.WINDOW_KEY_PATH);
 
 			if (_mainForm.WindowState != FormWindowState.Maximized)
 			{
-				lKey.SetValue("Left", _mainForm.Left);
-				lKey.SetValue("Top", _mainForm.Top);
-				lKey.SetValue("Width", _mainForm.Width);
-				lKey.SetValue("Height", _mainForm.Height);
+				key.SetValue("Left", _mainForm.Left);
+				key.SetValue("Top", _mainForm.Top);
+				key.SetValue("Width", _mainForm.Width);
+				key.SetValue("Height", _mainForm.Height);
 			}
 
-			lKey.SetValue("WindowState", AdjustWindowState());
-			lKey.SetValue("PropertySort", (int) _propertyGrid.PropertySort);
+			key.SetValue("WindowState", AdjustWindowState());
+			key.SetValue("PropertySort", (int) _propertyGrid.PropertySort);
 		}
 
 		private int AdjustWindowState()
