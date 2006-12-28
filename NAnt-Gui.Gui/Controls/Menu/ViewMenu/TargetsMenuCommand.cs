@@ -39,9 +39,9 @@ namespace NAntGui.Gui.Controls.Menu.ViewMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			NAntGui.Core.Settings settings = NAntGui.Core.Settings.Instance();
+			GuiUtils utils = GuiUtils.Instance();
 			Description = "MenuCommand";
-			ImageList = settings.ImageList;
+			ImageList = utils.ImageList;
 			ImageIndex = 9;
 			Text = "&Targets";
 		}

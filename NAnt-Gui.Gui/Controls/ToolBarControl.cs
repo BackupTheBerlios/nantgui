@@ -106,8 +106,8 @@ namespace NAntGui.Gui.Controls
 			TabIndex = 4;			
 			ButtonClick += new ToolBarButtonClickEventHandler(Button_Click);
 
-			Settings settings = Settings.Instance();
-			ImageList = settings.ImageList;
+			GuiUtils utils = GuiUtils.Instance();
+			ImageList = utils.ImageList;
 		}
 
 		#endregion

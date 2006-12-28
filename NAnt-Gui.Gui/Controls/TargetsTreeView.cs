@@ -44,16 +44,16 @@ namespace NAntGui.Gui.Controls
 
 		public TargetsTreeView(MainFormMediator mediator)
 		{
-			Assert.NotNull(_mediator, "mediator");
+			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 			Initialize();
 		}
 
 		private void Initialize()
 		{
-			Settings settings = Settings.Instance();
+			GuiUtils utils = GuiUtils.Instance();
 
-			_runMenu = new MenuCommand("&Run", settings.ImageList, 7, 
+			_runMenu = new MenuCommand("&Run", utils.ImageList, 7, 
 				Shortcut.F5, new EventHandler(Run_Click));
 
 			_runMenu.Description = "Builds the current build file";

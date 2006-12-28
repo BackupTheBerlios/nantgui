@@ -133,7 +133,7 @@ namespace NAntGui.Gui
 				_selectedTab.SaveAs(file);
 				_selectedTab.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
-				_settings.OpenInitialDir = _selectedTab.FilePath;
+				_settings.SaveScriptInitialDir = _selectedTab.FilePath;
 
 				_mainMenu.AddRecentItem(file);
 
@@ -314,7 +314,7 @@ namespace NAntGui.Gui
 					ScriptTabPage page = new ScriptTabPage(filename, _outputBox, this);
 					page.BuildFinished = new VoidVoid(Tab_BuildFinished);
 
-					_settings.OpenInitialDir = page.FilePath;
+					_settings.OpenScriptDir = page.FilePath;
 
 					_sourceTabs.AddTab(page);
 					_mainMenu.AddRecentItem(_selectedTab.FileFullName);

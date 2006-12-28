@@ -56,17 +56,20 @@ namespace NAntGui.Gui.Controls
 			BackColor	= Color.White;
 			WordWrap	= false;
 
-			CreateOutputContextMenu();
+			GuiUtils utils = GuiUtils.Instance();
+
+			_outputContextMenu.MenuCommands.AddRange(
+				new MenuCommand[] {
+									  new MenuCommand("&Copy", utils.ImageList, 13,
+									  Shortcut.CtrlC, new System.EventHandler(Copy_Click)), 
+									  new SelectAllMenuCommand(_mediator)});
 		}
 
 		#endregion
 
-		private void CreateOutputContextMenu()
+		private void Copy_Click(object sender, System.EventArgs e)
 		{
-			CopyMenuCommand copy = new CopyMenuCommand(_mediator);
-			SelectAllMenuCommand selectAll = new SelectAllMenuCommand(_mediator);
-
-			_outputContextMenu.MenuCommands.AddRange(new MenuCommand[] {copy, selectAll});
+			_mediator.CopyClicked();
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)

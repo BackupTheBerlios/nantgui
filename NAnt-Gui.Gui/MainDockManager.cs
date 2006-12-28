@@ -61,15 +61,15 @@ namespace NAntGui.Gui
 			_outputContent = _dockManager.Contents.Add(outputBox, "Output");
 			_propertiesContent = _dockManager.Contents.Add(propertyGrid, "Properties");
 
-			Settings settings = Settings.Instance();
+			GuiUtils utils = GuiUtils.Instance();
 
-			_targetsContent.ImageList = settings.ImageList;
+			_targetsContent.ImageList = utils.ImageList;
 			_targetsContent.ImageIndex = 9;
 
-			_propertiesContent.ImageList = settings.ImageList;
+			_propertiesContent.ImageList = utils.ImageList;
 			_propertiesContent.ImageIndex = 0;
 
-			_outputContent.ImageList = settings.ImageList;
+			_outputContent.ImageList = utils.ImageList;
 			_outputContent.ImageIndex = 6;
 
 			// Request a new Docking window be created for the above Content on the left edge

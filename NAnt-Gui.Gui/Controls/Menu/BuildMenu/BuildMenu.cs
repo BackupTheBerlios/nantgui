@@ -36,7 +36,7 @@ namespace NAntGui.Gui.Controls.Menu.BuildMenu
 	{
 		private MenuCommand _runMenu;
 		private MenuCommand _stopMenu;
-		private Settings _settings = Settings.Instance();
+		private GuiUtils _utils = GuiUtils.Instance();
 		private MainFormMediator _mediator;
 
 		public BuildMenu(MainFormMediator mediator)
@@ -44,12 +44,12 @@ namespace NAntGui.Gui.Controls.Menu.BuildMenu
 			Assert.NotNull(mediator, "mediator");
 			_mediator = mediator;
 
-			_runMenu = new MenuCommand("&Run", _settings.ImageList, 7, 
+			_runMenu = new MenuCommand("&Run", _utils.ImageList, 7, 
 				Shortcut.F5, new EventHandler(Run_Click));
 
 			_runMenu.Description = "Builds the current build file";
 
-			_stopMenu = new MenuCommand("&Cancel Build", _settings.ImageList, 3,
+			_stopMenu = new MenuCommand("&Cancel Build", _utils.ImageList, 3,
 				Shortcut.CtrlDel, new EventHandler(Stop_Click));
 
 			_stopMenu.Description = "Aborts the current build";

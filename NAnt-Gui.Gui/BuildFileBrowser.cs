@@ -48,7 +48,7 @@ namespace NAntGui.Gui
 		public static string[] BrowseForLoad()
 		{
 			Settings settings = Settings.Instance();
-			_openDialog.InitialDirectory = settings.OpenInitialDir;
+			_openDialog.InitialDirectory = settings.OpenScriptDir;
 
 			if (_openDialog.ShowDialog() == DialogResult.OK)
 			{
@@ -62,9 +62,10 @@ namespace NAntGui.Gui
 
 		public static string BrowseForSave()
 		{
-			DialogResult result = _saveDialog.ShowDialog();
+			Settings settings = Settings.Instance();
+			_saveDialog.InitialDirectory = settings.SaveScriptInitialDir;
 
-			if (result == DialogResult.OK)
+			if (_saveDialog.ShowDialog() == DialogResult.OK)
 			{
 				return _saveDialog.FileName;
 			}

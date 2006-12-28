@@ -21,8 +21,10 @@
 
 #endregion
 
-using Crownwood.Magic.Menus;
+using NAntGui.Core;
 using NAntGui.Framework;
+using System.Windows.Forms;
+using Crownwood.Magic.Menus;
 
 namespace NAntGui.Gui.Controls.Menu.EditMenu
 {
@@ -31,27 +33,25 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 	/// </summary>
 	public class EditMenu : MenuCommand
 	{
-		private UndoMenuCommand _undo;
-		private RedoMenuCommand _redo;
-		private CutMenuCommand _cut;
-		private CopyMenuCommand _copy;
-		private PasteMenuCommand _paste;
-		private DeleteMenuCommand _delete;
-		private SelectAllMenuCommand _selectAll;
-		private WordWrapMenuCommand _wordWrap;
+		private MenuCommand _undo;
+		private MenuCommand _redo;
+		private MenuCommand _cut;
+		private MenuCommand _copy;
+		private MenuCommand _paste;
+		private MenuCommand _delete;
+		private MenuCommand _selectAll;
+		private MenuCommand _wordWrap;
+
+		MainFormMediator _mediator;
+		GuiUtils _utils = GuiUtils.Instance();
 
 		public EditMenu(MainFormMediator mediator)
 		{
 			Assert.NotNull(mediator, "mediator");
+			_mediator = mediator;
 
-			_cut = new CutMenuCommand(mediator);
-			_paste = new PasteMenuCommand(mediator);
-			_delete = new DeleteMenuCommand(mediator);
-			_undo = new UndoMenuCommand(mediator);
-			_redo = new RedoMenuCommand(mediator);
-			_copy = new CopyMenuCommand(mediator);
-			_selectAll = new SelectAllMenuCommand(mediator);
-			_wordWrap = new WordWrapMenuCommand(mediator);
+			_selectAll = new MenuCommand();
+			_wordWrap = new MenuCommand();
 
 			Initialize();
 		}
@@ -60,7 +60,37 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 
 		private void Initialize()
 		{
-			Description = "MenuCommand";
+			// _undo
+			_undo = new MenuCommand("&Undo", _utils.ImageList, 10, 
+				Shortcut.CtrlZ, new System.EventHandler(Undo_Click));
+			_undo.Description = "Undo previous edit";
+
+			// _redo
+			_redo = new MenuCommand("&Redo", _utils.ImageList, 11,
+				Shortcut.CtrlY, new System.EventHandler(Redo_Click));
+			_redo.Description = "Redo previous edit";
+
+			// _cut
+			_cut = new MenuCommand("Cu&t", _utils.ImageList, 12,
+				Shortcut.CtrlX, new System.EventHandler(Cut_Click));
+			_cut.Description = "Cut selected text";
+
+			// _copy
+			_copy = new MenuCommand("&Copy", _utils.ImageList, 13,
+				Shortcut.CtrlC, new System.EventHandler(Copy_Click));
+			_copy.Description = "Copy selected text";
+
+			// _paste
+			_paste = new MenuCommand("&Paste", _utils.ImageList, 14,
+				Shortcut.CtrlV, new System.EventHandler(Paste_Click));
+			_paste.Description = "Paste copied text";
+
+			// _delete
+			_delete = new MenuCommand("&Delete", _utils.ImageList, 15, 
+				Shortcut.Del, new System.EventHandler(Delete_Click));
+			_delete.Description = "Delete the selected text";
+
+
 			MenuCommands.AddRange(new MenuCommand[]
 			                      	{
 			                      		_undo,
@@ -75,6 +105,40 @@ namespace NAntGui.Gui.Controls.Menu.EditMenu
 			                      		_wordWrap
 			                      	});
 			Text = "&Edit";
+		}
+
+		#endregion
+
+		#region Click Handlers
+
+		private void Undo_Click(object sender, System.EventArgs e)
+		{
+			_mediator.UndoClicked();
+		}
+
+		private void Redo_Click(object sender, System.EventArgs e)
+		{
+			_mediator.RedoClicked();
+		}
+
+		private void Cut_Click(object sender, System.EventArgs e)
+		{
+			_mediator.CutClicked();
+		}
+
+		private void Copy_Click(object sender, System.EventArgs e)
+		{
+			_mediator.CopyClicked();
+		}
+
+		private void Paste_Click(object sender, System.EventArgs e)
+		{
+			_mediator.PasteClicked();
+		}
+
+		private void Delete_Click(object sender, System.EventArgs e)
+		{
+			_mediator.DeleteClicked();
 		}
 
 		#endregion

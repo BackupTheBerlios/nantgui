@@ -37,6 +37,7 @@ namespace NAntGui.Gui.Controls
 	{
 		private PopupMenu _sourceContextMenu;
 		private MainFormMediator _mediator;
+		private GuiUtils _utils = GuiUtils.Instance();
 
 		public ScriptEditor(MainFormMediator mediator)
 		{
@@ -54,10 +55,14 @@ namespace NAntGui.Gui.Controls
 			_sourceContextMenu.MenuCommands.AddRange(
 				new MenuCommand[]
 					{
-						new CutMenuCommand(_mediator),
-						new CopyMenuCommand(_mediator),
-						new PasteMenuCommand(_mediator),
-						new DeleteMenuCommand(_mediator),
+						new MenuCommand("Cu&t", _utils.ImageList, 12,
+						Shortcut.CtrlX, new System.EventHandler(Cut_Click)),
+						new MenuCommand("&Copy", _utils.ImageList, 13,
+						Shortcut.CtrlC, new System.EventHandler(Copy_Click)),
+						new MenuCommand("&Paste", _utils.ImageList, 14,
+						Shortcut.CtrlV, new System.EventHandler(Paste_Click)),
+						new MenuCommand("&Delete", _utils.ImageList, 15, 
+						Shortcut.Del, new System.EventHandler(Delete_Click)),
 						new MenuCommand("-"),
 						new SelectAllMenuCommand(_mediator)
 					});
@@ -70,12 +75,33 @@ namespace NAntGui.Gui.Controls
 			ShowTabs = false;
 			EnableFolding = true;
 			ShowMatchingBracket = true;
+
 			ActiveTextAreaControl.TextArea.MouseUp += new MouseEventHandler(PopupMenu);
 			ActiveTextAreaControl.TextArea.DragEnter += new DragEventHandler(Drag_Enter);
 			ActiveTextAreaControl.TextArea.DragDrop += new DragEventHandler(Drag_Drop);
 		}
 
 		#endregion
+
+		private void Cut_Click(object sender, System.EventArgs e)
+		{
+			_mediator.CutClicked();
+		}
+
+		private void Copy_Click(object sender, System.EventArgs e)
+		{
+			_mediator.CopyClicked();
+		}
+
+		private void Paste_Click(object sender, System.EventArgs e)
+		{
+			_mediator.PasteClicked();
+		}
+
+		private void Delete_Click(object sender, System.EventArgs e)
+		{
+			_mediator.DeleteClicked();
+		}
 
 		private void PopupMenu(object sender, MouseEventArgs e)
 		{

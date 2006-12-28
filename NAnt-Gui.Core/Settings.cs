@@ -21,9 +21,7 @@
 
 #endregion
 
-using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Common;
 
 namespace NAntGui.Core
 {
@@ -32,13 +30,10 @@ namespace NAntGui.Core
 	/// </summary>
 	public class Settings
 	{
-		private const int DEFAULT_MAX_ITEMS = 6;
-		private const string IMAGE_PATH = "NAntGui.Gui.Images.MenuItems.bmp";
+		private const int DEFAULT_MAX_ITEMS = 6;	
 		
-
 		private static Settings _settings;
 
-		private ImageList _imageList;	
 		private RegUtil _regUtil = new RegUtil();
 
 		#region Window
@@ -94,11 +89,7 @@ namespace NAntGui.Core
 			return _settings;
 		}
 
-		private Settings()
-		{
-			_imageList = ResourceHelper.LoadBitmapStrip(typeof (Settings),
-				IMAGE_PATH, new Size(16, 16), new Point(0, 0));
-		}
+		private Settings() {}
 
 		public int MaxRecentItems
 		{
@@ -112,21 +103,22 @@ namespace NAntGui.Core
 			set { _regUtil.SetRegKeyValue("HideTargets", value); }
 		}
 
-		public string OpenInitialDir
+		public string OpenScriptDir
 		{
 			get { return _regUtil.GetRegKeyStringValue("OpenInitialDirectory", "C:\\"); }
 			set { _regUtil.SetRegKeyValue("OpenInitialDirectory", value); }
+		}
+
+		public string SaveScriptInitialDir
+		{
+			get { return _regUtil.GetRegKeyStringValue("SaveScriptInitialDir", "C:\\"); }
+			set { _regUtil.SetRegKeyValue("SaveScriptInitialDir", value); }
 		}
 
 		public string SaveOutputInitialDir
 		{
 			get { return _regUtil.GetRegKeyStringValue("SaveOutputInitialDir", "C:\\"); }
 			set { _regUtil.SetRegKeyValue("SaveOutputInitialDir", value); }
-		}
-
-		public ImageList ImageList
-		{
-			get { return _imageList; }
 		}
 	}
 }

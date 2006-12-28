@@ -21,36 +21,40 @@
 
 #endregion
 
+using System;
+using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Menus;
-using NAntGui.Framework;
+using Crownwood.Magic.Common;
 
-namespace NAntGui.Gui.Controls.Menu.EditMenu
+namespace NAntGui.Gui
 {
 	/// <summary>
-	/// Summary description for CopyMenuCommand.
+	/// Summary description for GuiUtils.
 	/// </summary>
-	public class CopyMenuCommand : MenuCommand
+	public class GuiUtils
 	{
-		MainFormMediator _mediator;
+		private const string IMAGE_PATH = "NAntGui.Gui.Images.MenuItems.bmp";
+		private ImageList _imageList;	
 
-		public CopyMenuCommand(MainFormMediator value)
+		private static GuiUtils _guiUtils;
+
+		public static GuiUtils Instance()
 		{
-			Assert.NotNull(value, "value");
-			_mediator = value;
+			if (_guiUtils == null)
+				_guiUtils = new GuiUtils();
 
-			NAntGui.Core.Settings settings = NAntGui.Core.Settings.Instance();
-			ImageList = settings.ImageList;
-			ImageIndex = 13;
-			Description = "MenuCommand";
-			Shortcut = Shortcut.CtrlC;
-			Text = "&Copy";
+			return _guiUtils;
 		}
 
-		public override void OnClick(System.EventArgs e)
+		private GuiUtils()
 		{
-			base.OnClick(e);
-			_mediator.CopyClicked();
+			_imageList = ResourceHelper.LoadBitmapStrip(this.GetType(),
+				IMAGE_PATH, new Size(16, 16), new Point(0, 0));
+		}
+
+		public ImageList ImageList
+		{
+			get { return _imageList; }
 		}
 	}
 }
