@@ -21,11 +21,10 @@
 
 #endregion
 
-using NAntGui.Core;
 using NAntGui.Framework;
 using Microsoft.Win32;
 
-namespace NAntGui.Gui
+namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for RecentItemsStore.
@@ -36,8 +35,6 @@ namespace NAntGui.Gui
 		private Settings _settings = Settings.Instance();
 		private RecentItems _items;
 
-//		private delegate string GetString(string keyName, string defaultValue);
-
 		public RecentItemsStore(RecentItems items)
 		{
 			Assert.NotNull(items, "items");
@@ -46,16 +43,6 @@ namespace NAntGui.Gui
 
 		public void Load()
 		{
-//			if (_regUtil.HasNewPath())
-//			{
-//				LoadFromNewRegKey();
-//			}
-//			else if(_regUtil.HasOldPath())
-//			{
-//				LoadFromOldRegKey();
-//			}
-
-//			int itemsAddedCount = 0;
 			for (int count = 0; count < _settings.MaxRecentItems; count++)
 			{
 				string name = _settings.LoadRecentItem("Recent" + count, LOOP_ESCAPE);
@@ -80,28 +67,5 @@ namespace NAntGui.Gui
 				_settings.DeleteRecentItem("Recent" + i);
 			}
 		}
-
-//		private void LoadFromNewRegKey()
-//		{
-//			LoadRecentItems(new GetString(_regUtil.GetString));
-//		}
-//
-//		private void LoadFromOldRegKey()
-//		{
-//			LoadRecentItems(new GetString(_regUtil.GetStringFromOldPath));
-//		}
-
-//		private void LoadRecentItems(GetString getString)
-//		{
-//			int itemsAddedCount = 0;
-//			for (int count = 0; count < _settings.MaxRecentItems; count++)
-//			{
-//				string name = _settings.LoadRecentItem("Recent" + count, LOOP_ESCAPE);
-//
-//				if (name == LOOP_ESCAPE) break;
-//
-//				_items.Add(name);
-//			}
-//		}
 	}
 }
