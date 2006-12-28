@@ -26,6 +26,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Crownwood.Magic.Common;
 using Crownwood.Magic.Menus;
+using NAntGui.Core;
 using NAntGui.Framework;
 
 namespace NAntGui.Gui.Controls.Menu
@@ -102,30 +103,10 @@ namespace NAntGui.Gui.Controls.Menu
 			_fileMenu.CreateRecentItemsMenu(items);
 		}
 
-//		public void AddRecentItem(string file)
-//		{
-//			_fileMenu.AddRecentItem(file);
-//		}
-//
-//		public void RemoveRecentItem(string file)
-//		{
-//			_fileMenu.RemoveRecentItem(file);
-//		}
-
 		public RunState RunState
 		{
 			set { _buildMenu.State = value; }
 		}
-
-//		public bool HasRecentItems
-//		{
-//			get { return _fileMenu.HasRecentItems; }
-//		}
-//
-//		public string FirstRecentItem
-//		{
-//			get { return _fileMenu.FirstRecentItem; }
-//		}
 
 		public EditState EditState
 		{

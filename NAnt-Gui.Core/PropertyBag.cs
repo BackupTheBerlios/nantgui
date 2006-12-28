@@ -871,7 +871,7 @@ namespace Flobbster.Windows.Forms
 		#endregion
 
 		private string defaultProperty;
-		private PropertySpecCollection properties;
+		private PropertyCollection properties;
 
 		/// <summary>
 		/// Initializes a new instance of the PropertyBag class.

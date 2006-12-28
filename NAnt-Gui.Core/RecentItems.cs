@@ -22,9 +22,8 @@
 #endregion
 
 using System.Collections;
-using NAntGui.Core;
 
-namespace NAntGui.Gui
+namespace NAntGui.Core
 {
 	/// <summary>
 	/// Summary description for RecentItems.
@@ -34,11 +33,6 @@ namespace NAntGui.Gui
 		private Settings _settings = Settings.Instance();
 
 		public RecentItems() : base() {}
-
-//		public string this[int index]
-//		{
-//			get { return List[index].ToString(); }
-//		}
 
 		public string FirstItem
 		{

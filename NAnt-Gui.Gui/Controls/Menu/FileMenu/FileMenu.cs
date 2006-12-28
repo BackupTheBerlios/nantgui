@@ -21,6 +21,7 @@
 
 #endregion
 
+using NAntGui.Core;
 using NAntGui.Framework;
 using Crownwood.Magic.Menus;
 
@@ -99,25 +100,5 @@ namespace NAntGui.Gui.Controls.Menu.FileMenu
 				_recent.MenuCommands.Add(recentItem);
 			}
 		}
-
-//		public void AddRecentItem(string file)
-//		{
-//			_recent.AddRecentItem(file);
-//		}
-//
-//		public void RemoveRecentItem(string file)
-//		{
-//			_recent.RemoveRecentItem(file);
-//		}
-//
-//		public bool HasRecentItems
-//		{
-//			get { return _recent.HasRecentItems; }
-//		}
-//
-//		public string FirstRecentItem
-//		{
-//			get { return _recent.FirstRecentItem; }
-//		}
 	}
 }

@@ -33,13 +33,13 @@ namespace NAntGui.Gui.Controls
 	/// </summary>
 	public class MainPropertyGrid : PropertyGrid
 	{
-		private PropertyShelf _propertyTable = new PropertyShelf();
-		private PropertyCollection _properties;
+//		private PropertyShelf _propertyTable = new PropertyShelf();
+//		private PropertyCollection _properties;
 
 		public MainPropertyGrid()
 		{
-			_propertyTable.SetValue += new PropertySpecEventHandler(this.SetValue);
-			_propertyTable.GetValue += new PropertySpecEventHandler(this.GetValue);
+//			_propertyTable.SetValue += new PropertySpecEventHandler(this.SetValue);
+//			_propertyTable.GetValue += new PropertySpecEventHandler(this.GetValue);
 
 			CommandsVisibleIfAvailable = true;
 			Dock			= DockStyle.Fill;
@@ -54,38 +54,29 @@ namespace NAntGui.Gui.Controls
 			ViewForeColor	= SystemColors.WindowText;
 		}
 
-		public void AddProperties(PropertyCollection properties)
-		{
-			_propertyTable.Properties.Clear();
-			_properties = properties;
+//		public void AddProperties(PropertyCollection properties)
+//		{
+//			SelectedObject = properties;
+//		}
 
-			foreach (BuildProperty property in _properties)
-			{
-				PropertySpec spec = new PropertySpec(property);
-				_propertyTable.Properties.Add(spec);
-			}
-
-			SelectedObject = _propertyTable;
-		}
-
-		public PropertyCollection GetProperties()
-		{
-			return _properties;
-		}
+//		public PropertyCollection GetProperties()
+//		{
+//			return _properties;
+//		}
 
 		public void Clear()
 		{
 			SelectedObject = null;
 		}
 
-		private void SetValue(object sender, PropertySpecEventArgs e)
-		{			
-			_properties[e.Property.Key].Value = e.Value.ToString();			
-		}
-
-		private void GetValue(object sender, PropertySpecEventArgs e)
-		{			
-			e.Value = _properties[e.Property.Key].Value;
-		}
+//		private void SetValue(object sender, PropertySpecEventArgs e)
+//		{			
+//			_properties[e.Property.Key].Value = e.Value.ToString();			
+//		}
+//
+//		private void GetValue(object sender, PropertySpecEventArgs e)
+//		{			
+//			e.Value = _properties[e.Property.Key].Value;
+//		}
 	}
 }

@@ -35,6 +35,7 @@ namespace NAntGui.Framework
 		private string _category;
 		private string _key;
 		private bool _readOnly;
+		private string _defaultValue;
 
 		public BuildProperty() : this("") {}
 
@@ -53,12 +54,13 @@ namespace NAntGui.Framework
 		{
 			Assert.NotNull(name, "name");
 			Assert.NotNull(value, "value");			
-			Assert.NotNull(expandedValue, "expandedValue");
 			Assert.NotNull(category, "category");
+			Assert.NotNull(expandedValue, "expandedValue");			
 
 			_name = name;
-			_value = value;			
-			_expandedValue = expandedValue;			
+			_value = value;
+			_defaultValue = expandedValue;
+			_expandedValue = expandedValue;
 			_category = category;
 			_readOnly = readOnly;
 
@@ -80,6 +82,11 @@ namespace NAntGui.Framework
 		{
 			get { return _category; }
 			set { _category = value; }
+		}
+
+		public virtual string DefaultValue
+		{
+			get { return _defaultValue; }
 		}
 
 		public virtual bool ReadOnly

@@ -152,11 +152,6 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "PropertyBag.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "RecentItems.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
