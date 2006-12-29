@@ -84,7 +84,7 @@ namespace NAntGui.NAnt
 			_depends.Clear();
 			ParseTargetsAndDependencies(doc);
 			ParseProperties(project, doc);
-			ParseNonPropertyProperties(project);
+			ParseNonPropertyProperties(doc);
 			FollowIncludes(project);
 			ParseBaseDir(project);
 			_defaultTargetName = project.DefaultTargetName;
@@ -166,7 +166,7 @@ namespace NAntGui.NAnt
 			document.Load(filename);
 			ParseTargetsAndDependencies(document);
 			ParseProperties(project, document);
-			ParseNonPropertyProperties(project);
+			ParseNonPropertyProperties(document);
 		}
 
 		private void ParseBaseDir(Project project)
@@ -183,7 +183,8 @@ namespace NAntGui.NAnt
 				NAntProperty nantProperty = new NAntProperty(element);
 				try
 				{
-					nantProperty.ExpandedValue = project.ExpandProperties(nantProperty.Value, new Location("Buildfile"));
+					nantProperty.ExpandedValue = project.ExpandProperties(nantProperty.Value, 
+						new Location("Buildfile"));
 				}
 				catch (BuildException)
 				{
@@ -198,41 +199,48 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		private void ParseNonPropertyProperties(Project project)
+		private void ParseNonPropertyProperties(XmlDocument doc)
 		{
-			ParseTstamps(project);
-			AddReadRegistrys(project);
+			ParseTstamps(doc);
+			AddReadRegistrys(doc);
 			//AddRegex(project);
 		}
 
-		private void ParseTstamps(Project project)
+		private void ParseTstamps(XmlDocument doc)
 		{
-			foreach (XmlElement lElement in project.Document.GetElementsByTagName("tstamp"))
+			foreach (XmlElement element in doc.GetElementsByTagName("tstamp"))
 			{
-				if (TypeFactory.TaskBuilders.Contains(lElement.Name))
+				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
-					TStampTask task = (TStampTask) project.CreateTask(lElement);
+					TStampTask task = new TStampTask();
+					task.Initialize(element);
+
 					if (task != null)
 					{
 						task.Execute();
 
-						NAntProperty lNAntProperty =
-							new NAntProperty(task.Property, task.Properties[task.Property], lElement.ParentNode.Attributes["name"].Value,
+						NAntProperty nantProperty = new NAntProperty(
+							task.Property, task.Properties[task.Property], 
+							element.ParentNode.Attributes["name"].Value,
 							true);
-						lNAntProperty.ExpandedValue = lNAntProperty.Value;
-						_properties.Add(lNAntProperty);
+
+						nantProperty.ExpandedValue = nantProperty.Value;
+						_properties.Add(nantProperty);
 					}
 				}
 			}
 		}
 
-		private void AddReadRegistrys(Project project)
+		private void AddReadRegistrys(XmlDocument doc)
 		{
-			foreach (XmlElement element in project.Document.GetElementsByTagName("readregistry"))
+			foreach (XmlElement element in doc.GetElementsByTagName("readregistry"))
 			{
 				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
-					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
+					//ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
+					ReadRegistryTask task = new ReadRegistryTask();
+					task.Initialize(element);
+
 					if (task != null && task.PropertyName != null)
 					{
 						task.Execute();
