@@ -63,11 +63,11 @@ namespace NAntGui.Gui
 			_logger = logger;
 
 			_scriptEditor = new ScriptEditor(mediator);
-			_scriptEditor.SetHighlighting("XML");
 
 			_file = new SourceFile();
 			_fileType = FileType.New;
-
+			
+			Sethighlighting();
 			Initialize();
 
 			_buildScript = new BlankBuildScript();
@@ -87,14 +87,20 @@ namespace NAntGui.Gui
 			_file = new SourceFile(filename, _scriptEditor.Text);
 			_fileType = FileType.Existing;
 
-			// this is hacked in, should be cleaned up
-			if (_file.Extension == ".inc") _scriptEditor.SetHighlighting("XML");
-
+			Sethighlighting();
 			Initialize();
 
 			_buildScript = ScriptParserFactory.Create(_file);
 			_buildRunner = BuildRunnerFactory.Create(_file, logger, _mediator.Options);
 			_buildRunner.Properties = _buildScript.Properties;
+		}
+
+		private void Sethighlighting()
+		{
+			if (_fileType == FileType.New || _file.Extension == ".inc")
+			{
+				 _scriptEditor.SetHighlighting("XML");
+			}
 		}
 
 		public void ParseBuildScript()
@@ -106,8 +112,10 @@ namespace NAntGui.Gui
 		{
 			_scriptEditor.LoadFile(_file.FullName);
 			_scriptTab.Title = _file.Name;
-
+			
+			Sethighlighting();
 			ParseBuildFile();
+			
 			_mediator.UpdateDisplay();
 		}
 
