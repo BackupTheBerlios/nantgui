@@ -121,29 +121,63 @@ namespace NAntGui.NAnt
 			}
 		}
 
+//		private void LoadNonProjectProperty(BuildProperty property)
+//		{
+//			string expandedValue = property.DefaultExpandedValue;
+//
+//			try
+//			{
+//				expandedValue = _project.ExpandProperties(property.Value,
+//					new Location(_sourceFile.FullName));
+//			}
+//			catch (BuildException)
+//			{
+//				/* ignore */
+//			}
+//
+//			// If the expanded value doesn't have any "unexpanded" values
+//			// add it to the project.
+//			Regex regex = new Regex(@"\$\{[^\}]+\}");
+//			if (!regex.IsMatch(expandedValue))
+//			{
+//				if (!property.ReadOnly && 
+//					property.ExpandedValue != property.DefaultExpandedValue)
+//				{
+//					_project.Properties.AddReadOnly(property.Name, expandedValue);
+//				}
+//			}
+//		}
+
 		private void LoadNonProjectProperty(BuildProperty property)
 		{
-			string expandedValue = property.Value;
+			if (!property.ReadOnly && 
+				property.ExpandedValue != property.DefaultExpandedValue)
+			{
+				if (IsNotExpanded(property.ExpandedValue))
+				{
+					TryChangingExpandedValue(property);
+				}
 
+				_project.Properties.AddReadOnly(property.Name, property.ExpandedValue);
+			}
+		}
+
+		private bool IsNotExpanded(string value)
+		{
+			Regex unexpandedValue = new Regex(@"\$\{[^\}]+\}");
+			return unexpandedValue.IsMatch(value);
+		}
+
+		private void TryChangingExpandedValue(BuildProperty property)
+		{
 			try
 			{
-				expandedValue = _project.ExpandProperties(property.Value,
+				property.ExpandedValue = _project.ExpandProperties(property.ExpandedValue,
 					new Location(_sourceFile.FullName));
 			}
 			catch (BuildException)
 			{
 				/* ignore */
-			}
-
-			// If the expanded value doesn't have any "unexpanded" values
-			// add it to the project.
-			Regex regex = new Regex(@"\$\{[^\}]+\}");
-			if (!regex.IsMatch(expandedValue))
-			{
-				if (!property.ReadOnly && property.Value != property.DefaultValue)
-				{
-					_project.Properties.AddReadOnly(property.Name, expandedValue);
-				}
 			}
 		}
 

@@ -1,4 +1,3 @@
-- Changing property values is broken AGAIN!!!
 - If you change a property's value then switch tabs, it retains the changed value.  However,
   if you run the file, then switch tabs, it will redefault when you switch back.
 - Add filesystem watcher back in
@@ -10,6 +9,7 @@
   docks with 0 height
 
 1.5.0:
+FIXED:  Changing property values is broken AGAIN!!!
 FIXED:  Parser doesn't follow includes
 FIXED:  Include files aren't xml syntax highlighted.  
 FIXED:  Include files throw error on load because the project can't parse the file

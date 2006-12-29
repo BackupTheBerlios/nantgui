@@ -94,7 +94,7 @@ namespace NAntGui.Gui
 
 			_buildScript = ScriptParserFactory.Create(_file);
 			_buildRunner = BuildRunnerFactory.Create(_file, logger, _mediator.Options);
-			//_buildRunner.Properties = _buildScript.Properties;
+			_buildRunner.Properties = _buildScript.Properties;
 		}
 
 		public void ParseBuildScript()
@@ -131,9 +131,12 @@ namespace NAntGui.Gui
 				_scriptEditor.SaveFile(_file.FullName);
 				_file.Contents = _scriptEditor.Text;
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
-				ParseBuildFile();				
 
-				if (update) _mediator.UpdateDisplay();
+				if (update)
+				{
+					ParseBuildFile();				
+					_mediator.UpdateDisplay();
+				}
 			}
 			else if (_fileType == FileType.New)
 			{
@@ -171,19 +174,10 @@ namespace NAntGui.Gui
 		{
 			if (_buildRunner != null)
 			{
-				_buildRunner.Properties = _buildScript.Properties;
+//				_buildRunner.Properties = _buildScript.Properties;
 				_buildRunner.Run();
 			}
 		}
-
-//		public void SetProperties(PropertyCollection properties)
-//		{
-//			Assert.NotNull(properties, "properties");
-//			if (_buildRunner != null)
-//			{
-//				_buildRunner.Properties = properties;	
-//			}
-//		}
 
 		public void SetTargets(TargetCollection targets)
 		{

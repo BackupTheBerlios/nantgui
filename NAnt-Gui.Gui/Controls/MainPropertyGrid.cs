@@ -45,7 +45,7 @@ namespace NAntGui.Gui.Controls
 			TabIndex		= 4;
 			Text			= "Build Properties";
 			ViewBackColor	= SystemColors.Window;
-			ViewForeColor	= SystemColors.WindowText;
+			ViewForeColor	= SystemColors.WindowText;			
 		}
 
 		public void AddProperties(PropertyCollection properties)

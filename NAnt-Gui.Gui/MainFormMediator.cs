@@ -102,7 +102,6 @@ namespace NAntGui.Gui
 			_dockManager.ShowOutput();
 
 			_selectedTab.Save(false);
-//			_selectedTab.SetProperties(_propertyGrid.GetProperties());
 			_selectedTab.SetTargets(_targetsTree.GetTargets());			
 			_selectedTab.Run();
 		}

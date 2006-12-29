@@ -1,4 +1,4 @@
-<project default="main">	
+<project name="Include Test" default="main" >	
 	<property name="wak" value="10" unless="${property::exists('wak')}"/>
 	
 	<include buildfile="IncludeTest.inc" />

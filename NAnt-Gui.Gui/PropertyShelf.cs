@@ -62,31 +62,31 @@ namespace NAntGui.Gui
 
 			public override bool CanResetValue(object component)
 			{
-				return _item.DefaultValue == null ?
+				return _item.DefaultExpandedValue == null ?
 					false :
-					_item.Value != _item.DefaultValue;
+					_item.ExpandedValue != _item.DefaultExpandedValue;
 			}
 
 			public override object GetValue(object component)
 			{
-				return _item.Value;
+				return _item.ExpandedValue;
 			}
 
 			public override void ResetValue(object component)
 			{
-				SetValue(component, _item.DefaultValue);
+				SetValue(component, _item.DefaultExpandedValue);
 			}
 
 			public override void SetValue(object component, object value)
 			{
-				_item.Value = value.ToString();
+				_item.ExpandedValue = value.ToString();
 			}
 
 			public override bool ShouldSerializeValue(object component)
 			{
-				return _item.DefaultValue == null ?
+				return _item.DefaultExpandedValue == null ?
 					false :
-					_item.Value != _item.DefaultValue;
+					_item.ExpandedValue != _item.DefaultExpandedValue;
 			}
 		}
 

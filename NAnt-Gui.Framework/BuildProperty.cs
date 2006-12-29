@@ -35,7 +35,7 @@ namespace NAntGui.Framework
 		private string _category;
 		private string _key;
 		private bool _readOnly;
-		private string _defaultValue;
+		private string _defaultExpandedValue;
 
 		public BuildProperty() : this("") {}
 
@@ -47,7 +47,7 @@ namespace NAntGui.Framework
 			this(name, value, category, false) {}
 
 		public BuildProperty(string name, string value, string category, bool readOnly) : 
-			this(name, value, category, readOnly, "") {}
+			this(name, value, category, readOnly, value) {}
 
 		public BuildProperty(string name, string value, string category, 
 			bool readOnly, string expandedValue)
@@ -57,14 +57,13 @@ namespace NAntGui.Framework
 			Assert.NotNull(category, "category");
 			Assert.NotNull(expandedValue, "expandedValue");			
 
-			_name = name;
-			_value = value;
-			_defaultValue = value;
-			_expandedValue = expandedValue;
-			_category = category;
-			_readOnly = readOnly;
-
-			_key = string.Format(KEY, category, name);
+			_name					= name;
+			_value					= value;			
+			_category				= category;
+			_readOnly				= readOnly;
+			_key					= string.Format(KEY, category, name);
+			_defaultExpandedValue	= expandedValue;
+			_expandedValue			= expandedValue;
 		}
 
 		public virtual string Name
@@ -84,9 +83,9 @@ namespace NAntGui.Framework
 			set { _category = value; }
 		}
 
-		public virtual string DefaultValue
+		public virtual string DefaultExpandedValue
 		{
-			get { return _defaultValue; }
+			get { return _defaultExpandedValue; }
 		}
 
 		public virtual bool ReadOnly
@@ -111,7 +110,7 @@ namespace NAntGui.Framework
 		public virtual string ExpandedValue
 		{
 			get { return _expandedValue; }
-			set { _expandedValue = _defaultValue = value; }
+			set { _expandedValue = value; }
 		}
 
 		public override string ToString()
