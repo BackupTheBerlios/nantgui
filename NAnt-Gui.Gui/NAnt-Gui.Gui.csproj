@@ -297,29 +297,14 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\Menu\MainMenuControl.resx"
-                    DependentUpon = "MainMenuControl.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "Controls\Menu\BuildMenu\BuildMenu.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Controls\Menu\BuildMenu\BuildMenu.resx"
-                    DependentUpon = "BuildMenu.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "Controls\Menu\EditMenu\EditMenu.cs"
                     SubType = "Component"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Controls\Menu\EditMenu\EditMenu.resx"
-                    DependentUpon = "EditMenu.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "Controls\Menu\FileMenu\CloseMenuCommand.cs"
