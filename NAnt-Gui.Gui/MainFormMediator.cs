@@ -439,6 +439,7 @@ namespace NAntGui.Gui
 
 		public void RunApplication()
 		{
+			Application.EnableVisualStyles();
 			Application.Run(_form);				
 		}
 

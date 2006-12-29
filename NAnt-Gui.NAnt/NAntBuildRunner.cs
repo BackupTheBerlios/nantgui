@@ -45,6 +45,7 @@ namespace NAntGui.NAnt
 			_sourceFile = sourceFile;
 		}
 
+/*
 		private static string GetErrorMessage(Exception error)
 		{
 			string message = "";
@@ -64,6 +65,7 @@ namespace NAntGui.NAnt
 
 			return message;
 		}
+*/
 
 		protected override void DoRun()
 		{
@@ -79,6 +81,11 @@ namespace NAntGui.NAnt
 				AddTargets();
 
 				_project.Run();
+			}
+			catch (ArgumentException error)
+			{
+				_logger.LogMessage(error.Message);
+				FinishBuild();
 			}
 			catch (BuildException error)
 			{
@@ -120,33 +127,6 @@ namespace NAntGui.NAnt
 				}
 			}
 		}
-
-//		private void LoadNonProjectProperty(BuildProperty property)
-//		{
-//			string expandedValue = property.DefaultExpandedValue;
-//
-//			try
-//			{
-//				expandedValue = _project.ExpandProperties(property.Value,
-//					new Location(_sourceFile.FullName));
-//			}
-//			catch (BuildException)
-//			{
-//				/* ignore */
-//			}
-//
-//			// If the expanded value doesn't have any "unexpanded" values
-//			// add it to the project.
-//			Regex regex = new Regex(@"\$\{[^\}]+\}");
-//			if (!regex.IsMatch(expandedValue))
-//			{
-//				if (!property.ReadOnly && 
-//					property.ExpandedValue != property.DefaultExpandedValue)
-//				{
-//					_project.Properties.AddReadOnly(property.Name, expandedValue);
-//				}
-//			}
-//		}
 
 		private void LoadNonProjectProperty(BuildProperty property)
 		{
