@@ -22,7 +22,6 @@
 #endregion
 
 using NAntGui.Framework;
-using Microsoft.Win32;
 
 namespace NAntGui.Core
 {

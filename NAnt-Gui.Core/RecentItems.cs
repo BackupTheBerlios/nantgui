@@ -32,8 +32,6 @@ namespace NAntGui.Core
 	{
 		private Settings _settings = Settings.Instance();
 
-		public RecentItems() : base() {}
-
 		public string FirstItem
 		{
 			get { return List[0].ToString(); }

@@ -23,7 +23,6 @@
 
 using System.Drawing;
 using System.Windows.Forms;
-using NAntGui.Core;
 using NAntGui.Framework;
 
 namespace NAntGui.Gui.Controls
@@ -31,7 +30,7 @@ namespace NAntGui.Gui.Controls
 	/// <summary>
 	/// Summary description for ToolBarControl.
 	/// </summary>
-	public class ToolBarControl : System.Windows.Forms.ToolBar
+	public class ToolBarControl : ToolBar
 	{
 		private MainFormMediator _mediator;
 

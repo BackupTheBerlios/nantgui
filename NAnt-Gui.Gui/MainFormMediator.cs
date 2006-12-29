@@ -91,9 +91,6 @@ namespace NAntGui.Gui
 
 		public void NewClicked()
 		{
-//			_mainMenu.Disable();
-//			_toolBar.Disable();
-
 			AddBlankTab();
 		}
 
@@ -310,6 +307,10 @@ namespace NAntGui.Gui
 
 		private void AddBlankTab()
 		{
+			// disable the reload and run 
+			_mainMenu.Disable();
+			_toolBar.Disable();
+			// could move this into ScriptTabs (make .AddBlankTab method)
 			_sourceTabs.AddTab(new ScriptTabPage(_outputBox, this));			
 		}
 
@@ -345,7 +346,7 @@ namespace NAntGui.Gui
 			return false;
 		}
 
-		private static void ParseBuildFile(ScriptTabPage page)
+		private void ParseBuildFile(ScriptTabPage page)
 		{
 			try
 			{
