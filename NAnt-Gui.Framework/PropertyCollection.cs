@@ -42,6 +42,11 @@ namespace NAntGui.Framework
 			_properties.Add(prop.Key, prop);
 		}
 
+		public void Clear()
+		{
+			_properties.Clear();
+		}
+
 		public IEnumerator GetEnumerator()
 		{
 			return _properties.Values.GetEnumerator();

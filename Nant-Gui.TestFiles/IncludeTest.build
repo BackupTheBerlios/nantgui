@@ -1,9 +1,11 @@
 <project default="main">	
 	<property name="wak" value="10" unless="${property::exists('wak')}"/>
 	
+	<include buildfile="IncludeTest.inc" />
+	
 	<target name="main" description="main">
 		<property name="wak2" value="20" />
 		<echo message="${wak}" />
-		<echo message="${wak2}" />
-	</target>
+		<echo message="${wak2}" />		
+	</target>	
 </project>

@@ -101,12 +101,10 @@ namespace NAntGui.Gui
 			_outputBox.Clear();
 			_dockManager.ShowOutput();
 
-			ScriptTabPage tab = _selectedTab;
-
-			tab.Save(false);
-//			tab.SetProperties(_propertyGrid.GetProperties());
-			tab.SetTargets(_targetsTree.GetTargets());			
-			tab.Run();
+			_selectedTab.Save(false);
+//			_selectedTab.SetProperties(_propertyGrid.GetProperties());
+			_selectedTab.SetTargets(_targetsTree.GetTargets());			
+			_selectedTab.Run();
 		}
 
 		private void Tab_BuildFinished()
@@ -355,7 +353,12 @@ namespace NAntGui.Gui
 			}
 			catch (BuildFileLoadException error)
 			{
-				MessageBox.Show(error.Message, "Error Loading Build File",
+				const string msgFrmt = "{0}: {1}{2}";
+				string msg = string.Format(error.Message, 
+					System.Environment.NewLine, 
+					error.InnerException.Message);
+
+				MessageBox.Show(msg, "Error Loading Build File",
 				                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}

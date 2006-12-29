@@ -57,7 +57,7 @@ namespace NAntGui.Gui
 
 			public override Type PropertyType
 			{
-				get { return typeof(string); }
+				get { return _item.Type; }
 			}
 
 			public override bool CanResetValue(object component)

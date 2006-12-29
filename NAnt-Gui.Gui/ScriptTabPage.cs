@@ -94,7 +94,7 @@ namespace NAntGui.Gui
 
 			_buildScript = ScriptParserFactory.Create(_file);
 			_buildRunner = BuildRunnerFactory.Create(_file, logger, _mediator.Options);
-			_buildRunner.Properties = _buildScript.Properties;
+			//_buildRunner.Properties = _buildScript.Properties;
 		}
 
 		public void ParseBuildScript()
@@ -117,8 +117,7 @@ namespace NAntGui.Gui
 
 			_file					= new SourceFile(fileName, _scriptEditor.Text);
 			_buildScript			= ScriptParserFactory.Create(_file);
-			_buildRunner			= BuildRunnerFactory.Create(_file, _logger, _mediator.Options);
-			_buildRunner.Properties = _buildScript.Properties;
+			_buildRunner			= BuildRunnerFactory.Create(_file, _logger, _mediator.Options);			
 			_fileType				= FileType.Existing;
 			_scriptTab.Title		= _file.Name;
 
@@ -144,8 +143,6 @@ namespace NAntGui.Gui
 				}
 			}
 		}
-
-
 
 		public void LostFocus(object sender, EventArgs e)
 		{
@@ -174,6 +171,7 @@ namespace NAntGui.Gui
 		{
 			if (_buildRunner != null)
 			{
+				_buildRunner.Properties = _buildScript.Properties;
 				_buildRunner.Run();
 			}
 		}
@@ -288,26 +286,35 @@ namespace NAntGui.Gui
 				_scriptTab.Title = Utils.RemoveAsterisk(_scriptTab.Title);
 			}
 
+			// Commented because it's way too slow
 			// Can't parse a file that doesn't exist on the harddrive
-			if (_fileType == FileType.Existing)
-			{
-				_mediator.UpdateDisplay();
-			}
+//			if (_fileType == FileType.Existing)
+//			{
+//				ParseBuildFile();
+//				_mediator.UpdateDisplay();
+//			}
 		}
 
 		private void ParseBuildFile()
 		{
 			// Might want a more specific exception type to be caught here.
-			// For example, a NullReferenceException on _buildRunner 
+			// For example, a NullReferenceException on _buildScript 
 			// shouldn't be ignored.
 			try
 			{
 				_buildScript.Parse();
 			}
+#if DEBUG
+			catch(Exception error)
+			{
+				MessageBox.Show(error.Message);
+			}
+#else
 			catch
 			{
 				/* ignore */
 			}
+#endif
 		}
 
 		private void GotFocus(object sender, EventArgs e)

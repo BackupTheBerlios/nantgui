@@ -45,6 +45,7 @@ namespace NAntGui.NAnt
 		
 		private string _name;
 		private FileInfo _file;
+		private string _baseDir;
 		private string _description = "";
 		private string _defaultTargetName;
 
@@ -65,6 +66,7 @@ namespace NAntGui.NAnt
 			
 			_targets.Clear();
 			_depends.Clear();
+			_properties.Clear();
 
 			ParseName(doc);
 			ParseBaseDir(doc);
@@ -88,22 +90,23 @@ namespace NAntGui.NAnt
 			}
 			catch (Exception error)
 			{
-				if (error.InnerException == null)
-				{
-					throw new BuildFileLoadException(error.Message);
-				}
-				else
-				{
-					throw new BuildFileLoadException(error.InnerException.Message);
-				}
+				throw new BuildFileLoadException("Error parsing NAnt project", error);
 			}
 		}
 
 		private XmlDocument CreateXmlDoc()
 		{
 			XmlDocument doc = new XmlDocument();
-			doc.Load(_file.OpenRead());
 
+			try
+			{
+				doc.Load(_file.FullName);
+			}
+			catch(XmlException error)
+			{
+				throw new BuildFileLoadException("Error parsing NAnt file", error);
+			}
+				
 			return doc;
 		}
 
@@ -175,15 +178,23 @@ namespace NAntGui.NAnt
 		private void ParseIncludeFile(Project project, string filename)
 		{
 			XmlDocument document = new XmlDocument();
-			document.Load(filename);
-			ParseTargetsAndDependencies(document);
-			ParseProperties(project, document);
-			ParseNonPropertyProperties(document);
+			string fullName = Path.Combine(_baseDir, filename);
+
+			try
+			{
+				document.Load(fullName);
+			}
+			finally
+			{
+				ParseTargetsAndDependencies(document);
+				ParseProperties(project, document);
+				ParseNonPropertyProperties(document);
+			}
 		}
 
 		private void ParseBaseDir(XmlDocument doc)
 		{
-			string baseDir = _file.DirectoryName;
+			_baseDir = _file.DirectoryName;
 
 			// there should only be one, but in order for the parser to 
 			// be fault tolerent, it must be a little lazy
@@ -191,12 +202,12 @@ namespace NAntGui.NAnt
 			{
 				if (element.HasAttribute("basedir"))
 				{
-					baseDir = element.GetAttribute("basedir");
+					_baseDir = element.GetAttribute("basedir");
 					break;
 				}
 			}
 
-			NAntProperty prop = new NAntProperty("BaseDir", baseDir, "Project", false);
+			NAntProperty prop = new NAntProperty("BaseDir", _baseDir, "Project", false);
 
 			//project.Properties.AddReadOnly(prop.Name, project.BaseDirectory);
 			_properties.Add(prop);

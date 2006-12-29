@@ -1,6 +1,9 @@
+- Parser doesn't follow includes
+- Changing property values is broken AGAIN!!!
+- If you change a property's value then switch tabs, it retains the changed value.  However,
+  if you run the file, then switch tabs, it will redefault when you switch back.
 - Add filesystem watcher back in
 - Properties don't update as you type
-- Include files aren't xml syntax highlighted.  Throw error on load because the project can't parse the file
 - Got some kind of weird bug when I was editing a file.  Had saved it, but it complained, when
   I closed the file that it wasn't saved
 - If you sticky the output box it loses it's formatting/highlighting
@@ -8,6 +11,8 @@
   docks with 0 height
 
 1.5.0:
+FIXED:  Include files aren't xml syntax highlighted.  
+FIXED:  Include files throw error on load because the project can't parse the file
 FIXED:  If you run an unsaved new file and cancel the file save dialog, the run should be aborted
 FIXED:  Reload shouldn't be enabled on a new file
 FIXED:	If you unsticky the output box it loses it's formatting/highlighting

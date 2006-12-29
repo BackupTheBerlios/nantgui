@@ -29,7 +29,6 @@ using NAntGui.Framework;
 using TargetCollection = NAntGui.Framework.TargetCollection;
 using CmdOptions = NAntGui.Framework.CommandLineOptions;
 
-
 namespace NAntGui.NAnt
 {
 	public class NAntBuildRunner : BuildRunnerBase
@@ -111,7 +110,7 @@ namespace NAntGui.NAnt
 		{
 			foreach (BuildProperty property in _properties)
 			{
-				if (property.Category == "Project")
+				if (property.Category == "Project" && property.Name == "BaseDir")
 				{
 					_project.BaseDirectory = property.Value;
 				}
@@ -119,14 +118,6 @@ namespace NAntGui.NAnt
 				{
 					LoadNonProjectProperty(property);
 				}
-			}
-		}
-
-		private void AddTargets()
-		{
-			foreach (BuildTarget target in _targets)
-			{
-				_project.BuildTargets.Add(target.Name);
 			}
 		}
 
@@ -146,15 +137,21 @@ namespace NAntGui.NAnt
 
 			// If the expanded value doesn't have any "unexpanded" values
 			// add it to the project.
-			Regex regex = new Regex(@"\$\{.+\}");
+			Regex regex = new Regex(@"\$\{[^\}]+\}");
 			if (!regex.IsMatch(expandedValue))
 			{
-				// TODO: should change the following to add the property only 
-				// if it changed.  This would fix a lot of weird behaviour.
-				if (!property.ReadOnly)
+				if (!property.ReadOnly && property.Value != property.DefaultValue)
 				{
 					_project.Properties.AddReadOnly(property.Name, expandedValue);
 				}
+			}
+		}
+
+		private void AddTargets()
+		{
+			foreach (BuildTarget target in _targets)
+			{
+				_project.BuildTargets.Add(target.Name);
 			}
 		}
 

@@ -2,8 +2,15 @@
 	<property name="wak" value="10" unless="${property::exists('wak')}"/>
 	
 	<target name="main" description="main">
-		<property name="wak2" value="20" />
+		<property name="wak2" value="${wak}" />
+		<!--
 		<echo message="${wak}" />
 		<echo message="${wak2}" />
+		
+		<property name="wak3" value="20" unless="${property::exists('wak3')}"/>
+		<echo message="${wak3}" />
+		
+		<property name="colin" value="true" />
+		-->
 	</target>
 </project>
