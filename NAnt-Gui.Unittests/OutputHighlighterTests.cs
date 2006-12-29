@@ -21,7 +21,7 @@
 
 #endregion
 
-using NAntGui.Gui;
+using NAntGui.Core;
 using NUnit.Framework;
 
 namespace NAntGui.Unittests

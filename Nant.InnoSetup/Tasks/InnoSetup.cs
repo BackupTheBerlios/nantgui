@@ -174,7 +174,7 @@ namespace NAnt.Contrib.InnoSetup.Tasks
 		protected override void ExecuteTask()
 		{
 			Arguments.Add(new Argument(Script));
-//
+			
 //      TextWriter lWriter = new TextWriter();
 //      this.OutputWriter = lWriter;
 //      this.ErrorWriter = lWriter;
