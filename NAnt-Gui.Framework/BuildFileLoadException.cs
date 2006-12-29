@@ -5,8 +5,8 @@ namespace NAntGui.Framework
 {
 	public class BuildFileLoadException : ApplicationException
 	{
-		private int _line;
-		private int _column;
+		private int _line = 1;
+		private int _column = 1;
 
 		public BuildFileLoadException(string s) : base(s) {}
 
@@ -22,5 +22,15 @@ namespace NAntGui.Framework
 
 		public BuildFileLoadException(string message, XmlException error) : 
 			this(message, error.LineNumber, error.LinePosition, error)  {}
+
+		public int LineNumber
+		{
+			get { return _line; }
+		}
+
+		public int ColumnNumber 
+		{
+			get { return _column; }
+		}
 	}
 }

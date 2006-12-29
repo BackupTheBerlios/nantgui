@@ -354,12 +354,14 @@ namespace NAntGui.Gui
 			catch (BuildFileLoadException error)
 			{
 				const string msgFrmt = "{0}: {1}{2}";
-				string msg = string.Format(error.Message, 
+				string msg = string.Format(msgFrmt, error.Message, 
 					System.Environment.NewLine, 
 					error.InnerException.Message);
 
 				MessageBox.Show(msg, "Error Loading Build File",
 				                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+				SetCursor(error.LineNumber, error.ColumnNumber);
 			}
 		}
 
@@ -457,9 +459,9 @@ namespace NAntGui.Gui
 			UpdateDisplay();
 		}
 
-		public void SetCursor(int x, int y)
+		public void SetCursor(int lineNumber, int columnNumber)
 		{
-			_selectedTab.SetCursor(x - 1, y - 1);
+			_selectedTab.SetCursor(lineNumber - 1, columnNumber - 1);
 		}
 
 		public CommandLineOptions Options
