@@ -137,7 +137,7 @@ namespace NAntGui.Gui
 
 				_settings.SaveScriptInitialDir = _selectedTab.FilePath;
 	
-				_recentItems.Add(file);
+				_recentItems.Push(file);
 				_mainMenu.CreateRecentItemsMenu(_recentItems);
 
 				_mainMenu.Enable();
@@ -298,7 +298,7 @@ namespace NAntGui.Gui
 		{
 			if (_options.BuildFile == null || !LoadBuildFile(_options.BuildFile))
 			{
-				if (!_recentItems.HasItems || !LoadBuildFile(_recentItems.FirstItem))
+				if (!_recentItems.HasItems || !LoadBuildFile(_recentItems.Peek()))
 				{
 					AddBlankTab();
 				}
@@ -327,7 +327,7 @@ namespace NAntGui.Gui
 					_settings.OpenScriptDir = page.FilePath;
 
 					_sourceTabs.AddTab(page);
-					_recentItems.Add(_selectedTab.FileFullName);
+					_recentItems.Push(_selectedTab.FileFullName);
 					_mainMenu.CreateRecentItemsMenu(_recentItems);
 
 					ParseBuildFile(page);

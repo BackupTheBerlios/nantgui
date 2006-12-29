@@ -48,7 +48,7 @@ namespace NAntGui.Core
 
 				if (name == LOOP_ESCAPE) break;
 
-				_items.Add(name);
+				_items.Append(name);
 			}
 		}
 

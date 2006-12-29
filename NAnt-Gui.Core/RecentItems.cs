@@ -32,9 +32,9 @@ namespace NAntGui.Core
 	{
 		private Settings _settings = Settings.Instance();
 
-		public string FirstItem
+		public string Peek()
 		{
-			get { return List[0].ToString(); }
+			return List[0].ToString();
 		}
 
 		public bool HasItems
@@ -42,7 +42,7 @@ namespace NAntGui.Core
 			get { return Count > 0; }
 		}
 
-		public void Add(string item)
+		public void Push(string item)
 		{
 			if (List.Contains(item))
 			{
@@ -53,7 +53,36 @@ namespace NAntGui.Core
 				AddItem(item);
 			}
 		}
-
+		
+		/// <summary>
+		/// Only called from RecentItemsStore
+		/// </summary>
+		/// <param name="item"></param>
+		public void Append(string item)
+		{
+			List.Add(item);
+			
+			// shouldn't need the following, list being read from the 
+			// registry shouldn't contain duplicates and should be more
+			// than the max number of recent items
+//			if (List.Contains(item))
+//			{
+//				ReplaceItem(item);
+//			}
+//			else
+//			{
+//				AddItem(item);
+//			}
+		}
+		
+		public void Remove(string item)
+		{
+			if (List.Contains(item))
+			{
+				List.Remove(item);
+			}
+		}
+		
 		private void AddItem(string item)
 		{
 			if (TooManyItems)
@@ -62,14 +91,6 @@ namespace NAntGui.Core
 			}
 
 			List.Insert(0, item);
-		}
-
-		public void Remove(string item)
-		{
-			if (List.Contains(item))
-			{
-				List.Remove(item);
-			}
 		}
 
 		private bool TooManyItems
