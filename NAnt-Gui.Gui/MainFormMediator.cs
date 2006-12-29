@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
@@ -66,6 +67,9 @@ namespace NAntGui.Gui
 			_sourceTabs		= new ScriptTabs(this);
 			_outputBox		= new OutputBox(this);
 			_targetsTree	= new TargetsTreeView(this);
+			
+			_mainMenu.RunClick += new EventHandler(RunClicked);
+			_mainMenu.StopClick += new EventHandler(StopClicked);
 
 			InitMainForm();
 
@@ -94,7 +98,7 @@ namespace NAntGui.Gui
 			AddBlankTab();
 		}
 
-		public void RunClicked()
+		public void RunClicked(object sender, EventArgs e)
 		{
 			_toolBar.State = RunState.Running;
 			_mainMenu.RunState = RunState.Running;
@@ -111,7 +115,7 @@ namespace NAntGui.Gui
 			SetStateStopped();
 		}
 
-		public void StopClicked()
+		public void StopClicked(object sender, EventArgs e)
 		{
 			_selectedTab.Stop();
 			SetStateStopped();
@@ -354,7 +358,7 @@ namespace NAntGui.Gui
 			{
 				const string msgFrmt = "{0}: {1}{2}";
 				string msg = string.Format(msgFrmt, error.Message, 
-					System.Environment.NewLine, 
+					Environment.NewLine, 
 					error.InnerException.Message);
 
 				MessageBox.Show(msg, "Error Loading Build File",
@@ -366,8 +370,6 @@ namespace NAntGui.Gui
 
 		public void UpdateDisplay()
 		{
-//			_outputBox.Clear();			
-
 			_form.Text = string.Format("NAnt-Gui - {0}", _selectedTab.Title);
 
 			IBuildScript buildScript = _selectedTab.BuildScript;
@@ -439,7 +441,7 @@ namespace NAntGui.Gui
 
 		public void RunApplication()
 		{
-			Application.EnableVisualStyles();
+//			Application.EnableVisualStyles();
 			Application.Run(_form);				
 		}
 

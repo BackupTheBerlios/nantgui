@@ -27,7 +27,6 @@ using System.Windows.Forms;
 using Crownwood.Magic.Menus;
 using NAntGui.Core;
 using NAntGui.Framework;
-using NAntGui.Gui.Controls.Menu.BuildMenu;
 
 namespace NAntGui.Gui.Controls
 {
@@ -75,7 +74,7 @@ namespace NAntGui.Gui.Controls
 
 		private void Run_Click(object sender, EventArgs e)
 		{
-			_mediator.RunClicked();
+			_mediator.RunClicked(sender, e);
 		}
 
 		private void BuildTreeView_AfterCheck(object sender, TreeViewEventArgs e)

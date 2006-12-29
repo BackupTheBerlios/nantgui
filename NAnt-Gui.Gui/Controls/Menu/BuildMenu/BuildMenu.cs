@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using NAntGui.Core;
 using NAntGui.Framework;
 using Crownwood.Magic.Menus;
 using System.Windows.Forms;
@@ -45,12 +44,12 @@ namespace NAntGui.Gui.Controls.Menu.BuildMenu
 			_mediator = mediator;
 
 			_runMenu = new MenuCommand("&Run", _utils.ImageList, 7, 
-				Shortcut.F5, new EventHandler(Run_Click));
+				Shortcut.F5);
 
 			_runMenu.Description = "Builds the current build file";
 
 			_stopMenu = new MenuCommand("&Cancel Build", _utils.ImageList, 3,
-				Shortcut.CtrlDel, new EventHandler(Stop_Click));
+				Shortcut.CtrlDel);
 
 			_stopMenu.Description = "Aborts the current build";
 
@@ -61,15 +60,17 @@ namespace NAntGui.Gui.Controls.Menu.BuildMenu
 			                      	});
 			Text = "&Build";
 		}
-
-		private void Run_Click(object sender, EventArgs e)
+		
+		public event EventHandler RunClick
 		{
-			_mediator.RunClicked();
-		}
-
-		private void Stop_Click(object sender, EventArgs e)
+			add { _runMenu.Click += value; }
+			remove { _runMenu.Click -= value; }
+		}		
+		
+		public event EventHandler StopClick
 		{
-			_mediator.StopClicked();
+			add { _stopMenu.Click += value; }
+			remove { _stopMenu.Click -= value; }
 		}
 
 		public void Enable()

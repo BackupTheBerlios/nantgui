@@ -97,7 +97,8 @@ namespace NAntGui.Gui
 
 		private void Sethighlighting()
 		{
-			if (_fileType == FileType.New || _file.Extension == ".inc")
+			const string INC_FILE_EXT = ".inc";
+			if (_fileType == FileType.New || _file.Extension == INC_FILE_EXT)
 			{
 				 _scriptEditor.SetHighlighting("XML");
 			}

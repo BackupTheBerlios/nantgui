@@ -119,7 +119,7 @@ namespace NAntGui.Gui.Controls
 			}
 			else if (e.Button == _runButton)
 			{
-				_mediator.RunClicked();
+				_mediator.RunClicked(sender, e);
 			}
 			else if (e.Button == _openButton)
 			{
@@ -135,7 +135,7 @@ namespace NAntGui.Gui.Controls
 			}
 			else if (e.Button == _stopButton)
 			{
-				_mediator.StopClicked();
+				_mediator.StopClicked(sender, e);
 			}
 		}
 

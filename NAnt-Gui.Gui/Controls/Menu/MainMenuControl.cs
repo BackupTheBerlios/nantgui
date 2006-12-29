@@ -65,7 +65,7 @@ namespace NAntGui.Gui.Controls.Menu
 			Cursor = Cursors.Arrow;
 			Direction = Direction.Horizontal;
 			Dock = DockStyle.Top;
-			Font = new Font("Tahoma", 11F, FontStyle.Regular, GraphicsUnit.World, ((Byte) (0)));
+			Font = new Font("Tahoma", 11F, FontStyle.Regular, GraphicsUnit.World, 0);
 			HighlightTextColor = SystemColors.MenuText;
 			Location = new Point(0, 0);
 			MenuCommands.AddRange(new MenuCommand[]
@@ -101,6 +101,18 @@ namespace NAntGui.Gui.Controls.Menu
 		public void CreateRecentItemsMenu(RecentItems items)
 		{
 			_fileMenu.CreateRecentItemsMenu(items);
+		}
+		
+		public event EventHandler RunClick
+		{
+			add { _buildMenu.RunClick += value; }
+			remove { _buildMenu.RunClick -= value; }
+		}
+		
+		public event EventHandler StopClick
+		{
+			add { _buildMenu.StopClick += value; }
+			remove { _buildMenu.StopClick -= value; }
 		}
 
 		public RunState RunState
