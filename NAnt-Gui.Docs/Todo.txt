@@ -8,7 +8,9 @@
 + Multiple tabs
 	* Store open files in registry and when NAnt-Gui is loaded, load all the previously loaded 
 	  build files
-	* Allow only one instance of NAnt-Gui to load (Will use custom code now, but can switch to
+	* DONE: Allow only one instance of NAnt-Gui to load.  
+	* Multiple instances are denied, but file doesn't open.  Must use remoting to pass arguments
+	  (Will use custom code now, but can switch to
 	  Microsoft.VisualBasic.ApplicationServices for the .Net 2.0 version)	
 	* Enable drag and drop reordering of tabs (PROBABLY NOT GOING TO BE ABLE TO DO THIS BECAUSE
 	  MAGICLIBRARY ISN'T SO MAGICAL.  NO EASY WAY TO ENABLE THIS)
