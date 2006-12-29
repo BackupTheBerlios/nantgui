@@ -168,24 +168,24 @@ namespace NAntGui.NAnt
 				string buildFile = element.GetAttribute("buildfile");
 				string filename = project.ExpandProperties(buildFile, new Location("Buildfile"));
 
-				if (File.Exists(filename))
-				{
-					ParseIncludeFile(project, filename);
-				}
+				ParseIncludeFile(project, filename);
 			}
 		}
 
 		private void ParseIncludeFile(Project project, string filename)
 		{
-			XmlDocument document = new XmlDocument();
 			string fullName = Path.Combine(_baseDir, filename);
 
-			try
+			if (File.Exists(fullName))
 			{
-				document.Load(fullName);
-			}
-			finally
-			{
+				XmlDocument document = new XmlDocument();
+
+				try
+				{
+					document.Load(fullName);
+				}
+				catch{}
+
 				ParseTargetsAndDependencies(document);
 				ParseProperties(project, document);
 				ParseNonPropertyProperties(document);
