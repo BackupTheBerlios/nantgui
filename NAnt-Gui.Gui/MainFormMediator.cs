@@ -123,8 +123,8 @@ namespace NAntGui.Gui
 		public void SaveClicked()
 		{
 			_selectedTab.Save(true);
-			_mainMenu.Enable();
-			_toolBar.Enable();
+//			_mainMenu.Enable();
+//			_toolBar.Enable();
 		}
 
 		public bool SaveAsClicked()
@@ -310,6 +310,7 @@ namespace NAntGui.Gui
 			// disable the reload and run 
 			_mainMenu.Disable();
 			_toolBar.Disable();
+			
 			// could move this into ScriptTabs (make .AddBlankTab method)
 			_sourceTabs.AddTab(new ScriptTabPage(_outputBox, this));			
 		}
@@ -372,6 +373,17 @@ namespace NAntGui.Gui
 
 			_targetsTree.AddTargets(buildScript.Name, buildScript.Targets);
 			_propertyGrid.AddProperties(buildScript.Properties);
+			
+			if (_selectedTab.FileType == FileType.Existing)
+			{
+				_toolBar.Enable();
+				_mainMenu.Enable();
+			}
+			else
+			{
+				_toolBar.Disable();
+				_mainMenu.Disable();
+			}
 		}
 
 		public void DragDrop(DragEventArgs e)

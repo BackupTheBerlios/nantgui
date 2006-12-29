@@ -51,7 +51,6 @@ namespace NAntGui.Gui
 			Assert.NotNull(tab, "tab");
 			_tabs.Add(tab);
 			_tabControl.TabPages.Add(tab.ScriptTab);
-//			tab.Focus();
 		}
 
 		/// <summary>

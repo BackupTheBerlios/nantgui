@@ -89,9 +89,8 @@ namespace NAntGui.Gui
 
 			Initialize();
 
+			_buildScript = ScriptParserFactory.Create(_file);
 			_buildRunner = BuildRunnerFactory.Create(_file, logger, _mediator.Options);
-			_buildScript = ScriptParserFactory.Create(_file);			
-
 			_buildRunner.Properties = _buildScript.Properties;
 		}
 
@@ -113,10 +112,12 @@ namespace NAntGui.Gui
 		{
 			_scriptEditor.SaveFile(fileName);
 
-			_file				= new SourceFile(fileName, _scriptEditor.Text);
-			_buildRunner		= BuildRunnerFactory.Create(_file, _logger, _mediator.Options);
-			_fileType			= FileType.Existing;
-			_scriptTab.Title	= _file.Name;
+			_file					= new SourceFile(fileName, _scriptEditor.Text);
+			_buildScript			= ScriptParserFactory.Create(_file);
+			_buildRunner			= BuildRunnerFactory.Create(_file, _logger, _mediator.Options);
+			_buildRunner.Properties = _buildScript.Properties;
+			_fileType				= FileType.Existing;
+			_scriptTab.Title		= _file.Name;
 
 			ParseBuildFile();
 		}
@@ -336,6 +337,11 @@ namespace NAntGui.Gui
 		public string FilePath
 		{
 			get { return _file.Path; }
+		}
+		
+		public FileType FileType
+		{
+			get { return _fileType; }
 		}
 
 		public string Title
