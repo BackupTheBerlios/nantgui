@@ -1,3 +1,7 @@
++ Add filesystem watcher back in
++ Add loadfile parsing
++ Add sysinfo parsing
++ Add regex parsing
 + Multiple tabs
 	* Store open files in registry and when NAnt-Gui is loaded, load all the previously loaded 
 	  build files

@@ -158,11 +158,6 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		//		private bool ValidTarget(string category)
-		//		{
-		//			return _project.BuildTargets.Contains(category);
-		//		}
-
 		/// <summary>
 		/// Add the listeners specified in the command line arguments,
 		/// along with the default listener, to the specified project.
@@ -170,13 +165,15 @@ namespace NAntGui.NAnt
 		private void AddBuildListeners()
 		{
 			Assert.NotNull(_project, "project");
-			BuildListenerCollection listeners = new BuildListenerCollection();
+			
+			// Create new logger
 			IBuildLogger buildLogger = new GuiLogger(_logger);
 
 			// set threshold of build logger equal to threshold of project
 			buildLogger.Threshold = _project.Threshold;
 
 			// add build logger to listeners collection
+			BuildListenerCollection listeners = new BuildListenerCollection();
 			listeners.Add(buildLogger);
 
 			// attach listeners to project

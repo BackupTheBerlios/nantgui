@@ -16,7 +16,7 @@ namespace NAntGui.Core
 				default:
 				case "nant":
 				case "build":
-					return new NAntBuildScript(file.FullName, file.Name);
+					return new NAntBuildScript(file.FullName);
 				case "proj":
 					throw new NotImplementedException("Pete's code goes here :)");
 			}

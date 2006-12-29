@@ -87,6 +87,9 @@ namespace NAntGui.Gui
 			_file = new SourceFile(filename, _scriptEditor.Text);
 			_fileType = FileType.Existing;
 
+			// this is hacked in, should be cleaned up
+			if (_file.Extension == ".inc") _scriptEditor.SetHighlighting("XML");
+
 			Initialize();
 
 			_buildScript = ScriptParserFactory.Create(_file);

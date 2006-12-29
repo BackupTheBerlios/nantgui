@@ -36,7 +36,7 @@ namespace NAntGui.Framework
 		protected string _extension;
 		protected string _contents;
 
-		private Watcher _watcher = new Watcher();
+//		private Watcher _watcher = new Watcher();
 
 		public SourceFile()
 		{
@@ -63,12 +63,12 @@ namespace NAntGui.Framework
 			_path			= info.DirectoryName;
 			_extension		= info.Extension;
 
-			_watcher.WatchBuildFile(info);
+//			_watcher.WatchBuildFile(info);
 		}
 
 		public virtual void Close()
 		{
-			_watcher.DisableEvents();
+//			_watcher.DisableEvents();
 		}
 
 		#region Properties

@@ -1,3 +1,4 @@
+- Add filesystem watcher back in
 - Properties don't update as you type
 - Include files aren't xml syntax highlighted.  Throw error on load because the project can't parse the file
 - Got some kind of weird bug when I was editing a file.  Had saved it, but it complained, when
