@@ -439,7 +439,7 @@ namespace NAntGui.Gui
 
 		public void RunApplication()
 		{
-			Application.Run(_form);
+			Application.Run(_form);				
 		}
 
 		public void CutClicked()

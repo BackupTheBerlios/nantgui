@@ -86,6 +86,7 @@ namespace NAntGui.Framework
 		public virtual string DefaultExpandedValue
 		{
 			get { return _defaultExpandedValue; }
+			set { _defaultExpandedValue = value; }
 		}
 
 		public virtual bool ReadOnly

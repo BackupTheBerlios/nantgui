@@ -34,6 +34,7 @@ namespace NAntGui
 	/// </summary>
 	public class AppEntry
 	{
+		private static MainFormMediator _mediator;
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -45,8 +46,24 @@ namespace NAntGui
 
 			CommandLineOptions options = ParseCommandLine(args);
 
-			MainFormMediator mediator = new MainFormMediator(options);
-			mediator.RunApplication();
+			bool createdNew; 
+
+			string uniqueName = string.Join("*", 
+				new string[] {System.Windows.Forms.Application.ProductName,
+								 Environment.UserName});
+
+			System.Threading.Mutex mutex = 
+				new System.Threading.Mutex(true, uniqueName, out createdNew); 
+
+			if (createdNew) 
+			{ 
+				_mediator = new MainFormMediator(options);
+				_mediator.RunApplication();
+			} 
+			else
+			{
+				_mediator.LoadBuildFile(options.BuildFile);
+			}
 		}
 
 		private static CommandLineOptions ParseCommandLine(string[] args)

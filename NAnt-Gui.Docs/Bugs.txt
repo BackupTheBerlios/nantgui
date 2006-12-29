@@ -1,7 +1,4 @@
-- If you change a property's value then switch tabs, it retains the changed value.  However,
-  if you run the file, then switch tabs, it will redefault when you switch back.
 - Add filesystem watcher back in
-- Properties don't update as you type
 - Got some kind of weird bug when I was editing a file.  Had saved it, but it complained, when
   I closed the file that it wasn't saved
 - If you sticky the output box it loses it's formatting/highlighting
@@ -9,6 +6,9 @@
   docks with 0 height
 
 1.5.0:
+FIXED:  Some properties were showing up as none default when default
+FIXED:  If you change a property's value then switch tabs, it retains the changed value.  However,
+		if you run the file, then switch tabs, it will redefault when you switch back.
 FIXED:  Changing property values is broken AGAIN!!!
 FIXED:  Parser doesn't follow includes
 FIXED:  Include files aren't xml syntax highlighted.  

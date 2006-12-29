@@ -242,8 +242,9 @@ namespace NAntGui.NAnt
 		{
 			try
 			{
-				property.ExpandedValue = project.ExpandProperties(
-					property.Value, new Location("Buildfile"));
+				property.DefaultExpandedValue = 
+				property.ExpandedValue = 
+					project.ExpandProperties(property.Value, new Location("Buildfile"));
 			}
 			catch (BuildException)
 			{
