@@ -25,33 +25,16 @@ using System.Collections;
 
 namespace NAntGui.Framework
 {
-	public class DependsCollection
+	public class DependsCollection : CollectionBase
 	{
-		private ArrayList mDepends;
-
-		public DependsCollection()
+		public void Add(string[] depends)
 		{
-			mDepends = new ArrayList();
+			InnerList.AddRange(depends);
 		}
 
-		public DependsCollection(int pSize)
+		public bool Contains(string target)
 		{
-			mDepends = new ArrayList(pSize);
-		}
-
-		public void Add(string[] pDepends)
-		{
-			mDepends.AddRange(pDepends);
-		}
-
-		public IEnumerator GetEnumerator()
-		{
-			return mDepends.GetEnumerator();
-		}
-
-		public bool Contains(string pTarget)
-		{
-			return mDepends.Contains(pTarget);
+			return List.Contains(target);
 		}
 	}
 }

@@ -1,12 +1,12 @@
 - Include files aren't xml syntax highlighted.  Throw error on load because the project can't parse the file
 - Got some kind of weird bug when I was editing a file.  Had saved it, but it complained, when
   I closed the file that it wasn't saved
-- If you run an unsaved new file and cancel the file save dialog, the run should be aborted
 - If you sticky the output box it loses it's formatting/highlighting
 - If using a different regional setting for currency and numbers (ie: Italian) the targets window 
   docks with 0 height
 
 1.5.0:
+FIXED:  If you run an unsaved new file and cancel the file save dialog, the run should be aborted
 FIXED:  Reload shouldn't be enabled on a new file
 FIXED:	If you unsticky the output box it loses it's formatting/highlighting
 

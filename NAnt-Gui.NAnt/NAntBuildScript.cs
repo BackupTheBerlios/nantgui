@@ -24,16 +24,13 @@
 using System;
 using System.IO;
 using System.Xml;
-using System.Text.RegularExpressions;
 
 using NAnt.Core;
-using NAnt.Core.Util;
 using NAnt.Core.Tasks;
 using NAnt.Win32.Tasks;
 using NAntGui.Framework;
 
 using TargetCollection = NAntGui.Framework.TargetCollection;
-//using CmdOptions = NAntGui.Framework.CommandLineOptions;
 
 namespace NAntGui.NAnt
 {
@@ -42,7 +39,7 @@ namespace NAntGui.NAnt
 	/// </summary>
 	public class NAntBuildScript : IBuildScript
 	{
-		private Project _project;
+//		private Project _project;
 
 		private string _filePath;
 		private string _fileName;
@@ -51,6 +48,8 @@ namespace NAntGui.NAnt
 		private TargetCollection _targets = new TargetCollection();
 		private DependsCollection _depends = new DependsCollection();
 		private PropertyCollection _properties = new PropertyCollection();
+		private string _defaultTargetName;
+		private string _name;
 
 		/// <summary>
 		/// Create a new project parser.
@@ -66,54 +65,62 @@ namespace NAntGui.NAnt
 
 		public void Parse()
 		{
-			CreateProject();
-			ParseDescription();
-			ParseTargetsAndDependencies();
-			ParseProperties();
-			ParseNonPropertyProperties();
-			FollowIncludes();
-			ParseBaseDir();
+			Project project = CreateProject();
+			
+			if (project == null)
+			{
+				// DO STUFF HERE				
+			}
+			
+			ParseDescription(project.Document);
+			_targets.Clear();
+			_depends.Clear();
+			ParseTargetsAndDependencies(project, project.Document);
+			ParseProperties(project, project.Document);
+			ParseNonPropertyProperties(project);
+			FollowIncludes(project);
+			ParseBaseDir(project);
+			_defaultTargetName = project.DefaultTargetName;
+			_name = HasName(project) ? project.ProjectName : _fileName;
 		}
 
-		private void CreateProject()
+		private Project CreateProject()
 		{
 			try
 			{
-				_project = new Project(_filePath, Level.Info, 0);
+				return new Project(_filePath, Level.Info, 0);
+			}
+			catch(ArgumentException)
+			{
+				return null;
 			}
 			catch (Exception error)
 			{
-				if (error.InnerException != null)
+				if (error.InnerException == null)
 				{
-					throw new BuildFileLoadException(error.InnerException.Message);
+					throw new BuildFileLoadException(error.Message);
 				}
 				else
 				{
-					throw new BuildFileLoadException(error.Message);
+					throw new BuildFileLoadException(error.InnerException.Message);
 				}
 			}
 		}
 
-		private void ParseDescription()
+		private void ParseDescription(XmlDocument document)
 		{
-			foreach (XmlElement element in _project.Document.GetElementsByTagName("description"))
+			foreach (XmlElement element in document.GetElementsByTagName("description"))
 			{
 				_description += element.InnerText + " ";
 			}
 		}
 
-		private void ParseTargetsAndDependencies()
-		{
-			_targets.Clear();
-			ParseTargetsAndDependencies(_project.Document);
-		}
-
-		private void ParseTargetsAndDependencies(XmlDocument doc)
+		private void ParseTargetsAndDependencies(Project project, XmlDocument doc)
 		{			
 			foreach (XmlElement element in doc.GetElementsByTagName("target"))
 			{
 				NAntTarget nantTarget = new NAntTarget(element);
-				if (nantTarget.Name == _project.DefaultTargetName) nantTarget.Default = true;
+				if (nantTarget.Name == project.DefaultTargetName) nantTarget.Default = true;
 				_targets.Add(nantTarget);
 				_depends.Add(nantTarget.Depends);
 			}
@@ -121,66 +128,56 @@ namespace NAntGui.NAnt
 			_targets.Sort();
 		}
 
-		private void FollowIncludes()
+		private void FollowIncludes(Project project)
 		{
-			foreach (XmlElement element in _project.Document.GetElementsByTagName("include"))
+			foreach (XmlElement element in project.Document.GetElementsByTagName("include"))
 			{
 				string buildFile = element.GetAttribute("buildfile");
-				string filename = _project.ExpandProperties(buildFile, new Location("Buildfile"));
+				string filename = project.ExpandProperties(buildFile, new Location("Buildfile"));
 
 				if (File.Exists(filename))
 				{
-					ParseIncludeFile(filename);
+					ParseIncludeFile(project, filename);
 				}
 			}
 		}
 
-		private void ParseIncludeFile(string filename)
+		private void ParseIncludeFile(Project project, string filename)
 		{
 			XmlDocument document = new XmlDocument();
 			document.Load(filename);
-			ParseTargetsAndDependencies(document);
-			ParseProperties(document);
-			ParseNonPropertyProperties(_project);
+			ParseTargetsAndDependencies(project, document);
+			ParseProperties(project, document);
+			ParseNonPropertyProperties(project);
 		}
 
-		private void ParseBaseDir()
+		private void ParseBaseDir(Project project)
 		{
-			NAntProperty nAntProperty = new NAntProperty("BaseDir", _project.BaseDirectory, "Project", false);
-			_project.Properties.AddReadOnly(nAntProperty.Name, _project.BaseDirectory);
+			NAntProperty nAntProperty = new NAntProperty("BaseDir", project.BaseDirectory, "Project", false);
+			project.Properties.AddReadOnly(nAntProperty.Name, project.BaseDirectory);
 			_properties.Add(nAntProperty);
 		}
 
-		private void ParseProperties()
-		{
-			ParseProperties(_project.Document);
-		}
-
-		private void ParseProperties(XmlDocument doc)
+		private void ParseProperties(Project project, XmlDocument doc)
 		{
 			foreach (XmlElement element in doc.GetElementsByTagName("property"))
 			{
 				NAntProperty nantProperty = new NAntProperty(element);
 				try
 				{
-					nantProperty.ExpandedValue = _project.ExpandProperties(nantProperty.Value, new Location("Buildfile"));
+					nantProperty.ExpandedValue = project.ExpandProperties(nantProperty.Value, new Location("Buildfile"));
 				}
 				catch (BuildException)
 				{
 					/* ignore */
 				}
 
-				if (!_project.Properties.Contains(nantProperty.Name))
+				if (!project.Properties.Contains(nantProperty.Name))
 				{
-					_project.Properties.AddReadOnly(nantProperty.Name, nantProperty.ExpandedValue);
+					project.Properties.AddReadOnly(nantProperty.Name, nantProperty.ExpandedValue);
 					_properties.Add(nantProperty);
 				}
 			}
-		}
-
-		private void ParseNonPropertyProperties()
-		{
-			ParseNonPropertyProperties(_project);
 		}
 
 		private void ParseNonPropertyProperties(Project project)
@@ -266,21 +263,21 @@ namespace NAntGui.NAnt
 				}
 		*/
 
-		private bool HasName()
+		private bool HasName(Project project)
 		{
-			return _project != null && _project.ProjectName.Length > 0;
+			return project != null && project.ProjectName.Length > 0;
 		}
 
 		#region Properties
 
 		public string DefaultTarget
 		{
-			get { return _project.DefaultTargetName; }
+			get { return _defaultTargetName; }
 		}
 
 		public string Name
 		{
-			get { return HasName() ? _project.ProjectName : _fileName; }
+			get { return _name; }
 		}
 
 		public string Description
