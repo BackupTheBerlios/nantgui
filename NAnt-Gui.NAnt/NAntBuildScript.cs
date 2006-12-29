@@ -66,17 +66,24 @@ namespace NAntGui.NAnt
 		public void Parse()
 		{
 			Project project = CreateProject();
-			
+			XmlDocument doc;
+
 			if (project == null)
 			{
-				// DO STUFF HERE				
+				doc = new XmlDocument();
+				doc.Load(_filePath);
+			}
+			else
+			{
+				doc = project.Document;
 			}
 			
-			ParseDescription(project.Document);
+			ParseDescription(doc);
+			ParseDefaultTarget(doc);
 			_targets.Clear();
 			_depends.Clear();
-			ParseTargetsAndDependencies(project, project.Document);
-			ParseProperties(project, project.Document);
+			ParseTargetsAndDependencies(doc);
+			ParseProperties(project, doc);
 			ParseNonPropertyProperties(project);
 			FollowIncludes(project);
 			ParseBaseDir(project);
@@ -107,20 +114,31 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		private void ParseDescription(XmlDocument document)
+		private void ParseDefaultTarget(XmlDocument doc)
 		{
-			foreach (XmlElement element in document.GetElementsByTagName("description"))
+			// there should only be one, but in order for the parser to 
+			// be fault tolerent, it must be a little lazy
+			foreach (XmlElement element in doc.GetElementsByTagName("project"))
+			{
+				_defaultTargetName = element.Attributes["default"].Value;
+				break;
+			}
+		}
+
+		private void ParseDescription(XmlDocument doc)
+		{
+			foreach (XmlElement element in doc.GetElementsByTagName("description"))
 			{
 				_description += element.InnerText + " ";
 			}
 		}
 
-		private void ParseTargetsAndDependencies(Project project, XmlDocument doc)
+		private void ParseTargetsAndDependencies(XmlDocument doc)
 		{			
 			foreach (XmlElement element in doc.GetElementsByTagName("target"))
 			{
 				NAntTarget nantTarget = new NAntTarget(element);
-				if (nantTarget.Name == project.DefaultTargetName) nantTarget.Default = true;
+				if (nantTarget.Name == _defaultTargetName) nantTarget.Default = true;
 				_targets.Add(nantTarget);
 				_depends.Add(nantTarget.Depends);
 			}
@@ -146,7 +164,7 @@ namespace NAntGui.NAnt
 		{
 			XmlDocument document = new XmlDocument();
 			document.Load(filename);
-			ParseTargetsAndDependencies(project, document);
+			ParseTargetsAndDependencies(document);
 			ParseProperties(project, document);
 			ParseNonPropertyProperties(project);
 		}
@@ -184,7 +202,7 @@ namespace NAntGui.NAnt
 		{
 			ParseTstamps(project);
 			AddReadRegistrys(project);
-			//			AddRegex(project);
+			//AddRegex(project);
 		}
 
 		private void ParseTstamps(Project project)
@@ -234,33 +252,33 @@ namespace NAntGui.NAnt
 		}
 
 		/*
-				/// <summary>
-				/// Not in use right now because it opens a can of worms.
-				/// The only way to know what value the input attribute has 
-				/// is to run the program.  
-				/// </summary>
-				/// <param name="project"></param>
-				private void AddRegex(Project project)
+		/// <summary>
+		/// Not in use right now because it opens a can of worms.
+		/// The only way to know what value the input attribute has 
+		/// is to run the program.  
+		/// </summary>
+		/// <param name="project"></param>
+		private void AddRegex(Project project)
+		{
+			foreach (XmlElement element in project.Document.GetElementsByTagName("regex"))
+			{
+				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
-					foreach (XmlElement element in project.Document.GetElementsByTagName("regex"))
+					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
+					if (task != null && task.PropertyName != null)
 					{
-						if (TypeFactory.TaskBuilders.Contains(element.Name))
-						{
-							ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
-							if (task != null && task.PropertyName != null)
-							{
-								task.Execute();
+						task.Execute();
 
-								NAntProperty nAntProperty = new NAntProperty(
-									task.PropertyName, task.Properties[task.PropertyName], 
-									element.ParentNode.Attributes["name"].Value, false);
+						NAntProperty nAntProperty = new NAntProperty(
+							task.PropertyName, task.Properties[task.PropertyName], 
+							element.ParentNode.Attributes["name"].Value, false);
 
-								nAntProperty.ExpandedValue = nAntProperty.Value;
-								_properties.Add(nAntProperty);
-							}
-						}
+						nAntProperty.ExpandedValue = nAntProperty.Value;
+						_properties.Add(nAntProperty);
 					}
 				}
+			}
+		}
 		*/
 
 		private bool HasName(Project project)
