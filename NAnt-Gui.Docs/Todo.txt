@@ -1,6 +1,3 @@
-+ Add 'close other tabs' menu item to tab right click
-+ Add 'close all tabs' menu item to tab right click
-+ Window menu that lists all open tabs, has "close all" item
 + Add filesystem watcher back in
 + Add loadfile parsing
 + Add sysinfo parsing
@@ -12,6 +9,9 @@
 	* Multiple instances are denied, but file doesn't open.  Must use remoting to pass arguments
 	  (Will use custom code now, but can switch to
 	  Microsoft.VisualBasic.ApplicationServices for the .Net 2.0 version)	
+	* Add 'close other tabs' menu item to tab right click
+	* Add 'close all tabs' menu item to tab right click
+	* Window menu that lists all open tabs, has "close all" item
 	* Enable drag and drop reordering of tabs (PROBABLY NOT GOING TO BE ABLE TO DO THIS BECAUSE
 	  MAGICLIBRARY ISN'T SO MAGICAL.  NO EASY WAY TO ENABLE THIS)
 + Add a property window to change nant settings after nant-gui is loaded
