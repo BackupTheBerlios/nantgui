@@ -1,7 +1,9 @@
 + Add filesystem watcher back in
+**** Should the parser be rewritten to use a looping reading style? ****
 + Add loadfile parsing
 + Add sysinfo parsing
 + Add regex parsing
+**** /Should the parser be rewritten to use a looping reading style? ****
 + Multiple tabs
 	* Store open files in registry and when NAnt-Gui is loaded, load all the previously loaded 
 	  build files

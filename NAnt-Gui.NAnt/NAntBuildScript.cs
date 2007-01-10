@@ -43,8 +43,8 @@ namespace NAntGui.NAnt
 		private DependsCollection _depends = new DependsCollection();
 		private PropertyCollection _properties = new PropertyCollection();
 		
-		private string _name;
 		private FileInfo _file;
+		private string _name;		
 		private string _baseDir;
 		private string _description = "";
 		private string _defaultTargetName;
@@ -257,6 +257,7 @@ namespace NAntGui.NAnt
 			ParseTstamps(doc);
 			AddReadRegistrys(doc);
 			//AddRegex(project);
+			ParseLoadfiles(doc);
 		}
 
 		private void ParseTstamps(XmlDocument doc)
@@ -266,6 +267,31 @@ namespace NAntGui.NAnt
 				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
 					TStampTask task = new TStampTask();
+					task.Initialize(element);
+
+					if (task != null)
+					{
+						task.Execute();
+
+						NAntProperty nantProperty = new NAntProperty(
+							task.Property, task.Properties[task.Property], 
+							element.ParentNode.Attributes["name"].Value,
+							true);
+
+						nantProperty.ExpandedValue = nantProperty.Value;
+						_properties.Add(nantProperty);
+					}
+				}
+			}
+		}
+
+		private void ParseLoadfiles(XmlDocument doc)
+		{
+			foreach (XmlElement element in doc.GetElementsByTagName("loadfile"))
+			{
+				if (TypeFactory.TaskBuilders.Contains(element.Name))
+				{
+					LoadFileTask task = new LoadFileTask();
 					task.Initialize(element);
 
 					if (task != null)
