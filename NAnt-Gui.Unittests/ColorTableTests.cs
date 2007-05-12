@@ -37,9 +37,9 @@ namespace NAntGui.Unittests
 		{
 			///ColorTable table = new ColorTable();
 			ColorTable.Reset();
-			string lUseless = ColorTable.RedTag;
-			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;}", ColorTable.ColorTableRtf, lUseless);
-			lUseless = ColorTable.BlueTag;
+			string useless = ColorTable.RedTag;
+			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;}", ColorTable.ColorTableRtf, useless);
+			useless = ColorTable.BlueTag;
 			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}",
 			                ColorTable.ColorTableRtf);
 		}
