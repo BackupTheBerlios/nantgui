@@ -17,32 +17,33 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NAnt.Core;
 using NAnt.Core.Util;
 using NAntGui.Framework;
-using TargetCollection = NAntGui.Framework.TargetCollection;
 using CmdOptions = NAntGui.Framework.CommandLineOptions;
+using System.IO;
 
 namespace NAntGui.NAnt
 {
 	public class NAntBuildRunner : BuildRunnerBase
 	{		
 		private Project _project;
-		private SourceFile _sourceFile;
-		private TargetCollection _targets;
+        private FileInfo _fileInfo;
+		private List<BuildTarget> _targets;
 		private PropertyCollection _properties;
 
-		public NAntBuildRunner(SourceFile sourceFile, ILogsMessage logger, CmdOptions options) : 
+		public NAntBuildRunner(FileInfo fileInfo, ILogsMessage logger, CmdOptions options) : 
 			base(logger, options)
 		{
-			Assert.NotNull(sourceFile, "sourceFile");
-			_sourceFile = sourceFile;
+            Assert.NotNull(fileInfo, "fileInfo");
+            _fileInfo = fileInfo;
 		}
 
 /*
@@ -71,9 +72,9 @@ namespace NAntGui.NAnt
 		{
 			try
 			{
-				Environment.CurrentDirectory = _sourceFile.Path;
+				Environment.CurrentDirectory = _fileInfo.DirectoryName;
 
-				_project = new Project(_sourceFile.FullName, GetThreshold(), 0);
+                _project = new Project(_fileInfo.FullName, GetThreshold(), 0);
 				_project.BuildFinished += new BuildEventHandler(Build_Finished);
 				SetTargetFramework();
 				AddBuildListeners();
@@ -153,7 +154,7 @@ namespace NAntGui.NAnt
 			try
 			{
 				property.ExpandedValue = _project.ExpandProperties(property.ExpandedValue,
-					new Location(_sourceFile.FullName));
+					new Location(_fileInfo.FullName));
 			}
 			catch (BuildException)
 			{
@@ -228,7 +229,7 @@ namespace NAntGui.NAnt
 			set { _properties = value; }
 		}
 
-		public override TargetCollection Targets
+		public override List<BuildTarget> Targets
 		{
 			set { _targets = value; }
 		}

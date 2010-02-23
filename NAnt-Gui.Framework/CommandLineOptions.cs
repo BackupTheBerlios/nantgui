@@ -16,7 +16,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 // Gert Driesen (gert.driesen@ardatis.com)
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 using System.Collections.Specialized;
 using System.IO;

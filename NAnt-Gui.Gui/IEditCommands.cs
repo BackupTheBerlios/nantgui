@@ -3,7 +3,7 @@ namespace NAntGui.Gui
 	/// <summary>
 	/// Summary description for IEditCommands.
 	/// </summary>
-	public interface IEditCommands
+	internal interface IEditCommands
 	{
 		void Cut();
 		void Copy();

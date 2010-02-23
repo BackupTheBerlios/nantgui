@@ -4,7 +4,7 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
+// it under the terms of the GNU General internal License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
@@ -17,118 +17,79 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 #endregion
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Crownwood.Magic.Menus;
 using ICSharpCode.TextEditor;
+using ICSharpCode.XmlEditor;
+using ICSharpCode.TextEditor.Document;
+using ICSharpCode.SharpDevelop.DefaultEditor;
 using NAntGui.Framework;
-using NAntGui.Gui.Controls.Menu.EditMenu;
 
 namespace NAntGui.Gui.Controls
 {
 	/// <summary>
 	/// Summary description for ScriptEditor.
 	/// </summary>
-	public class ScriptEditor : TextEditorControl
+    public partial class ScriptEditor : IEditCommands
 	{
-		private PopupMenu _sourceContextMenu;
-		private MainFormMediator _mediator;
-		private GuiUtils _utils = GuiUtils.Instance();
-
-		public ScriptEditor(MainFormMediator mediator)
+		public ScriptEditor()
 		{
-			Assert.NotNull(mediator, "value");
-			_mediator = mediator;
-
-			Initialize();
+			InitializeComponent();
+		}
+		
+		void CutToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Cut(sender, e);			
+		}
+		
+		void CopyToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Copy(sender, e);
+		}
+		
+		void PasteToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Paste(sender, e);
+		}
+		
+		void DeleteToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Delete(sender, e);
+		}
+		
+		void SelectAllToolStripMenuItemClick(object sender, System.EventArgs e)
+		{
+			this.ActiveTextAreaControl.TextArea.ClipboardHandler.SelectAll(sender, e);
 		}
 
-		#region Initialize
-
-		private void Initialize()
+        public void Cut()
 		{
-			_sourceContextMenu = new PopupMenu();
-			_sourceContextMenu.MenuCommands.AddRange(
-				new MenuCommand[]
-					{
-						new MenuCommand("Cu&t", _utils.ImageList, 12,
-						Shortcut.CtrlX, new System.EventHandler(Cut_Click)),
-						new MenuCommand("&Copy", _utils.ImageList, 13,
-						Shortcut.CtrlC, new System.EventHandler(Copy_Click)),
-						new MenuCommand("&Paste", _utils.ImageList, 14,
-						Shortcut.CtrlV, new System.EventHandler(Paste_Click)),
-						new MenuCommand("&Delete", _utils.ImageList, 15, 
-						Shortcut.Del, new System.EventHandler(Delete_Click)),
-						new MenuCommand("-"),
-						new MenuCommand("Select &All", Shortcut.CtrlA, 
-						new System.EventHandler(SelectAll_Click))
-					});
-
-			Dock = DockStyle.Fill;
-			Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-			ShowVRuler = false;
-			ShowEOLMarkers = false;
-			ShowSpaces = false;
-			ShowTabs = false;
-			EnableFolding = true;
-			ShowMatchingBracket = true;
-
-			ActiveTextAreaControl.TextArea.MouseUp += new MouseEventHandler(PopupMenu);
-			ActiveTextAreaControl.TextArea.DragEnter += new DragEventHandler(Drag_Enter);
-			ActiveTextAreaControl.TextArea.DragDrop += new DragEventHandler(Drag_Drop);
+			CutToolStripMenuItemClick(this, EventArgs.Empty);
 		}
 
-		#endregion
-
-		private void Cut_Click(object sender, System.EventArgs e)
+        public void Copy()
 		{
-			_mediator.CutClicked();
+			CopyToolStripMenuItemClick(this, EventArgs.Empty);
 		}
 
-		private void Copy_Click(object sender, System.EventArgs e)
+        public void Paste()
 		{
-			_mediator.CopyClicked();
+			PasteToolStripMenuItemClick(this, EventArgs.Empty);
 		}
 
-		private void Paste_Click(object sender, System.EventArgs e)
+        public void Delete()
 		{
-			_mediator.PasteClicked();
+			DeleteToolStripMenuItemClick(this, EventArgs.Empty);
 		}
 
-		private void Delete_Click(object sender, System.EventArgs e)
+        public void SelectAll()
 		{
-			_mediator.DeleteClicked();
-		}
-
-		private void SelectAll_Click(object sender, System.EventArgs e)
-		{
-			_mediator.SelectAllClicked();
-		}
-
-		private void PopupMenu(object sender, MouseEventArgs e)
-		{
-			Assert.NotNull(sender, "sender");
-			Assert.NotNull(e, "e");
-
-			if (sender is TextArea && e.Button == MouseButtons.Right)
-			{
-				TextArea area = sender as TextArea;
-				_sourceContextMenu.TrackPopup(area.PointToScreen(new Point(e.X, e.Y)));
-			}
-		}
-
-		private void Drag_Drop(object sender, DragEventArgs e)
-		{
-			_mediator.DragDrop(e);
-		}
-
-		public void Drag_Enter(object sender, DragEventArgs e)
-		{
-			_mediator.DragEnter(e);
-		}
+			SelectAllToolStripMenuItemClick(this, EventArgs.Empty);
+		}		
 	}
 }

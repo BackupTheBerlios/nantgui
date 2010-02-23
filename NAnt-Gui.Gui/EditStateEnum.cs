@@ -3,7 +3,7 @@ namespace NAntGui.Gui
 	/// <summary>
 	/// Summary description for EditState
 	/// </summary>
-	public enum EditState
+	internal enum EditState
 	{
 		TabFocused,
 		OutputFocused,

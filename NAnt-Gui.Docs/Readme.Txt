@@ -1,10 +1,14 @@
-Users:
+---------
+  Users
+---------
 Get the latest version from:
 http://www.swoogan.com/nantgui.html
 
 Refer to Install.txt for installation instructions.
 
-Developers:
+--------------
+  Developers
+--------------  
 Subversion Repository:
 Anonymous SVN Access via HTTP:
 svn checkout http://svn.berlios.de/svnroot/repos/nantgui/trunk 

@@ -10,6 +10,11 @@ namespace NAntGui.Gui
 	/// </summary>
 	public class Utils
 	{
+        public static string DockingConfigPath
+        {
+            get { return Path.Combine(Path.GetDirectoryName(Application.LocalUserAppDataPath), "DockPanel.config"); }
+        }
+
 		public static bool HasAsterisk(string text)
 		{
 			return text.EndsWith("*");

@@ -1,33 +1,34 @@
 using System;
 using NAntGui.Framework;
+using System.Collections.Generic;
 
 namespace NAntGui.Gui
 {
 	/// <summary>
 	/// Summary description for BlankBuildScript.
 	/// </summary>
-	public class BlankBuildScript : IBuildScript
+    public class BlankBuildScript : IBuildScript
 	{
-		public string Description
+        public string Description
 		{
 			get { return ""; }
 		}
 
-		public void Parse(){ /* do nothing */ }
+        public void Parse() { /* do nothing */ }
 
-		public string Name
+        public string Name
 		{
 			get { return "Untitled"; }
 		}
 
-		public PropertyCollection Properties
+        public PropertyCollection Properties
 		{
 			get { return new PropertyCollection(); }
 		}
 
-		public TargetCollection Targets
+        public List<BuildTarget> Targets
 		{
-			get { return new TargetCollection(); }
+			get { return new List<BuildTarget>(); }
 		}
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using NAntGui.Framework;
 using NAntGui.NAnt;
+using System.IO;
 
 namespace NAntGui.Core
 {
@@ -9,14 +10,14 @@ namespace NAntGui.Core
 	/// </summary>
 	public class ScriptParserFactory
 	{
-		public static IBuildScript Create(SourceFile file)
+		public static IBuildScript Create(FileInfo fileInfo)
 		{
-			switch (file.Extension)
+            switch (fileInfo.Extension)
 			{
 				default:
 				case "nant":
 				case "build":
-					return new NAntBuildScript(file.FullName);
+                    return new NAntBuildScript(fileInfo.FullName);
 				case "proj":
 					throw new NotImplementedException("Pete's code goes here :)");
 			}

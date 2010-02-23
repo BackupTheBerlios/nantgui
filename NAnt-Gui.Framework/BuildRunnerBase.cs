@@ -17,17 +17,19 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 #endregion
 
 using System.Threading;
+using System.Collections.Generic;
+using System;
 
 namespace NAntGui.Framework
 {
 	public abstract class BuildRunnerBase
 	{
-		public event VoidVoid BuildFinished;
+		public event EventHandler<BuildFinishedEventArgs> BuildFinished;
 
 		protected ILogsMessage _logger;
 		protected CommandLineOptions _options;
@@ -63,12 +65,12 @@ namespace NAntGui.Framework
 		{
 			if (BuildFinished != null)
 			{
-				BuildFinished();
+				BuildFinished(this, new BuildFinishedEventArgs());
 			}
 		}
 
 		public abstract PropertyCollection Properties { set; }
 
-		public abstract TargetCollection Targets { set; }
+		public abstract List<BuildTarget> Targets { set; }
 	}
 }

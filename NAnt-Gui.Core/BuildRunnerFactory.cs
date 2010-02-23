@@ -17,13 +17,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 #endregion
 
 using System;
 using NAntGui.Framework;
 using NAntGui.NAnt;
+using System.IO;
 
 namespace NAntGui.Core
 {
@@ -32,14 +33,14 @@ namespace NAntGui.Core
 	/// </summary>
 	public class BuildRunnerFactory
 	{
-		public static BuildRunnerBase Create(SourceFile sourceFile, ILogsMessage logger, CommandLineOptions options)
+		public static BuildRunnerBase Create(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options)
 		{
-			switch (sourceFile.Extension)
+            switch (fileInfo.Extension)
 			{
 				default:
 				case "nant":
 				case "build":
-					return new NAntBuildRunner(sourceFile, logger, options);
+                    return new NAntBuildRunner(fileInfo, logger, options);
 				case "proj":
 					throw new NotImplementedException("Pete's code goes here :)");
 			}

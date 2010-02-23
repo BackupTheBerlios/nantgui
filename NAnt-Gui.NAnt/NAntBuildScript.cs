@@ -17,7 +17,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 #endregion
 
@@ -29,8 +29,7 @@ using NAnt.Core;
 using NAnt.Core.Tasks;
 using NAnt.Win32.Tasks;
 using NAntGui.Framework;
-
-using TargetCollection = NAntGui.Framework.TargetCollection;
+using System.Collections.Generic;
 
 namespace NAntGui.NAnt
 {
@@ -39,8 +38,8 @@ namespace NAntGui.NAnt
 	/// </summary>
 	public class NAntBuildScript : IBuildScript
 	{
-		private TargetCollection _targets = new TargetCollection();
-		private DependsCollection _depends = new DependsCollection();
+		private List<BuildTarget> _targets = new List<BuildTarget>();
+		private List<string> _depends = new List<string>();
 		private PropertyCollection _properties = new PropertyCollection();
 		
 		private FileInfo _file;
@@ -67,6 +66,7 @@ namespace NAntGui.NAnt
 			_targets.Clear();
 			_depends.Clear();
 			_properties.Clear();
+            _description = string.Empty;
 
 			ParseName(doc);
 			ParseBaseDir(doc);
@@ -74,7 +74,7 @@ namespace NAntGui.NAnt
 			ParseDescription(doc);
 			ParseTargetsAndDependencies(doc);
 			ParseProperties(project, doc);
-			ParseNonPropertyProperties(doc);
+			ParseNonPropertyProperties(project, doc);
 			FollowIncludes(project, doc);		
 		}
 
@@ -155,7 +155,7 @@ namespace NAntGui.NAnt
 				NAntTarget nantTarget = new NAntTarget(element);
 				if (nantTarget.Name == _defaultTargetName) nantTarget.Default = true;
 				_targets.Add(nantTarget);
-				_depends.Add(nantTarget.Depends);
+				_depends.AddRange(nantTarget.Depends);
 			}
 
 			_targets.Sort();
@@ -188,7 +188,7 @@ namespace NAntGui.NAnt
 
 				ParseTargetsAndDependencies(document);
 				ParseProperties(project, document);
-				ParseNonPropertyProperties(document);
+				ParseNonPropertyProperties(project, document);
 			}
 		}
 
@@ -252,72 +252,83 @@ namespace NAntGui.NAnt
 			}
 		}
 
-		private void ParseNonPropertyProperties(XmlDocument doc)
+		private void ParseNonPropertyProperties(Project project, XmlDocument doc)
 		{
-			ParseTstamps(doc);
-			AddReadRegistrys(doc);
+			ParseTstamps(project, doc);
+			AddReadRegistrys(project, doc);
 			//AddRegex(project);
-			ParseLoadfiles(doc);
+			ParseLoadfiles(project, doc);
 		}
 
-		private void ParseTstamps(XmlDocument doc)
+		private void ParseTstamps(Project project, XmlDocument doc)
 		{
 			foreach (XmlElement element in doc.GetElementsByTagName("tstamp"))
 			{
 				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
-					TStampTask task = new TStampTask();
+                    TStampTask task = (TStampTask)project.CreateTask(element);
 					task.Initialize(element);
 
 					if (task != null)
 					{
-						task.Execute();
+                        try
+                        {
+                            task.Execute();
+                            NAntProperty nantProperty = new NAntProperty(
+                                                        task.Property, task.Properties[task.Property],
+                                                        element.ParentNode.Attributes["name"].Value,
+                                                        true);
 
-						NAntProperty nantProperty = new NAntProperty(
-							task.Property, task.Properties[task.Property], 
-							element.ParentNode.Attributes["name"].Value,
-							true);
-
-						nantProperty.ExpandedValue = nantProperty.Value;
-						_properties.Add(nantProperty);
+                            nantProperty.ExpandedValue = nantProperty.Value;
+                            _properties.Add(nantProperty);
+                        }
+                        catch (BuildException error)
+                        {
+                            // TODO: Do something with the error message
+                        }
 					}
 				}
 			}
 		}
 
-		private void ParseLoadfiles(XmlDocument doc)
+		private void ParseLoadfiles(Project project, XmlDocument doc)
 		{
 			foreach (XmlElement element in doc.GetElementsByTagName("loadfile"))
 			{
 				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
-					LoadFileTask task = new LoadFileTask();
+                    LoadFileTask task = (LoadFileTask)project.CreateTask(element);
 					task.Initialize(element);
 
-					if (task != null)
-					{
-						task.Execute();
-
-						NAntProperty nantProperty = new NAntProperty(
-							task.Property, task.Properties[task.Property], 
-							element.ParentNode.Attributes["name"].Value,
-							true);
-
-						nantProperty.ExpandedValue = nantProperty.Value;
-						_properties.Add(nantProperty);
-					}
+                    if (task != null)
+                    {
+                        try
+                        {
+                            task.Execute();
+                            NAntProperty nantProperty = new NAntProperty(
+                                                          task.Property, task.Properties[task.Property],
+                                                          element.ParentNode.Attributes["name"].Value,
+                                                          true);
+                          
+                            nantProperty.ExpandedValue = nantProperty.Value;
+                            _properties.Add(nantProperty);
+                        }
+                        catch (BuildException error)
+                        {
+                            // TODO: Do something with the error message
+                        }
+                    }
 				}
 			}
 		}
 
-		private void AddReadRegistrys(XmlDocument doc)
+		private void AddReadRegistrys(Project project, XmlDocument doc)
 		{
 			foreach (XmlElement element in doc.GetElementsByTagName("readregistry"))
 			{
 				if (TypeFactory.TaskBuilders.Contains(element.Name))
 				{
-					//ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
-					ReadRegistryTask task = new ReadRegistryTask();
+					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
 					task.Initialize(element);
 
 					if (task != null && task.PropertyName != null)
@@ -385,7 +396,7 @@ namespace NAntGui.NAnt
 			get { return _description; }
 		}
 
-		public TargetCollection Targets
+		public List<BuildTarget> Targets
 		{
 			get { return _targets; }
 		}
@@ -395,7 +406,7 @@ namespace NAntGui.NAnt
 			get { return _properties; }
 		}
 
-		public DependsCollection Depends
+		public List<string> Depends
 		{
 			get { return _depends; }
 		}

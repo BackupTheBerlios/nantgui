@@ -1,1 +1,0 @@
-..\..\..\Tools\nant-0.85\bin\nant.exe -nologo -q -t:net-1.1 -f:..\..\AssemblyInfo.build

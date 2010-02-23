@@ -1,9 +1,11 @@
 - Add filesystem watcher back in
 - Got some kind of weird bug when I was editing a file.  Had saved it, but it complained, when
   I closed the file that it wasn't saved
-- If you sticky the output box it loses it's formatting/highlighting
-- If using a different regional setting for currency and numbers (ie: Italian) the targets window 
-  docks with 0 height
+
+1.9.*:
+FIXED: Figure out why the NAnt-Gui projects prebuild.bat doesn't work anymore
+FIXED: If you sticky the output box it loses it's formatting/highlighting
+FIXED: If using a different regional setting for currency and numbers (ie: Italian) the targets window docks with 0 height
 
 1.5.0:
 FIXED:  Some properties were showing up as none default when default

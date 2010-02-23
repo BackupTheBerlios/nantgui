@@ -4,20 +4,20 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
+// it under the terms of the GNU General internal License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+// GNU General internal License for more details.
 //
-// You should have received a copy of the GNU General Public License
+// You should have received a copy of the GNU General internal License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 #endregion
 
@@ -31,7 +31,7 @@ namespace NAntGui.Gui
 	/// <summary>
 	/// Summary description for PropertyShelf
 	/// </summary>
-	public class PropertyShelf : ICustomTypeDescriptor	
+	class PropertyShelf : ICustomTypeDescriptor	
 	{
 		#region BuildPropertyDescriptor class definition
 
@@ -39,7 +39,7 @@ namespace NAntGui.Gui
 		{
 			private BuildProperty _item;
 
-			public BuildPropertyDescriptor(BuildProperty item, Attribute[] attrs) :
+			internal BuildPropertyDescriptor(BuildProperty item, Attribute[] attrs) :
 				base(item.Name, attrs)
 			{
 				_item = item;
@@ -50,39 +50,39 @@ namespace NAntGui.Gui
 				get { return _item.GetType(); }
 			}
 
-			public override bool IsReadOnly
+            public override bool IsReadOnly
 			{
 				get { return _item.ReadOnly; }
 			}
 
-			public override Type PropertyType
+            public override Type PropertyType
 			{
 				get { return _item.Type; }
 			}
 
-			public override bool CanResetValue(object component)
+            public override bool CanResetValue(object component)
 			{
 				return _item.DefaultExpandedValue == null ?
 					false :
 					_item.ExpandedValue != _item.DefaultExpandedValue;
 			}
 
-			public override object GetValue(object component)
+            public override object GetValue(object component)
 			{
 				return _item.ExpandedValue;
 			}
 
-			public override void ResetValue(object component)
+            public override void ResetValue(object component)
 			{
 				SetValue(component, _item.DefaultExpandedValue);
 			}
 
-			public override void SetValue(object component, object value)
+            public override void SetValue(object component, object value)
 			{
 				_item.ExpandedValue = value.ToString();
 			}
 
-			public override bool ShouldSerializeValue(object component)
+            public override bool ShouldSerializeValue(object component)
 			{
 				return _item.DefaultExpandedValue == null ?
 					false :
@@ -94,7 +94,7 @@ namespace NAntGui.Gui
 
 		private PropertyCollection _properties;
 
-		public PropertyShelf(PropertyCollection properties)
+		internal PropertyShelf(PropertyCollection properties)
 		{
 			Assert.NotNull(properties, "properties");
 			_properties = properties;

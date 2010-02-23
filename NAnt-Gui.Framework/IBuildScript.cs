@@ -17,9 +17,11 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// Colin Svingen (nantgui@swoogan.com)
+// Colin Svingen (swoogan@gmail.com)
 
 #endregion
+
+using System.Collections.Generic;
 
 namespace NAntGui.Framework
 {
@@ -27,7 +29,7 @@ namespace NAntGui.Framework
 	{
 		void Parse();
 
-		TargetCollection Targets { get; }
+		List<BuildTarget> Targets { get; }
 		PropertyCollection Properties { get; }
 
 		string Name { get; }
