@@ -5,7 +5,7 @@
 
   <target name="Installer" description="Create InnoSetup Installer" depends="Release">
 	<loadtasks assembly="Nant.InnoSetup\bin\Release\NAnt.InnoSetupTasks.dll" />
-    <innosetup script="NAnt-Gui.iss" />    
+    <innosetup script="NAnt-Gui.iss" />
   </target>
 
   <target name="RunInstaller" description="Run the InnoSetup Installer">

@@ -34,70 +34,111 @@ namespace NAntGui.Gui.Controls
 	/// Summary description for TargetsTreeView.
 	/// </summary>
 	public partial class TargetsWindow
-	{
-        internal delegate void RunEventHandler(string target);
-        internal event RunEventHandler RunTarget;
+	{        
+        internal event EventHandler<RunEventArgs> RunTarget;
+
+        private string _projectName = "";
 		
 		public TargetsWindow()
 		{
 			InitializeComponent();
 		}
 
-		private void _treeView_AfterCheck(object sender, TreeViewEventArgs e)
-		{
-			foreach (TreeNode node in e.Node.Nodes)
-			{
-				node.Checked = e.Node.Checked;
-			}
-		}	
+        internal void SetTargets(List<BuildTarget> targets)
+        {
+            _treeView.Nodes.Clear();
 
-		private void _treeView_MouseMove(object sender, MouseEventArgs e)
-		{
-			TreeNode node = _treeView.GetNodeAt(e.X, e.Y);
-			if (node == null || node.Parent == null)
-			{
-				_toolTip.SetToolTip(_treeView, "");
-			}
-			else
-			{
-				BuildTarget target = node.Tag as BuildTarget;
-				_toolTip.SetToolTip(_treeView, target.Description);
-			}
-		}
+            _treeView.Nodes.Add(new TreeNode(_projectName));
 
-		internal List<BuildTarget> GetTargets()
-		{
-			List<BuildTarget> targets = new List<BuildTarget>();
-			foreach (TreeNode node in _treeView.Nodes[0].Nodes)
-			{
-				if (node.Checked)
-				{
-					BuildTarget target = node.Tag as BuildTarget;
-					targets.Add(target);
-				}
-			}
+            foreach (BuildTarget target in targets)
+            {
+                AddTargetTreeNode(target);
+            }
 
-			return targets;
-		}
+            _treeView.ExpandAll();
+        }
 
-		internal void AddTargets(string projectName, List<BuildTarget> targets)
-		{
-			_treeView.Nodes.Clear();
 
-			_treeView.Nodes.Add(new TreeNode(projectName));
+        internal List<BuildTarget> SelectedTargets
+        {
+            get
+            {
+                List<BuildTarget> targets = new List<BuildTarget>();
+                foreach (TreeNode node in _treeView.Nodes[0].Nodes)
+                {
+                    if (node.Checked)
+                    {
+                        BuildTarget target = node.Tag as BuildTarget;
+                        targets.Add(target);
+                    }
+                }
 
-			foreach (BuildTarget target in targets)
-			{
-				AddTargetTreeNode(target);
-			}
+                return targets;
+            }
+            set
+            {
+                foreach (BuildTarget target in value)
+                {
+                    SelectTarget(target);
+                }
 
-			_treeView.ExpandAll();
-		}
+                //_treeView.ExpandAll();
+            }
+        }
 
-		private void AddTargetTreeNode(BuildTarget buildTarget)
+        private void SelectTarget(BuildTarget target)
+        {
+            foreach (TreeNode node in _treeView.Nodes[0].Nodes)
+                if (node.Text == target.Name)
+                    node.Checked = true;
+        }
+
+        internal string ProjectName
+        {
+            get { return _projectName; }
+            set { _projectName = value; }
+        }
+
+        #region Event Handlers
+
+        private void _treeView_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            foreach (TreeNode node in e.Node.Nodes)
+            {
+                node.Checked = e.Node.Checked;
+            }
+        }
+
+        private void _treeView_MouseMove(object sender, MouseEventArgs e)
+        {
+            TreeNode node = _treeView.GetNodeAt(e.X, e.Y);
+            if (node == null || node.Parent == null)
+            {
+                _toolTip.SetToolTip(_treeView, "");
+            }
+            else
+            {
+                BuildTarget target = node.Tag as BuildTarget;
+                _toolTip.SetToolTip(_treeView, target.Description);
+            }
+        }
+
+        private void _runMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sender is TreeNode)
+            {
+                TreeNode node = sender as TreeNode;
+                OnRunTarget(node.Name);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddTargetTreeNode(BuildTarget buildTarget)
 		{			
-			if (!(Settings.Default.HideTargetsWithoutDescription && 
-				!HasDescription(buildTarget.Description)))
+			if (!Settings.Default.HideTargetsWithoutDescription || HasDescription(buildTarget.Description))
 			{
 				string targetName = FormatTargetName(buildTarget.Name, buildTarget.Description);
 				TreeNode node = new TreeNode(targetName);
@@ -123,16 +164,14 @@ namespace NAntGui.Gui.Controls
 			_treeView.Nodes.Clear();
 		}
 		
-        private void _runMenuItem_Click(object sender, EventArgs e)
-        {
-            OnRunTarget();
-        }
-
-        private void OnRunTarget()
+        private void OnRunTarget(string target)
         {
             // need to figure out which target to run
             if (RunTarget != null)
-                RunTarget("");
+                RunTarget(this, new RunEventArgs(target));
         }
-	}
+
+        #endregion
+
+    }
 }

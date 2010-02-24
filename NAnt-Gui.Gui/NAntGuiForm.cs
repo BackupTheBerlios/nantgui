@@ -30,6 +30,7 @@ using NAntGui.Core;
 using NAntGui.Gui.Controls;
 using NAntGui.Gui.Properties;
 using System.IO;
+using System.Collections.Generic;
 
 namespace NAntGui.Gui
 {
@@ -155,9 +156,10 @@ namespace NAntGui.Gui
             _propertyWindow.AddProperties(properties);
         }
 
-        internal void AddTargets(string projectName, System.Collections.Generic.List<BuildTarget> targets)
+        internal void AddTargets(IBuildScript buildScript)
         {
-            _targetsWindow.AddTargets(projectName, targets);
+            _targetsWindow.ProjectName = buildScript.Name;
+            _targetsWindow.SetTargets(buildScript.Targets);
         }
 
         internal RunState RunState
@@ -221,7 +223,13 @@ namespace NAntGui.Gui
                         break;
                 }
             }
-        } 
+        }
+
+        internal List<BuildTarget> SelectedTargets
+        {
+            get { return _targetsWindow.SelectedTargets;  }
+            set { _targetsWindow.SelectedTargets = value;  }
+        }
 
         internal void CanRedo(bool canRedo)
         {
@@ -272,7 +280,7 @@ namespace NAntGui.Gui
             RunState = RunState.Running;
             _outputWindow.Clear();
             _outputWindow.Show(_dockPanel);
-            _controller.Run(_targetsWindow.GetTargets());
+            _controller.Run(_targetsWindow.SelectedTargets);
         }
 
         private void NewClicked(object sender, System.EventArgs e)

@@ -62,4 +62,19 @@ namespace NAntGui.Gui
             get { return _item; }
         }
     }
+
+    class RunEventArgs : EventArgs
+    {
+        private string _target;
+
+        internal RunEventArgs(string target)
+        {
+            _target = target;
+        }
+
+        internal string Target
+        {
+            get { return _target; }
+        }
+    }
 }

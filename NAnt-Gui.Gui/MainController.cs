@@ -89,8 +89,7 @@ namespace NAntGui.Gui
 		{
             if (ActiveDocument.IsDirty(ActiveWindow.Contents))
             {
-                SaveDocument();
-                UpdateTitle();
+                SaveDocument();                
             }
 
             ActiveDocument.SetTargets(targets);
@@ -120,10 +119,14 @@ namespace NAntGui.Gui
         {
             _ignoreDocumentChanged = true;
             ActiveDocument.Save(ActiveWindow.Contents, true);
-            _ignoreDocumentChanged = false;            
+            Thread.Sleep(100);
+            _ignoreDocumentChanged = false;
 
-            UpdateTitle();
+            List<BuildTarget> targets = _mainForm.SelectedTargets;
+            UpdateTitle();            
             UpdateDisplay();
+            _mainForm.SelectedTargets = targets;
+
             _mainForm.Enable();
         }
 
@@ -247,12 +250,8 @@ namespace NAntGui.Gui
 
 		internal void MainFormClosing(FormClosingEventArgs e)
 		{
-            if (this.ActiveDocument != null)
-			    this.ActiveDocument.Stop();
-
             // Don't need this event while closing (should be in CloseAllDocuments)
             _mainForm.DockPanel.ActiveDocumentChanged -= new EventHandler(DockPanel_ActiveDocumentChanged);
-			//CloseAllDocuments(e);			
 		}
 
 		internal void RecentItemClicked(string file)
@@ -377,7 +376,10 @@ namespace NAntGui.Gui
         void window_DocumentChangedOutside(object sender, FileSystemEventArgs e)
         {
             if (!_ignoreDocumentChanged)
+            {
                 LoadDocument(e.FullPath);
+                Console.WriteLine("called -- not ignored");
+            }
         }
 
         internal DocumentWindow GetWindow(string filename)
@@ -407,14 +409,14 @@ namespace NAntGui.Gui
 		{
             if (this.ActiveDocument != null)
             {
-                _mainForm.Text = string.Format("NAnt-Gui - {0}", this.ActiveWindow.TabText);
+                _mainForm.Text = string.Format("NAnt-Gui - {0}", ActiveWindow.TabText);
 
-                IBuildScript buildScript = this.ActiveDocument.BuildScript;
+                IBuildScript buildScript = ActiveDocument.BuildScript;
 
                 string name = string.Format("{0} ({1})", buildScript.Name, buildScript.Description);
 
                 _mainForm.SetStatus(name, this.ActiveDocument.FullName);
-                _mainForm.AddTargets(buildScript.Name, buildScript.Targets);
+                _mainForm.AddTargets(buildScript);
                 _mainForm.AddProperties(buildScript.Properties);
             }
 		}

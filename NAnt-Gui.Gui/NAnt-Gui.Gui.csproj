@@ -192,7 +192,7 @@
     <Compile Include="EditStateEnum.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Events.cs" />
+    <Compile Include="EventsArgs.cs" />
     <Compile Include="IEditCommands.cs">
       <SubType>Code</SubType>
     </Compile>
