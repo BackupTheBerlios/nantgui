@@ -76,6 +76,7 @@ For 2.1 and beyond
 + Add basic MSBuild support
 
 2.0.0:
+(DONE): Merge the Dotnet-2.0 branch into the trunk
 (DONE): Unsaved/New document should prompt for save on close of the app
 (DONE): Unsaved/New document should prompt for save when the X on the dockpanel is clicked
 (DONE): In general, reloading the document changes the cursor to 1,1
