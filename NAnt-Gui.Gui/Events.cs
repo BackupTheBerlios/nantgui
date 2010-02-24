@@ -47,4 +47,19 @@ namespace NAntGui.Gui
             get { return _point; }
         }
     }
+
+    class RecentItemsEventArgs : EventArgs
+    {
+        private string _item;
+
+        internal RecentItemsEventArgs(string item)
+        {
+            _item = item;
+        }
+
+        internal string Item
+        {
+            get { return _item; }
+        }
+    }
 }

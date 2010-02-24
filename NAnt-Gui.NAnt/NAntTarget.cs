@@ -29,9 +29,10 @@ namespace NAntGui.NAnt
 {
 	/// <summary>
 	/// Summary description for Target.
-	/// </summary>
+	/// </summary>    
 	public class NAntTarget : BuildTarget, IComparable
 	{
+        // TODO: Convert from XmlDocument to XmlReader.  Create to get line numbers for later use.
 		private string[] _depends;
 
 		public NAntTarget(XmlElement element)

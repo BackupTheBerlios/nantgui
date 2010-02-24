@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using NAntGui.Gui.Properties;
 using System.Collections;
 using System.Collections.Specialized;
+using System;
 
 namespace NAntGui.Gui
 {
@@ -33,6 +34,9 @@ namespace NAntGui.Gui
 	/// </summary>
 	internal static class RecentItems
 	{
+        public static event EventHandler<RecentItemsEventArgs> ItemAdded;
+        public static event EventHandler<RecentItemsEventArgs> ItemRemoved;
+
 		internal static string First
 		{
             get { return Settings.Default.RecentItems[0]; }
@@ -61,6 +65,8 @@ namespace NAntGui.Gui
 			{
 				Settings.Default.RecentItems.Remove(item);
                 Settings.Default.Save();
+
+                OnItemRemoved(item);
 			}            
 		}
 
@@ -73,6 +79,8 @@ namespace NAntGui.Gui
 
 			Settings.Default.RecentItems.Insert(0, item);
             Settings.Default.Save();
+
+            OnItemAdded(item);
 		}
 
         private static bool TooManyItems
@@ -86,8 +94,11 @@ namespace NAntGui.Gui
 
 			if (lastItem >= 0)
 			{
+                string item = Settings.Default.RecentItems[lastItem];
 				Settings.Default.RecentItems.RemoveAt(lastItem);
                 Settings.Default.Save();
+
+                OnItemRemoved(item);
 			}
 		}
 
@@ -96,6 +107,18 @@ namespace NAntGui.Gui
 			Settings.Default.RecentItems.Remove(item);
 			Settings.Default.RecentItems.Insert(0, item);
             Settings.Default.Save();
-		}  
+		}
+
+        private static void OnItemAdded(string item)
+        {
+            if (ItemAdded != null)
+                ItemAdded(null, new RecentItemsEventArgs(item));
+        }
+
+        private static void OnItemRemoved(string item)
+        {
+            if (ItemRemoved != null)
+                ItemRemoved(null, new RecentItemsEventArgs(item));
+        }
     }
 }

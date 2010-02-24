@@ -55,7 +55,13 @@ namespace NAntGui.Gui
             _options = options;
 			_loader.DoWork += new DoWorkEventHandler(loader_DoWork);
             _loader.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_loader_RunWorkerCompleted);
+            RecentItems.ItemAdded += new EventHandler<RecentItemsEventArgs>(RecentItems_ItemAdded);
 		}
+
+        void RecentItems_ItemAdded(object sender, RecentItemsEventArgs e)
+        {
+            _mainForm.CreateRecentItemsMenu();
+        }
 
 		internal void NewBlankDocument()
 		{            
@@ -344,9 +350,7 @@ namespace NAntGui.Gui
                 window = new DocumentWindow(doc);
                 SetupWindow(window, doc);
 
-                // TODO: combine the following with an event
-                RecentItems.Add(doc.FullName);
-                _mainForm.CreateRecentItemsMenu();
+                RecentItems.Add(doc.FullName);                
 
                 // Parse the file in the background
                 _loader.RunWorkerAsync();                
@@ -390,9 +394,7 @@ namespace NAntGui.Gui
                 DocumentWindow window = new DocumentWindow(doc);
                 SetupWindow(window, doc);
 
-                // TODO: combine the following with an event
                 RecentItems.Add(doc.FullName);
-                _mainForm.CreateRecentItemsMenu();
 
                 ParseBuildFile(doc);
                 UpdateDisplay();
