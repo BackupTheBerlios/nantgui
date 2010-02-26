@@ -33,16 +33,42 @@ namespace NAntGui.Gui
 	class ProjectInfo
 	{
 		private string _name;
+        private string _description;
+        private string _default;
+        private string _basedir;
+
+        //internal ProjectInfo()
+        //{
+        //}
 		
-		internal ProjectInfo(string name)
-		{
-			Assert.NotNull(name, "name");
-			_name = name;
-		}
+        //internal ProjectInfo(string name, string description, string @default, string basedir)
+        //{
+        //    Assert.NotNull(name, "name");
+        //    _name = name;
+        //}
 		
 		internal string Name
 		{
 			get { return _name; }
+            set { _name = value; }
 		}
+
+        internal string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
+        internal string Default
+        {
+            get { return _default; }
+            set { _default = value; }
+        }
+
+        internal string Basedir
+        {
+            get { return _basedir; }
+            set { _basedir = value; }
+        }
 	}
 }

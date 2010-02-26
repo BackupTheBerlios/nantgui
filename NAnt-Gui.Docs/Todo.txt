@@ -1,27 +1,25 @@
 Required for 1.9/2.0
 --------------------
-- Saving the document changes which targets are selected
-- Should save the locations of the toolstrips on the mainform	
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
 - Filewatcher 
+	* Saving the document changes which targets are selected (caused by filewatcher firing during save)
 	* should do something when the file is deleted
 	* should prompt the user, when the file changes, if they want to reload it (mark it as unsaved when they decline)
 	* create it in the controller and pass it into the NAntDocument.  The window isn't the right place for it, but it's there
 	  because it needs a control to synchronize the threading
 - Figure out why folding and tabcompletion don't work on the xmlcontrol
-- Rename 
-	* NAntDocument NAntGuiDocument
-	* IBuildScript IScriptParser
-	* NAntBuildScript NAntScriptParser	
 - New Project code implementation
 - Multiple tabs:	
 	* Add 'close all tabs' menu item to tab right click
 	* Add 'close other tabs' menu item to tab right click	
 	* Add save all menu item and toolstrip button
 	* Window menu that lists all open tabs
-
+- Rename 
+	* NAntDocument NAntGuiDocument
+	* IBuildScript IScriptParser
+	* NAntBuildScript NAntScriptParser	
 	
 For 2.1 and beyond
 -----------
@@ -33,7 +31,7 @@ For 2.1 and beyond
 	+ write generator to produce template from XSD for NAnt	
 - Find and replace
 
-+ Create options for LineNumbers, Floating, TabSpaces, etc...
++ Create options for LineNumbers, Folding, TabSpaces, etc...
 + FOLDING AND COMPLETION
 	+ Scintilla does not have folding or completion for XML.  Need to figure out how to get the completion from SharpDevelop into NAnt-Gui
 	  Scintilla does have find and replace with regular expressions and other features not in Sharpdevelop text editor control
@@ -74,7 +72,10 @@ For 2.1 and beyond
 
 + Add basic MSBuild support
 
-2.0.0:
+1.9.1:
+(DONE): Should save the locations of the toolstrips on the mainform	
+
+1.9.0:
 (DONE): Update website to show that NAnt-Gui runs in .Net 2.0
 (DONE): Merge the Dotnet-2.0 branch into the trunk
 (DONE): Unsaved/New document should prompt for save on close of the app

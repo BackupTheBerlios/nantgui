@@ -41,5 +41,11 @@
     <Setting Name="WordWrapOutput" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="StandardToolStripLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">3, 0</Value>
+    </Setting>
+    <Setting Name="BuildToolStripLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">286, 0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

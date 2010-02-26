@@ -46,6 +46,7 @@ Name: envpath; GroupDescription: Set environment variables; Description: Add bin
 ; ### Binary ###
 ; Documents
 Source: NAnt-Gui.Docs\*.txt; DestDir: {app}; Flags: ignoreversion
+Source: NAnt-Gui.Gui\BlankProject.build; DestDir: {app}; Flags: ignoreversion
 ; NAnt-Gui
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe.config; DestDir: {app}\bin; Flags: ignoreversion; Components: bin

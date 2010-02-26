@@ -35,7 +35,7 @@ namespace NAntGui.Gui
 	/// </summary>
 	internal partial class NewProjectForm
 	{
-		internal event EventHandler NewClicked;
+		internal event EventHandler<NewProjectEventArgs> NewClicked;
 
 		internal NewProjectForm()
 		{
@@ -58,23 +58,27 @@ namespace NAntGui.Gui
 		{
 			if (NameEntered)
 			{
-//				project proj = new project();
-//				proj.name = NameTextBox.Text;
-//				proj.@default = DefaultTextBox.Text;
-//				proj.basedir = BasedirTextBox.Text;
-//
-//				XmlSerializer serial = new XmlSerializer(typeof (project));
-//				MemoryStream stream = new MemoryStream();
-//
-//				serial.Serialize(stream, proj);
-//
-//				byte[] buffer = new byte[stream.Length];
-//
-//				stream.Read(buffer, 0, (int) stream.Length - 1);
-//
-//				string xml = Encoding.Unicode.GetString(buffer);
-//
-//				MessageBox.Show(xml);
+                ProjectInfo project = new ProjectInfo();
+                project.Name = NameTextBox.Text;
+                project.Default = DefaultTextBox.Text;
+                project.Basedir = BasedirTextBox.Text;
+                project.Description = DescriptionTextBox.Text;
+
+                OnNewProject(project);
+
+                //XmlSerializer serial = new XmlSerializer(typeof(project));
+                //MemoryStream stream = new MemoryStream();
+
+                //serial.Serialize(stream, proj);
+
+                //byte[] buffer = new byte[stream.Length];
+
+                //stream.Read(buffer, 0, (int)stream.Length - 1);
+
+                //string xml = Encoding.Unicode.GetString(buffer);
+
+                //MessageBox.Show(xml);
+                Close();
 			}
 			else
 			{
@@ -84,7 +88,13 @@ namespace NAntGui.Gui
 
 		private bool NameEntered
 		{
-			get { return NameTextBox.Text.Length == 0; }
+			get { return NameTextBox.Text.Length != 0; }
 		}
+
+        private void OnNewProject(ProjectInfo info)
+        {
+            if (NewClicked != null)
+                NewClicked(this, new NewProjectEventArgs(info));
+        }
 	}
 }

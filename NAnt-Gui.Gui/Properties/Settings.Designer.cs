@@ -168,5 +168,29 @@ namespace NAntGui.Gui.Properties {
                 this["WordWrapOutput"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3, 0")]
+        public global::System.Drawing.Point StandardToolStripLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["StandardToolStripLocation"]));
+            }
+            set {
+                this["StandardToolStripLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("286, 0")]
+        public global::System.Drawing.Point BuildToolStripLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["BuildToolStripLocation"]));
+            }
+            set {
+                this["BuildToolStripLocation"] = value;
+            }
+        }
     }
 }

@@ -206,7 +206,6 @@
     <Compile Include="NAntGuiForm.Designer.cs">
       <DependentUpon>NAntGuiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewProjectEventArgs.cs" />
     <Compile Include="NewProjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,6 +239,8 @@
     <Compile Include="NAntDocument.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="BlankProject.build">
+    </Content>
     <None Include="Images\File.ico" />
     <None Include="Images\New.ico" />
     <None Include="Images\Open.ico" />

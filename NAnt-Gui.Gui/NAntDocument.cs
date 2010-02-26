@@ -172,14 +172,13 @@ namespace NAntGui.Gui
 		{
 			Assert.NotNull(targets, "targets");
 			if (_buildRunner != null)
-			{
 				_buildRunner.Targets = targets;
-			}
 		}
 
 		internal void Close()
 		{
-			_buildRunner.Stop();
+            if (_buildRunner != null)
+			    _buildRunner.Stop();
 		}
 
 		internal bool IsDirty(string contents)

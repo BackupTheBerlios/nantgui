@@ -23,6 +23,7 @@
 
 using System;
 using System.Drawing;
+using NAntGui.Framework;
 
 namespace NAntGui.Gui
 {
@@ -75,6 +76,26 @@ namespace NAntGui.Gui
         internal string Target
         {
             get { return _target; }
+        }
+    }
+
+    /// <summary>
+    /// Description of NewProjectEventArgs.
+    /// </summary>
+    class NewProjectEventArgs : EventArgs
+    {
+        private ProjectInfo _info;
+
+        internal NewProjectEventArgs(ProjectInfo info)
+        {
+            Assert.NotNull(info, "info");
+            _info = info;
+        }
+
+        internal ProjectInfo Info
+        {
+            get { return _info; }
+            set { _info = value; }
         }
     }
 }

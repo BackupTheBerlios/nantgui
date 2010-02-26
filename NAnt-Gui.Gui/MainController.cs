@@ -37,11 +37,13 @@ using NAntGui.Gui.Controls;
 using WeifenLuo.WinFormsUI.Docking;
 using NAntGui.Gui.Properties;
 using System.Threading;
+using System.Xml;
 
 namespace NAntGui.Gui
 {
     public class MainController
     {
+        private const string BLANK_PROJECT = "BlankProject.build";
 		private BackgroundWorker _loader = new BackgroundWorker();
         private NAntGuiForm _mainForm;
 		private IEditCommands _editCommands;		
@@ -73,17 +75,48 @@ namespace NAntGui.Gui
 		internal void NewNAntProjectClicked()
 		{
 			NewProjectForm form = new NewProjectForm();
-			form.NewClicked += new EventHandler(CreateNewProject);
+			form.NewClicked += new EventHandler<NewProjectEventArgs>(CreateNewProject);
 			form.Show();			
-		}	
-		
-		private void CreateNewProject(object sender, EventArgs e)
-		{
-            // TODO: Implement New Project
-			ProjectInfo info = ((NewProjectEventArgs)e).Info;
-			DocumentWindow window = new DocumentWindow();
-            window.DocumentChanged += new DocumentEventHandler(window_DocumentChanged);
 		}
+
+        private void CreateNewProject(object sender, NewProjectEventArgs e)
+		{
+            NAntDocument doc = new NAntDocument(_outputWindow, this);
+            doc.Contents = GetNewDocumentContents(e.Info);
+			DocumentWindow window = new DocumentWindow(doc);
+            SetupWindow(window, doc);
+		}
+
+        private string GetNewDocumentContents(ProjectInfo projectInfo)
+        {
+            string path = Path.Combine("..", BLANK_PROJECT);
+            XmlDocument xml = new XmlDocument();
+            try
+            {
+                xml.Load(path);
+                XmlNode node = xml.GetElementsByTagName("project")[0];
+                node.Attributes["name"].Value = projectInfo.Name;
+                node.Attributes["default"].Value = projectInfo.Default;
+
+                // TODO: Should the basedir attribute be removed if there isn't one specified?
+                node.Attributes["basedir"].Value = projectInfo.Basedir;
+
+                node = xml.GetElementsByTagName("description")[0];
+                node.InnerText = projectInfo.Description;
+
+                node = xml.GetElementsByTagName("target")[0];
+                node.Attributes["name"].Value = projectInfo.Default;
+                node.Attributes["description"].Value = projectInfo.Default;
+
+                return xml.InnerXml;
+            }
+            catch
+            {
+                MessageBox.Show("New project template missing.  Please re-install the application.");
+                // FIXME: Shouldn't return anything when there's an error
+                return "";
+            }
+        }
 
         internal void Run(List<BuildTarget> targets)
 		{

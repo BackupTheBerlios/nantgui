@@ -54,12 +54,12 @@ namespace NAntGui.Gui
             _controller.SetControls(this, _outputWindow);
 
             Assert.NotNull(options, "options");
-            _initialOptions = options;              
+            _initialOptions = options;
 
             AttachEventHandlers();
 
             SetStyle(ControlStyles.DoubleBuffer, true);
-            MainFormSerializer.Attach(this, _propertyWindow);
+            MainFormSerializer.Attach(this, _propertyWindow, _standardToolStrip, _buildToolStrip);
 
             this.Disable();
         }
@@ -439,10 +439,10 @@ namespace NAntGui.Gui
             {
                 _controller.ContentAdded();
 
-                DocumentWindow window = e.Content as DocumentWindow;
-                ToolStripMenuItem item = new ToolStripMenuItem(window.TabText);
-                item.Tag = window.Document.FullName;
-                item.Click += new EventHandler(Document_Click);
+                //DocumentWindow window = e.Content as DocumentWindow;
+                //ToolStripMenuItem item = new ToolStripMenuItem(window.TabText);
+                //item.Tag = window.Document.FullName;
+                //item.Click += new EventHandler(Document_Click);
                 //                _documentsMenuItem.DropDownItems.Add(item);
             }
         }
@@ -521,6 +521,12 @@ namespace NAntGui.Gui
             _controller.SaveAllDocuments();
         }
 
+        private void _newNAntProject_Click(object sender, EventArgs e)
+        {
+            _controller.NewNAntProjectClicked();
+        }
+
         #endregion
+
     }
 }

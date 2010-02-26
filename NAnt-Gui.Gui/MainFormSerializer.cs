@@ -37,18 +37,22 @@ namespace NAntGui.Gui
 
         private NAntGuiForm _mainForm;
         private PropertyWindow _propertyWindow;
+        private ToolStrip _standardToolStrip;
+        private ToolStrip _buildToolStrip;
 
-        internal static void Attach(NAntGuiForm form, PropertyWindow propertyWindow)
+        internal static void Attach(NAntGuiForm form, PropertyWindow propertyWindow, ToolStrip standardToolStrip, ToolStrip buildToolStrip)
 		{
-            new MainFormSerializer(form, propertyWindow);
+            new MainFormSerializer(form, propertyWindow, standardToolStrip, buildToolStrip);
 		}
 
-        private MainFormSerializer(NAntGuiForm form, PropertyWindow propertyWindow)
+        private MainFormSerializer(NAntGuiForm form, PropertyWindow propertyWindow, ToolStrip standardToolStrip, ToolStrip buildToolStrip)
 		{
 			_mainForm = form;
 			_mainForm.Load += new EventHandler(OnLoad);
             _mainForm.Closing += new CancelEventHandler(OnClosing);
 			_propertyWindow = propertyWindow;
+            _standardToolStrip = standardToolStrip;
+            _buildToolStrip = buildToolStrip;
 		}
 
 		private void OnLoad(object sender, EventArgs e)
@@ -57,6 +61,8 @@ namespace NAntGui.Gui
             _mainForm.WindowState = Settings.Default.MainFormState;
             _mainForm.Size = Settings.Default.MainFormSize;
             _propertyWindow.PropertyGrid.PropertySort = Settings.Default.PropertySort;
+            _standardToolStrip.Location = Settings.Default.StandardToolStripLocation;
+            _buildToolStrip.Location = Settings.Default.BuildToolStripLocation;
 		}
 
 		/// <summary>
@@ -72,6 +78,8 @@ namespace NAntGui.Gui
 
 			Settings.Default.MainFormState = AdjustWindowState();
 			Settings.Default.PropertySort = _propertyWindow.PropertyGrid.PropertySort;
+            Settings.Default.StandardToolStripLocation = _standardToolStrip.Location;
+            Settings.Default.BuildToolStripLocation = _buildToolStrip.Location;
             Settings.Default.Save();
 		}
 
@@ -88,6 +96,6 @@ namespace NAntGui.Gui
         private bool IsMinimized()
         {
             return _mainForm.WindowState == FormWindowState.Minimized;
-        }        
-	}
+        }
+    }
 }
