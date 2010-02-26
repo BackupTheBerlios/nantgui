@@ -10,7 +10,6 @@ Required for 1.9/2.0
 	* create it in the controller and pass it into the NAntDocument.  The window isn't the right place for it, but it's there
 	  because it needs a control to synchronize the threading
 - Figure out why folding and tabcompletion don't work on the xmlcontrol
-- New Project code implementation
 - Multiple tabs:	
 	* Add 'close all tabs' menu item to tab right click
 	* Add 'close other tabs' menu item to tab right click	
@@ -74,6 +73,7 @@ For 2.1 and beyond
 
 1.9.1:
 (DONE): Should save the locations of the toolstrips on the mainform	
+(DONE): New Project code implementation
 
 1.9.0:
 (DONE): Update website to show that NAnt-Gui runs in .Net 2.0
