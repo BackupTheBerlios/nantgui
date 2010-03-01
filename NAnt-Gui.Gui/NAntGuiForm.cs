@@ -521,12 +521,11 @@ namespace NAntGui.Gui
             _controller.SaveAllDocuments();
         }
 
-        private void _newNAntProject_Click(object sender, EventArgs e)
+        private void NewProjectClicked(object sender, EventArgs e)
         {
             _controller.NewNAntProjectClicked();
         }
 
         #endregion
-
     }
 }

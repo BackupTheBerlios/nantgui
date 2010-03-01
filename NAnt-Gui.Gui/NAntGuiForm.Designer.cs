@@ -74,7 +74,9 @@ namespace NAntGui.Gui
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NAntGuiForm));
             this._dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this._standardToolStrip = new System.Windows.Forms.ToolStrip();
-            this._newToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this._newDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._newBlankMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this._saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this._reloadToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -218,7 +220,7 @@ namespace NAntGui.Gui
             // 
             this._standardToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this._standardToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._newToolStripButton,
+            this._newDropDownButton,
             this.openToolStripButton,
             this._saveToolStripButton,
             this._reloadToolStripButton,
@@ -235,18 +237,37 @@ namespace NAntGui.Gui
             this._standardToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this._standardToolStrip.Location = new System.Drawing.Point(3, 0);
             this._standardToolStrip.Name = "_standardToolStrip";
-            this._standardToolStrip.Size = new System.Drawing.Size(314, 25);
+            this._standardToolStrip.Size = new System.Drawing.Size(289, 25);
             this._standardToolStrip.TabIndex = 4;
             // 
-            // _newToolStripButton
+            // _newDropDownButton
             // 
-            this._newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this._newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("_newToolStripButton.Image")));
-            this._newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this._newToolStripButton.Name = "_newToolStripButton";
-            this._newToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._newToolStripButton.Text = "&New";
-            this._newToolStripButton.Click += new System.EventHandler(this.NewClicked);
+            this._newDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._newDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newProjectToolStripMenuItem,
+            this._newBlankMenuItem});
+            this._newDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("_newDropDownButton.Image")));
+            this._newDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._newDropDownButton.Name = "_newDropDownButton";
+            this._newDropDownButton.Size = new System.Drawing.Size(29, 22);
+            this._newDropDownButton.Text = "toolStripDropDownButton1";
+            this._newDropDownButton.Click += new System.EventHandler(this.NewProjectClicked);
+            // 
+            // newProjectToolStripMenuItem
+            // 
+            this.newProjectToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newProjectToolStripMenuItem.Image")));
+            this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.newProjectToolStripMenuItem.Text = "New NAnt &Project";
+            this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.NewProjectClicked);
+            // 
+            // _newBlankMenuItem
+            // 
+            this._newBlankMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_newBlankMenuItem.Image")));
+            this._newBlankMenuItem.Name = "_newBlankMenuItem";
+            this._newBlankMenuItem.Size = new System.Drawing.Size(159, 22);
+            this._newBlankMenuItem.Text = "New &Blank";
+            this._newBlankMenuItem.Click += new System.EventHandler(this.NewClicked);
             // 
             // openToolStripButton
             // 
@@ -445,7 +466,7 @@ namespace NAntGui.Gui
             this._newNAntProject.Size = new System.Drawing.Size(197, 22);
             this._newNAntProject.Text = "New NAnt &Project";
             this._newNAntProject.ToolTipText = "Create a new NAnt project file";
-            this._newNAntProject.Click += new System.EventHandler(this._newNAntProject_Click);
+            this._newNAntProject.Click += new System.EventHandler(this.NewProjectClicked);
             // 
             // _newBlank
             // 
@@ -835,9 +856,9 @@ namespace NAntGui.Gui
             this._buildToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._runToolStripButton,
             this._stopToolStripButton});
-            this._buildToolStrip.Location = new System.Drawing.Point(317, 0);
+            this._buildToolStrip.Location = new System.Drawing.Point(292, 0);
             this._buildToolStrip.Name = "_buildToolStrip";
-            this._buildToolStrip.Size = new System.Drawing.Size(58, 25);
+            this._buildToolStrip.Size = new System.Drawing.Size(89, 25);
             this._buildToolStrip.TabIndex = 15;
             this._buildToolStrip.Text = "toolStrip1";
             // 
@@ -960,7 +981,6 @@ namespace NAntGui.Gui
         private ToolStrip _buildToolStrip;
         private ToolStripButton _runToolStripButton;
         private ToolStripButton _stopToolStripButton;
-        private ToolStripButton _newToolStripButton;
         private ToolStripButton openToolStripButton;
         private ToolStripButton _saveToolStripButton;
         private ToolStripButton printToolStripButton;
@@ -975,7 +995,10 @@ namespace NAntGui.Gui
         private ToolStripPanel toolStripPanel1;
         private ToolStripButton _undoToolStripButton;
         private ToolStripButton _redoToolStripButton;
-        private ToolStripSeparator toolStripSeparator9;	
+        private ToolStripSeparator toolStripSeparator9;
+        private ToolStripDropDownButton _newDropDownButton;
+        private ToolStripMenuItem newProjectToolStripMenuItem;
+        private ToolStripMenuItem _newBlankMenuItem;	
 		
 	}
 }

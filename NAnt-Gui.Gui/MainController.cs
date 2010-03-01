@@ -94,21 +94,35 @@ namespace NAntGui.Gui
             try
             {
                 xml.Load(path);
-                XmlNode node = xml.GetElementsByTagName("project")[0];
-                node.Attributes["name"].Value = projectInfo.Name;
-                node.Attributes["default"].Value = projectInfo.Default;
+                XmlElement element = xml.GetElementsByTagName("project")[0] as XmlElement;
+                element.Attributes["name"].Value = projectInfo.Name;
+                element.Attributes["default"].Value = projectInfo.Default;
 
                 // TODO: Should the basedir attribute be removed if there isn't one specified?
-                node.Attributes["basedir"].Value = projectInfo.Basedir;
+                if (string.IsNullOrEmpty(projectInfo.Basedir))
+                    element.RemoveAttribute("basedir");
+                else
+                    element.Attributes["basedir"].Value = projectInfo.Basedir;
 
-                node = xml.GetElementsByTagName("description")[0];
+
+                XmlNode node = xml.GetElementsByTagName("description")[0];
                 node.InnerText = projectInfo.Description;
 
                 node = xml.GetElementsByTagName("target")[0];
                 node.Attributes["name"].Value = projectInfo.Default;
                 node.Attributes["description"].Value = projectInfo.Default;
 
-                return xml.InnerXml;
+                using (StringWriter sw = new StringWriter())
+                {
+                    using (XmlTextWriter xtw = new XmlTextWriter(sw))
+                    {
+                        xtw.Formatting = Formatting.Indented;
+                        xml.WriteTo(xtw);
+                        return sw.ToString();
+                    }
+                }
+
+                //return xml.InnerXml;
             }
             catch
             {
