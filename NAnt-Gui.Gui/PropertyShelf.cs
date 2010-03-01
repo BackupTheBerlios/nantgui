@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -22,177 +22,184 @@
 #endregion
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using NAntGui.Framework;
 
 namespace NAntGui.Gui
 {
-	/// <summary>
-	/// Summary description for PropertyShelf
-	/// </summary>
-	class PropertyShelf : ICustomTypeDescriptor	
-	{
-		#region BuildPropertyDescriptor class definition
+    /// <summary>
+    /// Summary description for PropertyShelf
+    /// </summary>
+    internal class PropertyShelf : ICustomTypeDescriptor
+    {
+        #region BuildPropertyDescriptor class definition
 
-		private class BuildPropertyDescriptor : PropertyDescriptor
-		{
-			private BuildProperty _item;
+        private class BuildPropertyDescriptor : PropertyDescriptor
+        {
+            private readonly BuildProperty _item;
 
-			internal BuildPropertyDescriptor(BuildProperty item, Attribute[] attrs) :
-				base(item.Name, attrs)
-			{
-				_item = item;
-			}
+            internal BuildPropertyDescriptor(BuildProperty item, Attribute[] attrs) :
+                base(item.Name, attrs)
+            {
+                _item = item;
+            }
 
-			public override Type ComponentType
-			{
-				get { return _item.GetType(); }
-			}
+            public override Type ComponentType
+            {
+                get { return _item.GetType(); }
+            }
 
             public override bool IsReadOnly
-			{
-				get { return _item.ReadOnly; }
-			}
+            {
+                get { return _item.ReadOnly; }
+            }
 
             public override Type PropertyType
-			{
-				get { return _item.Type; }
-			}
+            {
+                get { return _item.Type; }
+            }
 
             public override bool CanResetValue(object component)
-			{
-				return _item.DefaultExpandedValue == null ?
-					false :
-					_item.ExpandedValue != _item.DefaultExpandedValue;
-			}
+            {
+                return _item.DefaultExpandedValue == null
+                           ?
+                               false
+                           :
+                               _item.ExpandedValue != _item.DefaultExpandedValue;
+            }
 
             public override object GetValue(object component)
-			{
-				return _item.ExpandedValue;
-			}
+            {
+                return _item.ExpandedValue;
+            }
 
             public override void ResetValue(object component)
-			{
-				SetValue(component, _item.DefaultExpandedValue);
-			}
+            {
+                SetValue(component, _item.DefaultExpandedValue);
+            }
 
             public override void SetValue(object component, object value)
-			{
-				_item.ExpandedValue = value.ToString();
-			}
+            {
+                _item.ExpandedValue = value.ToString();
+            }
 
             public override bool ShouldSerializeValue(object component)
-			{
-				return _item.DefaultExpandedValue == null ?
-					false :
-					_item.ExpandedValue != _item.DefaultExpandedValue;
-			}
-		}
+            {
+                return _item.DefaultExpandedValue == null
+                           ?
+                               false
+                           :
+                               _item.ExpandedValue != _item.DefaultExpandedValue;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		private PropertyCollection _properties;
+        private readonly PropertyCollection _properties;
 
-		internal PropertyShelf(PropertyCollection properties)
-		{
-			Assert.NotNull(properties, "properties");
-			_properties = properties;
-		}
+        internal PropertyShelf(PropertyCollection properties)
+        {
+            Assert.NotNull(properties, "properties");
+            _properties = properties;
+        }
 
-		PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
-		{
-			// Rather than passing this function on to the default TypeDescriptor,
-			// which would return the actual properties of PropertyBag, I construct
-			// a list here that contains property descriptors for the elements of the
-			// Properties list in the bag.
+        #region ICustomTypeDescriptor Members
 
-			ArrayList props = new ArrayList();
+        PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
+        {
+            // Rather than passing this function on to the default TypeDescriptor,
+            // which would return the actual properties of PropertyBag, I construct
+            // a list here that contains property descriptors for the elements of the
+            // Properties list in the bag.
 
-			foreach (BuildProperty property in _properties)
-			{
-				ArrayList attrs = new ArrayList();
+            List<BuildPropertyDescriptor> props = new List<BuildPropertyDescriptor>();
 
-				// If a category, description, editor, or type converter are specified
-				// in the PropertySpec, create attributes to define that relationship.
-				if (property.Category != null)
-					attrs.Add(new CategoryAttribute(property.Category));
+            foreach (BuildProperty property in _properties)
+            {
+                List<CategoryAttribute> attrs = new List<CategoryAttribute>();
 
-				Attribute[] attrArray = (Attribute[]) attrs.ToArray(typeof (Attribute));
+                // If a category, description, editor, or type converter are specified
+                // in the PropertySpec, create attributes to define that relationship.
+                if (property.Category != null)
+                    attrs.Add(new CategoryAttribute(property.Category));
 
-				// Create a new property descriptor for the property item, and add
-				// it to the list.
-				BuildPropertyDescriptor pd = new BuildPropertyDescriptor(
-					property, attrArray);
+                CategoryAttribute[] attrArray = attrs.ToArray();
 
-				props.Add(pd);
-			}
+                // Create a new property descriptor for the property item, and add
+                // it to the list.
+                BuildPropertyDescriptor pd = new BuildPropertyDescriptor(
+                    property, attrArray);
 
-			// Convert the list of PropertyDescriptors to a collection that the
-			// ICustomTypeDescriptor can use, and return it.
-			PropertyDescriptor[] propArray = 
-				(PropertyDescriptor[]) props.ToArray(typeof (PropertyDescriptor));
+                props.Add(pd);
+            }
 
-			return new PropertyDescriptorCollection(propArray);
-		}
+            // Convert the list of PropertyDescriptors to a collection that the
+            // ICustomTypeDescriptor can use, and return it.
+            BuildPropertyDescriptor[] propArray = props.ToArray();
 
-		#region Useless ICustomTypeDescriptor methods
+            return new PropertyDescriptorCollection(propArray);
+        }
 
-		AttributeCollection ICustomTypeDescriptor.GetAttributes()
-		{
-			return TypeDescriptor.GetAttributes(this, true);
-		}
+        #endregion
 
-		string ICustomTypeDescriptor.GetClassName()
-		{
-			return TypeDescriptor.GetClassName(this, true);
-		}
+        #region Useless ICustomTypeDescriptor methods
 
-		string ICustomTypeDescriptor.GetComponentName()
-		{
-			return TypeDescriptor.GetComponentName(this, true);
-		}
+        AttributeCollection ICustomTypeDescriptor.GetAttributes()
+        {
+            return TypeDescriptor.GetAttributes(this, true);
+        }
 
-		TypeConverter ICustomTypeDescriptor.GetConverter()
-		{
-			return TypeDescriptor.GetConverter(this, true);
-		}
+        string ICustomTypeDescriptor.GetClassName()
+        {
+            return TypeDescriptor.GetClassName(this, true);
+        }
 
-		EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
-		{
-			return TypeDescriptor.GetDefaultEvent(this, true);
-		}
+        string ICustomTypeDescriptor.GetComponentName()
+        {
+            return TypeDescriptor.GetComponentName(this, true);
+        }
 
-		PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
-		{
-			return null;
-		}
+        TypeConverter ICustomTypeDescriptor.GetConverter()
+        {
+            return TypeDescriptor.GetConverter(this, true);
+        }
 
-		object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
-		{
-			return TypeDescriptor.GetEditor(this, editorBaseType, true);
-		}
+        EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
+        {
+            return TypeDescriptor.GetDefaultEvent(this, true);
+        }
 
-		EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
-		{
-			return TypeDescriptor.GetEvents(this, true);
-		}
+        PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
+        {
+            return null;
+        }
 
-		EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
-		{
-			return TypeDescriptor.GetEvents(this, attributes, true);
-		}
+        object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
+        {
+            return TypeDescriptor.GetEditor(this, editorBaseType, true);
+        }
 
-		PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
-		{
-			return ((ICustomTypeDescriptor) this).GetProperties(new Attribute[0]);
-		}
+        EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
+        {
+            return TypeDescriptor.GetEvents(this, true);
+        }
 
-		object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
-		{
-			return this;
-		}
+        EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
+        {
+            return TypeDescriptor.GetEvents(this, attributes, true);
+        }
 
-		#endregion
-	}
+        PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
+        {
+            return ((ICustomTypeDescriptor) this).GetProperties(new Attribute[0]);
+        }
+
+        object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
+        {
+            return this;
+        }
+
+        #endregion
+    }
 }

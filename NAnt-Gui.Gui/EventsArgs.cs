@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -27,10 +27,10 @@ using NAntGui.Framework;
 
 namespace NAntGui.Gui
 {
-    class FileNameEventArgs : EventArgs
+    internal class FileNameEventArgs : EventArgs
     {
-        private string _fileName;
-        private Point _point;
+        private readonly string _fileName;
+        private readonly Point _point;
 
         internal FileNameEventArgs(string fileName, Point p)
         {
@@ -49,9 +49,9 @@ namespace NAntGui.Gui
         }
     }
 
-    class RecentItemsEventArgs : EventArgs
+    internal class RecentItemsEventArgs : EventArgs
     {
-        private string _item;
+        private readonly string _item;
 
         internal RecentItemsEventArgs(string item)
         {
@@ -64,9 +64,9 @@ namespace NAntGui.Gui
         }
     }
 
-    class RunEventArgs : EventArgs
+    internal class RunEventArgs : EventArgs
     {
-        private string _target;
+        private readonly string _target;
 
         internal RunEventArgs(string target)
         {
@@ -82,20 +82,14 @@ namespace NAntGui.Gui
     /// <summary>
     /// Description of NewProjectEventArgs.
     /// </summary>
-    class NewProjectEventArgs : EventArgs
+    internal class NewProjectEventArgs : EventArgs
     {
-        private ProjectInfo _info;
-
         internal NewProjectEventArgs(ProjectInfo info)
         {
             Assert.NotNull(info, "info");
-            _info = info;
+            Info = info;
         }
 
-        internal ProjectInfo Info
-        {
-            get { return _info; }
-            set { _info = value; }
-        }
+        internal ProjectInfo Info { get; set; }
     }
 }

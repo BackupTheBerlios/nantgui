@@ -22,31 +22,28 @@
 #endregion
 
 using System;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
+using NAnt.Core.Util;
 using NAntGui.Framework;
 using NAntGui.Gui;
-using NAnt.Core.Util;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Windows.Forms;
-using System.Collections.ObjectModel;
 
 namespace NAntGui
 {
-	/// <summary>
+    /// <summary>
     /// Summary description for SingleInstanceApplication.
-	/// </summary>
-	public class SingleInstanceApplication : WindowsFormsApplicationBase
-	{
-        private delegate void ProcessArgumentsDelegate(CommandLineOptions options);
-
+    /// </summary>
+    public class SingleInstanceApplication : WindowsFormsApplicationBase
+    {
         public SingleInstanceApplication()
-		{
-			this.IsSingleInstance = true;
-            this.EnableVisualStyles = true;
+        {
+            IsSingleInstance = true;
+            EnableVisualStyles = true;
 
-            this.ShutdownStyle = ShutdownMode.AfterMainFormCloses;			
-			this.StartupNextInstance += new StartupNextInstanceEventHandler(Program_StartupNextInstance);
-		}
+            ShutdownStyle = ShutdownMode.AfterMainFormCloses;
+            StartupNextInstance += Program_StartupNextInstance;
+        }
 
         /// <summary>
         /// We are responsible for creating the application's main form in this override.
@@ -54,14 +51,14 @@ namespace NAntGui
         protected override void OnCreateMainForm()
         {
             // MessageBox.Show(this.CommandLineArgs.Count.ToString());
-            CommandLineOptions options = ParseCommandLine(this.CommandLineArgs);
+            CommandLineOptions options = ParseCommandLine(CommandLineArgs);
 
             MainController controller = new MainController(options);
-            this.MainForm = new NAntGuiForm(controller, options);            
-        }		
+            MainForm = new NAntGuiForm(controller, options);
+        }
 
-		protected void Program_StartupNextInstance(object sender, StartupNextInstanceEventArgs e)
-		{
+        protected void Program_StartupNextInstance(object sender, StartupNextInstanceEventArgs e)
+        {
             // if the window is currently minimized, then restore it.
             if (MainForm.WindowState == FormWindowState.Minimized)
             {
@@ -71,28 +68,28 @@ namespace NAntGui
             // activate the current instance of the app, so that it's shown.
             MainForm.Activate();
 
-		    // Create an argument array for the Invoke method
-            object[] parameters = new object[1] { ParseCommandLine(e.CommandLine) };		
-            
-		    // Need to use invoke to b/c this is being called 
-		    // from another thread.
-            this.MainForm.Invoke(new ProcessArgumentsDelegate(
-                ((NAntGuiForm)this.MainForm).ProcessArguments), parameters);
-		}
+            // Create an argument array for the Invoke method
+            object[] parameters = new object[] {ParseCommandLine(e.CommandLine)};
+
+            // Need to use invoke to b/c this is being called 
+            // from another thread.
+            MainForm.Invoke(new ProcessArgumentsDelegate(
+                                ((NAntGuiForm) MainForm).ProcessArguments), parameters);
+        }
 
         #region Command Line Arguments
 
-        private static CommandLineOptions ParseCommandLine(ReadOnlyCollection<string> args)
+        private static CommandLineOptions ParseCommandLine(ICollection<string> args)
         {
             CommandLineParser parser = null;
             CommandLineOptions cmdLineOptions = new CommandLineOptions();
 
             try
             {
-                parser = new CommandLineParser(typeof(CommandLineOptions), false);
-                string[] string_args = new string[args.Count];
-                args.CopyTo(string_args, 0);
-                parser.Parse(string_args, cmdLineOptions);
+                parser = new CommandLineParser(typeof (CommandLineOptions), false);
+                string[] stringArgs = new string[args.Count];
+                args.CopyTo(stringArgs, 0);
+                parser.Parse(stringArgs, cmdLineOptions);
             }
             catch (CommandLineArgumentException ex)
             {
@@ -141,7 +138,12 @@ namespace NAntGui
             */
         }
 
+        #endregion
+
+        #region Nested type: ProcessArgumentsDelegate
+
+        private delegate void ProcessArgumentsDelegate(CommandLineOptions options);
 
         #endregion
-	}
+    }
 }

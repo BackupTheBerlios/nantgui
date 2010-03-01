@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -32,8 +31,8 @@ namespace NAntGui.Gui
 	/// </summary>
 	internal partial class OptionsForm : Form
 	{
-		private Button OKButton;
-		private Button CloseButton;
+		private Button _okButton;
+		private Button _closeButton;
 		private Label label1;
 		private NumericUpDown _maxRecentItemsUpDown;
 		private CheckBox _hideTargetsCheckBox;
@@ -64,8 +63,8 @@ namespace NAntGui.Gui
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsForm));
             this._hideTargetsCheckBox = new System.Windows.Forms.CheckBox();
-            this.OKButton = new System.Windows.Forms.Button();
-            this.CloseButton = new System.Windows.Forms.Button();
+            this._okButton = new System.Windows.Forms.Button();
+            this._closeButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this._maxRecentItemsUpDown = new System.Windows.Forms.NumericUpDown();
             this._openPreviousCheckBox = new System.Windows.Forms.CheckBox();
@@ -81,26 +80,26 @@ namespace NAntGui.Gui
             this._hideTargetsCheckBox.TabIndex = 1;
             this._hideTargetsCheckBox.Text = "Hide targets that do not contain a description?";
             // 
-            // OKButton
+            // _okButton
             // 
-            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Location = new System.Drawing.Point(209, 91);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(75, 23);
-            this.OKButton.TabIndex = 4;
-            this.OKButton.Text = "&OK";
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this._okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this._okButton.Location = new System.Drawing.Point(209, 91);
+            this._okButton.Name = "_okButton";
+            this._okButton.Size = new System.Drawing.Size(75, 23);
+            this._okButton.TabIndex = 4;
+            this._okButton.Text = "&OK";
+            this._okButton.Click += new System.EventHandler(this.OKButton_Click);
             // 
-            // CloseButton
+            // _closeButton
             // 
-            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(289, 91);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 5;
-            this.CloseButton.Text = "&Cancel";
+            this._closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this._closeButton.Location = new System.Drawing.Point(289, 91);
+            this._closeButton.Name = "_closeButton";
+            this._closeButton.Size = new System.Drawing.Size(75, 23);
+            this._closeButton.TabIndex = 5;
+            this._closeButton.Text = "&Cancel";
             // 
             // label1
             // 
@@ -134,15 +133,15 @@ namespace NAntGui.Gui
             // 
             // OptionsForm
             // 
-            this.AcceptButton = this.OKButton;
+            this.AcceptButton = this._okButton;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.CancelButton = this.CloseButton;
+            this.CancelButton = this._closeButton;
             this.ClientSize = new System.Drawing.Size(371, 122);
             this.Controls.Add(this._openPreviousCheckBox);
             this.Controls.Add(this._maxRecentItemsUpDown);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CloseButton);
-            this.Controls.Add(this.OKButton);
+            this.Controls.Add(this._closeButton);
+            this.Controls.Add(this._okButton);
             this.Controls.Add(this._hideTargetsCheckBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

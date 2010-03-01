@@ -22,28 +22,28 @@
 #endregion
 
 using System;
+using System.IO;
 using NAntGui.Framework;
 using NAntGui.NAnt;
-using System.IO;
 
 namespace NAntGui.Core
 {
-	/// <summary>
-	/// Summary description for BuildRunnerFactory.
-	/// </summary>
-	public class BuildRunnerFactory
-	{
-		public static BuildRunnerBase Create(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options)
-		{
+    /// <summary>
+    /// Summary description for BuildRunnerFactory.
+    /// </summary>
+    public class BuildRunnerFactory
+    {
+        public static BuildRunnerBase Create(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options)
+        {
             switch (fileInfo.Extension)
-			{
-				default:
-				case "nant":
-				case "build":
+            {
+                default:
+                case "nant":
+                case "build":
                     return new NAntBuildRunner(fileInfo, logger, options);
-				case "proj":
-					throw new NotImplementedException("Pete's code goes here :)");
-			}
-		}
-	}
+                case "proj":
+                    throw new NotImplementedException("Pete's code goes here :)");
+            }
+        }
+    }
 }

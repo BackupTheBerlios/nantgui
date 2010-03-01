@@ -23,12 +23,12 @@
 
 namespace NAntGui.Framework
 {
-	/// <summary>
-	/// Summary description for FileType.
-	/// </summary>
-	public enum FileType
-	{
-		New,
-		Existing
-	}
+    /// <summary>
+    /// Summary description for FileType.
+    /// </summary>
+    public enum FileType
+    {
+        New,
+        Existing
+    }
 }

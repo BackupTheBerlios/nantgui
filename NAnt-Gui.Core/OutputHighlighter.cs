@@ -25,98 +25,101 @@ using System.Text.RegularExpressions;
 
 namespace NAntGui.Core
 {
-	/// <summary>
-	/// Summary description for SyntaxHighlighter.
-	/// </summary>
-	public class OutputHighlighter
-	{
-		private const string BUILD_SUCCEEDED = "BUILD SUCCEEDED";
-		public const string BUILD_FAILED = "BUILD FAILED";
+    /// <summary>
+    /// Summary description for SyntaxHighlighter.
+    /// </summary>
+    public class OutputHighlighter
+    {
+        public const string BUILD_FAILED = "BUILD FAILED";
+        private const string BUILD_SUCCEEDED = "BUILD SUCCEEDED";
 
-		private struct Tags
-		{
-			public const string BLACK = "\\cf0";
+        public static string Highlight(string text)
+        {
+            string[] expressions = {"\n", BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "ERROR"};
+            string highlightedText = Escape(text);
+            highlightedText = ReplaceNewlines(highlightedText);
 
-			public const string BOLD = "\\b";
-			public const string END_BOLD = "\\b0";
+            foreach (string expression in expressions)
+            {
+                Regex regex = new Regex(expression, RegexOptions.IgnoreCase);
 
-			public const string BIG = "\\fs18";
-			public const string END_BIG = "\\fs17";
+                if (regex.IsMatch(highlightedText))
+                {
+                    MatchCollection matches = regex.Matches(highlightedText);
+                    highlightedText = ReplaceMatches(matches, expression, highlightedText);
+                }
+            }
 
-			public const string P = "\\par";
+            return highlightedText + Tags.SPACE;
+        }
 
-			public const string SPACE = " ";
-		}
+        private static string ReplaceMatches(MatchCollection matches, string expression, string highlightedText)
+        {
+            foreach (Match match in matches)
+            {
+                switch (expression)
+                {
+                    case BUILD_FAILED:
+                        string output = ColorTable.RedTag + Tags.BOLD + Tags.BIG + Tags.SPACE
+                                        + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
 
-		public static string Highlight(string text)
-		{
-			string[] expressions = {"\n", BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "ERROR"};
-			string highlightedText = Escape(text);
-			highlightedText = ReplaceNewlines(highlightedText);
+                        highlightedText = highlightedText.Replace(match.Value, output);
+                        break;
+                    case BUILD_SUCCEEDED:
+                        output = ColorTable.GreenTag + Tags.BOLD + Tags.BIG + Tags.SPACE
+                                 + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
 
-			foreach (string expression in expressions)
-			{
-				Regex regex = new Regex(expression, RegexOptions.IgnoreCase);
+                        highlightedText = highlightedText.Replace(match.Value, output);
+                        break;
 
-				if (regex.IsMatch(highlightedText))
-				{
-					MatchCollection matches = regex.Matches(highlightedText);
-					highlightedText = ReplaceMatches(matches, expression, highlightedText);
-				}
-			}
+                    case @"\[[^\[]+\]":
+                        output = ColorTable.BlueTag + Tags.SPACE
+                                 + match.Value + Tags.BLACK + Tags.SPACE;
 
-			return highlightedText + Tags.SPACE;
-		}
+                        highlightedText = highlightedText.Replace(match.Value, output);
+                        break;
+                    case "error":
+                    case "ERROR":
+                        output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
+                                 + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
 
-		private static string ReplaceMatches(MatchCollection matches, string expression, string highlightedText)
-		{
-			foreach (Match match in matches)
-			{
-				switch (expression)
-				{
-					case BUILD_FAILED:
-						string output = ColorTable.RedTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-						                + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+                        highlightedText = highlightedText.Replace(match.Value, output);
+                        break;
+                }
+            }
 
-						highlightedText = highlightedText.Replace(match.Value, output);
-						break;
-					case BUILD_SUCCEEDED:
-						output = ColorTable.GreenTag + Tags.BOLD + Tags.BIG + Tags.SPACE
-						         + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.END_BIG;
+            return highlightedText;
+        }
 
-						highlightedText = highlightedText.Replace(match.Value, output);
-						break;
+        private static string Escape(string text)
+        {
+            text = text.Replace(@"\", @"\\");
+            text = text.Replace("{", @"\{");
+            text = text.Replace("}", @"\}");
+            return text;
+        }
 
-					case @"\[[^\[]+\]":
-						output = ColorTable.BlueTag + Tags.SPACE
-						         + match.Value + Tags.BLACK + Tags.SPACE;
+        private static string ReplaceNewlines(string text)
+        {
+            return text.Replace("\n", Tags.P + Tags.SPACE);
+        }
 
-						highlightedText = highlightedText.Replace(match.Value, output);
-						break;
-					case "error":
-					case "ERROR":
-						output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
-						         + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
+        #region Nested type: Tags
 
-						highlightedText = highlightedText.Replace(match.Value, output);
-						break;
-				}
-			}
-			
-			return highlightedText;
-		}
+        private struct Tags
+        {
+            public const string BIG = "\\fs18";
+            public const string BLACK = "\\cf0";
 
-		private static string Escape(string text)
-		{
-			text = text.Replace(@"\", @"\\");
-			text = text.Replace("{", @"\{");
-			text = text.Replace("}", @"\}");
-			return text;
-		}
+            public const string BOLD = "\\b";
+            public const string END_BIG = "\\fs17";
+            public const string END_BOLD = "\\b0";
 
-		private static string ReplaceNewlines(string text)
-		{
-			return text.Replace("\n", Tags.P + Tags.SPACE);
-		}
-	}
+            public const string P = "\\par";
+
+            public const string SPACE = " ";
+        }
+
+        #endregion
+    }
 }

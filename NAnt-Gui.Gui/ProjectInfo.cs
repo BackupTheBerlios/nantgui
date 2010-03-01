@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -21,54 +21,29 @@
 
 #endregion
 
-
-using System;
-using NAntGui.Framework;
-
 namespace NAntGui.Gui
 {
-	/// <summary>
-	/// Description of ProjectInfo.
-	/// </summary>
-	class ProjectInfo
-	{
-		private string _name;
-        private string _description;
-        private string _default;
-        private string _basedir;
-
+    /// <summary>
+    /// Description of ProjectInfo.
+    /// </summary>
+    internal class ProjectInfo
+    {
         //internal ProjectInfo()
         //{
         //}
-		
+
         //internal ProjectInfo(string name, string description, string @default, string basedir)
         //{
         //    Assert.NotNull(name, "name");
         //    _name = name;
         //}
-		
-		internal string Name
-		{
-			get { return _name; }
-            set { _name = value; }
-		}
 
-        internal string Description
-        {
-            get { return _description; }
-            set { _description = value; }
-        }
+        internal string Name { get; set; }
 
-        internal string Default
-        {
-            get { return _default; }
-            set { _default = value; }
-        }
+        internal string Description { get; set; }
 
-        internal string Basedir
-        {
-            get { return _basedir; }
-            set { _basedir = value; }
-        }
-	}
+        internal string Default { get; set; }
+
+        internal string Basedir { get; set; }
+    }
 }

@@ -26,42 +26,42 @@ using NUnit.Framework;
 
 namespace NAntGui.Unittests
 {
-	/// <summary>
-	/// Summary description for OutputHighlighterTests.
-	/// </summary>
-	[TestFixture]
-	public class OutputHighlighterTests
-	{
-		[Test]
-		public void ModifyBuildFailed()
-		{
-			string lBuildFailed = "BUILD FAILED";
-			string lModifiedBuildFailed = @"\cf1\b\fs18 BUILD FAILED\cf0\b0\fs17 ";
-			Assert.AreEqual(lModifiedBuildFailed, OutputHighlighter.Highlight(lBuildFailed));
-		}
+    /// <summary>
+    /// Summary description for OutputHighlighterTests.
+    /// </summary>
+    [TestFixture]
+    public class OutputHighlighterTests
+    {
+        [Test]
+        public void ModifyBuildFailed()
+        {
+            const string buildFailed = "BUILD FAILED";
+            const string modifiedBuildFailed = @"\cf1\b\fs18 BUILD FAILED\cf0\b0\fs17 ";
+            Assert.AreEqual(modifiedBuildFailed, OutputHighlighter.Highlight(buildFailed));
+        }
 
-		[Test]
-		public void ModifyBuildSucceeded()
-		{
-			string lBuildSucceeded = "BUILD SUCCEEDED";
-			string lModifiedBuildSucceeded = @"\cf3\b\fs18 BUILD SUCCEEDED\cf0\b0\fs17 ";
-			Assert.AreEqual(lModifiedBuildSucceeded, OutputHighlighter.Highlight(lBuildSucceeded));
-		}
+        [Test]
+        public void ModifyBuildSucceeded()
+        {
+            const string buildSucceeded = "BUILD SUCCEEDED";
+            const string modifiedBuildSucceeded = @"\cf3\b\fs18 BUILD SUCCEEDED\cf0\b0\fs17 ";
+            Assert.AreEqual(modifiedBuildSucceeded, OutputHighlighter.Highlight(buildSucceeded));
+        }
 
-		[Test]
-		public void ModifySquareTag()
-		{
-			string lSquareTag = "this [that] theotherthing";
-			string lModifiedSquareTag = @"this \cf2 [that]\cf0  theotherthing ";
-			Assert.AreEqual(lModifiedSquareTag, OutputHighlighter.Highlight(lSquareTag));
-		}
+        [Test]
+        public void ModifyError()
+        {
+            const string error = "asdfd error sfdsfd";
+            const string modifiedError = @"asdfd \cf1\b error\cf0\b0  sfdsfd ";
+            Assert.AreEqual(modifiedError, OutputHighlighter.Highlight(error));
+        }
 
-		[Test]
-		public void ModifyError()
-		{
-			string lError = "asdfd error sfdsfd";
-			string lModifiedError = @"asdfd \cf1\b error\cf0\b0  sfdsfd ";
-			Assert.AreEqual(lModifiedError, OutputHighlighter.Highlight(lError));
-		}
-	}
+        [Test]
+        public void ModifySquareTag()
+        {
+            const string squareTag = "this [that] theotherthing";
+            const string modifiedSquareTag = @"this \cf2 [that]\cf0  theotherthing ";
+            Assert.AreEqual(modifiedSquareTag, OutputHighlighter.Highlight(squareTag));
+        }
+    }
 }

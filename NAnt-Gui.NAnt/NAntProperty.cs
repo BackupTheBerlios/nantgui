@@ -26,32 +26,40 @@ using NAntGui.Framework;
 
 namespace NAntGui.NAnt
 {
-	/// <summary>
-	/// Summary description for Property.
-	/// </summary>
-	public class NAntProperty : BuildProperty
-	{
-		public NAntProperty(XmlElement element) : 
-			this(element.GetAttribute("name"), 
-			element.GetAttribute("value"), 
-            GetCategory(element),
-			GetReadonly(element)) {}
+    /// <summary>
+    /// Summary description for Property.
+    /// </summary>
+    public class NAntProperty : BuildProperty
+    {
+        public NAntProperty(XmlElement element) :
+            this(element.GetAttribute("name"),
+                 element.GetAttribute("value"),
+                 GetCategory(element),
+                 GetReadonly(element))
+        {
+        }
 
-		public NAntProperty(string name, string value, string category, bool readOnly) :
-			base(name, value, category, readOnly) {}
+        public NAntProperty(string name, string value, string category, bool readOnly) :
+            base(name, value, category, readOnly)
+        {
+        }
 
-		private static bool GetReadonly(XmlElement element)
-		{
-			return element.HasAttribute("readonly") ? 
-				bool.Parse(element.GetAttribute("readonly")) :
-				false;
-		}
+        private static bool GetReadonly(XmlElement element)
+        {
+            return element.HasAttribute("readonly")
+                       ?
+                           bool.Parse(element.GetAttribute("readonly"))
+                       :
+                           false;
+        }
 
-		private static string GetCategory(XmlElement element)
-		{
-			return element.ParentNode.Name == "target" ?
-				element.ParentNode.Attributes["name"].Value :
-				"Global";
-		}
-	}
+        private static string GetCategory(XmlNode element)
+        {
+            return element.ParentNode.Name == "target"
+                       ?
+                           element.ParentNode.Attributes["name"].Value
+                       :
+                           "Global";
+        }
+    }
 }

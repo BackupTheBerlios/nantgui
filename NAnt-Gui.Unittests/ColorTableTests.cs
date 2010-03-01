@@ -26,32 +26,32 @@ using NUnit.Framework;
 
 namespace NAntGui.Unittests
 {
-	/// <summary>
-	/// Summary description for ColorTable.
-	/// </summary>
-	[TestFixture]
-	public class ColorTableTests
-	{
-		[Test]
-		public void CheckTable()
-		{
-			///ColorTable table = new ColorTable();
-			ColorTable.Reset();
-			string useless = ColorTable.RedTag;
-			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;}", ColorTable.ColorTableRtf, useless);
-			useless = ColorTable.BlueTag;
-			Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}",
-			                ColorTable.ColorTableRtf);
-		}
+    /// <summary>
+    /// Summary description for ColorTable.
+    /// </summary>
+    [TestFixture]
+    public class ColorTableTests
+    {
+        [Test]
+        public void CheckTable()
+        {
+            ///ColorTable table = new ColorTable();
+            ColorTable.Reset();
+            string useless = ColorTable.RedTag;
+            Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;}", ColorTable.ColorTableRtf, useless);
+            useless = ColorTable.BlueTag;
+            Assert.AreEqual(@"{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}",
+                            ColorTable.ColorTableRtf);
+        }
 
-		[Test]
-		public void CheckTags()
-		{
-			///ColorTable table = new ColorTable();
-			ColorTable.Reset();
-			Assert.AreEqual("\\cf1", ColorTable.RedTag);
-			Assert.AreEqual("\\cf2", ColorTable.BlueTag);
-			Assert.AreEqual("\\cf3", ColorTable.GreenTag);
-		}
-	}
+        [Test]
+        public void CheckTags()
+        {
+            ///ColorTable table = new ColorTable();
+            ColorTable.Reset();
+            Assert.AreEqual("\\cf1", ColorTable.RedTag);
+            Assert.AreEqual("\\cf2", ColorTable.BlueTag);
+            Assert.AreEqual("\\cf3", ColorTable.GreenTag);
+        }
+    }
 }

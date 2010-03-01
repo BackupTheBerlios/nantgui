@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -22,15 +22,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-using NAntGui.Framework;
-using System.ComponentModel;
 using NAntGui.Core;
+using NAntGui.Framework;
 using NAntGui.Gui.Controls;
 using NAntGui.Gui.Properties;
-using System.IO;
-using System.Collections.Generic;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace NAntGui.Gui
 {
@@ -38,18 +37,18 @@ namespace NAntGui.Gui
     /// Summary description for NAntGuiForm.
     /// </summary>
     public partial class NAntGuiForm
-    {        
-        MainController _controller;
-        PropertyWindow _propertyWindow = new PropertyWindow();
-        TargetsWindow _targetsWindow = new TargetsWindow();
-        OutputWindow _outputWindow = new OutputWindow();
-        CommandLineOptions _initialOptions;
+    {
+        private readonly MainController _controller;
+        private CommandLineOptions _initialOptions;
+        private readonly OutputWindow _outputWindow = new OutputWindow();
+        private readonly PropertyWindow _propertyWindow = new PropertyWindow();
+        private readonly TargetsWindow _targetsWindow = new TargetsWindow();
 
         public NAntGuiForm(MainController controller, CommandLineOptions options)
         {
             InitializeComponent();
 
-            Assert.NotNull(controller, "controller");            
+            Assert.NotNull(controller, "controller");
             _controller = controller;
             _controller.SetControls(this, _outputWindow);
 
@@ -61,105 +60,12 @@ namespace NAntGui.Gui
             SetStyle(ControlStyles.DoubleBuffer, true);
             MainFormSerializer.Attach(this, _propertyWindow, _standardToolStrip, _buildToolStrip);
 
-            this.Disable();
-        }
-
-        public void ProcessArguments(CommandLineOptions options)
-        {
-            if (!String.IsNullOrEmpty(options.BuildFile))
-                _controller.LoadDocument(options.BuildFile);
-        }
-
-        internal void SetStatus(string name, string fullname)
-        {
-            _statusStrip.Items[0].Text = name;
-            _statusStrip.Items[2].Text = fullname;
-        }
-
-        internal void SetStateStopped(object sender, BuildFinishedEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                MethodInvoker invoker = new MethodInvoker(
-                    delegate { RunState = RunState.Stopped; }
-                    );
-
-                Invoke(invoker);
-            }
-            else
-            {
-                RunState = RunState.Stopped;
-            }
+            Disable();
         }
 
         internal DockPanel DockPanel
         {
             get { return _dockPanel; }
-        }
-
-        internal void Enable()
-        {
-            _reloadMenuItem.Enabled = true;
-            _saveMenuItem.Enabled = true;
-            _saveAsMenuItem.Enabled = true;
-            _closeMenuItem.Enabled = true;
-            _runMenuItem.Enabled = true;
-            _stopMenuItem.Enabled = false;
-
-            _reloadToolStripButton.Enabled = true;
-            _saveToolStripButton.Enabled = true;
-            _runToolStripButton.Enabled = true;
-        }
-
-
-        internal void Disable()
-        {
-            _reloadMenuItem.Enabled = false;
-            _saveMenuItem.Enabled = false;
-            _saveAsMenuItem.Enabled = false;
-            _closeMenuItem.Enabled = false;
-            _runMenuItem.Enabled = false;
-            _stopMenuItem.Enabled = false;
-
-            _reloadToolStripButton.Enabled = false;
-            _saveToolStripButton.Enabled = false;
-            _stopToolStripButton.Enabled = false;
-            _runToolStripButton.Enabled = false;
-
-            // Not sure if this should be here:
-            _targetsWindow.Clear();
-            _propertyWindow.Clear();
-
-            _statusStrip.Items[0].Text = "";
-            _statusStrip.Items[2].Text = "";
-        }
-
-        internal void CreateRecentItemsMenu()
-        {
-            _recentMenuItem.DropDownItems.Clear();
-
-            int count = 1;
-            foreach (string item in Settings.Default.RecentItems)
-            {
-                // need to capture the item string locally otherwise it will
-                // change in all the delegates to the most recent item.
-                string file = item;     
-                string name = count++ + " " + file;
-                ToolStripMenuItem recentItem = new ToolStripMenuItem(name);
-                recentItem.Click += delegate { _controller.LoadDocument(file); };
-                _recentMenuItem.DropDownItems.Add(recentItem);
-            }
-        }
-
-        internal void AddProperties(PropertyCollection properties)
-        {
-            _propertyWindow.AddProperties(properties);
-        }
-
-        internal void AddTargets(IBuildScript buildScript)
-        {
-            _targetsWindow.ProjectName = buildScript.Name;
-            _targetsWindow.SetTargets(buildScript.Targets);
         }
 
         internal RunState RunState
@@ -227,8 +133,98 @@ namespace NAntGui.Gui
 
         internal List<BuildTarget> SelectedTargets
         {
-            get { return _targetsWindow.SelectedTargets;  }
-            set { _targetsWindow.SelectedTargets = value;  }
+            get { return _targetsWindow.SelectedTargets; }
+            set { _targetsWindow.SelectedTargets = value; }
+        }
+
+        public void ProcessArguments(CommandLineOptions options)
+        {
+            if (!String.IsNullOrEmpty(options.BuildFile))
+                _controller.LoadDocument(options.BuildFile);
+        }
+
+        internal void SetStatus(string name, string fullname)
+        {
+            _statusStrip.Items[0].Text = name;
+            _statusStrip.Items[2].Text = fullname;
+        }
+
+        internal void SetStateStopped(object sender, BuildFinishedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                MethodInvoker invoker = delegate { RunState = RunState.Stopped; };
+                Invoke(invoker);
+            }
+            else
+            {
+                RunState = RunState.Stopped;
+            }
+        }
+
+        internal void Enable()
+        {
+            _reloadMenuItem.Enabled = true;
+            _saveMenuItem.Enabled = true;
+            _saveAsMenuItem.Enabled = true;
+            _closeMenuItem.Enabled = true;
+            _runMenuItem.Enabled = true;
+            _stopMenuItem.Enabled = false;
+
+            _reloadToolStripButton.Enabled = true;
+            _saveToolStripButton.Enabled = true;
+            _runToolStripButton.Enabled = true;
+        }
+
+
+        internal void Disable()
+        {
+            _reloadMenuItem.Enabled = false;
+            _saveMenuItem.Enabled = false;
+            _saveAsMenuItem.Enabled = false;
+            _closeMenuItem.Enabled = false;
+            _runMenuItem.Enabled = false;
+            _stopMenuItem.Enabled = false;
+
+            _reloadToolStripButton.Enabled = false;
+            _saveToolStripButton.Enabled = false;
+            _stopToolStripButton.Enabled = false;
+            _runToolStripButton.Enabled = false;
+
+            // Not sure if this should be here:
+            _targetsWindow.Clear();
+            _propertyWindow.Clear();
+
+            _statusStrip.Items[0].Text = "";
+            _statusStrip.Items[2].Text = "";
+        }
+
+        internal void CreateRecentItemsMenu()
+        {
+            _recentMenuItem.DropDownItems.Clear();
+
+            int count = 1;
+            foreach (string item in Settings.Default.RecentItems)
+            {
+                // need to capture the item string locally otherwise it will
+                // change in all the delegates to the most recent item.
+                string file = item;
+                string name = count++ + " " + file;
+                ToolStripMenuItem recentItem = new ToolStripMenuItem(name);
+                recentItem.Click += delegate { _controller.LoadDocument(file); };
+                _recentMenuItem.DropDownItems.Add(recentItem);
+            }
+        }
+
+        internal void AddProperties(PropertyCollection properties)
+        {
+            _propertyWindow.AddProperties(properties);
+        }
+
+        internal void AddTargets(IBuildScript buildScript)
+        {
+            _targetsWindow.ProjectName = buildScript.Name;
+            _targetsWindow.SetTargets(buildScript.Targets);
         }
 
         internal void CanRedo(bool canRedo)
@@ -259,23 +255,23 @@ namespace NAntGui.Gui
         {
             _dockPanel.SaveAsXml(Utils.DockingConfigPath);
             // Don't need this event firing when the app is closing
-            _dockPanel.ContentRemoved -= new System.EventHandler<DockContentEventArgs>(_dockPanel_ContentRemoved);
+            _dockPanel.ContentRemoved -= DockPanelContentRemoved;
 
             _controller.MainFormClosing(e);
         }
 
-        private void SaveClicked(object sender, System.EventArgs e)
+        private void SaveClicked(object sender, EventArgs e)
         {
             _controller.SaveDocument();
         }
 
-        private void StopClicked(object sender, System.EventArgs e)
+        private void StopClicked(object sender, EventArgs e)
         {
             SetStateStopped(sender, new BuildFinishedEventArgs());
             _controller.Stop();
         }
 
-        private void RunClicked(object sender, System.EventArgs e)
+        private void RunClicked(object sender, EventArgs e)
         {
             RunState = RunState.Running;
             _outputWindow.Clear();
@@ -283,75 +279,75 @@ namespace NAntGui.Gui
             _controller.Run(_targetsWindow.SelectedTargets);
         }
 
-        private void NewClicked(object sender, System.EventArgs e)
+        private void NewClicked(object sender, EventArgs e)
         {
             _controller.NewBlankDocument();
         }
 
-        private void OpenClicked(object sender, System.EventArgs e)
+        private void OpenClicked(object sender, EventArgs e)
         {
             _controller.OpenDocument();
         }
 
-        private void ReloadClicked(object sender, System.EventArgs e)
+        private void ReloadClicked(object sender, EventArgs e)
         {
             SetStateStopped(sender, new BuildFinishedEventArgs());
             _controller.ReloadActiveDocument();
         }
 
-        private void _exit_Click(object sender, EventArgs e)
+        private void ExitClick(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void _saveOutput_Click(object sender, EventArgs e)
+        private void SaveOutputClick(object sender, EventArgs e)
         {
             _outputWindow.SaveOutput();
         }
 
-        private void _targetsMenuItemClick(object sender, EventArgs e)
+        private void TargetsMenuItemClick(object sender, EventArgs e)
         {
             _targetsWindow.Show(_dockPanel);
         }
 
-        private void _propertiesMenuItemClick(object sender, EventArgs e)
+        private void PropertiesMenuItemClick(object sender, EventArgs e)
         {
             _propertyWindow.Show(_dockPanel);
         }
 
-        private void _outputMenuItemClick(object sender, EventArgs e)
+        private void OutputMenuItemClick(object sender, EventArgs e)
         {
             _outputWindow.Show(_dockPanel);
         }
 
-        private void _aboutMenuItem_Click(object sender, EventArgs e)
+        private static void AboutMenuItemClick(object sender, EventArgs e)
         {
             About about = new About();
             about.ShowDialog();
         }
 
-        private void _nAntContribHelpMenuItem_Click(object sender, EventArgs e)
+        private static void NAntContribHelpMenuItemClick(object sender, EventArgs e)
         {
             const string nantContribHelp = @"\..\nantcontrib-docs\help\index.html";
             Utils.LoadHelpFile(Utils.RunDirectory + nantContribHelp);
         }
 
-        private void _nAntSDKHelpMenuItem_Click(object sender, EventArgs e)
+        private static void NAntSdkHelpMenuItemClick(object sender, EventArgs e)
         {
             const string nantHelpPath = @"\..\nant-docs\sdk\";
-            const string nantSDKHelp = "NAnt-SDK.chm";
-            string filename = Utils.RunDirectory + nantHelpPath + nantSDKHelp;
+            const string nantSdkHelp = "NAnt-SDK.chm";
+            string filename = Utils.RunDirectory + nantHelpPath + nantSdkHelp;
 
             Utils.LoadHelpFile(filename);
         }
 
-        private void _nAntHelpMenuItem_Click(object sender, EventArgs e)
+        private static void NAntHelpMenuItemClick(object sender, EventArgs e)
         {
             const string nantHelp = @"\..\nant-docs\help\index.html";
             Utils.LoadHelpFile(Utils.RunDirectory + nantHelp);
         }
 
-        private void _optionsMenuItem_Click(object sender, EventArgs e)
+        private static void OptionsMenuItemClick(object sender, EventArgs e)
         {
             OptionsForm optionsForm = new OptionsForm();
             optionsForm.ShowDialog();
@@ -362,12 +358,12 @@ namespace NAntGui.Gui
             _controller.Undo();
         }
 
-        private void _saveAsMenuItem_Click(object sender, EventArgs e)
+        private void SaveAsMenuItemClick(object sender, EventArgs e)
         {
             _controller.SaveDocumentAs();
         }
 
-        private void _closeMenuItem_Click(object sender, EventArgs e)
+        private void CloseMenuItemClick(object sender, EventArgs e)
         {
             _controller.Close();
         }
@@ -392,22 +388,22 @@ namespace NAntGui.Gui
             _controller.Paste();
         }
 
-        private void _deleteMenuItem_Click(object sender, EventArgs e)
+        private void DeleteMenuItemClick(object sender, EventArgs e)
         {
             _controller.Delete();
         }
 
-        private void _selectAllMenuItem_Click(object sender, EventArgs e)
+        private void SelectAllMenuItemClick(object sender, EventArgs e)
         {
             _controller.SelectAll();
         }
 
-        private void closeAllDocumentsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseAllDocumentsMenuItemClick(object sender, EventArgs e)
         {
             _controller.CloseAllDocuments();
         }
 
-        private void wordWrapOutputToolStripMenuItem_Click(object sender, EventArgs e)
+        private void WordWrapOutputMenuItemClick(object sender, EventArgs e)
         {
             _wordWrapMenuItem.Checked = !_wordWrapMenuItem.Checked;
             _outputWindow.WordWrap = _wordWrapMenuItem.Checked;
@@ -416,7 +412,7 @@ namespace NAntGui.Gui
 
         private void NAntGuiForm_Load(object sender, EventArgs e)
         {
-            DeserializeDockContent deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+            DeserializeDockContent deserializeDockContent = GetContentFromPersistString;
 
             if (File.Exists(Utils.DockingConfigPath))
                 _dockPanel.LoadFromXml(Utils.DockingConfigPath, deserializeDockContent);
@@ -433,7 +429,7 @@ namespace NAntGui.Gui
             CreateRecentItemsMenu();
         }
 
-        private void _dockPanel_ContentAdded(object sender, DockContentEventArgs e)
+        private void DockPanelContentAdded(object sender, DockContentEventArgs e)
         {
             if (e.Content is DocumentWindow)
             {
@@ -447,41 +443,49 @@ namespace NAntGui.Gui
             }
         }
 
-        private void _dockPanel_ContentRemoved(object sender, DockContentEventArgs e)
+        private void DockPanelContentRemoved(object sender, DockContentEventArgs e)
         {
             _controller.ContentRemoved(e);
         }
 
         private void Document_Click(object sender, EventArgs e)
         {
-            _controller.LoadDocument(((ToolStripMenuItem)sender).Tag.ToString());
+            _controller.LoadDocument(((ToolStripMenuItem) sender).Tag.ToString());
         }
 
         private void AttachEventHandlers()
         {
-            _outputWindow.Enter += new EventHandler(_outputWindow_Enter);
-            _outputWindow.Leave += new EventHandler(_outputWindow_Leave);
+            _outputWindow.Enter += OutputWindowEnter;
+            _outputWindow.Leave += OutputWindowLeave;
 
-            _outputWindow.DragEnter += new DragEventHandler(NAntGuiForm_DragEnter);
-            _outputWindow.DragDrop += new DragEventHandler(NAntGuiForm_DragDrop);
+            _outputWindow.DragEnter += NAntGuiForm_DragEnter;
+            _outputWindow.DragDrop += NAntGuiForm_DragDrop;
 
-            _outputWindow.FileNameClicked += new EventHandler<FileNameEventArgs>(_outputWindow_FileNameClicked);
+            _outputWindow.FileNameClicked += OutputWindowFileNameClicked;
 
-            _propertyWindow.DragEnter += new DragEventHandler(NAntGuiForm_DragEnter);
-            _propertyWindow.DragDrop += new DragEventHandler(NAntGuiForm_DragDrop);
+            _propertyWindow.DragEnter += NAntGuiForm_DragEnter;
+            _propertyWindow.DragDrop += NAntGuiForm_DragDrop;
 
-            _targetsWindow.DragEnter += new DragEventHandler(NAntGuiForm_DragEnter);
-            _targetsWindow.DragDrop += new DragEventHandler(NAntGuiForm_DragDrop);
+            _targetsWindow.DragEnter += NAntGuiForm_DragEnter;
+            _targetsWindow.DragDrop += NAntGuiForm_DragDrop;
         }
 
         private IDockContent GetContentFromPersistString(string persistString)
         {
+            IDockContent content = null;
+
             if (persistString == typeof(TargetsWindow).ToString())
-                return _targetsWindow;
+            {
+                content = _targetsWindow;
+            }
             else if (persistString == typeof(PropertyWindow).ToString())
-                return _propertyWindow;
+            {
+                content = _propertyWindow;
+            }
             else if (persistString == typeof(OutputWindow).ToString())
-                return _outputWindow;
+            {
+                content = _outputWindow;
+            }
             else
             {
                 // DocumentWindow overrides GetPersistString to add extra information into persistString.
@@ -491,32 +495,32 @@ namespace NAntGui.Gui
                     parsedStrings[1] != string.Empty &&
                     Settings.Default.OpenPreviousTabs)
                 {
-                    return _controller.GetWindow(parsedStrings[1]);
+                    content = _controller.GetWindow(parsedStrings[1]);
                 }
-
-                return null;
             }
+
+            return content;
         }
 
-        private void _outputWindow_Enter(object sender, EventArgs e)
+        private void OutputWindowEnter(object sender, EventArgs e)
         {
             _controller.OutputGotFocused();
             EditState = EditState.TabFocused;
         }
 
-        private void _outputWindow_Leave(object sender, EventArgs e)
+        private void OutputWindowLeave(object sender, EventArgs e)
         {
             _controller.OutputLostFocused();
             EditState = EditState.NoFocus;
         }
 
-        private void _outputWindow_FileNameClicked(object sender, FileNameEventArgs e)
+        private void OutputWindowFileNameClicked(object sender, FileNameEventArgs e)
         {
             _controller.LoadDocument(e.FileName);
             _controller.SetCursor(e.Point.X, e.Point.Y);
         }
 
-        private void saveAllMenuItem_Click(object sender, EventArgs e)
+        private void SaveAllMenuItemClick(object sender, EventArgs e)
         {
             _controller.SaveAllDocuments();
         }

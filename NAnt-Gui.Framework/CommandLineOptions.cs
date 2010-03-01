@@ -24,100 +24,77 @@ using NAnt.Core.Util;
 
 namespace NAntGui.Framework
 {
-	/// <summary>
-	/// Represents the set of command-line options supported by NAnt.
-	/// </summary>
-	public class CommandLineOptions
-	{
-		/// <summary>
-		/// Gets or sets the target framework to use (overrides 
-		/// NAnt.exe.config settings)
-		/// </summary>
-		/// <value>
-		/// The framework that should be used.
-		/// </value>
-		/// <remarks>
-		/// For a list of possible frameworks, see NAnt.exe.config, possible
-		/// values include "net-1.0", "net-1.1", etc.
-		/// </remarks>
-		[
-			CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="targetframework", ShortName="t",
-				Description="Specifies the framework to target")]
-		public string TargetFramework
-		{
-			get { return _targetFramework; }
-			set { _targetFramework = value; }
-		}
+    /// <summary>
+    /// Represents the set of command-line options supported by NAnt.
+    /// </summary>
+    public class CommandLineOptions
+    {
+        private readonly NameValueCollection _properties = new NameValueCollection();
 
-		/// <summary>
-		/// Gets or sets the buildfile that should be executed.
-		/// </summary>
-		/// <value>
-		/// The buildfile that should be executed.
-		/// </value>
-		/// <remarks>
-		/// Can be both a file or an URI.
-		/// </remarks>
-		[
-			CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="buildfile", ShortName="f",
-				Description="Use given buildfile")]
-		public string BuildFile
-		{
-			get { return _buildFile; }
-			set { _buildFile = value; }
-		}
+        /// <summary>
+        /// Gets or sets the target framework to use (overrides 
+        /// NAnt.exe.config settings)
+        /// </summary>
+        /// <value>
+        /// The framework that should be used.
+        /// </value>
+        /// <remarks>
+        /// For a list of possible frameworks, see NAnt.exe.config, possible
+        /// values include "net-1.0", "net-1.1", etc.
+        /// </remarks>
+        [CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "targetframework", ShortName = "t",
+            Description = "Specifies the framework to target")]
+        public string TargetFramework { get; set; }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether more information should be
-		/// displayed during the build process.
-		/// </summary>
-		/// <value>
-		/// <see langword="true" /> if more information should be displayed; 
-		/// otherwise, <see langword="false" />. The default is <see langword="false" />.
-		/// </value>
-		[
-			CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "verbose", ShortName="v",
-				Description = "Displays more information during build process")]
-		public bool Verbose
-		{
-			get { return _verbose; }
-			set { _verbose = value; }
-		}
+        /// <summary>
+        /// Gets or sets the buildfile that should be executed.
+        /// </summary>
+        /// <value>
+        /// The buildfile that should be executed.
+        /// </value>
+        /// <remarks>
+        /// Can be both a file or an URI.
+        /// </remarks>
+        [CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "buildfile", ShortName = "f",
+            Description = "Use given buildfile")]
+        public string BuildFile { get; set; }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether debug information should be
-		/// displayed during the build process.
-		/// </summary>
-		/// <value>
-		/// <see langword="true" /> if debug information should be displayed; 
-		/// otherwise, <see langword="false" />. The default is <see langword="false" />.
-		/// </value>
-		[
-			CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "debug",
-				Description = "Displays debug information during build process")]
-		public bool Debug
-		{
-			get { return _debug; }
-			set { _debug = value; }
-		}
+        /// <summary>
+        /// Gets or sets a value indicating whether more information should be
+        /// displayed during the build process.
+        /// </summary>
+        /// <value>
+        /// <see langword="true" /> if more information should be displayed; 
+        /// otherwise, <see langword="false" />. The default is <see langword="false" />.
+        /// </value>
+        [CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "verbose", ShortName = "v",
+            Description = "Displays more information during build process")]
+        public bool Verbose { get; set; }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether only error and debug debug messages should be
-		/// displayed during the build process.
-		/// </summary>
-		/// <value>
-		/// <see langword="true" /> if only error or warning messages should be 
-		/// displayed; otherwise, <see langword="false" />. The default is
-		/// <see langword="false" />.
-		/// </value>
-		[
-			CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "quiet", ShortName="q",
-				Description = "Displays only error or warning messages during build process")]
-		public bool Quiet
-		{
-			get { return _quiet; }
-			set { _quiet = value; }
-		}
+        /// <summary>
+        /// Gets or sets a value indicating whether debug information should be
+        /// displayed during the build process.
+        /// </summary>
+        /// <value>
+        /// <see langword="true" /> if debug information should be displayed; 
+        /// otherwise, <see langword="false" />. The default is <see langword="false" />.
+        /// </value>
+        [CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "debug",
+            Description = "Displays debug information during build process")]
+        public bool Debug { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether only error and debug debug messages should be
+        /// displayed during the build process.
+        /// </summary>
+        /// <value>
+        /// <see langword="true" /> if only error or warning messages should be 
+        /// displayed; otherwise, <see langword="false" />. The default is
+        /// <see langword="false" />.
+        /// </value>
+        [CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "quiet", ShortName = "q",
+            Description = "Displays only error or warning messages during build process")]
+        public bool Quiet { get; set; }
 
 //		/// <summary>
 //		/// Gets or sets a value indicating whether to produce emacs (and other
@@ -164,19 +141,20 @@ namespace NAntGui.Framework
 //			set { _indentationLevel = value; }
 //		}
 
-		/// <summary>
-		/// Gets or sets the list of properties that should be set.
-		/// </summary>
-		/// <value>
-		/// The list of properties that should be set.
-		/// </value>
-		[
-			CommandLineArgument(CommandLineArgumentTypes.MultipleUnique, Name = "D", Description = "Use value for given property"
-				)]
-		public NameValueCollection Properties
-		{
-			get { return _properties; }
-		}
+        /// <summary>
+        /// Gets or sets the list of properties that should be set.
+        /// </summary>
+        /// <value>
+        /// The list of properties that should be set.
+        /// </value>
+        [
+            CommandLineArgument(CommandLineArgumentTypes.MultipleUnique, Name = "D",
+                Description = "Use value for given property"
+                )]
+        public NameValueCollection Properties
+        {
+            get { return _properties; }
+        }
 
 //		/// <summary>
 //		/// Gets or sets the <see cref="Type" /> of logger to add to the list
@@ -196,20 +174,15 @@ namespace NAntGui.Framework
 //			set { _loggerType = value; }
 //		}
 
-		/// <summary>
-		/// Gets or sets the name of the file to log output to.
-		/// </summary>
-		/// <value>
-		/// The name of the file to log output to.
-		/// </value>
-		[
-			CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name="logfile", ShortName="l",
-				Description="Use value as name of log output file")]
-		public FileInfo LogFile
-		{
-			get { return _logFile; }
-			set { _logFile = value; }
-		}
+        /// <summary>
+        /// Gets or sets the name of the file to log output to.
+        /// </summary>
+        /// <value>
+        /// The name of the file to log output to.
+        /// </value>
+        [CommandLineArgument(CommandLineArgumentTypes.AtMostOnce, Name = "logfile", ShortName = "l",
+            Description = "Use value as name of log output file")]
+        public FileInfo LogFile { get; set; }
 
 //		/// <summary>
 //		/// Gets a collection containing fully qualified type names of classes 
@@ -265,22 +238,15 @@ namespace NAntGui.Framework
 //			get { return _targets; }
 //		}
 
-		private string _targetFramework;
-		private string _buildFile;
-//		private bool _noLogo;
+        //		private bool _noLogo;
 //		private bool _showHelp;
-		private bool _quiet;
-		private bool _verbose;
-		private bool _debug;
 //		private bool _emacsMode;
 //		private int _indentationLevel = 0;
 //		private bool _findInParent;
-		private NameValueCollection _properties = new NameValueCollection();
 //		private string _loggerType;
-		private FileInfo _logFile;
 //		private StringCollection _listeners = new StringCollection();
 //		private StringCollection _extensionAssemblies = new StringCollection();
 //		private StringCollection _targets = new StringCollection();
 //		private bool _showProjectHelp;
-	}
+    }
 }

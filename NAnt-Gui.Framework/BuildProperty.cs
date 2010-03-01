@@ -25,98 +25,108 @@ using System;
 
 namespace NAntGui.Framework
 {
-	public class BuildProperty
-	{
-		private const string KEY = "{0}.{1}";
+    public class BuildProperty
+    {
+        private const string KEY = "{0}.{1}";
 
-		private string _name;
-		private string _value;
-		private string _expandedValue;
-		private string _category;
-		private string _key;
-		private bool _readOnly;
-		private string _defaultExpandedValue;
+        private readonly string _key;
+        private readonly string _name;
+        private readonly bool _readOnly;
+        private string _category;
+        private string _defaultExpandedValue;
+        private string _expandedValue;
+        private string _value;
 
-		public BuildProperty() : this("") {}
+        public BuildProperty() : this("")
+        {
+        }
 
-		public BuildProperty(string name) : this(name, "") {}
+        public BuildProperty(string name) : this(name, "")
+        {
+        }
 
-		public BuildProperty(string name, string value) : this(name, value, "Global") {}
+        public BuildProperty(string name, string value) : this(name, value, "Global")
+        {
+        }
 
-		public BuildProperty(string name, string value, string category) : 
-			this(name, value, category, false) {}
+        public BuildProperty(string name, string value, string category) :
+            this(name, value, category, false)
+        {
+        }
 
-		public BuildProperty(string name, string value, string category, bool readOnly) : 
-			this(name, value, category, readOnly, value) {}
+        public BuildProperty(string name, string value, string category, bool readOnly) :
+            this(name, value, category, readOnly, value)
+        {
+        }
 
-		public BuildProperty(string name, string value, string category, 
-			bool readOnly, string expandedValue)
-		{
-			Assert.NotNull(name, "name");
-			Assert.NotNull(value, "value");			
-			Assert.NotNull(category, "category");
-			Assert.NotNull(expandedValue, "expandedValue");			
+        public BuildProperty(string name, string value, string category,
+                             bool readOnly, string expandedValue)
+        {
+            Assert.NotNull(name, "name");
+            Assert.NotNull(value, "value");
+            Assert.NotNull(category, "category");
+            Assert.NotNull(expandedValue, "expandedValue");
 
-			_name					= name;
-			_value					= value;			
-			_category				= category;
-			_readOnly				= readOnly;
-			_key					= string.Format(KEY, category, name);
-			_defaultExpandedValue	= expandedValue;
-			_expandedValue			= expandedValue;
-		}
+            _name = name;
+            _value = value;
+            _category = category;
+            _readOnly = readOnly;
+            _key = string.Format(KEY, category, name);
+            _defaultExpandedValue = expandedValue;
+            _expandedValue = expandedValue;
+        }
 
-		public virtual string Name
-		{
-			get { return _name; }
-		}
+        public virtual string Name
+        {
+            get { return _name; }
+        }
 
-		public virtual string Value
-		{
-			get { return _value; }
-			set { _value = value; }
-		}
+        public virtual string Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
 
-		public virtual string Category
-		{
-			get { return _category; }
-			set { _category = value; }
-		}
+        public virtual string Category
+        {
+            get { return _category; }
+            set { _category = value; }
+        }
 
-		public virtual string DefaultExpandedValue
-		{
-			get { return _defaultExpandedValue; }
-			set { _defaultExpandedValue = value; }
-		}
+        public virtual string DefaultExpandedValue
+        {
+            get { return _defaultExpandedValue; }
+            set { _defaultExpandedValue = value; }
+        }
 
-		public virtual bool ReadOnly
-		{
-			get { return _readOnly; }
-		}
+        public virtual bool ReadOnly
+        {
+            get { return _readOnly; }
+        }
 
-		public virtual string Key
-		{
-			get { return _key; }
-		}
+        public virtual string Key
+        {
+            get { return _key; }
+        }
 
-		public virtual Type Type
-		{
-			get
-			{				
-				string val = (_value == null) ? "" : _value.ToLower();
-				return (val == "true" || val == "false") ? typeof (bool) : typeof (string);
-			}
-		}
+        public virtual Type Type
+        {
+            get
+            {
+                string val = (_value == null) ? "" : _value.ToLower();
+                return (val == "true" || val == "false") ? typeof (bool) : typeof (string);
+            }
+        }
 
-		public virtual string ExpandedValue
-		{
-			get { return _expandedValue; }
-			set { _expandedValue = value; }
-		}
+        public virtual string ExpandedValue
+        {
+            get { return _expandedValue; }
+            set { _expandedValue = value; }
+        }
 
-		public override string ToString()
-		{
-			return string.Format("{0}: {1}", _name, _value);
-		}
-	}
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}", _name, _value);
+        }
+    }
 }

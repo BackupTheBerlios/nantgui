@@ -26,21 +26,21 @@ using NUnit.Framework;
 
 namespace NAntGui.Unittests
 {
-	/// <summary>
-	/// Summary description for OutputterTests.
-	/// </summary>
-	[TestFixture]
-	public class OutputterTests
-	{
-		[Test]
-		public void Document()
-		{
-			string lText = "BUILD FAILED";
-			string lExpectedRtf =
-				@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Arial;}}{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red0\green255\blue0;}\viewkind4\uc1\pard\cf0\fs17 BUILD FAILED\par}";
+    /// <summary>
+    /// Summary description for OutputterTests.
+    /// </summary>
+    [TestFixture]
+    public class OutputterTests
+    {
+        [Test]
+        public void Document()
+        {
+            string lText = "BUILD FAILED";
+            string lExpectedRtf =
+                @"{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Arial;}}{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red0\green255\blue0;}\viewkind4\uc1\pard\cf0\fs17 BUILD FAILED\par}";
 
-			Outputter.AppendRtfText(lText);
-			Assert.AreEqual(lExpectedRtf, Outputter.RtfDocument);
-		}
-	}
+            Outputter.AppendRtfText(lText);
+            Assert.AreEqual(lExpectedRtf, Outputter.RtfDocument);
+        }
+    }
 }

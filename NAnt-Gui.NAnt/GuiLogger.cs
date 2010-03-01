@@ -26,21 +26,21 @@ using NAntGui.Framework;
 
 namespace NAntGui.NAnt
 {
-	/// <summary>
-	/// Summary description for GuiLogger.
-	/// </summary>
-	public class GuiLogger : DefaultLogger
-	{
-		public ILogsMessage _messageLogger;
+    /// <summary>
+    /// Summary description for GuiLogger.
+    /// </summary>
+    public class GuiLogger : DefaultLogger
+    {
+        public ILogsMessage MessageLogger;
 
-		public GuiLogger(ILogsMessage messageLogger) : base()
-		{
-			_messageLogger = messageLogger;
-		}
+        public GuiLogger(ILogsMessage messageLogger)
+        {
+            MessageLogger = messageLogger;
+        }
 
-		protected override void Log(string message)
-		{
-			_messageLogger.LogMessage(message);
-		}
-	}
+        protected override void Log(string message)
+        {
+            MessageLogger.LogMessage(message);
+        }
+    }
 }

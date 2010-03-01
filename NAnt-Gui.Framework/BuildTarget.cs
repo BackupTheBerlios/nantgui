@@ -23,48 +23,48 @@
 
 namespace NAntGui.Framework
 {
-	public class BuildTarget
-	{
-		protected string _name = "";
-		protected string _description = "";
-		protected bool _default = false;
+    public class BuildTarget
+    {
+        private bool _default;
+        protected string _description = "";
+        protected string _name = "";
 
-		public BuildTarget()
-		{
-		}
+        public BuildTarget()
+        {
+        }
 
-		public BuildTarget(string name)
-		{
-			Assert.NotNull(name, "name");
-			_name = name;
-		}
+        public BuildTarget(string name)
+        {
+            Assert.NotNull(name, "name");
+            _name = name;
+        }
 
-		public BuildTarget(string name, string description) : this(name)
-		{
-			Assert.NotNull(description, "description");
-			_description = description;
-		}
+        public BuildTarget(string name, string description) : this(name)
+        {
+            Assert.NotNull(description, "description");
+            _description = description;
+        }
 
-		public BuildTarget(string name, string description, bool @default) : this(name, description)
-		{
-			Assert.NotNull(@default, "@default");
-			_default = @default;
-		}
+        public BuildTarget(string name, string description, bool @default) : this(name, description)
+        {
+            Assert.NotNull(@default, "@default");
+            _default = @default;
+        }
 
-		public virtual string Name
-		{
-			get { return _name; }
-		}
+        public virtual string Name
+        {
+            get { return _name; }
+        }
 
-		public virtual string Description
-		{
-			get { return _description; }
-		}
+        public virtual string Description
+        {
+            get { return _description; }
+        }
 
-		public virtual bool Default
-		{
-			get { return _default; }
-			set { _default = value; }
-		}
-	}
+        public virtual bool Default
+        {
+            get { return _default; }
+            set { _default = value; }
+        }
+    }
 }

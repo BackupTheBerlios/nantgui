@@ -23,41 +23,41 @@
 
 namespace NAntGui.Core
 {
-	/// <summary>
-	/// Summary description for Outputter.
-	/// </summary>
-	public class Outputter
-	{
-		private static string Header =
-			@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
-			+ @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
-			+ ColorTable.ColorTableRtf
-			+ @"\viewkind4\uc1\pard\cf0\fs17 ";
+    /// <summary>
+    /// Summary description for Outputter.
+    /// </summary>
+    public class Outputter
+    {
+        private const string FOOTER = @"\par}";
 
-		private const string FOOTER = @"\par}";
+        private static string Header =
+            @"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
+            + @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
+            + ColorTable.ColorTableRtf
+            + @"\viewkind4\uc1\pard\cf0\fs17 ";
 
-		private static string Output = "";
+        private static string Output = "";
 
-		public static void AppendRtfText(string pRtfText)
-		{
-			Header =
-				@"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
-				+ @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
-				+ ColorTable.ColorTableRtf
-				+ @"\viewkind4\uc1\pard\cf0\fs17 ";
+        public static string RtfDocument
+        {
+            get { return Header + Output + FOOTER; }
+        }
 
-			Output = pRtfText;
-		}
+        public static void AppendRtfText(string pRtfText)
+        {
+            Header =
+                @"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
+                + @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
+                + ColorTable.ColorTableRtf
+                + @"\viewkind4\uc1\pard\cf0\fs17 ";
 
-		public static void Clear()
-		{
-			Output = "";
-			ColorTable.Reset();
-		}
+            Output = pRtfText;
+        }
 
-		public static string RtfDocument
-		{
-			get { return Header + Output + FOOTER; }
-		}
-	}
+        public static void Clear()
+        {
+            Output = "";
+            ColorTable.Reset();
+        }
+    }
 }

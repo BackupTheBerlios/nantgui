@@ -23,28 +23,38 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using NAnt.Core;
 using NAnt.Core.Util;
 using NAntGui.Framework;
 using CmdOptions = NAntGui.Framework.CommandLineOptions;
-using System.IO;
 
 namespace NAntGui.NAnt
 {
-	public class NAntBuildRunner : BuildRunnerBase
-	{		
-		private Project _project;
-        private FileInfo _fileInfo;
-		private List<BuildTarget> _targets;
-		private PropertyCollection _properties;
+    public class NAntBuildRunner : BuildRunnerBase
+    {
+        private readonly FileInfo _fileInfo;
+        private Project _project;
+        private PropertyCollection _properties;
+        private List<BuildTarget> _targets;
 
-		public NAntBuildRunner(FileInfo fileInfo, ILogsMessage logger, CmdOptions options) : 
-			base(logger, options)
-		{
+        public NAntBuildRunner(FileInfo fileInfo, ILogsMessage logger, CmdOptions options) :
+            base(logger, options)
+        {
             Assert.NotNull(fileInfo, "fileInfo");
             _fileInfo = fileInfo;
-		}
+        }
+
+        public override PropertyCollection Properties
+        {
+            set { _properties = value; }
+        }
+
+        public override List<BuildTarget> Targets
+        {
+            set { _targets = value; }
+        }
 
 /*
 		private static string GetErrorMessage(Exception error)
@@ -68,170 +78,159 @@ namespace NAntGui.NAnt
 		}
 */
 
-		protected override void DoRun()
-		{
-			try
-			{
-				Environment.CurrentDirectory = _fileInfo.DirectoryName;
+        protected override void DoRun()
+        {
+            try
+            {
+                Environment.CurrentDirectory = _fileInfo.DirectoryName;
 
                 _project = new Project(_fileInfo.FullName, GetThreshold(), 0);
-				_project.BuildFinished += new BuildEventHandler(Build_Finished);
-				SetTargetFramework();
-				AddBuildListeners();
-				AddProperties();
-				AddTargets();
+                _project.BuildFinished += Build_Finished;
 
-				_project.Run();
-			}
-			catch (ArgumentException error)
-			{
-				_logger.LogMessage(error.Message);
-				FinishBuild();
-			}
-			catch (BuildException error)
-			{
-				_logger.LogMessage(error.Message);
-				FinishBuild();
-			}
-		}
+                SetTargetFramework();
+                AddBuildListeners();
+                AddProperties();
+                AddTargets();
 
-		private Level GetThreshold()
-		{
-			Level projectThreshold = Level.Info;
-			// determine the project message threshold
-			if (_options.Debug)
-			{
-				projectThreshold = Level.Debug;
-			}
-			else if (_options.Verbose)
-			{
-				projectThreshold = Level.Verbose;
-			}
-			else if (_options.Quiet)
-			{
-				projectThreshold = Level.Warning;
-			}
-			return projectThreshold;
-		}
+                _project.Run();
+            }
+            catch (ArgumentException error)
+            {
+                _logger.LogMessage(error.Message);
+                FinishBuild();
+            }
+            catch (BuildException error)
+            {
+                _logger.LogMessage(error.Message);
+                FinishBuild();
+            }
+        }
 
-		private void AddProperties()
-		{
-			foreach (BuildProperty property in _properties)
-			{
-				if (property.Category == "Project" && property.Name == "BaseDir")
-				{
-					_project.BaseDirectory = property.Value;
-				}
-				else //if (property.Category == "Global" || ValidTarget(property.Category))
-				{
-					LoadNonProjectProperty(property);
-				}
-			}
-		}
+        private Level GetThreshold()
+        {
+            Level projectThreshold = Level.Info;
+            // determine the project message threshold
+            if (_options.Debug)
+            {
+                projectThreshold = Level.Debug;
+            }
+            else if (_options.Verbose)
+            {
+                projectThreshold = Level.Verbose;
+            }
+            else if (_options.Quiet)
+            {
+                projectThreshold = Level.Warning;
+            }
+            return projectThreshold;
+        }
 
-		private void LoadNonProjectProperty(BuildProperty property)
-		{
-			if (!property.ReadOnly && 
-				property.ExpandedValue != property.DefaultExpandedValue)
-			{
-				if (IsNotExpanded(property.ExpandedValue))
-				{
-					TryChangingExpandedValue(property);
-				}
+        private void AddProperties()
+        {
+            foreach (BuildProperty property in _properties)
+            {
+                if (property.Category == "Project" && property.Name == "BaseDir")
+                {
+                    _project.BaseDirectory = property.Value;
+                }
+                else //if (property.Category == "Global" || ValidTarget(property.Category))
+                {
+                    LoadNonProjectProperty(property);
+                }
+            }
+        }
 
-				_project.Properties.AddReadOnly(property.Name, property.ExpandedValue);
-			}
-		}
+        private void LoadNonProjectProperty(BuildProperty property)
+        {
+            if (!property.ReadOnly &&
+                property.ExpandedValue != property.DefaultExpandedValue)
+            {
+                if (IsNotExpanded(property.ExpandedValue))
+                {
+                    TryChangingExpandedValue(property);
+                }
 
-		private bool IsNotExpanded(string value)
-		{
-			Regex unexpandedValue = new Regex(@"\$\{[^\}]+\}");
-			return unexpandedValue.IsMatch(value);
-		}
+                _project.Properties.AddReadOnly(property.Name, property.ExpandedValue);
+            }
+        }
 
-		private void TryChangingExpandedValue(BuildProperty property)
-		{
-			try
-			{
-				property.ExpandedValue = _project.ExpandProperties(property.ExpandedValue,
-					new Location(_fileInfo.FullName));
-			}
-			catch (BuildException)
-			{
-				/* ignore */
-			}
-		}
+        private static bool IsNotExpanded(string value)
+        {
+            Regex unexpandedValue = new Regex(@"\$\{[^\}]+\}");
+            return unexpandedValue.IsMatch(value);
+        }
 
-		private void AddTargets()
-		{
-			foreach (BuildTarget target in _targets)
-			{
-				_project.BuildTargets.Add(target.Name);
-			}
-		}
+        private void TryChangingExpandedValue(BuildProperty property)
+        {
+            try
+            {
+                property.ExpandedValue = _project.ExpandProperties(property.ExpandedValue,
+                                                                   new Location(_fileInfo.FullName));
+            }
+            catch (BuildException)
+            {
+                /* ignore */
+            }
+        }
 
-		/// <summary>
-		/// Add the listeners specified in the command line arguments,
-		/// along with the default listener, to the specified project.
-		/// </summary>
-		private void AddBuildListeners()
-		{
-			Assert.NotNull(_project, "project");
-			
-			// Create new logger
-			IBuildLogger buildLogger = new GuiLogger(_logger);
+        private void AddTargets()
+        {
+            foreach (BuildTarget target in _targets)
+            {
+                _project.BuildTargets.Add(target.Name);
+            }
+        }
 
-			// set threshold of build logger equal to threshold of project
-			buildLogger.Threshold = _project.Threshold;
+        /// <summary>
+        /// Add the listeners specified in the command line arguments,
+        /// along with the default listener, to the specified project.
+        /// </summary>
+        private void AddBuildListeners()
+        {
+            Assert.NotNull(_project, "project");
 
-			// add build logger to listeners collection
-			BuildListenerCollection listeners = new BuildListenerCollection();
-			listeners.Add(buildLogger);
+            // Create new logger
+            IBuildLogger buildLogger = new GuiLogger(_logger);
 
-			// attach listeners to project
-			_project.AttachBuildListeners(listeners);
-		}
+            // set threshold of build logger equal to threshold of project
+            buildLogger.Threshold = _project.Threshold;
 
-		private void SetTargetFramework()
-		{
-			if (_options.TargetFramework != null)
-			{
-				if (_project.Frameworks.Count == 0)
-				{
-					const string message = "There are no supported frameworks available on your system.";
-					throw new ApplicationException(message);
-				}
-				else
-				{
-					FrameworkInfo frameworkInfo = _project.Frameworks[_options.TargetFramework];
+            // add build logger to listeners collection
+            BuildListenerCollection listeners = new BuildListenerCollection();
+            listeners.Add(buildLogger);
 
-					if (frameworkInfo != null)
-					{
-						_project.TargetFramework = frameworkInfo;
-					}
-					else
-					{
-						const string format = "Invalid framework '{0}' specified.";
-						string message = string.Format(format, _options.TargetFramework);
-						throw new CommandLineArgumentException(message);
-					}
-				}
-			}
-		}
+            // attach listeners to project
+            _project.AttachBuildListeners(listeners);
+        }
 
-		private void Build_Finished(object sender, BuildEventArgs e)
-		{
-			FinishBuild();
-		}
+        private void SetTargetFramework()
+        {
+            if (_options.TargetFramework != null)
+            {
+                if (_project.Frameworks.Count == 0)
+                {
+                    const string message = "There are no supported frameworks available on your system.";
+                    throw new ApplicationException(message);
+                }
 
-		public override PropertyCollection Properties
-		{
-			set { _properties = value; }
-		}
+                FrameworkInfo frameworkInfo = _project.Frameworks[_options.TargetFramework];
 
-		public override List<BuildTarget> Targets
-		{
-			set { _targets = value; }
-		}
-	}
+                if (frameworkInfo != null)
+                {
+                    _project.TargetFramework = frameworkInfo;
+                }
+                else
+                {
+                    const string format = "Invalid framework '{0}' specified.";
+                    string message = string.Format(format, _options.TargetFramework);
+                    throw new CommandLineArgumentException(message);
+                }
+            }
+        }
+
+        private void Build_Finished(object sender, BuildEventArgs e)
+        {
+            FinishBuild();
+        }
+    }
 }

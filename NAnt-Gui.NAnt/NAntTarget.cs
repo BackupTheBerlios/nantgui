@@ -27,51 +27,54 @@ using NAntGui.Framework;
 
 namespace NAntGui.NAnt
 {
-	/// <summary>
-	/// Summary description for Target.
-	/// </summary>    
-	public class NAntTarget : BuildTarget, IComparable
-	{
+    /// <summary>
+    /// Summary description for Target.
+    /// </summary>    
+    public class NAntTarget : BuildTarget, IComparable
+    {
         // TODO: Convert from XmlDocument to XmlReader.  Create to get line numbers for later use.
-		private string[] _depends;
+        private string[] _depends;
 
-		public NAntTarget(XmlElement element)
-		{
-			ParseAttributes(element);
-		}
+        public NAntTarget(XmlElement element)
+        {
+            ParseAttributes(element);
+        }
 
-		private void ParseAttributes(XmlElement element)
-		{
-			_name = element.GetAttribute("name");
-			_description = element.GetAttribute("description");
-			string depends = element.GetAttribute("depends");
-			_depends = SplitDepends(depends);
-		}
+        #region IComparable Members
 
-		private string[] SplitDepends(string depends)
-		{
-			return depends.Replace(" ", "").Split(',');
-		}
+        public int CompareTo(object obj)
+        {
+            if (obj is BuildTarget)
+            {
+                BuildTarget target = obj as BuildTarget;
+                return _name.CompareTo(target.Name);
+            }
 
-		public int CompareTo(object obj)
-		{
-			if (obj.GetType() == typeof (NAntTarget))
-			{
-				return _name.CompareTo(((NAntTarget) obj).Name);
-			}
-			else
-			{
-				throw new ArgumentException("Wasn't a target object.", "obj");
-			}
-		}
+            throw new ArgumentException("Object wasn't a BuildTarget.", "obj");
+        }
 
-		#region Properties
+        #endregion
 
-		public string[] Depends
-		{
-			get { return _depends; }
-		}
+        #region Properties
 
-		#endregion
-	}
+        public string[] Depends
+        {
+            get { return _depends; }
+        }
+
+        #endregion
+
+        private void ParseAttributes(XmlElement element)
+        {
+            _name = element.GetAttribute("name");
+            _description = element.GetAttribute("description");
+            string depends = element.GetAttribute("depends");
+            _depends = SplitDepends(depends);
+        }
+
+        private static string[] SplitDepends(string depends)
+        {
+            return depends.Replace(" ", "").Split(',');
+        }
+    }
 }

@@ -4,7 +4,7 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
@@ -22,74 +22,71 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Windows.Forms;
-using ICSharpCode.TextEditor;
-using ICSharpCode.XmlEditor;
-using ICSharpCode.TextEditor.Document;
-using ICSharpCode.SharpDevelop.DefaultEditor;
-using NAntGui.Framework;
 
 namespace NAntGui.Gui.Controls
 {
-	/// <summary>
-	/// Summary description for ScriptEditor.
-	/// </summary>
+    /// <summary>
+    /// Summary description for ScriptEditor.
+    /// </summary>
     public partial class ScriptEditor : IEditCommands
-	{
-		public ScriptEditor()
-		{
-			InitializeComponent();
-		}
-		
-		void CutToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Cut(sender, e);			
-		}
-		
-		void CopyToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Copy(sender, e);
-		}
-		
-		void PasteToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Paste(sender, e);
-		}
-		
-		void DeleteToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			this.ActiveTextAreaControl.TextArea.ClipboardHandler.Delete(sender, e);
-		}
-		
-		void SelectAllToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			this.ActiveTextAreaControl.TextArea.ClipboardHandler.SelectAll(sender, e);
-		}
+    {
+        public ScriptEditor()
+        {
+            InitializeComponent();
+        }
+
+        #region IEditCommands Members
 
         public void Cut()
-		{
-			CutToolStripMenuItemClick(this, EventArgs.Empty);
-		}
+        {
+            CutToolStripMenuItemClick(this, EventArgs.Empty);
+        }
 
         public void Copy()
-		{
-			CopyToolStripMenuItemClick(this, EventArgs.Empty);
-		}
+        {
+            CopyToolStripMenuItemClick(this, EventArgs.Empty);
+        }
 
         public void Paste()
-		{
-			PasteToolStripMenuItemClick(this, EventArgs.Empty);
-		}
+        {
+            PasteToolStripMenuItemClick(this, EventArgs.Empty);
+        }
 
         public void Delete()
-		{
-			DeleteToolStripMenuItemClick(this, EventArgs.Empty);
-		}
+        {
+            DeleteToolStripMenuItemClick(this, EventArgs.Empty);
+        }
 
         public void SelectAll()
-		{
-			SelectAllToolStripMenuItemClick(this, EventArgs.Empty);
-		}		
-	}
+        {
+            SelectAllToolStripMenuItemClick(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        private void CutToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            ActiveTextAreaControl.TextArea.ClipboardHandler.Cut(sender, e);
+        }
+
+        private void CopyToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            ActiveTextAreaControl.TextArea.ClipboardHandler.Copy(sender, e);
+        }
+
+        private void PasteToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            ActiveTextAreaControl.TextArea.ClipboardHandler.Paste(sender, e);
+        }
+
+        private void DeleteToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            ActiveTextAreaControl.TextArea.ClipboardHandler.Delete(sender, e);
+        }
+
+        private void SelectAllToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            ActiveTextAreaControl.TextArea.ClipboardHandler.SelectAll(sender, e);
+        }
+    }
 }

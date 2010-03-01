@@ -25,14 +25,13 @@ using System.Collections.Generic;
 
 namespace NAntGui.Framework
 {
-	public interface IBuildScript
-	{
-		void Parse();
+    public interface IBuildScript
+    {
+        List<BuildTarget> Targets { get; }
+        PropertyCollection Properties { get; }
 
-		List<BuildTarget> Targets { get; }
-		PropertyCollection Properties { get; }
-
-		string Name { get; }
-		string Description { get; }
-	}
+        string Name { get; }
+        string Description { get; }
+        void Parse();
+    }
 }

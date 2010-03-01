@@ -21,56 +21,54 @@
 
 #endregion
 
-using System.Threading;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace NAntGui.Framework
 {
-	public abstract class BuildRunnerBase
-	{
-		public event EventHandler<BuildFinishedEventArgs> BuildFinished;
+    public abstract class BuildRunnerBase
+    {
+        protected ILogsMessage _logger;
+        protected CommandLineOptions _options;
 
-		protected ILogsMessage _logger;
-		protected CommandLineOptions _options;
+        private Thread _thread;
 
-		private Thread _thread;
+        protected BuildRunnerBase(ILogsMessage logger, CommandLineOptions options)
+        {
+            Assert.NotNull(logger, "logger");
+            Assert.NotNull(options, "options");
 
-		protected abstract void DoRun();
+            _logger = logger;
+            _options = options;
+        }
 
-		public BuildRunnerBase(ILogsMessage logger, CommandLineOptions options)
-		{
-			Assert.NotNull(logger, "logger");
-			Assert.NotNull(options, "options");
+        public abstract PropertyCollection Properties { set; }
 
-			_logger = logger;
-			_options = options;
-		}
+        public abstract List<BuildTarget> Targets { set; }
+        public event EventHandler<BuildFinishedEventArgs> BuildFinished;
+        protected abstract void DoRun();
 
-		public void Run()
-		{
-			_thread = new Thread(new ThreadStart(DoRun));
-			_thread.Start();
-		}
+        public void Run()
+        {
+            _thread = new Thread(DoRun);
+            _thread.Start();
+        }
 
-		public void Stop()
-		{
-			if (_thread != null)
-			{
-				_thread.Abort();
-			}
-		}
+        public void Stop()
+        {
+            if (_thread != null)
+            {
+                _thread.Abort();
+            }
+        }
 
-		protected void FinishBuild()
-		{
-			if (BuildFinished != null)
-			{
-				BuildFinished(this, new BuildFinishedEventArgs());
-			}
-		}
-
-		public abstract PropertyCollection Properties { set; }
-
-		public abstract List<BuildTarget> Targets { set; }
-	}
+        protected void FinishBuild()
+        {
+            if (BuildFinished != null)
+            {
+                BuildFinished(this, new BuildFinishedEventArgs());
+            }
+        }
+    }
 }

@@ -25,37 +25,41 @@ using System.Collections;
 
 namespace NAntGui.Framework
 {
-	/// <summary>
-	/// Summary description for PropertyCollection.
-	/// </summary>
-	public class PropertyCollection : IEnumerable
-	{
-		private Hashtable _properties;
+    /// <summary>
+    /// Summary description for PropertyCollection.
+    /// </summary>
+    public class PropertyCollection : IEnumerable
+    {
+        private readonly Hashtable _properties;
 
-		public PropertyCollection()
-		{
-			_properties = new Hashtable();
-		}
+        public PropertyCollection()
+        {
+            _properties = new Hashtable();
+        }
 
-		public void Add(BuildProperty prop)
-		{
-			_properties.Add(prop.Key, prop);
-		}
+        public BuildProperty this[string key]
+        {
+            get { return (BuildProperty) _properties[key]; }
+            set { _properties[key] = value; }
+        }
 
-		public void Clear()
-		{
-			_properties.Clear();
-		}
+        #region IEnumerable Members
 
-		public IEnumerator GetEnumerator()
-		{
-			return _properties.Values.GetEnumerator();
-		}
+        public IEnumerator GetEnumerator()
+        {
+            return _properties.Values.GetEnumerator();
+        }
 
-		public BuildProperty this[string key]
-		{
-			get { return (BuildProperty) _properties[key]; }
-			set { _properties[key] = value; }
-		}
-	}
+        #endregion
+
+        public void Add(BuildProperty prop)
+        {
+            _properties.Add(prop.Key, prop);
+        }
+
+        public void Clear()
+        {
+            _properties.Clear();
+        }
+    }
 }

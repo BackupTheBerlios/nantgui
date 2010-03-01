@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -21,12 +21,6 @@
 
 #endregion
 
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using NAntGui.Core;
-using NAntGui.Framework;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace NAntGui.Gui.Controls
@@ -38,7 +32,13 @@ namespace NAntGui.Gui.Controls
 	{
 		private System.Windows.Forms.ToolStripMenuItem _runMenuItem;
 		private System.Windows.Forms.TreeView _treeView;
-		
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
@@ -64,7 +64,7 @@ namespace NAntGui.Gui.Controls
             this._runMenuItem.Size = new System.Drawing.Size(112, 22);
             this._runMenuItem.Text = "&Run";
             this._runMenuItem.ToolTipText = "Builds the current build file";
-            this._runMenuItem.Click += new System.EventHandler(this._runMenuItem_Click);
+            this._runMenuItem.Click += new System.EventHandler(this.RunMenuItemClick);
             // 
             // _treeView
             // 
@@ -75,6 +75,8 @@ namespace NAntGui.Gui.Controls
             this._treeView.Name = "_treeView";
             this._treeView.Size = new System.Drawing.Size(292, 266);
             this._treeView.TabIndex = 6;
+            this._treeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(TreeViewAfterCheck);
+            this._treeView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TreeViewMouseMove);
             // 
             // TargetsWindow
             // 
@@ -97,5 +99,7 @@ namespace NAntGui.Gui.Controls
 		private System.Windows.Forms.ContextMenuStrip _targetsContextMenu;
 		private System.Windows.Forms.ToolTip _toolTip;
 		private System.ComponentModel.IContainer components;
-	}
+
+        #endregion
+    }
 }

@@ -22,21 +22,20 @@
 #endregion
 
 using System;
-using NAntGui.Gui;
 
 namespace NAntGui
 {
-	/// <summary>
+    /// <summary>
     /// Summary description for Program.
-	/// </summary>
-	static class Program
-	{
+    /// </summary>
+    internal static class Program
+    {
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // ensure only a single instance of this app runs.
-            SingleInstanceApplication app = new SingleInstanceApplication();            
+            SingleInstanceApplication app = new SingleInstanceApplication();
             app.Run(args);
-        }  
-	}
+        }
+    }
 }

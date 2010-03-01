@@ -23,11 +23,11 @@
 
 namespace NAntGui.Framework
 {
-	/// <summary>
-	/// Summary description for ILogsMessage.
-	/// </summary>
-	public interface ILogsMessage
-	{
-		void LogMessage(string message);
-	}
+    /// <summary>
+    /// Summary description for ILogsMessage.
+    /// </summary>
+    public interface ILogsMessage
+    {
+        void LogMessage(string message);
+    }
 }

@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -21,8 +21,6 @@
 
 #endregion
 
-using System.Drawing;
-using System.Resources;
 using System.Windows.Forms;
 using System.ComponentModel;
 
@@ -49,11 +47,13 @@ namespace NAntGui.Gui
 			}
 			base.Dispose(disposing);
 		}
-		
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
 		private void InitializeComponent()
 		{
             WeifenLuo.WinFormsUI.Docking.DockPanelSkin dockPanelSkin1 = new WeifenLuo.WinFormsUI.Docking.DockPanelSkin();
@@ -213,8 +213,8 @@ namespace NAntGui.Gui
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this._dockPanel.Skin = dockPanelSkin1;
             this._dockPanel.TabIndex = 0;
-            this._dockPanel.ContentAdded += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this._dockPanel_ContentAdded);
-            this._dockPanel.ContentRemoved += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this._dockPanel_ContentRemoved);
+            this._dockPanel.ContentAdded += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.DockPanelContentAdded);
+            this._dockPanel.ContentRemoved += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.DockPanelContentRemoved);
             // 
             // _standardToolStrip
             // 
@@ -512,7 +512,7 @@ namespace NAntGui.Gui
             this._saveAsMenuItem.Size = new System.Drawing.Size(174, 22);
             this._saveAsMenuItem.Text = "Save &As";
             this._saveAsMenuItem.ToolTipText = "Save the current file under a new name";
-            this._saveAsMenuItem.Click += new System.EventHandler(this._saveAsMenuItem_Click);
+            this._saveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItemClick);
             // 
             // saveAllMenuItem
             // 
@@ -522,7 +522,7 @@ namespace NAntGui.Gui
             this.saveAllMenuItem.Name = "saveAllMenuItem";
             this.saveAllMenuItem.Size = new System.Drawing.Size(174, 22);
             this.saveAllMenuItem.Text = "Save A&ll";
-            this.saveAllMenuItem.Click += new System.EventHandler(this.saveAllMenuItem_Click);
+            this.saveAllMenuItem.Click += new System.EventHandler(this.SaveAllMenuItemClick);
             // 
             // toolStripSeparator3
             // 
@@ -554,7 +554,7 @@ namespace NAntGui.Gui
             this._closeMenuItem.Size = new System.Drawing.Size(174, 22);
             this._closeMenuItem.Text = "&Close";
             this._closeMenuItem.ToolTipText = "Close the current file";
-            this._closeMenuItem.Click += new System.EventHandler(this._closeMenuItem_Click);
+            this._closeMenuItem.Click += new System.EventHandler(this.CloseMenuItemClick);
             // 
             // toolStripSeparator5
             // 
@@ -568,7 +568,7 @@ namespace NAntGui.Gui
             this._saveOutputMenuItem.Size = new System.Drawing.Size(174, 22);
             this._saveOutputMenuItem.Text = "Save O&utput";
             this._saveOutputMenuItem.ToolTipText = "Save the current output";
-            this._saveOutputMenuItem.Click += new System.EventHandler(this._saveOutput_Click);
+            this._saveOutputMenuItem.Click += new System.EventHandler(this.SaveOutputClick);
             // 
             // _recentMenuItem
             // 
@@ -587,7 +587,7 @@ namespace NAntGui.Gui
             this._exitMenuItem.Size = new System.Drawing.Size(174, 22);
             this._exitMenuItem.Text = "E&xit";
             this._exitMenuItem.ToolTipText = "Exit the application";
-            this._exitMenuItem.Click += new System.EventHandler(this._exit_Click);
+            this._exitMenuItem.Click += new System.EventHandler(this.ExitClick);
             // 
             // _editMenuItem
             // 
@@ -675,7 +675,7 @@ namespace NAntGui.Gui
             this._deleteMenuItem.Size = new System.Drawing.Size(166, 22);
             this._deleteMenuItem.Text = "&Delete";
             this._deleteMenuItem.ToolTipText = "Delete the selected text";
-            this._deleteMenuItem.Click += new System.EventHandler(this._deleteMenuItem_Click);
+            this._deleteMenuItem.Click += new System.EventHandler(this.DeleteMenuItemClick);
             // 
             // toolStripSeparator8
             // 
@@ -688,14 +688,14 @@ namespace NAntGui.Gui
             this._selectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this._selectAllMenuItem.Size = new System.Drawing.Size(166, 22);
             this._selectAllMenuItem.Text = "Select &All";
-            this._selectAllMenuItem.Click += new System.EventHandler(this._selectAllMenuItem_Click);
+            this._selectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItemClick);
             // 
             // _wordWrapMenuItem
             // 
             this._wordWrapMenuItem.Name = "_wordWrapMenuItem";
             this._wordWrapMenuItem.Size = new System.Drawing.Size(166, 22);
             this._wordWrapMenuItem.Text = "W&ord Wrap Output";
-            this._wordWrapMenuItem.Click += new System.EventHandler(this.wordWrapOutputToolStripMenuItem_Click);
+            this._wordWrapMenuItem.Click += new System.EventHandler(this.WordWrapOutputMenuItemClick);
             // 
             // _viewMenuItem
             // 
@@ -713,7 +713,7 @@ namespace NAntGui.Gui
             this._targetsMenuItem.Name = "_targetsMenuItem";
             this._targetsMenuItem.Size = new System.Drawing.Size(123, 22);
             this._targetsMenuItem.Text = "&Targets";
-            this._targetsMenuItem.Click += new System.EventHandler(this._targetsMenuItemClick);
+            this._targetsMenuItem.Click += new System.EventHandler(this.TargetsMenuItemClick);
             // 
             // _propertiesMenuItem
             // 
@@ -722,7 +722,7 @@ namespace NAntGui.Gui
             this._propertiesMenuItem.Name = "_propertiesMenuItem";
             this._propertiesMenuItem.Size = new System.Drawing.Size(123, 22);
             this._propertiesMenuItem.Text = "&Properties";
-            this._propertiesMenuItem.Click += new System.EventHandler(this._propertiesMenuItemClick);
+            this._propertiesMenuItem.Click += new System.EventHandler(this.PropertiesMenuItemClick);
             // 
             // _outputMenuItem
             // 
@@ -730,7 +730,7 @@ namespace NAntGui.Gui
             this._outputMenuItem.Name = "_outputMenuItem";
             this._outputMenuItem.Size = new System.Drawing.Size(123, 22);
             this._outputMenuItem.Text = "&Output";
-            this._outputMenuItem.Click += new System.EventHandler(this._outputMenuItemClick);
+            this._outputMenuItem.Click += new System.EventHandler(this.OutputMenuItemClick);
             // 
             // _buildMenuItem
             // 
@@ -776,7 +776,7 @@ namespace NAntGui.Gui
             this._optionsMenuItem.Name = "_optionsMenuItem";
             this._optionsMenuItem.Size = new System.Drawing.Size(111, 22);
             this._optionsMenuItem.Text = "&Options";
-            this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
+            this._optionsMenuItem.Click += new System.EventHandler(OptionsMenuItemClick);
             // 
             // _documentsMenuItem
             // 
@@ -793,7 +793,7 @@ namespace NAntGui.Gui
             this._closeAllDocumentsMenuItem.Name = "_closeAllDocumentsMenuItem";
             this._closeAllDocumentsMenuItem.Size = new System.Drawing.Size(170, 22);
             this._closeAllDocumentsMenuItem.Text = "C&lose All Documents";
-            this._closeAllDocumentsMenuItem.Click += new System.EventHandler(this.closeAllDocumentsToolStripMenuItem_Click);
+            this._closeAllDocumentsMenuItem.Click += new System.EventHandler(this.CloseAllDocumentsMenuItemClick);
             // 
             // toolStripMenuItem3
             // 
@@ -817,21 +817,21 @@ namespace NAntGui.Gui
             this._nAntHelpMenuItem.Name = "_nAntHelpMenuItem";
             this._nAntHelpMenuItem.Size = new System.Drawing.Size(161, 22);
             this._nAntHelpMenuItem.Text = "NAnt &Help";
-            this._nAntHelpMenuItem.Click += new System.EventHandler(this._nAntHelpMenuItem_Click);
+            this._nAntHelpMenuItem.Click += new System.EventHandler(NAntHelpMenuItemClick);
             // 
             // _nAntSDKHelpMenuItem
             // 
             this._nAntSDKHelpMenuItem.Name = "_nAntSDKHelpMenuItem";
             this._nAntSDKHelpMenuItem.Size = new System.Drawing.Size(161, 22);
             this._nAntSDKHelpMenuItem.Text = "NAnt &SDK Help";
-            this._nAntSDKHelpMenuItem.Click += new System.EventHandler(this._nAntSDKHelpMenuItem_Click);
+            this._nAntSDKHelpMenuItem.Click += new System.EventHandler(NAntSdkHelpMenuItemClick);
             // 
             // _nAntContribHelpMenuItem
             // 
             this._nAntContribHelpMenuItem.Name = "_nAntContribHelpMenuItem";
             this._nAntContribHelpMenuItem.Size = new System.Drawing.Size(161, 22);
             this._nAntContribHelpMenuItem.Text = "NAnt-&Contrib Help";
-            this._nAntContribHelpMenuItem.Click += new System.EventHandler(this._nAntContribHelpMenuItem_Click);
+            this._nAntContribHelpMenuItem.Click += new System.EventHandler(NAntContribHelpMenuItemClick);
             // 
             // toolStripMenuItem1
             // 
@@ -843,7 +843,7 @@ namespace NAntGui.Gui
             this._aboutMenuItem.Name = "_aboutMenuItem";
             this._aboutMenuItem.Size = new System.Drawing.Size(161, 22);
             this._aboutMenuItem.Text = "&About NAnt-Gui";
-            this._aboutMenuItem.Click += new System.EventHandler(this._aboutMenuItem_Click);
+            this._aboutMenuItem.Click += new System.EventHandler(AboutMenuItemClick);
             // 
             // toolStripSeparator1
             // 
@@ -998,7 +998,8 @@ namespace NAntGui.Gui
         private ToolStripSeparator toolStripSeparator9;
         private ToolStripDropDownButton _newDropDownButton;
         private ToolStripMenuItem newProjectToolStripMenuItem;
-        private ToolStripMenuItem _newBlankMenuItem;	
-		
-	}
+        private ToolStripMenuItem _newBlankMenuItem;
+
+        #endregion
+    }
 }

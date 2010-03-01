@@ -4,16 +4,16 @@
 // Copyright (C) 2004-2007 Colin Svingen
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General internal License as published by
+// it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
 // (at your option) any later version.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General internal License for more details.
+// GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General internal License
+// You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
@@ -21,12 +21,8 @@
 
 #endregion
 
-using System;
 using System.ComponentModel;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace NAntGui.Gui
 {
@@ -38,13 +34,13 @@ namespace NAntGui.Gui
 		private Label label1;
 		private Label label2;
 		private Label label3;
-		private Button OKButton;
-		private Button CloseButton;
+		private Button _okButton;
+		private Button _closeButton;
 		private Label label4;
-		private TextBox NameTextBox;
-		private TextBox DefaultTextBox;
-		private TextBox DescriptionTextBox;
-		private TextBox BasedirTextBox;
+		private TextBox _nameTextBox;
+		private TextBox _defaultTextBox;
+		private TextBox _descriptionTextBox;
+		private TextBox _basedirTextBox;
 		private IContainer components = null;
 		
 		/// <summary>
@@ -74,12 +70,12 @@ namespace NAntGui.Gui
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
-			this.NameTextBox = new System.Windows.Forms.TextBox();
-			this.DefaultTextBox = new System.Windows.Forms.TextBox();
-			this.BasedirTextBox = new System.Windows.Forms.TextBox();
-			this.DescriptionTextBox = new System.Windows.Forms.TextBox();
-			this.OKButton = new System.Windows.Forms.Button();
-			this.CloseButton = new System.Windows.Forms.Button();
+			this._nameTextBox = new System.Windows.Forms.TextBox();
+			this._defaultTextBox = new System.Windows.Forms.TextBox();
+			this._basedirTextBox = new System.Windows.Forms.TextBox();
+			this._descriptionTextBox = new System.Windows.Forms.TextBox();
+			this._okButton = new System.Windows.Forms.Button();
+			this._closeButton = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
@@ -104,58 +100,58 @@ namespace NAntGui.Gui
 			this.label3.TabIndex = 2;
 			this.label3.Text = "Basedir";
 			// 
-			// NameTextBox
+			// _nameTextBox
 			// 
-			this.NameTextBox.Location = new System.Drawing.Point(8, 24);
-			this.NameTextBox.Name = "NameTextBox";
-			this.NameTextBox.Size = new System.Drawing.Size(120, 20);
-			this.NameTextBox.TabIndex = 1;
-			this.NameTextBox.Text = "";
+			this._nameTextBox.Location = new System.Drawing.Point(8, 24);
+			this._nameTextBox.Name = "_nameTextBox";
+			this._nameTextBox.Size = new System.Drawing.Size(120, 20);
+			this._nameTextBox.TabIndex = 1;
+			this._nameTextBox.Text = "";
 			// 
-			// DefaultTextBox
+			// _defaultTextBox
 			// 
-			this.DefaultTextBox.Location = new System.Drawing.Point(136, 24);
-			this.DefaultTextBox.Name = "DefaultTextBox";
-			this.DefaultTextBox.Size = new System.Drawing.Size(120, 20);
-			this.DefaultTextBox.TabIndex = 5;
-			this.DefaultTextBox.Text = "";
+			this._defaultTextBox.Location = new System.Drawing.Point(136, 24);
+			this._defaultTextBox.Name = "_defaultTextBox";
+			this._defaultTextBox.Size = new System.Drawing.Size(120, 20);
+			this._defaultTextBox.TabIndex = 5;
+			this._defaultTextBox.Text = "";
 			// 
-			// BasedirTextBox
+			// _basedirTextBox
 			// 
-			this.BasedirTextBox.Location = new System.Drawing.Point(264, 24);
-			this.BasedirTextBox.Name = "BasedirTextBox";
-			this.BasedirTextBox.Size = new System.Drawing.Size(120, 20);
-			this.BasedirTextBox.TabIndex = 10;
-			this.BasedirTextBox.Text = "";
+			this._basedirTextBox.Location = new System.Drawing.Point(264, 24);
+			this._basedirTextBox.Name = "_basedirTextBox";
+			this._basedirTextBox.Size = new System.Drawing.Size(120, 20);
+			this._basedirTextBox.TabIndex = 10;
+			this._basedirTextBox.Text = "";
 			// 
-			// DescriptionTextBox
+			// _descriptionTextBox
 			// 
-			this.DescriptionTextBox.Location = new System.Drawing.Point(8, 72);
-			this.DescriptionTextBox.Multiline = true;
-			this.DescriptionTextBox.Name = "DescriptionTextBox";
-			this.DescriptionTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-			this.DescriptionTextBox.Size = new System.Drawing.Size(376, 88);
-			this.DescriptionTextBox.TabIndex = 15;
-			this.DescriptionTextBox.Text = "";
+			this._descriptionTextBox.Location = new System.Drawing.Point(8, 72);
+			this._descriptionTextBox.Multiline = true;
+			this._descriptionTextBox.Name = "_descriptionTextBox";
+			this._descriptionTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this._descriptionTextBox.Size = new System.Drawing.Size(376, 88);
+			this._descriptionTextBox.TabIndex = 15;
+			this._descriptionTextBox.Text = "";
 			// 
-			// OKButton
+			// _okButton
 			// 
-			this.OKButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.OKButton.Location = new System.Drawing.Point(232, 168);
-			this.OKButton.Name = "OKButton";
-			this.OKButton.TabIndex = 20;
-			this.OKButton.Text = "&OK";
-			this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+			this._okButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this._okButton.Location = new System.Drawing.Point(232, 168);
+			this._okButton.Name = "_okButton";
+			this._okButton.TabIndex = 20;
+			this._okButton.Text = "&OK";
+			this._okButton.Click += new System.EventHandler(this.OKButton_Click);
 			// 
-			// CloseButton
+			// _closeButton
 			// 
-			this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.CloseButton.Location = new System.Drawing.Point(312, 168);
-			this.CloseButton.Name = "CloseButton";
-			this.CloseButton.TabIndex = 25;
-			this.CloseButton.Text = "&Cancel";
-			this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
+			this._closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this._closeButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this._closeButton.Location = new System.Drawing.Point(312, 168);
+			this._closeButton.Name = "_closeButton";
+			this._closeButton.TabIndex = 25;
+			this._closeButton.Text = "&Cancel";
+			this._closeButton.Click += new System.EventHandler(this.CloseButton_Click);
 			// 
 			// label4
 			// 
@@ -166,17 +162,17 @@ namespace NAntGui.Gui
 			// 
 			// NewProjectForm
 			// 
-			this.AcceptButton = this.OKButton;
+			this.AcceptButton = this._okButton;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.CancelButton = this.CloseButton;
+			this.CancelButton = this._closeButton;
 			this.ClientSize = new System.Drawing.Size(394, 199);
-			this.Controls.Add(this.DescriptionTextBox);
+			this.Controls.Add(this._descriptionTextBox);
 			this.Controls.Add(this.label4);
-			this.Controls.Add(this.CloseButton);
-			this.Controls.Add(this.OKButton);
-			this.Controls.Add(this.BasedirTextBox);
-			this.Controls.Add(this.DefaultTextBox);
-			this.Controls.Add(this.NameTextBox);
+			this.Controls.Add(this._closeButton);
+			this.Controls.Add(this._okButton);
+			this.Controls.Add(this._basedirTextBox);
+			this.Controls.Add(this._defaultTextBox);
+			this.Controls.Add(this._nameTextBox);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);

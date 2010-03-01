@@ -33,112 +33,107 @@ using NAnt.Core.Types;
 
 namespace NAnt.Contrib.InnoSetup.Tasks
 {
-	/// <summary>
-	/// Compiles an InnoSetup script to an installer.
-	/// </summary>
-	/// <example>
-	///   <code>
-	///     <![CDATA[
-	/// <innosetup script="installer.iss" workingdirectory=".." />
-	///     ]]>
-	///   </code>
-	/// </example>
-	[TaskName("innosetup")]
-	public class InnoSetup : ExternalProgramBase
-	{
-		private const string INNO_EXE = "iscc.exe";
+    /// <summary>
+    /// Compiles an InnoSetup script to an installer.
+    /// </summary>
+    /// <example>
+    ///   <code>
+    ///     <![CDATA[
+    /// <innosetup script="installer.iss" workingdirectory=".." />
+    ///     ]]>
+    ///   </code>
+    /// </example>
+    [TaskName("innosetup")]
+    public class InnoSetup : ExternalProgramBase
+    {
+        private const string INNO_EXE = "iscc.exe";
 
-		#region Private Instance Fields
+        #region Private Instance Fields
 
-		private FileInfo _script;
-		private DirectoryInfo _workingDirectory;
+        private DirectoryInfo _workingDirectory;
 
-		#endregion Private Instance Fields
+        #endregion Private Instance Fields
 
-		#region Public Instance Properties
+        #region Public Instance Properties
 
-		/// <summary>
-		/// The script to compile.
-		/// </summary>
-		[TaskAttribute("script", Required=true)]
-		[StringValidator(AllowEmpty=false)]
-		public FileInfo Script
-		{
-			get { return _script; }
-			set { _script = value; }
-		}
+        /// <summary>
+        /// The script to compile.
+        /// </summary>
+        [TaskAttribute("script", Required = true)]
+        [StringValidator(AllowEmpty = false)]
+        public FileInfo Script { get; set; }
 
-		/// <summary>
-		/// The directory in which the command will be executed.
-		/// </summary>
-		/// <value>
-		/// The directory in which the command will be executed. The default
-		/// is the location of the script.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// The working directory will be evaluated relative to the project's
-		/// base directory if it is relative.
-		/// </para>
-		/// </remarks>
-		[TaskAttribute("workingdir")]
-		public DirectoryInfo WorkingDirectory
-		{
-			get
-			{
-				if (_workingDirectory == null)
-				{
-					return base.BaseDirectory;
-				}
-				return _workingDirectory;
-			}
-			set { _workingDirectory = value; }
-		}
+        /// <summary>
+        /// The directory in which the command will be executed.
+        /// </summary>
+        /// <value>
+        /// The directory in which the command will be executed. The default
+        /// is the location of the script.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// The working directory will be evaluated relative to the project's
+        /// base directory if it is relative.
+        /// </para>
+        /// </remarks>
+        [TaskAttribute("workingdir")]
+        public DirectoryInfo WorkingDirectory
+        {
+            get
+            {
+                if (_workingDirectory == null)
+                {
+                    return base.BaseDirectory;
+                }
+                return _workingDirectory;
+            }
+            set { _workingDirectory = value; }
+        }
 
-		#endregion Public Instance Properties
+        #endregion Public Instance Properties
 
-		#region Override implementation of ExternalProgramBase
+        #region Override implementation of ExternalProgramBase
 
-		/// <summary>
-		/// Gets the command-line arguments for the external program.
-		/// </summary>
-		/// <value>
-		/// The command-line arguments for the external program.
-		/// </value>
-		public override string ProgramArguments
-		{
-			get { return ""; }
-		}
+        /// <summary>
+        /// Gets the command-line arguments for the external program.
+        /// </summary>
+        /// <value>
+        /// The command-line arguments for the external program.
+        /// </value>
+        public override string ProgramArguments
+        {
+            get { return ""; }
+        }
 
-		/// <summary>
-		/// Gets the filename of the external program to start.
-		/// </summary>
-		/// <value>
-		/// The filename of the external program.
-		/// </value>
-		public override string ProgramFileName
-		{
-			get
-			{
-				const string KEY_PATH = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1";
-				RegistryKey lKey = Registry.LocalMachine.OpenSubKey(KEY_PATH);
+        /// <summary>
+        /// Gets the filename of the external program to start.
+        /// </summary>
+        /// <value>
+        /// The filename of the external program.
+        /// </value>
+        public override string ProgramFileName
+        {
+            get
+            {
+                const string keyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1";
+                RegistryKey lKey = Registry.LocalMachine.OpenSubKey(keyPath);
 
-				if (lKey == null)
-				{
-					throw new BuildException("Inno Setup does not appear to be installed.", Location);
-				}
+                if (lKey == null)
+                {
+                    throw new BuildException("Inno Setup does not appear to be installed.", Location);
+                }
 
-				string lInnoDir = lKey.GetValue("InstallLocation", "").ToString();
-				string lFullPath = Path.Combine(lInnoDir, INNO_EXE);
+                string lInnoDir = lKey.GetValue("InstallLocation", "").ToString();
+                string lFullPath = Path.Combine(lInnoDir, INNO_EXE);
 
-				if (!File.Exists(lFullPath))
-				{
-					throw new BuildException("Inno Setup (iscc.exe) could not be found.", Location);
-				}
+                if (!File.Exists(lFullPath))
+                {
+                    throw new BuildException("Inno Setup (iscc.exe) could not be found.", Location);
+                }
 
-				return lFullPath;
-			}
-		}
+                return lFullPath;
+            }
+        }
 
 //		/// <summary>
 //		/// The file to which the standard output will be redirected.
@@ -168,55 +163,55 @@ namespace NAnt.Contrib.InnoSetup.Tasks
 //			set { _outputAppend = value; }
 //		}
 
-		/// <summary>
-		/// Executes the external program.
-		/// </summary>
-		protected override void ExecuteTask()
-		{
-			Arguments.Add(new Argument(Script));
-			
+        /// <summary>
+        /// Executes the external program.
+        /// </summary>
+        protected override void ExecuteTask()
+        {
+            Arguments.Add(new Argument(Script));
+
 //      TextWriter lWriter = new TextWriter();
 //      this.OutputWriter = lWriter;
 //      this.ErrorWriter = lWriter;
 
-			try
-			{
-				base.ExecuteTask();
-			}
-			catch (Exception ex)
-			{
-				throw new BuildException(string.Format(CultureInfo.InvariantCulture,
-				                                       "Error compiling installer from '{0}'.", Script.FullName),
-				                         Location, ex);
-			}
-		}
+            try
+            {
+                base.ExecuteTask();
+            }
+            catch (Exception ex)
+            {
+                throw new BuildException(string.Format(CultureInfo.InvariantCulture,
+                                                       "Error compiling installer from '{0}'.", Script.FullName),
+                                         Location, ex);
+            }
+        }
 
-		protected override void PrepareProcess(Process process)
-		{
-			base.PrepareProcess(process);
+        protected override void PrepareProcess(Process process)
+        {
+            base.PrepareProcess(process);
 
-			// set working directory specified by user
-			process.StartInfo.WorkingDirectory = WorkingDirectory.FullName;
-		}
+            // set working directory specified by user
+            process.StartInfo.WorkingDirectory = WorkingDirectory.FullName;
+        }
 
-		/// <summary>
-		/// Performs additional checks after the task has been initialized.
-		/// </summary>
-		/// <param name="taskNode">The <see cref="XmlNode" /> used to initialize the task.</param>
-		/// <exception cref="BuildException"><see cref="Script" /> does not hold a valid file name.</exception>
-		protected override void InitializeTask(XmlNode taskNode)
-		{
-			// just check if program file to execute is a valid file name
-			if (!Script.Exists)
-			{
-				throw new BuildException(string.Format(CultureInfo.InvariantCulture,
-				                                       "'{0}' is not a valid value for attribute 'script' of <{1} ... />.",
-				                                       Script.FullName, Name), Location);
-			}
+        /// <summary>
+        /// Performs additional checks after the task has been initialized.
+        /// </summary>
+        /// <param name="taskNode">The <see cref="XmlNode" /> used to initialize the task.</param>
+        /// <exception cref="BuildException"><see cref="Script" /> does not hold a valid file name.</exception>
+        protected override void InitializeTask(XmlNode taskNode)
+        {
+            // just check if program file to execute is a valid file name
+            if (!Script.Exists)
+            {
+                throw new BuildException(string.Format(CultureInfo.InvariantCulture,
+                                                       "'{0}' is not a valid value for attribute 'script' of <{1} ... />.",
+                                                       Script.FullName, Name), Location);
+            }
 
-			base.InitializeTask(taskNode);
-		}
+            base.InitializeTask(taskNode);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }
