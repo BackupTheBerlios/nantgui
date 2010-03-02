@@ -468,6 +468,12 @@ namespace NAntGui.Gui
 
             _targetsWindow.DragEnter += NAntGuiForm_DragEnter;
             _targetsWindow.DragDrop += NAntGuiForm_DragDrop;
+            _targetsWindow.RunTarget += TargetsWindowRunTarget;
+        }
+
+        private void TargetsWindowRunTarget(object sender, RunEventArgs e)
+        {
+            _controller.Run(new List<BuildTarget>{ e.Target });
         }
 
         private IDockContent GetContentFromPersistString(string persistString)

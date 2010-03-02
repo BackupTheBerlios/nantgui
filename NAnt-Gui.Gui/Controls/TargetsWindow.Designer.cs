@@ -75,7 +75,8 @@ namespace NAntGui.Gui.Controls
             this._treeView.Name = "_treeView";
             this._treeView.Size = new System.Drawing.Size(292, 266);
             this._treeView.TabIndex = 6;
-            this._treeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(TreeViewAfterCheck);
+            this._treeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewAfterCheck);
+            this._treeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._treeView_MouseClick);
             this._treeView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TreeViewMouseMove);
             // 
             // TargetsWindow

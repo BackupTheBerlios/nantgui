@@ -66,14 +66,14 @@ namespace NAntGui.Gui
 
     internal class RunEventArgs : EventArgs
     {
-        private readonly string _target;
+        private readonly BuildTarget _target;
 
-        internal RunEventArgs(string target)
+        internal RunEventArgs(BuildTarget target)
         {
             _target = target;
         }
 
-        internal string Target
+        internal BuildTarget Target
         {
             get { return _target; }
         }

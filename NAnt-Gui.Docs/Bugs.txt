@@ -1,6 +1,3 @@
-- Add filesystem watcher back in
-- Got some kind of weird bug when I was editing a file.  Had saved it, but it complained, when
-  I closed the file that it wasn't saved
 
 1.9.*:
 FIXED: Figure out why the NAnt-Gui projects prebuild.bat doesn't work anymore
