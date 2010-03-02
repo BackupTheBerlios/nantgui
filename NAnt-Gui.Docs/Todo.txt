@@ -2,8 +2,6 @@ Required for 1.9/2.0
 --------------------
 - New project doesn't prompt for save on close.
 - Multiple tabs:	
-	* Add 'close all tabs' menu item to tab right click
-	* Add 'close other tabs' menu item to tab right click	
 	* Add save all menu item and toolstrip button
 	* Window menu that lists all open tabs	
 - Fix all UI events.  
@@ -73,6 +71,8 @@ For 2.1 and beyond
 + Add basic MSBuild support
 
 1.9.1:
+(DONE): Add 'close all tabs' menu item to tab right click
+(DONE): Add 'close other tabs' menu item to tab right click	
 (DONE): Should save the locations of the toolstrips on the mainform	
 (DONE): New Project code implementation
 

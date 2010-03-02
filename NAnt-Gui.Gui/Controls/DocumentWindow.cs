@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.IO;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
@@ -124,6 +125,30 @@ namespace NAntGui.Gui.Controls
         {
             add { _fileSystemWatcher.Deleted += value; }
             remove { _fileSystemWatcher.Deleted -= value; }
+        }
+
+        internal event EventHandler CloseClicked
+        {
+            add { closeMenuItem.Click += value; }
+            remove { closeMenuItem.Click -= value; }
+        }
+
+        internal event EventHandler CloseAllClicked
+        {
+            add { closeAllMenuItem.Click += value; }
+            remove { closeAllMenuItem.Click -= value; }
+        }
+
+        internal event EventHandler CloseAllButThisClicked
+        {
+            add { closeAllButThisMenuItem.Click += value; }
+            remove { closeAllButThisMenuItem.Click -= value; }
+        }
+
+        internal event EventHandler SaveClicked
+        {
+            add { saveMenuItem.Click += value; }
+            remove { saveMenuItem.Click -= value; }
         }
     }
 }

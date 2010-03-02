@@ -409,6 +409,10 @@ namespace NAntGui.Gui
             window.DocumentChangedOutside += WindowDocumentChangedOutside;
             window.FormClosing += CloseDocument;
             window.FormClosed += WindowFormClosed;
+            window.CloseClicked += delegate { Close(); };
+            window.CloseAllClicked += delegate { CloseAllDocuments(); };
+            window.CloseAllButThisClicked += delegate { CloseAllButThisClicked(); };
+            window.SaveClicked += delegate { SaveDocument(); };
             window.Show(_mainForm.DockPanel);
         }
 
