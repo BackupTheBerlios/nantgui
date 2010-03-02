@@ -164,40 +164,63 @@ namespace NAntGui.Gui
 
         internal void SaveDocument()
         {
-            _ignoreDocumentChanged = true;
-            ActiveDocument.Save(ActiveWindow.Contents, true);
-            Thread.Sleep(100);
-            _ignoreDocumentChanged = false;
-
-            List<BuildTarget> targets = _mainForm.SelectedTargets;
-            UpdateTitle();
-            UpdateDisplay();
-            _mainForm.SelectedTargets = targets;
-
-            _mainForm.Enable();
+            SaveDocument(ActiveDocument, ActiveWindow);
         }
 
-        internal bool SaveDocumentAs()
+        private void SaveDocument(NAntDocument document, DocumentWindow window)
+        {
+            if (document.FileType == FileType.New)
+            {
+                SaveDocumentAs(document, window);
+            }
+            else if (document.IsDirty(window.Contents))
+            {
+                //_ignoreDocumentChanged = true;
+                document.Save(window.Contents, true);
+                //_ignoreDocumentChanged = false;
+
+                if (window == ActiveWindow)
+                {
+                    List<BuildTarget> targets = _mainForm.SelectedTargets;
+                    UpdateTitle();
+                    UpdateDisplay();
+                    _mainForm.SelectedTargets = targets;
+
+                    _mainForm.Enable();
+                }
+            }
+        }
+
+        internal void SaveDocumentAs()
+        {
+            SaveDocumentAs(ActiveDocument, ActiveWindow);
+        }
+
+        private void SaveDocumentAs(NAntDocument document, DocumentWindow window)
         {
             string filename = BuildFileBrowser.BrowseForSave();
             if (filename != null)
             {
-                ActiveDocument.SaveAs(filename, ActiveWindow.Contents);
-                ActiveWindow.TabText = ActiveDocument.Name;
-                ActiveDocument.BuildFinished = _mainForm.SetStateStopped;
+                document.SaveAs(filename, window.Contents);
+                window.TabText = document.Name;
+                document.BuildFinished = _mainForm.SetStateStopped;
 
-                Settings.Default.SaveScriptInitialDir = ActiveDocument.Directory;
+                Settings.Default.SaveScriptInitialDir = document.Directory;
                 Settings.Default.Save();
 
                 RecentItems.Add(filename);
 
                 _mainForm.CreateRecentItemsMenu();
                 _mainForm.Enable();
-
-                return true;
             }
+        }
 
-            return false;
+        internal void SaveAllDocuments()
+        {
+            foreach (DocumentWindow window in _mainForm.DockPanel.Documents)
+            {
+                SaveDocument(window.Document, window);
+            }
         }
 
         internal void ReloadActiveDocument()
@@ -546,10 +569,7 @@ namespace NAntGui.Gui
             }
         }
 
-        internal void SaveAllDocuments()
-        {
-            throw new NotImplementedException();
-        }
+ 
 
         #region Private Methods
 

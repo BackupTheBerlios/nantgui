@@ -79,6 +79,7 @@ namespace NAntGui.Gui
             this._newBlankMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this._saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this._saveAllToolStripButton = new System.Windows.Forms.ToolStripButton();
             this._reloadToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -223,6 +224,7 @@ namespace NAntGui.Gui
             this._newDropDownButton,
             this.openToolStripButton,
             this._saveToolStripButton,
+            this._saveAllToolStripButton,
             this._reloadToolStripButton,
             this.printToolStripButton,
             this.toolStripSeparator,
@@ -237,7 +239,7 @@ namespace NAntGui.Gui
             this._standardToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this._standardToolStrip.Location = new System.Drawing.Point(3, 0);
             this._standardToolStrip.Name = "_standardToolStrip";
-            this._standardToolStrip.Size = new System.Drawing.Size(289, 25);
+            this._standardToolStrip.Size = new System.Drawing.Size(312, 25);
             this._standardToolStrip.TabIndex = 4;
             // 
             // _newDropDownButton
@@ -288,6 +290,16 @@ namespace NAntGui.Gui
             this._saveToolStripButton.Size = new System.Drawing.Size(23, 22);
             this._saveToolStripButton.Text = "&Save";
             this._saveToolStripButton.Click += new System.EventHandler(this.SaveClicked);
+            // 
+            // _saveAllToolStripButton
+            // 
+            this._saveAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._saveAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("_saveAllToolStripButton.Image")));
+            this._saveAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._saveAllToolStripButton.Name = "_saveAllToolStripButton";
+            this._saveAllToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this._saveAllToolStripButton.Text = "_saveAllButton";
+            this._saveAllToolStripButton.Click += new System.EventHandler(this.SaveAllClicked);
             // 
             // _reloadToolStripButton
             // 
@@ -516,13 +528,12 @@ namespace NAntGui.Gui
             // 
             // saveAllMenuItem
             // 
-            this.saveAllMenuItem.Enabled = false;
             this.saveAllMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveAllMenuItem.Image")));
             this.saveAllMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.saveAllMenuItem.Name = "saveAllMenuItem";
             this.saveAllMenuItem.Size = new System.Drawing.Size(174, 22);
             this.saveAllMenuItem.Text = "Save A&ll";
-            this.saveAllMenuItem.Click += new System.EventHandler(this.SaveAllMenuItemClick);
+            this.saveAllMenuItem.Click += new System.EventHandler(this.SaveAllClicked);
             // 
             // toolStripSeparator3
             // 
@@ -776,7 +787,7 @@ namespace NAntGui.Gui
             this._optionsMenuItem.Name = "_optionsMenuItem";
             this._optionsMenuItem.Size = new System.Drawing.Size(111, 22);
             this._optionsMenuItem.Text = "&Options";
-            this._optionsMenuItem.Click += new System.EventHandler(OptionsMenuItemClick);
+            this._optionsMenuItem.Click += new System.EventHandler(this.OptionsMenuItemClick);
             // 
             // _documentsMenuItem
             // 
@@ -817,21 +828,21 @@ namespace NAntGui.Gui
             this._nAntHelpMenuItem.Name = "_nAntHelpMenuItem";
             this._nAntHelpMenuItem.Size = new System.Drawing.Size(161, 22);
             this._nAntHelpMenuItem.Text = "NAnt &Help";
-            this._nAntHelpMenuItem.Click += new System.EventHandler(NAntHelpMenuItemClick);
+            this._nAntHelpMenuItem.Click += new System.EventHandler(this.NAntHelpMenuItemClick);
             // 
             // _nAntSDKHelpMenuItem
             // 
             this._nAntSDKHelpMenuItem.Name = "_nAntSDKHelpMenuItem";
             this._nAntSDKHelpMenuItem.Size = new System.Drawing.Size(161, 22);
             this._nAntSDKHelpMenuItem.Text = "NAnt &SDK Help";
-            this._nAntSDKHelpMenuItem.Click += new System.EventHandler(NAntSdkHelpMenuItemClick);
+            this._nAntSDKHelpMenuItem.Click += new System.EventHandler(this.NAntSdkHelpMenuItemClick);
             // 
             // _nAntContribHelpMenuItem
             // 
             this._nAntContribHelpMenuItem.Name = "_nAntContribHelpMenuItem";
             this._nAntContribHelpMenuItem.Size = new System.Drawing.Size(161, 22);
             this._nAntContribHelpMenuItem.Text = "NAnt-&Contrib Help";
-            this._nAntContribHelpMenuItem.Click += new System.EventHandler(NAntContribHelpMenuItemClick);
+            this._nAntContribHelpMenuItem.Click += new System.EventHandler(this.NAntContribHelpMenuItemClick);
             // 
             // toolStripMenuItem1
             // 
@@ -843,7 +854,7 @@ namespace NAntGui.Gui
             this._aboutMenuItem.Name = "_aboutMenuItem";
             this._aboutMenuItem.Size = new System.Drawing.Size(161, 22);
             this._aboutMenuItem.Text = "&About NAnt-Gui";
-            this._aboutMenuItem.Click += new System.EventHandler(AboutMenuItemClick);
+            this._aboutMenuItem.Click += new System.EventHandler(this.AboutMenuItemClick);
             // 
             // toolStripSeparator1
             // 
@@ -856,9 +867,9 @@ namespace NAntGui.Gui
             this._buildToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._runToolStripButton,
             this._stopToolStripButton});
-            this._buildToolStrip.Location = new System.Drawing.Point(292, 0);
+            this._buildToolStrip.Location = new System.Drawing.Point(346, 0);
             this._buildToolStrip.Name = "_buildToolStrip";
-            this._buildToolStrip.Size = new System.Drawing.Size(89, 25);
+            this._buildToolStrip.Size = new System.Drawing.Size(58, 25);
             this._buildToolStrip.TabIndex = 15;
             this._buildToolStrip.Text = "toolStrip1";
             // 
@@ -1001,5 +1012,6 @@ namespace NAntGui.Gui
         private ToolStripMenuItem _newBlankMenuItem;
 
         #endregion
+        private ToolStripButton _saveAllToolStripButton;
     }
 }

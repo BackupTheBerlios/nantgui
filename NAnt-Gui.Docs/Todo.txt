@@ -3,8 +3,7 @@ Required for 1.9/2.0
 - BUG: Closing the app while running a build throws a "cannot access disposed object" in OutputWindow.WriteOutput
 - BUG: New project doesn't prompt for save on close.
 - Multiple tabs:	
-	* Add save all menu item and toolstrip button
-	* Window menu that lists all open tabs	
+	* Window menu that lists all open tabs
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
@@ -72,7 +71,10 @@ For 2.1 and beyond
 + Add basic MSBuild support
 
 1.9.1:
+(DONE): Add save all menu item and toolstrip button
+(DONE): Closing multiple tabs that require saving works just like SharpDevelop (cancel is only valid for current document)
 (DONE): Implement Run menuitem on the targets tree
+(DONE): Implement tool tip on targets tree
 (DONE): Add 'close all but this' menu item to tab right click
 (DONE): Add 'save' menu item to tab right click	
 (DONE): Add 'close all tabs' menu item to tab right click

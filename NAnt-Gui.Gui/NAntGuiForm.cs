@@ -320,19 +320,19 @@ namespace NAntGui.Gui
             _outputWindow.Show(_dockPanel);
         }
 
-        private static void AboutMenuItemClick(object sender, EventArgs e)
+        private void AboutMenuItemClick(object sender, EventArgs e)
         {
             About about = new About();
             about.ShowDialog();
         }
 
-        private static void NAntContribHelpMenuItemClick(object sender, EventArgs e)
+        private void NAntContribHelpMenuItemClick(object sender, EventArgs e)
         {
             const string nantContribHelp = @"\..\nantcontrib-docs\help\index.html";
             Utils.LoadHelpFile(Utils.RunDirectory + nantContribHelp);
         }
 
-        private static void NAntSdkHelpMenuItemClick(object sender, EventArgs e)
+        private void NAntSdkHelpMenuItemClick(object sender, EventArgs e)
         {
             const string nantHelpPath = @"\..\nant-docs\sdk\";
             const string nantSdkHelp = "NAnt-SDK.chm";
@@ -341,13 +341,13 @@ namespace NAntGui.Gui
             Utils.LoadHelpFile(filename);
         }
 
-        private static void NAntHelpMenuItemClick(object sender, EventArgs e)
+        private void NAntHelpMenuItemClick(object sender, EventArgs e)
         {
             const string nantHelp = @"\..\nant-docs\help\index.html";
             Utils.LoadHelpFile(Utils.RunDirectory + nantHelp);
         }
 
-        private static void OptionsMenuItemClick(object sender, EventArgs e)
+        private void OptionsMenuItemClick(object sender, EventArgs e)
         {
             OptionsForm optionsForm = new OptionsForm();
             optionsForm.ShowDialog();
@@ -526,7 +526,7 @@ namespace NAntGui.Gui
             _controller.SetCursor(e.Point.X, e.Point.Y);
         }
 
-        private void SaveAllMenuItemClick(object sender, EventArgs e)
+        private void SaveAllClicked(object sender, EventArgs e)
         {
             _controller.SaveAllDocuments();
         }

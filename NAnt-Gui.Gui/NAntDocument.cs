@@ -123,22 +123,19 @@ namespace NAntGui.Gui
 
         internal void Save(string contents, bool update)
         {
-            if (_fileType == FileType.Existing)
-            {
-//                _watcher.EnableRaisingEvents = false;
+            //if (_fileType == FileType.Existing)
+            //{
                 File.WriteAllText(_fullName, contents);
-//                _watcher.EnableRaisingEvents = true;
-
                 _contents = contents;
 
                 if (update)
                     ParseBuildFile();
-            }
-            else if (_fileType == FileType.New)
-            {
-                // TODO: Should make this an event to decouple the control from this class
-                _controller.SaveDocumentAs();
-            }
+            //}
+            //else if (_fileType == FileType.New)
+            //{
+            //    // TODO: Should make this an event to decouple the control from this class
+            //    _controller.SaveDocumentAs();
+            //}
         }
 
         internal void Load(string filename)

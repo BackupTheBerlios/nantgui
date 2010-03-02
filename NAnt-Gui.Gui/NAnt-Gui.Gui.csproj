@@ -321,7 +321,6 @@
     <Content Include="Images\Properties.png" />
     <Content Include="Images\RefreshDocView.bmp" />
     <Content Include="Images\Save.bmp" />
-    <Content Include="Images\SaveAll.bmp" />
     <Content Include="Images\SaveAllHS.png" />
     <Content Include="Images\SaveHS.png" />
     <Content Include="Images\Stop.bmp" />
