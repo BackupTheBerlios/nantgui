@@ -34,7 +34,7 @@ namespace NAntGui.Gui
     /// </summary>
     internal class NAntDocument
     {
-        private readonly MainController _controller;
+        private readonly CommandLineOptions _options;
         private readonly ILogsMessage _logger;
         private BuildRunnerBase _buildRunner;
         private IBuildScript _buildScript;
@@ -47,12 +47,12 @@ namespace NAntGui.Gui
         /// <summary>
         /// Creates new untitled document
         /// </summary>
-        internal NAntDocument(ILogsMessage logger, MainController controller)
+        internal NAntDocument(ILogsMessage logger, CommandLineOptions options)
         {
             Assert.NotNull(logger, "logger");
-            Assert.NotNull(controller, "mediator");
+            Assert.NotNull(options, "options");
 
-            _controller = controller;
+            _options = options;
             _logger = logger;
             _name = "Untitled*";
             _directory = ".\\";
@@ -66,13 +66,13 @@ namespace NAntGui.Gui
         /// <summary>
         /// Loads an existing project file
         /// </summary>
-        internal NAntDocument(string filename, ILogsMessage logger, MainController controller)
+        internal NAntDocument(string filename, ILogsMessage logger, CommandLineOptions options)
         {
             Assert.NotNull(filename, "filename");
             Assert.NotNull(logger, "logger");
-            Assert.NotNull(controller, "controller");
+            Assert.NotNull(options, "options");
 
-            _controller = controller;
+            _options = options;
             _logger = logger;
             _fullName = filename;
 
@@ -83,7 +83,7 @@ namespace NAntGui.Gui
             Load(filename);
 
             _buildScript = ScriptParserFactory.Create(fileInfo);
-            _buildRunner = BuildRunnerFactory.Create(fileInfo, logger, _controller.Options);
+            _buildRunner = BuildRunnerFactory.Create(fileInfo, logger, _options);
             _buildRunner.Properties = _buildScript.Properties;
         }
 
@@ -116,26 +116,18 @@ namespace NAntGui.Gui
             _directory = fileInfo.DirectoryName;
 
             _buildScript = ScriptParserFactory.Create(fileInfo);
-            _buildRunner = BuildRunnerFactory.Create(fileInfo, _logger, _controller.Options);
+            _buildRunner = BuildRunnerFactory.Create(fileInfo, _logger, _options);
 
             ParseBuildFile();
         }
 
         internal void Save(string contents, bool update)
         {
-            //if (_fileType == FileType.Existing)
-            //{
-                File.WriteAllText(_fullName, contents);
-                _contents = contents;
+            File.WriteAllText(_fullName, contents);
+            _contents = contents;
 
-                if (update)
-                    ParseBuildFile();
-            //}
-            //else if (_fileType == FileType.New)
-            //{
-            //    // TODO: Should make this an event to decouple the control from this class
-            //    _controller.SaveDocumentAs();
-            //}
+            if (update)
+                ParseBuildFile();
         }
 
         internal void Load(string filename)
@@ -155,10 +147,7 @@ namespace NAntGui.Gui
         internal void Run()
         {
             if (_buildRunner != null)
-            {
-//				_buildRunner.Properties = _buildScript.Properties;
                 _buildRunner.Run();
-            }
         }
 
         internal void SetTargets(List<BuildTarget> targets)

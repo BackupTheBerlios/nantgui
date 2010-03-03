@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using ICSharpCode.TextEditor;
@@ -41,12 +40,16 @@ namespace NAntGui.Gui
     public class MainController
     {
         private const string BLANK_PROJECT = "BlankProject.build";
-        private IEditCommands _editCommands;
-        private bool _ignoreDocumentChanged;
+        
         private readonly BackgroundWorker _loader = new BackgroundWorker();
-        private NAntGuiForm _mainForm;
         private readonly CommandLineOptions _options;
+
+        private NAntGuiForm _mainForm;
+        private IEditCommands _editCommands;
         private OutputWindow _outputWindow;
+
+        private readonly Dictionary<DocumentWindow, NAntDocument> _documents = new Dictionary<DocumentWindow, NAntDocument>();
+        private readonly List<FileWatcher> _watchers = new List<FileWatcher>();
 
         public MainController(CommandLineOptions options)
         {
@@ -57,11 +60,6 @@ namespace NAntGui.Gui
             RecentItems.ItemAdded += RecentItems_ItemAdded;
         }
 
-        internal CommandLineOptions Options
-        {
-            get { return _options; }
-        }
-
         private void RecentItems_ItemAdded(object sender, RecentItemsEventArgs e)
         {
             _mainForm.CreateRecentItemsMenu();
@@ -69,8 +67,8 @@ namespace NAntGui.Gui
 
         internal void NewBlankDocument()
         {
-            NAntDocument doc = new NAntDocument(_outputWindow, this);
-            DocumentWindow window = new DocumentWindow(doc);
+            NAntDocument doc = new NAntDocument(_outputWindow, _options);
+            DocumentWindow window = new DocumentWindow(doc.FullName);
             SetupWindow(window, doc);
         }
 
@@ -83,8 +81,9 @@ namespace NAntGui.Gui
 
         private void CreateNewProject(object sender, NewProjectEventArgs e)
         {
-            NAntDocument doc = new NAntDocument(_outputWindow, this) {Contents = GetNewDocumentContents(e.Info)};
-            DocumentWindow window = new DocumentWindow(doc);
+            NAntDocument doc = new NAntDocument(_outputWindow, _options);
+            doc.Contents = GetNewDocumentContents(e.Info);
+            DocumentWindow window = new DocumentWindow(doc.FullName);
             SetupWindow(window, doc);
         }
 
@@ -164,14 +163,16 @@ namespace NAntGui.Gui
 
         internal void SaveDocument()
         {
-            SaveDocument(ActiveDocument, ActiveWindow);
+            SaveDocument(ActiveWindow);
         }
 
-        private void SaveDocument(NAntDocument document, DocumentWindow window)
+        private void SaveDocument(DocumentWindow window)
         {
+            NAntDocument document = _documents[window];
+
             if (document.FileType == FileType.New)
             {
-                SaveDocumentAs(document, window);
+                SaveDocumentAs(window);
             }
             else if (document.IsDirty(window.Contents))
             {
@@ -193,14 +194,16 @@ namespace NAntGui.Gui
 
         internal void SaveDocumentAs()
         {
-            SaveDocumentAs(ActiveDocument, ActiveWindow);
+            SaveDocumentAs(ActiveWindow);
         }
 
-        private void SaveDocumentAs(NAntDocument document, DocumentWindow window)
+        private void SaveDocumentAs(DocumentWindow window)
         {
             string filename = BuildFileBrowser.BrowseForSave();
             if (filename != null)
             {
+                NAntDocument document = _documents[window];
+
                 document.SaveAs(filename, window.Contents);
                 window.TabText = document.Name;
                 document.BuildFinished = _mainForm.SetStateStopped;
@@ -219,7 +222,7 @@ namespace NAntGui.Gui
         {
             foreach (DocumentWindow window in _mainForm.DockPanel.Documents)
             {
-                SaveDocument(window.Document, window);
+                SaveDocument(window);
             }
         }
 
@@ -265,18 +268,20 @@ namespace NAntGui.Gui
             else
                 window = ActiveWindow;
 
-            if (window.Document.IsDirty(window.Contents))
+            NAntDocument document = _documents[window];
+
+            if (document.IsDirty(window.Contents))
             {
                 DialogResult result = MessageBox.Show("You have unsaved changes to " +
-                                                      window.Document.Name + ".  Save?",
+                                                      document.Name + ".  Save?",
                                                       "Save Changes?", MessageBoxButtons.YesNoCancel,
                                                       MessageBoxIcon.Exclamation);
 
                 if (result == DialogResult.Yes)
                 {
-                    _ignoreDocumentChanged = true;
-                    window.Document.Save(window.Contents, false);
-                    _ignoreDocumentChanged = false;
+                    //_ignoreDocumentChanged = true;
+                    document.Save(window.Contents, false);
+                    //_ignoreDocumentChanged = false;
                 }
                 else if (result == DialogResult.Cancel)
                 {
@@ -383,7 +388,7 @@ namespace NAntGui.Gui
         {
             foreach (DocumentWindow window in _mainForm.DockPanel.Documents)
             {
-                if (window.Document.FullName == file)
+                if (_documents[window].FullName == file)
                 {
                     return window;
                 }
@@ -408,13 +413,13 @@ namespace NAntGui.Gui
             }
             else
             {
-                NAntDocument doc = new NAntDocument(filename, _outputWindow, this);
+                NAntDocument doc = new NAntDocument(filename, _outputWindow, _options);
                 doc.BuildFinished = _mainForm.SetStateStopped;
 
                 Settings.Default.OpenScriptDir = doc.Directory;
                 Settings.Default.Save();
 
-                window = new DocumentWindow(doc);
+                window = new DocumentWindow(doc.FullName);
                 SetupWindow(window, doc);
 
                 RecentItems.Add(doc.FullName);
@@ -426,10 +431,14 @@ namespace NAntGui.Gui
 
         private void SetupWindow(DocumentWindow window, NAntDocument doc)
         {
+            _documents.Add(window, doc);
+            _mainForm.AddDocumentMenuItem(doc);
+            _mainForm.Enable();
+
             window.Contents = doc.Contents;
             window.TabText = doc.Name;
+
             window.DocumentChanged += WindowDocumentChanged;
-            window.DocumentChangedOutside += WindowDocumentChangedOutside;
             window.FormClosing += CloseDocument;
             window.FormClosed += WindowFormClosed;
             window.CloseClicked += delegate { Close(); };
@@ -437,34 +446,44 @@ namespace NAntGui.Gui
             window.CloseAllButThisClicked += delegate { CloseAllButThisClicked(); };
             window.SaveClicked += delegate { SaveDocument(); };
             window.Show(_mainForm.DockPanel);
+
+            FileWatcher watcher = new FileWatcher();
+            watcher.SynchronizingObject = window;
+            watcher.Watch(doc.FullName);
+            watcher.Changed += WindowDocumentChangedOutside;
+            _watchers.Add(watcher);
         }
 
-        private static void WindowFormClosed(object sender, FormClosedEventArgs e)
+        private void WindowFormClosed(object sender, FormClosedEventArgs e)
         {
             if (sender is DocumentWindow)
             {
                 DocumentWindow window = sender as DocumentWindow;
-                window.Document.Close();
+
+                _documents[window].Close();
+                _documents.Remove(window);
+                
+                if (_documents.Count == 0) _mainForm.Disable();
             }
         }
 
         private void WindowDocumentChangedOutside(object sender, FileSystemEventArgs e)
         {
-            if (!_ignoreDocumentChanged)
-            {
-                LoadDocument(e.FullPath);
-                Console.WriteLine("called -- not ignored");
-            }
+            FileWatcher watcher = (FileWatcher)sender;
+
+            watcher.Disable();
+            LoadDocument(e.FullPath);
+            watcher.Enable();
         }
 
         internal DocumentWindow GetWindow(string filename)
         {
             if (File.Exists(filename))
             {
-                NAntDocument doc = new NAntDocument(filename, _outputWindow, this);
+                NAntDocument doc = new NAntDocument(filename, _outputWindow, _options);
                 doc.BuildFinished = _mainForm.SetStateStopped;
 
-                DocumentWindow window = new DocumentWindow(doc);
+                DocumentWindow window = new DocumentWindow(doc.FullName);
                 SetupWindow(window, doc);
 
                 RecentItems.Add(doc.FullName);
@@ -550,24 +569,24 @@ namespace NAntGui.Gui
             _mainForm.DockPanel.Leave += DockPanel_Leave;
         }
 
-        internal void ContentAdded()
-        {
-            if (_mainForm.DockPanel.DocumentsCount == 0)
-                _mainForm.Enable();
-        }
+        //internal void ContentAdded()
+        //{
+        //    if (_mainForm.DockPanel.DocumentsCount == 0)
+        //        _mainForm.Enable();
+        //}
 
-        internal void ContentRemoved(DockContentEventArgs e)
-        {
-            if (e.Content is DocumentWindow)
-            {
-                DocumentWindow window = e.Content as DocumentWindow;
-                //ToolStripItem[] items = _documentsMenuItem.DropDownItems.Find(window.TabText, false);
-                //_documentsMenuItem.DropDownItems.Remove(items[0]);
+        //internal void ContentRemoved(DockContentEventArgs e)
+        //{
+        //    if (e.Content is DocumentWindow)
+        //    {
+        //        DocumentWindow window = e.Content as DocumentWindow;
+        //        ToolStripItem[] items = _documentsMenuItem.DropDownItems.Find(window.TabText, false);
+        //        _documentsMenuItem.DropDownItems.Remove(items[0]);
 
-                if (_mainForm.DockPanel.DocumentsCount == 0)
-                    _mainForm.Disable();
-            }
-        }
+        //        if (_mainForm.DockPanel.DocumentsCount == 0)
+        //            _mainForm.Disable();
+        //    }
+        //}
 
  
 
@@ -580,7 +599,7 @@ namespace NAntGui.Gui
 
         private NAntDocument ActiveDocument
         {
-            get { return (ActiveWindow != null) ? ActiveWindow.Document : null; }
+            get { return (ActiveWindow != null) ? _documents[ActiveWindow] : null; }
         }
 
         private void DockPanel_ActiveDocumentChanged(object sender, EventArgs e)

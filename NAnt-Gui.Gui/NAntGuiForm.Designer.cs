@@ -214,8 +214,6 @@ namespace NAntGui.Gui
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this._dockPanel.Skin = dockPanelSkin1;
             this._dockPanel.TabIndex = 0;
-            this._dockPanel.ContentAdded += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.DockPanelContentAdded);
-            this._dockPanel.ContentRemoved += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.DockPanelContentRemoved);
             // 
             // _standardToolStrip
             // 

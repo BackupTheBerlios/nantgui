@@ -60,10 +60,8 @@ namespace NAntGui.Gui.Controls
             this.closeAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._fileSystemWatcher = new System.IO.FileSystemWatcher();
             this._editor = new NAntGui.Gui.Controls.ScriptEditor();
             this.contextMenuTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcher)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuTabPage
@@ -110,10 +108,6 @@ namespace NAntGui.Gui.Controls
             this.saveMenuItem.Size = new System.Drawing.Size(170, 22);
             this.saveMenuItem.Text = "Save";
             // 
-            // _fileSystemWatcher
-            // 
-            this._fileSystemWatcher.SynchronizingObject = this;
-            // 
             // _editor
             // 
             this._editor.ConvertTabsToSpaces = true;
@@ -145,7 +139,6 @@ namespace NAntGui.Gui.Controls
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
             this.TabPageContextMenuStrip = this.contextMenuTabPage;
             this.contextMenuTabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcher)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -158,7 +151,6 @@ namespace NAntGui.Gui.Controls
         private System.Windows.Forms.ToolStripMenuItem closeAllButThisMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeAllMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.IO.FileSystemWatcher _fileSystemWatcher;
 
     }
 }

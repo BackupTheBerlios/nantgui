@@ -164,6 +164,9 @@
     <Compile Include="Controls\DocumentWindow.Designer.cs">
       <DependentUpon>DocumentWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FileWatcher.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\PropertyWindow.cs">
       <SubType>Form</SubType>
     </Compile>

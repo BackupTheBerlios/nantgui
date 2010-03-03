@@ -239,6 +239,20 @@ namespace NAntGui.Gui
             _undoToolStripButton.Enabled = canUndo;
         }
 
+        internal void AddDocumentMenuItem(NAntDocument document)
+        {
+            ToolStripMenuItem item = new ToolStripMenuItem(document.Name);
+            item.Tag = document;
+            item.Name = document.FullName;
+            item.Click += DocumentClick;
+            _documentsMenuItem.DropDownItems.Add(item);
+        }
+
+        internal void RemoveDocumentMenuItem(NAntDocument document)
+        {
+            _documentsMenuItem.DropDownItems.RemoveByKey(document.FullName);
+        }
+
         #region Private Methods
 
         private void NAntGuiForm_DragDrop(object sender, DragEventArgs e)
@@ -254,9 +268,6 @@ namespace NAntGui.Gui
         private void NantGuiForm_Closing(object sender, FormClosingEventArgs e)
         {
             _dockPanel.SaveAsXml(Utils.DockingConfigPath);
-            // Don't need this event firing when the app is closing
-            _dockPanel.ContentRemoved -= DockPanelContentRemoved;
-
             _controller.MainFormClosing(e);
         }
 
@@ -429,28 +440,11 @@ namespace NAntGui.Gui
             CreateRecentItemsMenu();
         }
 
-        private void DockPanelContentAdded(object sender, DockContentEventArgs e)
+        private void DocumentClick(object sender, EventArgs e)
         {
-            if (e.Content is DocumentWindow)
-            {
-                _controller.ContentAdded();
-
-                //DocumentWindow window = e.Content as DocumentWindow;
-                //ToolStripMenuItem item = new ToolStripMenuItem(window.TabText);
-                //item.Tag = window.Document.FullName;
-                //item.Click += new EventHandler(Document_Click);
-                //                _documentsMenuItem.DropDownItems.Add(item);
-            }
-        }
-
-        private void DockPanelContentRemoved(object sender, DockContentEventArgs e)
-        {
-            _controller.ContentRemoved(e);
-        }
-
-        private void Document_Click(object sender, EventArgs e)
-        {
-            _controller.LoadDocument(((ToolStripMenuItem) sender).Tag.ToString());
+            ToolStripMenuItem menuItem = (ToolStripMenuItem) sender;
+            NAntDocument doc = (NAntDocument)menuItem.Tag;
+            _controller.LoadDocument(doc.FullName.ToString());
         }
 
         private void AttachEventHandlers()
@@ -537,5 +531,7 @@ namespace NAntGui.Gui
         }
 
         #endregion
+
+
     }
 }

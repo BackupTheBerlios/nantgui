@@ -35,25 +35,24 @@ namespace NAntGui.Gui.Controls
     /// </summary>
     public partial class DocumentWindow : DockContent
     {
-        private readonly NAntDocument _document;
+        private readonly string _filePath;
 
         internal DocumentWindow()
         {
             InitializeComponent();
         }
 
-        internal DocumentWindow(NAntDocument document)
+        internal DocumentWindow(string filePath)
         {
             InitializeComponent();
 
-            Assert.NotNull(document, "document");
-            _document = document;
+            Assert.NotNull(filePath, "filePath");
+            _filePath = filePath;
 
-            //_fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
-            _fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-            _fileSystemWatcher.Path = _document.Directory;
-            _fileSystemWatcher.Filter = _document.Name;
-            _fileSystemWatcher.EnableRaisingEvents = true;
+            //_fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
+            //_fileSystemWatcher.Path = _document.Directory;
+            //_fileSystemWatcher.Filter = _document.Name;
+            //_fileSystemWatcher.EnableRaisingEvents = true;
         }
 
         internal IEditCommands EditCommands
@@ -75,11 +74,6 @@ namespace NAntGui.Gui.Controls
         {
             get { return _editor.Text; }
             set { _editor.Text = value; }
-        }
-
-        internal NAntDocument Document
-        {
-            get { return _document; }
         }
 
         internal TextLocation CaretPosition
@@ -106,7 +100,7 @@ namespace NAntGui.Gui.Controls
         {
             // Add extra information into the persist string for this document
             // so that it is available when deserialized.
-            return GetType() + "|" + _document.FullName;
+            return GetType() + "|" + _filePath;
         }
 
         internal event DocumentEventHandler DocumentChanged
@@ -115,17 +109,17 @@ namespace NAntGui.Gui.Controls
             remove { _editor.Document.DocumentChanged -= value; }
         }
 
-        internal event FileSystemEventHandler DocumentChangedOutside
-        {
-            add { _fileSystemWatcher.Changed += value; }
-            remove { _fileSystemWatcher.Changed -= value; }
-        }
+        //internal event FileSystemEventHandler DocumentChangedOutside
+        //{
+        //    add { _fileSystemWatcher.Changed += value; }
+        //    remove { _fileSystemWatcher.Changed -= value; }
+        //}
 
-        internal event FileSystemEventHandler DocumentDeleted
-        {
-            add { _fileSystemWatcher.Deleted += value; }
-            remove { _fileSystemWatcher.Deleted -= value; }
-        }
+        //internal event FileSystemEventHandler DocumentDeleted
+        //{
+        //    add { _fileSystemWatcher.Deleted += value; }
+        //    remove { _fileSystemWatcher.Deleted -= value; }
+        //}
 
         internal event EventHandler CloseClicked
         {
