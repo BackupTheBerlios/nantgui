@@ -444,7 +444,7 @@ namespace NAntGui.Gui
         {
             ToolStripMenuItem menuItem = (ToolStripMenuItem) sender;
             NAntDocument doc = (NAntDocument)menuItem.Tag;
-            _controller.LoadDocument(doc.FullName.ToString());
+            _controller.SelectWindow(doc.FullName);
         }
 
         private void AttachEventHandlers()

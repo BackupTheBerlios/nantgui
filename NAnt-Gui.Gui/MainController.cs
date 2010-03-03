@@ -569,6 +569,16 @@ namespace NAntGui.Gui
             _mainForm.DockPanel.Leave += DockPanel_Leave;
         }
 
+        public void SelectWindow(string filename)
+        {
+            DocumentWindow window = FindDocumentWindow(filename);
+
+            if (window != null)
+            {
+                window.Activate();
+            }
+        }
+
         //internal void ContentAdded()
         //{
         //    if (_mainForm.DockPanel.DocumentsCount == 0)
@@ -670,5 +680,7 @@ namespace NAntGui.Gui
         }
 
         #endregion
+
+ 
     }
 }
