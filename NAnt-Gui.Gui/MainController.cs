@@ -619,6 +619,7 @@ namespace NAntGui.Gui
                 _editCommands = ActiveWindow.EditCommands;
                 _mainForm.CanUndo(ActiveWindow.CanUndo);
                 _mainForm.CanRedo(ActiveWindow.CanRedo);
+                _mainForm.CheckActiveDocuemnt(_documents[ActiveWindow]);
             }
             UpdateDisplay();
         }

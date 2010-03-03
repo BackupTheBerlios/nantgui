@@ -31,16 +31,16 @@ namespace NAntGui.NAnt
     /// </summary>
     public class GuiLogger : DefaultLogger
     {
-        public ILogsMessage MessageLogger;
+        private readonly ILogsMessage _messageLogger;
 
         public GuiLogger(ILogsMessage messageLogger)
         {
-            MessageLogger = messageLogger;
+            _messageLogger = messageLogger;
         }
 
         protected override void Log(string message)
         {
-            MessageLogger.LogMessage(message);
+            _messageLogger.LogMessage(message);
         }
     }
 }

@@ -31,7 +31,6 @@ namespace NAntGui.Framework
     {
         protected ILogsMessage _logger;
         protected CommandLineOptions _options;
-
         private Thread _thread;
 
         protected BuildRunnerBase(ILogsMessage logger, CommandLineOptions options)
@@ -52,23 +51,46 @@ namespace NAntGui.Framework
         public void Run()
         {
             _thread = new Thread(DoRun);
+            BeforeStart();
             _thread.Start();
+            AfterStart();
+        }
+
+        protected virtual void BeforeStart()
+        {
+
+        }
+
+        protected virtual void AfterStart()
+        {
+
         }
 
         public void Stop()
         {
             if (_thread != null)
             {
+                BeforeStop();
+                BuildFinished = null;
                 _thread.Abort();
+                AfterStop();
             }
+        }
+
+        protected virtual void BeforeStop()
+        {
+            
+        }
+
+        protected virtual void AfterStop()
+        {
+
         }
 
         protected void FinishBuild()
         {
             if (BuildFinished != null)
-            {
                 BuildFinished(this, new BuildFinishedEventArgs());
-            }
         }
     }
 }

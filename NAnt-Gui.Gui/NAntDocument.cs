@@ -139,9 +139,7 @@ namespace NAntGui.Gui
         internal void Stop()
         {
             if (_buildRunner != null)
-            {
                 _buildRunner.Stop();
-            }
         }
 
         internal void Run()

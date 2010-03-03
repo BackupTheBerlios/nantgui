@@ -865,9 +865,9 @@ namespace NAntGui.Gui
             this._buildToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._runToolStripButton,
             this._stopToolStripButton});
-            this._buildToolStrip.Location = new System.Drawing.Point(346, 0);
+            this._buildToolStrip.Location = new System.Drawing.Point(315, 0);
             this._buildToolStrip.Name = "_buildToolStrip";
-            this._buildToolStrip.Size = new System.Drawing.Size(58, 25);
+            this._buildToolStrip.Size = new System.Drawing.Size(89, 25);
             this._buildToolStrip.TabIndex = 15;
             this._buildToolStrip.Text = "toolStrip1";
             // 

@@ -78,6 +78,11 @@ namespace NAntGui.NAnt
 		}
 */
 
+        protected override void BeforeStop()
+        {
+            _project.DetachBuildListeners();
+        }
+
         protected override void DoRun()
         {
             try

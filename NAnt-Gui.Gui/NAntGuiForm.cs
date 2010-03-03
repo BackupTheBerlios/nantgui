@@ -253,6 +253,18 @@ namespace NAntGui.Gui
             _documentsMenuItem.DropDownItems.RemoveByKey(document.FullName);
         }
 
+        internal void CheckActiveDocuemnt(NAntDocument document)
+        {
+            foreach (ToolStripItem item in _documentsMenuItem.DropDownItems)
+            {
+                if (item is ToolStripMenuItem)
+                {
+                    ToolStripMenuItem menuItem = item as ToolStripMenuItem;
+                    menuItem.Checked = (menuItem.Tag == document);
+                }
+            }
+        }
+
         #region Private Methods
 
         private void NAntGuiForm_DragDrop(object sender, DragEventArgs e)
@@ -532,6 +544,6 @@ namespace NAntGui.Gui
 
         #endregion
 
-
+ 
     }
 }
