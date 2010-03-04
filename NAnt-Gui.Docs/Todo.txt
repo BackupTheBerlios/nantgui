@@ -13,6 +13,8 @@ Required for 1.9/2.0
 	* If no documents are opened, close, save, save as, and reload should be disabled
 	* Documents that are changes should have * next to the name
 - If the file is readonly, make the editor readonly
+- Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
+	(might not work because I had to modify more than the control
 	
 For 2.1 and beyond
 -----------
