@@ -22,6 +22,10 @@
 #endregion
 
 using System;
+using System.IO;
+using System.Windows.Forms;
+using ICSharpCode.XmlEditor;
+using NAntGui.Core;
 
 namespace NAntGui.Gui.Controls
 {
@@ -33,6 +37,31 @@ namespace NAntGui.Gui.Controls
         public ScriptEditor()
         {
             InitializeComponent();
+#if DEBUG
+            const string fileName = @"..\..\..\Tools\nant-0.85\schema\nant.xsd";
+#else
+            const string fileName = @"..\Data\nant.xsd";
+#endif
+            string path = Path.Combine(Utils.RunDirectory, fileName);
+            if (File.Exists(path))
+            {
+                try
+                {
+                    XmlSchemaCompletionData data = new XmlSchemaCompletionData(path);
+                    DefaultSchemaCompletionData = data;
+                    SchemaCompletionDataItems = new XmlSchemaCompletionDataCollection(new[] { data });
+                    CodeCompletionPopupCommand command = new CodeCompletionPopupCommand();
+                    editactions.Add(Keys.Space | Keys.Control, command);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        public void UpdateFolding()
+        {
+            Document.FoldingManager.UpdateFoldings(String.Empty, null);
         }
 
         #region IEditCommands Members

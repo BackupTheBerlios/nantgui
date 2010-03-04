@@ -8,7 +8,7 @@ namespace NAntGui.Core
     /// <summary>
     /// Summary description for Utils.
     /// </summary>
-    public class Utils
+    public static class Utils
     {
         public static string DockingConfigPath
         {

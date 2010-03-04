@@ -68,7 +68,7 @@ namespace NAntGui.Gui
             get { return _dockPanel; }
         }
 
-        internal RunState RunState
+        private RunState RunState
         {
             set
             {
@@ -91,7 +91,7 @@ namespace NAntGui.Gui
         }
 
         // TODO: See if this is needed
-        internal EditState EditState
+        private EditState EditState
         {
             set
             {
@@ -345,35 +345,27 @@ namespace NAntGui.Gui
 
         private void AboutMenuItemClick(object sender, EventArgs e)
         {
-            About about = new About();
-            about.ShowDialog();
+            MainController.ShowAboutForm();
         }
 
         private void NAntContribHelpMenuItemClick(object sender, EventArgs e)
         {
-            const string nantContribHelp = @"\..\nantcontrib-docs\help\index.html";
-            Utils.LoadHelpFile(Utils.RunDirectory + nantContribHelp);
+           MainController.ShowNAntContribDocumentation();
         }
 
         private void NAntSdkHelpMenuItemClick(object sender, EventArgs e)
         {
-            const string nantHelpPath = @"\..\nant-docs\sdk\";
-            const string nantSdkHelp = "NAnt-SDK.chm";
-            string filename = Utils.RunDirectory + nantHelpPath + nantSdkHelp;
-
-            Utils.LoadHelpFile(filename);
+            MainController.ShowNAntSdkHelp();
         }
 
         private void NAntHelpMenuItemClick(object sender, EventArgs e)
         {
-            const string nantHelp = @"\..\nant-docs\help\index.html";
-            Utils.LoadHelpFile(Utils.RunDirectory + nantHelp);
+            MainController.ShowNAntDocumentation();
         }
 
         private void OptionsMenuItemClick(object sender, EventArgs e)
         {
-            OptionsForm optionsForm = new OptionsForm();
-            optionsForm.ShowDialog();
+            MainController.ShowOptions();
         }
 
         private void UndoClicked(object sender, EventArgs e)

@@ -1,16 +1,18 @@
 Required for 1.9/2.0
 --------------------
+- BUG: Errors when saving a file are not caught
 - BUG: New project doesn't prompt for save on close.
-- Window menu that lists all open tabs:	
-	* Documents that are changes should have * next to the name
-- Fix all UI events.  
-	* Reload should be disabled when a new document is created	
-	* If no documents are opened, close, save, save as, and reload should be disabled
+- BUG: Installed app doesn't always seem to close
 - Filewatcher 
+    * Rewrite to use Application.Idle polling technique instead
 	* Saving the document changes which targets are selected (caused by filewatcher firing during save)
 	* should do something when the file is deleted
 	* should prompt the user, when the file changes, if they want to reload it (mark it as unsaved when they decline)	
-- Figure out why folding and tabcompletion don't work on the xmlcontrol
+- Fix all UI events.  
+	* Reload should be disabled when a new document is created	
+	* If no documents are opened, close, save, save as, and reload should be disabled
+	* Documents that are changes should have * next to the name
+- If the file is readonly, make the editor readonly
 	
 For 2.1 and beyond
 -----------
@@ -68,6 +70,8 @@ For 2.1 and beyond
 + Add basic MSBuild support
 
 1.9.1:
+(DONE): Figure out why tabcompletion doesn't work on the xmlcontrol
+(DONE): Figure out why folding doesn't work on the xmlcontrol
 (DONE): Closing the app while running a build throws a "cannot access disposed object" in OutputWindow.WriteOutput
 (DONE): Active document should be checked
 (DONE): Clicking the menuitem shouldn't reload the document

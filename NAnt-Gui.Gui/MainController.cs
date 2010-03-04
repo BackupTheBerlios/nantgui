@@ -251,7 +251,7 @@ namespace NAntGui.Gui
         internal void Close()
         {
             FormClosingEventArgs e = new FormClosingEventArgs(CloseReason.UserClosing, false);
-            CloseDocument(_mainForm, e);
+            CloseDocument(ActiveWindow, e);
 
             if (!e.Cancel)
             {
@@ -259,7 +259,7 @@ namespace NAntGui.Gui
             }
         }
 
-        internal void CloseDocument(object sender, FormClosingEventArgs e)
+        private void CloseDocument(object sender, FormClosingEventArgs e)
         {
             DocumentWindow window;
 
@@ -288,6 +288,9 @@ namespace NAntGui.Gui
                     e.Cancel = true;
                 }
             }
+
+            if (!e.Cancel)
+                _mainForm.RemoveDocumentMenuItem(document);
         }
 
         internal void CloseAllDocuments()
@@ -302,7 +305,7 @@ namespace NAntGui.Gui
             }
         }
 
-        internal void CloseAllButThisClicked()
+        private void CloseAllButThisClicked()
         {
             for (int index = _mainForm.DockPanel.Contents.Count - 1; index >= 0; index--)
             {
@@ -315,7 +318,7 @@ namespace NAntGui.Gui
             }
         }
 
-        internal void About()
+        internal static void ShowAboutForm()
         {
             About about = new About();
             about.ShowDialog();
@@ -325,21 +328,6 @@ namespace NAntGui.Gui
         {
             // Don't need this event while closing (should be in CloseAllDocuments)
             _mainForm.DockPanel.ActiveDocumentChanged -= DockPanel_ActiveDocumentChanged;
-        }
-
-        internal void RecentItemClicked(string file)
-        {
-            if (File.Exists(file))
-            {
-                LoadDocument(file);
-            }
-            else
-            {
-                RecentItems.Remove(file);
-                _mainForm.CreateRecentItemsMenu();
-
-                Utils.ShowFileNotFoundError(file);
-            }
         }
 
         internal void SelectAll()
@@ -357,19 +345,19 @@ namespace NAntGui.Gui
             _editCommands.Paste();
         }
 
-        internal void NAntHelpClicked()
+        internal static void ShowNAntDocumentation()
         {
             const string nantHelp = @"\..\nant-docs\help\index.html";
             Utils.LoadHelpFile(Utils.RunDirectory + nantHelp);
         }
 
-        internal void NAntContribClicked()
+        internal static void ShowNAntContribDocumentation()
         {
             const string nantContribHelp = @"\..\nantcontrib-docs\help\index.html";
             Utils.LoadHelpFile(Utils.RunDirectory + nantContribHelp);
         }
 
-        internal void NAntSdkClicked()
+        internal static void ShowNAntSdkHelp()
         {
             const string nantHelpPath = @"\..\nant-docs\sdk\";
             const string nantSdkHelp = "NAnt-SDK.chm";
@@ -378,13 +366,13 @@ namespace NAntGui.Gui
             Utils.LoadHelpFile(filename);
         }
 
-        internal void OptionsClicked()
+        internal static void ShowOptions()
         {
             OptionsForm optionsForm = new OptionsForm();
             optionsForm.ShowDialog();
         }
 
-        internal DocumentWindow FindDocumentWindow(string file)
+        private DocumentWindow FindDocumentWindow(string file)
         {
             foreach (DocumentWindow window in _mainForm.DockPanel.Documents)
             {
@@ -497,7 +485,7 @@ namespace NAntGui.Gui
             return null;
         }
 
-        internal void UpdateDisplay()
+        private void UpdateDisplay()
         {
             if (ActiveDocument != null)
             {

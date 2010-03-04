@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using System.IO;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Framework;
@@ -48,11 +47,6 @@ namespace NAntGui.Gui.Controls
 
             Assert.NotNull(filePath, "filePath");
             _filePath = filePath;
-
-            //_fileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-            //_fileSystemWatcher.Path = _document.Directory;
-            //_fileSystemWatcher.Filter = _document.Name;
-            //_fileSystemWatcher.EnableRaisingEvents = true;
         }
 
         internal IEditCommands EditCommands
@@ -73,7 +67,11 @@ namespace NAntGui.Gui.Controls
         internal string Contents
         {
             get { return _editor.Text; }
-            set { _editor.Text = value; }
+            set 
+            { 
+                _editor.Text = value;
+                _editor.UpdateFolding();
+            }
         }
 
         internal TextLocation CaretPosition
@@ -108,18 +106,6 @@ namespace NAntGui.Gui.Controls
             add { _editor.Document.DocumentChanged += value; }
             remove { _editor.Document.DocumentChanged -= value; }
         }
-
-        //internal event FileSystemEventHandler DocumentChangedOutside
-        //{
-        //    add { _fileSystemWatcher.Changed += value; }
-        //    remove { _fileSystemWatcher.Changed -= value; }
-        //}
-
-        //internal event FileSystemEventHandler DocumentDeleted
-        //{
-        //    add { _fileSystemWatcher.Deleted += value; }
-        //    remove { _fileSystemWatcher.Deleted -= value; }
-        //}
 
         internal event EventHandler CloseClicked
         {

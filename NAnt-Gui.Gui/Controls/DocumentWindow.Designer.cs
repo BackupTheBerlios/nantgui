@@ -112,13 +112,11 @@ namespace NAntGui.Gui.Controls
             // 
             this._editor.ConvertTabsToSpaces = true;
             this._editor.DefaultNamespacePrefix = "";
-            this._editor.DefaultSchemaCompletionData = null;
             this._editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this._editor.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Auto;
             this._editor.IsReadOnly = false;
             this._editor.Location = new System.Drawing.Point(0, 4);
             this._editor.Name = "_editor";
-            this._editor.SchemaCompletionDataItems = null;
             this._editor.ShowVRuler = false;
             this._editor.Size = new System.Drawing.Size(516, 393);
             this._editor.TabIndent = 2;
