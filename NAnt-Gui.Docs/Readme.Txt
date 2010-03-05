@@ -2,7 +2,7 @@
   Users
 ---------
 Get the latest version from:
-http://www.swoogan.com/nantgui.html
+http://nantgui.berlios.de/
 
 Refer to Install.txt for installation instructions.
 

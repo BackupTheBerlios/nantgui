@@ -118,10 +118,6 @@
       <HintPath>..\ThirdParty Libraries\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="XmlEditor, Version=3.1.1.5327, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ThirdParty Libraries\XmlEditor.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\Nant-Gui.Core\Nant-Gui.Core.csproj">
       <Name>Nant-Gui.Core</Name>
       <Project>{DEE131EE-4233-4ED3-8F31-956532A29E8F}</Project>
@@ -136,6 +132,10 @@
       <Name>NAnt-Gui.NAnt</Name>
       <Project>{B42F3791-EDD7-494A-9229-A565588F2EF0}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlEditor\Project\XmlEditor.csproj">
+      <Project>{6B717BD1-CD5E-498C-A42E-9E6A4584DC48}</Project>
+      <Name>XmlEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

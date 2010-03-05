@@ -1,6 +1,6 @@
 Required for 1.9/2.0
 --------------------
-- BUG: Errors when saving a file are not caught
+- BUG: Errors when loading/saving a file are not caught
 - BUG: New project doesn't prompt for save on close.
 - BUG: Installed app doesn't always seem to close
 - Filewatcher 
@@ -14,7 +14,7 @@ Required for 1.9/2.0
 	* Documents that are changes should have * next to the name
 - If the file is readonly, make the editor readonly
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
-	(might not work because I had to modify more than the control
+	(might not work because I had to modify more than the control)
 	
 For 2.1 and beyond
 -----------

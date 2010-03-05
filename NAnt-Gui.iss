@@ -55,8 +55,8 @@ Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: 
 Source: NAnt-Gui.Gui\bin\Release\NAnt-Gui.Gui.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.Framework\bin\Release\NAnt-Gui.Framework.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.NAnt\bin\Release\NAnt-Gui.NAnt.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
-Source: NAnt-Gui\bin\Release\WeifenLuo.WinFormsUI.Docking.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
-
+; XmlEditor
+Source: XmlEditor\Project\bin\Release\XmlEditor.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; Libraries
 Source: ThirdParty Libraries\*; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; NAnt/NAnt-Contrib
@@ -109,25 +109,21 @@ Source: NAnt-Gui.Core\*.cs; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversi
 Source: NAnt-Gui.Core\*.resx; DestDir: {app}\src\Nant-Gui.Core; Flags: ignoreversion skipifsourcedoesntexist recursesubdirs; Components: src
 Source: NAnt-Gui.Core\*.csproj; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Core\*.build; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
-; Source: NAnt-Gui.Core\*.bat; DestDir: {app}\src\NAnt-Gui.Core; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Framework
 Source: NAnt-Gui.Framework\*.cs; DestDir: {app}\src\Nant-Gui.Framework; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Framework\*.resx; DestDir: {app}\src\Nant-Gui.Framework; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.Framework\*.csproj; DestDir: {app}\src\NAnt-Gui.Framework; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Framework\*.build; DestDir: {app}\src\NAnt-Gui.Framework; Flags: ignoreversion; Components: src
-; Source: NAnt-Gui.Framework\*.bat; DestDir: {app}\src\NAnt-Gui.Framework; Flags: ignoreversion; Components: src
 ; NAnt-Gui.NAnt
 Source: NAnt-Gui.NAnt\*.cs; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.NAnt\*.resx; DestDir: {app}\src\Nant-Gui.NAnt; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.NAnt\*.csproj; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.NAnt\*.build; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
-; Source: NAnt-Gui.NAnt\*.bat; DestDir: {app}\src\NAnt-Gui.NAnt; Flags: ignoreversion; Components: src
 ; NAnt-Gui.MSBuild
 Source: NAnt-Gui.MSBuild\*.cs; DestDir: {app}\src\Nant-Gui.MSBuild; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.MSBuild\*.resx; DestDir: {app}\src\Nant-Gui.MSBuild; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.MSBuild\*.csproj; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.MSBuild\*.build; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
-; Source: NAnt-Gui.MSBuild\*.bat; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ignoreversion; Components: src
 ; NAnt.InnoSetup.Tasks
 Source: NAnt.InnoSetup\*.cs; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src
 Source: NAnt.InnoSetup\*.csproj; DestDir: {app}\src\NAnt.InnoSetup; Flags: ignoreversion; Components: src
@@ -136,6 +132,26 @@ Source: NAnt.InnoSetup\Sample.xml; DestDir: {app}\src\NAnt.InnoSetup; Flags: ign
 Source: NAnt.InnoSetup\Tasks\*.cs; DestDir: {app}\src\NAnt.InnoSetup\Tasks; Flags: ignoreversion; Components: src
 ; Tools
 Source: Tools\*; DestDir: {app}\src\Tools; Flags: ignoreversion recursesubdirs; Components: src
+; XmlEditor
+Source: XmlEditor\XmlEditor.sln; DestDir: {app}\src\XmlEditor; Flags: ignoreversion; Components: src
+Source: XmlEditor\Doc\*.txt; DestDir: {app}\src\XmlEditor\Doc; Flags: ignoreversion skipifsourcedoesntexist; Components: src
+Source: XmlEditor\Test\Completion\*.*; DestDir: {app}\src\XmlEditor\Test\Completion; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\FindSchemaObject\*.*; DestDir: {app}\src\XmlEditor\Test\FindSchemaObject; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Parser\*.*; DestDir: {app}\src\XmlEditor\Test\Parser; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Paths\*.*; DestDir: {app}\src\XmlEditor\Test\Paths; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Resources\*.*; DestDir: {app}\src\XmlEditor\Test\Resources; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Schema\*.*; DestDir: {app}\src\XmlEditor\Test\Schema; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Schema.Includes\*.*; DestDir: {app}\src\XmlEditor\Test\Schema.Includes; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Schema.Uri\*.*; DestDir: {app}\src\XmlEditor\Test\Schema.Uri; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Tree\*.*; DestDir: {app}\src\XmlEditor\Test\Tree; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\Utils\*.*; DestDir: {app}\src\XmlEditor\Test\Utils; Flags: ignoreversion; Components: src
+Source: XmlEditor\Test\XPathQuery\*.*; DestDir: {app}\src\XmlEditor\Test\XPathQuery; Flags: ignoreversion; Components: src
+Source: XmlEditor\Project\*.*; DestDir: {app}\src\XmlEditor\Project; Flags: ignoreversion; Components: src
+Source: XmlEditor\Project\Configuration\*.*; DestDir: {app}\src\XmlEditor\Project\Configuration; Flags: ignoreversion; Components: src
+Source: XmlEditor\Project\Resources\*.*; DestDir: {app}\src\XmlEditor\Project\Resources; Flags: ignoreversion; Components: src
+Source: XmlEditor\Project\Src\*.*; DestDir: {app}\src\XmlEditor\Project\Src; Flags: ignoreversion; Components: src
+
+
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
