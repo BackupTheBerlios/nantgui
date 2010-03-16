@@ -62,7 +62,7 @@ namespace NAntGui.Gui
         {
             foreach (NAntDocument document in _documents.Values)
             {
-                if (document.FileType == FileType.Existing)
+                if (document.FileType == FileType.Existing && _mainForm.IsActive)
                 {
                     if (!File.Exists(document.FullName))
                     {
@@ -74,12 +74,18 @@ namespace NAntGui.Gui
                     }
 
                     DateTime lastWrite = File.GetLastWriteTime(document.FullName);
-                    if (lastWrite > document.LastModified && _mainForm.IsActive)
+                    if (lastWrite > document.LastModified && lastWrite != document.IgnoreModifiedDate)
                     {
                         DialogResult result = Errors.ShowDocumentChangedMessage(document.FullName);
 
                         if (result == DialogResult.Yes)
+                        {
                             LoadDocument(document.FullName);
+                        }
+                        else
+                        {
+                            document.IgnoreModifiedDate = lastWrite;
+                        }
                     }
                 }
             }
@@ -98,6 +104,8 @@ namespace NAntGui.Gui
             {
                 window.TabText = Utils.AddAsterisk(window.TabText);
                 document.FileType = FileType.New;
+                // HACK: makes the closing see the file is unsaved
+                document.Contents = string.Empty;
             }
         }
 

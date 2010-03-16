@@ -194,6 +194,8 @@ namespace NAntGui.Gui
 
         #region Properties
 
+        public string Contents { get; set; }
+
         public FileType FileType { get; set; }
 
         public string FullName { get; private set; }
@@ -202,11 +204,11 @@ namespace NAntGui.Gui
 
         public string Directory { get; private set; }
 
-        public string Contents { get; private set; }
-
         internal IBuildScript BuildScript { get; private set; }
 
         public DateTime LastModified { get; private set; }
+
+        public DateTime IgnoreModifiedDate { get; set; }
 
         #endregion
     }
