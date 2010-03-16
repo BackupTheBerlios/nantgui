@@ -4,7 +4,6 @@ Required for 1.9/2.0
 - Filewatcher 	
 	* File deleted:		
 		- Ensure that when the file is deleted and kept open, the user is prompted for save upon close	
-	* User should only be prompted about file changes when the application has focus.
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
@@ -15,7 +14,8 @@ Required for 1.9/2.0
 - Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
 	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)
 	
-(DONE): Filewatcher: When the user declines to reload a changed file, it should not prompt again	
+(DONE): Filewatcher: User should only be prompted about file changes when the application has focus.	
+(DONE): Filewatcher: When the user declines to reload a changed file, it should not prompt again
 (DONE): Filewatcher: File deleted: If the user selects yes, it keeps asking and keeps adding asterisks		
 (DONE): Filewatcher: File deleted: If the user selects no, it crashes because the document dictionary is modify during enumeration	
 (DONE): BUG: new file saved with save as isn't marked as existing	
