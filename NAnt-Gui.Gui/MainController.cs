@@ -71,7 +71,7 @@ namespace NAntGui.Gui
                     else
                     {
                         DateTime lastWrite = File.GetLastWriteTime(document.FullName);
-                        if (lastWrite > document.LastModified)
+                        if (lastWrite > document.LastModified && _mainForm.IsActive)
                         {
                             DialogResult result = Errors.ShowDocumentChangedMessage(document.FullName);
 

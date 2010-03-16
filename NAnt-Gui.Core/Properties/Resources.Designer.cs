@@ -61,7 +61,7 @@ namespace NAntGui.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while loading file &apos;{0}&apos;.\nThe error was: {1}.
+        ///   Looks up a localized string similar to An error occurred while loading file &apos;{0}&apos;.{1}The error was: {2}.
         /// </summary>
         internal static string CouldNotLoadError {
             get {
@@ -79,7 +79,7 @@ namespace NAntGui.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while saving file &apos;{0}&apos;.\nThe error was: {1}.
+        ///   Looks up a localized string similar to An error occurred while saving file &apos;{0}&apos;.{1}The error was: {2}.
         /// </summary>
         internal static string CouldNotSaveError {
             get {
@@ -97,7 +97,7 @@ namespace NAntGui.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}\n\nThis document has changed outside of NAnt-Gui.\nWould you like to reload it?.
+        ///   Looks up a localized string similar to {0}{1}{1}This document has changed outside of NAnt-Gui.{1}Would you like to reload it?.
         /// </summary>
         internal static string FileChanged {
             get {
@@ -115,7 +115,7 @@ namespace NAntGui.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file &quot;{0}&quot; doesn&apos;t exist anymore.\nKeep this file in the editor?.
+        ///   Looks up a localized string similar to The file &quot;{0}&quot; doesn&apos;t exist anymore.{1}Keep this file in the editor?.
         /// </summary>
         internal static string FileDeleted {
             get {

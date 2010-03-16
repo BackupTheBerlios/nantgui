@@ -867,7 +867,7 @@ namespace NAntGui.Gui
             this._stopToolStripButton});
             this._buildToolStrip.Location = new System.Drawing.Point(315, 0);
             this._buildToolStrip.Name = "_buildToolStrip";
-            this._buildToolStrip.Size = new System.Drawing.Size(89, 25);
+            this._buildToolStrip.Size = new System.Drawing.Size(58, 25);
             this._buildToolStrip.TabIndex = 15;
             this._buildToolStrip.Text = "toolStrip1";
             // 
@@ -914,7 +914,9 @@ namespace NAntGui.Gui
             this.MinimumSize = new System.Drawing.Size(480, 344);
             this.Name = "NAntGuiForm";
             this.Text = "NAnt-Gui";
+            this.Deactivate += new System.EventHandler(this.NAntGuiForm_Deactivate);
             this.Load += new System.EventHandler(this.NAntGuiForm_Load);
+            this.Activated += new System.EventHandler(this.NAntGuiForm_Activated);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.NAntGuiForm_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.NAntGuiForm_DragEnter);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NantGuiForm_Closing);
@@ -932,48 +934,51 @@ namespace NAntGui.Gui
             this.PerformLayout();
 
 		}
-		private System.Windows.Forms.ToolStripMenuItem _exitMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _recentMenuItem;
+
+        #endregion
+
+        private System.Windows.Forms.ToolStripMenuItem _exitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _recentMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _saveOutputMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _closeMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _reloadMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _saveAsMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _saveMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _openMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _newMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _fileMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _editMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _stopMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _runMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _buildMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _toolsMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _helpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _closeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _reloadMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _saveAsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _saveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _openMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _newMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _fileMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _editMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _stopMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _runMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _buildMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _toolsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _helpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _viewMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _selectAllMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _deleteMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _pasteMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _copyMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _cutMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _redoMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _undoMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _targetsMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _propertiesMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _outputMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _nAntHelpMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _nAntSDKHelpMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _nAntContribHelpMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem _aboutMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem _optionsMenuItem;
-		private System.Windows.Forms.ToolStripStatusLabel _fullNameToolStripStatusLabel;
-		private System.Windows.Forms.ToolStripProgressBar _toolStripProgressBar;
-		private System.Windows.Forms.ToolStripStatusLabel _filenameToolStripStatusLabel;
-		private System.Windows.Forms.StatusStrip _statusStrip;
-		private WeifenLuo.WinFormsUI.Docking.DockPanel _dockPanel;
-		private System.Windows.Forms.ToolStripMenuItem _newBlank;
-		private System.Windows.Forms.ToolStripMenuItem _newNAntProject;
-        private System.Windows.Forms.MenuStrip _mainMenu;	
-		private System.Windows.Forms.ToolStrip _standardToolStrip;
+        private System.Windows.Forms.ToolStripMenuItem _selectAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _deleteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _pasteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _copyMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _cutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _redoMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _undoMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _targetsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _propertiesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _outputMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _nAntHelpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _nAntSDKHelpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _nAntContribHelpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _aboutMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem _optionsMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel _fullNameToolStripStatusLabel;
+        private System.Windows.Forms.ToolStripProgressBar _toolStripProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel _filenameToolStripStatusLabel;
+        private System.Windows.Forms.StatusStrip _statusStrip;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel _dockPanel;
+        private System.Windows.Forms.ToolStripMenuItem _newBlank;
+        private System.Windows.Forms.ToolStripMenuItem _newNAntProject;
+        private System.Windows.Forms.MenuStrip _mainMenu;
+        private System.Windows.Forms.ToolStrip _standardToolStrip;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripSeparator toolStripSeparator3;
@@ -1008,8 +1013,6 @@ namespace NAntGui.Gui
         private ToolStripDropDownButton _newDropDownButton;
         private ToolStripMenuItem newProjectToolStripMenuItem;
         private ToolStripMenuItem _newBlankMenuItem;
-
-        #endregion
         private ToolStripButton _saveAllToolStripButton;
     }
 }

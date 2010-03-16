@@ -46,6 +46,8 @@ namespace NAntGui.Gui
         private readonly PropertyWindow _propertyWindow = new PropertyWindow();
         private readonly TargetsWindow _targetsWindow = new TargetsWindow();
 
+        public bool IsActive { get; private set; }
+
         public NAntGuiForm(MainController controller, CommandLineOptions options)
         {
             InitializeComponent();
@@ -536,8 +538,17 @@ namespace NAntGui.Gui
             _controller.NewNAntProjectClicked();
         }
 
-        #endregion
+        private void NAntGuiForm_Activated(object sender, EventArgs e)
+        {
+            IsActive = true;
+        }
 
+        private void NAntGuiForm_Deactivate(object sender, EventArgs e)
+        {
+            IsActive = false;
+        }
+
+        #endregion
  
     }
 }
