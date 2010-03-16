@@ -37,12 +37,6 @@ namespace NAntGui.Gui
         private readonly CommandLineOptions _options;
         private readonly ILogsMessage _logger;
         private BuildRunnerBase _buildRunner;
-        private IBuildScript _buildScript;
-        private string _contents;
-        private string _directory;
-        private FileType _fileType;
-        private string _fullName;
-        private string _name;
 
         /// <summary>
         /// Creates new untitled document
@@ -54,13 +48,13 @@ namespace NAntGui.Gui
 
             _options = options;
             _logger = logger;
-            _name = "Untitled*";
-            _directory = ".\\";
-            _fullName = _directory + _name;
-            _contents = "";
-            _fileType = FileType.New;
+            Name = "Untitled*";
+            Directory = ".\\";
+            FullName = Directory + Name;
+            Contents = "";
+            FileType = FileType.New;
 
-            _buildScript = new BlankBuildScript();
+            BuildScript = new BlankBuildScript();
         }
 
         /// <summary>
@@ -74,27 +68,27 @@ namespace NAntGui.Gui
 
             _options = options;
             _logger = logger;
-            _fullName = filename;
+            FullName = filename;
 
-            FileInfo fileInfo = new FileInfo(_fullName);
-            _name = fileInfo.Name;
-            _directory = fileInfo.DirectoryName;
+            FileInfo fileInfo = new FileInfo(FullName);
+            Name = fileInfo.Name;
+            Directory = fileInfo.DirectoryName;
 
             Load();
 
-            _buildScript = ScriptParserFactory.Create(fileInfo);
+            BuildScript = ScriptParserFactory.Create(fileInfo);
             _buildRunner = BuildRunnerFactory.Create(fileInfo, logger, _options);
-            _buildRunner.Properties = _buildScript.Properties;
+            _buildRunner.Properties = BuildScript.Properties;
         }
 
         internal void ParseBuildScript()
         {
-            _buildScript.Parse();
+            BuildScript.Parse();
         }
 
         internal void Reload()
         {
-            if (_fileType == FileType.Existing)
+            if (FileType == FileType.Existing)
             {
                 Load();
                 ParseBuildFile();
@@ -106,16 +100,17 @@ namespace NAntGui.Gui
             Assert.NotNull(filename, "filename");
             Assert.NotNull(contents, "contents");
 
-            _fullName = filename;
-            _contents = contents;
+            FullName = filename;
+            Contents = contents;
 
-            File.WriteAllText(_fullName, _contents);
+            File.WriteAllText(FullName, Contents);
 
             FileInfo fileInfo = new FileInfo(filename);
-            _name = fileInfo.Name;
-            _directory = fileInfo.DirectoryName;
+            Name = fileInfo.Name;
+            Directory = fileInfo.DirectoryName;
+            LastModified = fileInfo.LastWriteTime;
 
-            _buildScript = ScriptParserFactory.Create(fileInfo);
+            BuildScript = ScriptParserFactory.Create(fileInfo);
             _buildRunner = BuildRunnerFactory.Create(fileInfo, _logger, _options);
 
             ParseBuildFile();
@@ -123,8 +118,9 @@ namespace NAntGui.Gui
 
         internal void Save(string contents, bool update)
         {
-            File.WriteAllText(_fullName, contents);
-            _contents = contents;
+            File.WriteAllText(FullName, contents);
+            LastModified = File.GetLastWriteTime(FullName);
+            Contents = contents;
 
             if (update)
                 ParseBuildFile();
@@ -132,8 +128,9 @@ namespace NAntGui.Gui
 
         private void Load()
         {
-            _fileType = FileType.Existing;
-            _contents = File.ReadAllText(_fullName);
+            FileType = FileType.Existing;
+            Contents = File.ReadAllText(FullName);
+            LastModified = File.GetLastWriteTime(FullName);
         }
 
         internal void Stop()
@@ -163,7 +160,7 @@ namespace NAntGui.Gui
 
         internal bool IsDirty(string contents)
         {
-            return contents != _contents;
+            return contents != Contents;
         }
 
         private void ParseBuildFile()
@@ -173,7 +170,7 @@ namespace NAntGui.Gui
             // shouldn't be ignored.
             try
             {
-                _buildScript.Parse();
+                BuildScript.Parse();
             }
 #if DEBUG
             catch (Exception error)
@@ -188,43 +185,27 @@ namespace NAntGui.Gui
 #endif
         }
 
+        internal event EventHandler<BuildFinishedEventArgs> BuildFinished
+        {
+            add { _buildRunner.BuildFinished += value; }
+            remove { _buildRunner.BuildFinished -= value; }
+        }
+
         #region Properties
 
-        public string FullName
-        {
-            get { return _fullName; }
-        }
+        public string FullName { get; private set; }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; private set; }
 
-        public string Directory
-        {
-            get { return _directory; }
-        }
+        public string Directory { get; private set; }
 
-        public string Contents
-        {
-            get { return _contents; }
-            set { _contents = value; }
-        }
+        public string Contents { get; private set; }
 
-        internal IBuildScript BuildScript
-        {
-            get { return _buildScript; }
-        }
+        internal IBuildScript BuildScript { get; private set; }
 
-        internal EventHandler<BuildFinishedEventArgs> BuildFinished
-        {
-            set { _buildRunner.BuildFinished += value; }
-        }
+        public FileType FileType { get; private set; }
 
-        public FileType FileType
-        {
-            get { return _fileType; }
-        }
+        public DateTime LastModified { get; private set; }
 
         #endregion
     }

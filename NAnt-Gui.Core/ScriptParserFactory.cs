@@ -8,7 +8,7 @@ namespace NAntGui.Core
     /// <summary>
     /// Summary description for ScriptParserFactory.
     /// </summary>
-    public class ScriptParserFactory
+    public static class ScriptParserFactory
     {
         public static IBuildScript Create(FileInfo fileInfo)
         {

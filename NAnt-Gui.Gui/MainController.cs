@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
 using NAntGui.Core;
@@ -39,8 +38,6 @@ namespace NAntGui.Gui
 {
     public class MainController
     {
-        private const string BLANK_PROJECT = "BlankProject.build";
-        
         private readonly BackgroundWorker _loader = new BackgroundWorker();
         private readonly CommandLineOptions _options;
 
@@ -48,8 +45,8 @@ namespace NAntGui.Gui
         private IEditCommands _editCommands;
         private OutputWindow _outputWindow;
 
-        private readonly Dictionary<DocumentWindow, NAntDocument> _documents = new Dictionary<DocumentWindow, NAntDocument>();
-        private readonly List<FileWatcher> _watchers = new List<FileWatcher>();
+        private readonly Dictionary<DocumentWindow, NAntDocument> _documents =
+            new Dictionary<DocumentWindow, NAntDocument>();
 
         public MainController(CommandLineOptions options)
         {
@@ -58,6 +55,48 @@ namespace NAntGui.Gui
             _loader.DoWork += LoaderDoWork;
             _loader.RunWorkerCompleted += LoaderRunWorkerCompleted;
             RecentItems.ItemAdded += RecentItems_ItemAdded;
+            Application.Idle += Application_Idle;
+        }
+
+        void Application_Idle(object sender, EventArgs e)
+        {
+            foreach (NAntDocument document in _documents.Values)
+            {
+                if (document.FileType == FileType.Existing)
+                {
+                    if (!File.Exists(document.FullName))
+                    {
+                        OpenDocumentDeleted(document);
+                    }
+                    else
+                    {
+                        DateTime lastWrite = File.GetLastWriteTime(document.FullName);
+                        if (lastWrite > document.LastModified)
+                        {
+                            DialogResult result = Errors.ShowDocumentChangedMessage(document.FullName);
+
+                            if (result == DialogResult.Yes)
+                                LoadDocument(document.FullName);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void OpenDocumentDeleted(NAntDocument document)
+        {
+            DocumentWindow window = FindDocumentWindow(document.FullName);
+            DialogResult result = Errors.ShowDocumentDeletedMessage(document.FullName);
+            
+            if (result == DialogResult.No)
+            {
+                window.Close();
+            }
+            else
+            {
+                window.TabText = Utils.AddAsterisk(window.TabText);
+                // TODO: determine if closing this file causes the save prompt to display
+            }
         }
 
         private void RecentItems_ItemAdded(object sender, RecentItemsEventArgs e)
@@ -84,53 +123,7 @@ namespace NAntGui.Gui
             NAntDocument doc = new NAntDocument(_outputWindow, _options);
             DocumentWindow window = new DocumentWindow(doc.FullName);
             SetupWindow(window, doc);
-            window.Contents = GetNewDocumentContents(e.Info);
-        }
-
-        private static string GetNewDocumentContents(ProjectInfo projectInfo)
-        {
-            string contents = "";
-            string path = Path.Combine("..", BLANK_PROJECT);
-            XmlDocument xml = new XmlDocument();
-            try
-            {
-                xml.Load(path);
-                XmlElement element = xml.GetElementsByTagName("project")[0] as XmlElement;
-                if (element != null)
-                {
-                    element.Attributes["name"].Value = projectInfo.Name;
-                    element.Attributes["default"].Value = projectInfo.Default;
-
-                    if (string.IsNullOrEmpty(projectInfo.Basedir))
-                        element.RemoveAttribute("basedir");
-                    else
-                        element.Attributes["basedir"].Value = projectInfo.Basedir;
-                }
-
-
-                XmlNode node = xml.GetElementsByTagName("description")[0];
-                node.InnerText = projectInfo.Description;
-
-                node = xml.GetElementsByTagName("target")[0];
-                node.Attributes["name"].Value = projectInfo.Default;
-                node.Attributes["description"].Value = projectInfo.Default;
-
-                using (StringWriter sw = new StringWriter())
-                {
-                    using (XmlTextWriter xtw = new XmlTextWriter(sw))
-                    {
-                        xtw.Formatting = Formatting.Indented;
-                        xml.WriteTo(xtw);
-                        contents = sw.ToString();
-                    }
-                }
-            }
-            catch
-            {
-                Utils.ShowProjectTemplateMissingError();
-            }
-
-            return contents;
+            window.Contents = Utils.GetNewDocumentContents(e.Info);
         }
 
         internal void Run(List<BuildTarget> targets)
@@ -196,7 +189,7 @@ namespace NAntGui.Gui
                 }
                 catch (Exception ex)
                 {
-                    Utils.ShowSaveError(document.Name, ex.Message);
+                    Errors.CouldNotSave(document.Name, ex.Message);
                 }
             }
         }
@@ -217,7 +210,7 @@ namespace NAntGui.Gui
                 {
                     document.SaveAs(filename, window.Contents);
                     window.TabText = document.Name;
-                    document.BuildFinished = _mainForm.SetStateStopped;
+                    document.BuildFinished += _mainForm.SetStateStopped;
 
                     Settings.Default.SaveScriptInitialDir = document.Directory;
                     Settings.Default.Save();
@@ -229,7 +222,7 @@ namespace NAntGui.Gui
                 }
                 catch (Exception ex)
                 {
-                    Utils.ShowSaveError(document.Name, ex.Message);
+                    Errors.CouldNotSave(document.Name, ex.Message);
                 }
             }
         }
@@ -256,8 +249,7 @@ namespace NAntGui.Gui
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while loading the file:\n" + ex.Message, "Error while loading",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Errors.CouldNotLoadFile(ActiveDocument.FullName, ex.Message);
             }
             
         }
@@ -312,7 +304,7 @@ namespace NAntGui.Gui
                     }
                     catch (Exception ex)
                     {
-                        Utils.ShowSaveError(document.Name, ex.Message);
+                        Errors.CouldNotSave(document.Name, ex.Message);
                     }
                 }
                 else if (result == DialogResult.Cancel)
@@ -356,7 +348,7 @@ namespace NAntGui.Gui
             about.ShowDialog();
         }
 
-        internal void MainFormClosing(FormClosingEventArgs e)
+        internal void MainFormClosing()
         {
             // Don't need this event while closing (should be in CloseAllDocuments)
             _mainForm.DockPanel.ActiveDocumentChanged -= DockPanel_ActiveDocumentChanged;
@@ -429,12 +421,12 @@ namespace NAntGui.Gui
             }
             else if (!File.Exists(filename))
             {
-                Utils.ShowFileNotFoundError(filename);
+                Errors.FileNotFound(filename);
             }
             else
             {
                 NAntDocument doc = new NAntDocument(filename, _outputWindow, _options);
-                doc.BuildFinished = _mainForm.SetStateStopped;
+                doc.BuildFinished += _mainForm.SetStateStopped;
 
                 Settings.Default.OpenScriptDir = doc.Directory;
                 Settings.Default.Save();
@@ -466,15 +458,6 @@ namespace NAntGui.Gui
             window.CloseAllButThisClicked += delegate { CloseAllButThisClicked(); };
             window.SaveClicked += delegate { SaveDocument(); };
             window.Show(_mainForm.DockPanel);
-
-            if (doc.FileType == FileType.Existing)
-            {
-                FileWatcher watcher = new FileWatcher();
-                watcher.SynchronizingObject = window;
-                watcher.Watch(doc.FullName);
-                watcher.Changed += WindowDocumentChangedOutside;
-                _watchers.Add(watcher);
-            }
         }
 
         private void WindowFormClosed(object sender, FormClosedEventArgs e)
@@ -490,21 +473,12 @@ namespace NAntGui.Gui
             }
         }
 
-        private void WindowDocumentChangedOutside(object sender, FileSystemEventArgs e)
-        {
-            FileWatcher watcher = (FileWatcher)sender;
-
-            watcher.Disable();
-            LoadDocument(e.FullPath);
-            watcher.Enable();
-        }
-
         internal DocumentWindow GetWindow(string filename)
         {
             if (File.Exists(filename))
             {
                 NAntDocument doc = new NAntDocument(filename, _outputWindow, _options);
-                doc.BuildFinished = _mainForm.SetStateStopped;
+                doc.BuildFinished += _mainForm.SetStateStopped;
 
                 DocumentWindow window = new DocumentWindow(doc.FullName);
                 SetupWindow(window, doc);
@@ -517,7 +491,7 @@ namespace NAntGui.Gui
                 return window;
             }
 
-            Utils.ShowFileNotFoundError(filename);
+            Errors.FileNotFound(filename);
             return null;
         }
 
@@ -537,12 +511,12 @@ namespace NAntGui.Gui
             }
         }
 
-        internal void DragDrop(object sender, DragEventArgs e)
+        internal void DragDrop(DragEventArgs e)
         {
             LoadDocument(Utils.GetDragFilename(e));
         }
 
-        internal void DragEnter(object sender, DragEventArgs e)
+        internal static void DragEnter(DragEventArgs e)
         {
             e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
         }
@@ -603,26 +577,6 @@ namespace NAntGui.Gui
             }
         }
 
-        //internal void ContentAdded()
-        //{
-        //    if (_mainForm.DockPanel.DocumentsCount == 0)
-        //        _mainForm.Enable();
-        //}
-
-        //internal void ContentRemoved(DockContentEventArgs e)
-        //{
-        //    if (e.Content is DocumentWindow)
-        //    {
-        //        DocumentWindow window = e.Content as DocumentWindow;
-        //        ToolStripItem[] items = _documentsMenuItem.DropDownItems.Find(window.TabText, false);
-        //        _documentsMenuItem.DropDownItems.Remove(items[0]);
-
-        //        if (_mainForm.DockPanel.DocumentsCount == 0)
-        //            _mainForm.Disable();
-        //    }
-        //}
-
- 
 
         #region Private Methods
 

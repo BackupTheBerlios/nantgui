@@ -117,11 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CouldNotLoadError" xml:space="preserve">
+    <value>An error occurred while loading file '{0}'.\nThe error was: {1}</value>
+  </data>
+  <data name="CouldNotLoadTitle" xml:space="preserve">
+    <value>Error Loading File</value>
+  </data>
   <data name="CouldNotSaveError" xml:space="preserve">
-    <value>An error occurred while saving the file '{0}':\n{1}</value>
+    <value>An error occurred while saving file '{0}'.\nThe error was: {1}</value>
   </data>
   <data name="CouldNotSaveTitle" xml:space="preserve">
     <value>Error Saving File</value>
+  </data>
+  <data name="FileChanged" xml:space="preserve">
+    <value>{0}\n\nThis document has changed outside of NAnt-Gui.\nWould you like to reload it?</value>
+  </data>
+  <data name="FileChangedTitle" xml:space="preserve">
+    <value>Document Changed</value>
+  </data>
+  <data name="FileDeleted" xml:space="preserve">
+    <value>The file "{0}" doesn't exist anymore.\nKeep this file in the editor?</value>
+  </data>
+  <data name="FileDeletedTitle" xml:space="preserve">
+    <value>Document Deleted</value>
   </data>
   <data name="FileNotFoundError" xml:space="preserve">
     <value>was not found.</value>

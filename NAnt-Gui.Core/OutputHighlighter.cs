@@ -28,9 +28,9 @@ namespace NAntGui.Core
     /// <summary>
     /// Summary description for SyntaxHighlighter.
     /// </summary>
-    public class OutputHighlighter
+    public static class OutputHighlighter
     {
-        public const string BUILD_FAILED = "BUILD FAILED";
+        private const string BUILD_FAILED = "BUILD FAILED";
         private const string BUILD_SUCCEEDED = "BUILD SUCCEEDED";
 
         public static string Highlight(string text)

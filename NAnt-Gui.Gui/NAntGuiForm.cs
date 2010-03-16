@@ -38,6 +38,8 @@ namespace NAntGui.Gui
     /// </summary>
     public partial class NAntGuiForm
     {
+        private static readonly char[] _separator = new[] { '|' };
+
         private readonly MainController _controller;
         private CommandLineOptions _initialOptions;
         private readonly OutputWindow _outputWindow = new OutputWindow();
@@ -269,18 +271,18 @@ namespace NAntGui.Gui
 
         private void NAntGuiForm_DragDrop(object sender, DragEventArgs e)
         {
-            _controller.DragDrop(sender, e);
+            _controller.DragDrop(e);
         }
 
         private void NAntGuiForm_DragEnter(object sender, DragEventArgs e)
         {
-            _controller.DragEnter(sender, e);
+            MainController.DragEnter(e);
         }
 
         private void NantGuiForm_Closing(object sender, FormClosingEventArgs e)
         {
             _dockPanel.SaveAsXml(Utils.DockingConfigPath);
-            _controller.MainFormClosing(e);
+            _controller.MainFormClosing();
         }
 
         private void SaveClicked(object sender, EventArgs e)
@@ -493,7 +495,7 @@ namespace NAntGui.Gui
             else
             {
                 // DocumentWindow overrides GetPersistString to add extra information into persistString.
-                string[] parsedStrings = persistString.Split(new char[] { '|' });
+                string[] parsedStrings = persistString.Split(_separator);
                 if (parsedStrings.Length == 2 &&
                     parsedStrings[0] == typeof(DocumentWindow).ToString() &&
                     parsedStrings[1] != string.Empty &&

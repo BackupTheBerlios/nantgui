@@ -31,7 +31,7 @@ namespace NAntGui.Core
     /// <summary>
     /// Summary description for BuildRunnerFactory.
     /// </summary>
-    public class BuildRunnerFactory
+    public static class BuildRunnerFactory
     {
         public static BuildRunnerBase Create(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options)
         {

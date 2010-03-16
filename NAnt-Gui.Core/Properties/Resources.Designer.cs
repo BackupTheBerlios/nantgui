@@ -61,7 +61,25 @@ namespace NAntGui.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while saving the file &apos;{0}&apos;:\n{1}.
+        ///   Looks up a localized string similar to An error occurred while loading file &apos;{0}&apos;.\nThe error was: {1}.
+        /// </summary>
+        internal static string CouldNotLoadError {
+            get {
+                return ResourceManager.GetString("CouldNotLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Loading File.
+        /// </summary>
+        internal static string CouldNotLoadTitle {
+            get {
+                return ResourceManager.GetString("CouldNotLoadTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while saving file &apos;{0}&apos;.\nThe error was: {1}.
         /// </summary>
         internal static string CouldNotSaveError {
             get {
@@ -75,6 +93,42 @@ namespace NAntGui.Core.Properties {
         internal static string CouldNotSaveTitle {
             get {
                 return ResourceManager.GetString("CouldNotSaveTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}\n\nThis document has changed outside of NAnt-Gui.\nWould you like to reload it?.
+        /// </summary>
+        internal static string FileChanged {
+            get {
+                return ResourceManager.GetString("FileChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document Changed.
+        /// </summary>
+        internal static string FileChangedTitle {
+            get {
+                return ResourceManager.GetString("FileChangedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &quot;{0}&quot; doesn&apos;t exist anymore.\nKeep this file in the editor?.
+        /// </summary>
+        internal static string FileDeleted {
+            get {
+                return ResourceManager.GetString("FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document Deleted.
+        /// </summary>
+        internal static string FileDeletedTitle {
+            get {
+                return ResourceManager.GetString("FileDeletedTitle", resourceCulture);
             }
         }
         

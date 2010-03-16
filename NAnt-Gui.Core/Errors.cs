@@ -1,0 +1,71 @@
+﻿using System;
+using System.Reflection;
+using System.Resources;
+using System.Windows.Forms;
+
+namespace NAntGui.Core
+{
+    public static class Errors
+    {
+        private static readonly ResourceManager _resources = new ResourceManager("NAntGui.Core.Properties.Resources",
+                                                                                 Assembly.GetExecutingAssembly());
+
+        public static void HelpNotFound()
+        {
+            MessageBox.Show(_resources.GetString("HelpNotFoundError"), _resources.GetString("HelpNotFoundTitle"),
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+        public static void FileNotFound(string file)
+        {
+            MessageBox.Show(file + _resources.GetString("FileNotFoundError"), _resources.GetString("FileNotFoundTitle"),
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+        public static void CouldNotSave(string file, string exception)
+        {
+            string messageString = _resources.GetString("CouldNotSaveError");
+            string message = messageString != null
+                                 ? String.Format(messageString, file, exception)
+                                 : String.Format("{0}: {1}", file, exception);
+
+            MessageBox.Show(message, _resources.GetString("CouldNotSaveTitle"), MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+        }
+
+        public static void ProjectTemplateMissing()
+        {
+            MessageBox.Show(_resources.GetString("ProjectTemplateMissingError"));
+        }
+
+        public static void CouldNotLoadFile(string file, string exception)
+        {
+            string messageString = _resources.GetString("CouldNotLoadError");
+            string message = messageString != null
+                                 ? String.Format(messageString, file, exception)
+                                 : String.Format("{0}: {1}", file, exception);
+            MessageBox.Show(message, _resources.GetString("CouldNotLoadTitle"),
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static DialogResult ShowDocumentChangedMessage(string file)
+        {
+            string messageString = _resources.GetString("FileChanged");
+            string message = messageString != null ? string.Format(messageString, file) : string.Format("{0}", file);
+
+            return MessageBox.Show(message, _resources.GetString("FileChangedTitle"), MessageBoxButtons.YesNo,
+                                   MessageBoxIcon.Information,
+                                   MessageBoxDefaultButton.Button1);
+        }
+
+        public static DialogResult ShowDocumentDeletedMessage(string file)
+        {
+            string messageString = _resources.GetString("FileDeleted");
+            string message = messageString != null ? string.Format(messageString, file) : string.Format("{0}", file);
+
+            return MessageBox.Show(message, _resources.GetString("FileDeletedTitle"), MessageBoxButtons.YesNo,
+                                   MessageBoxIcon.Information,
+                                   MessageBoxDefaultButton.Button1);
+        }
+    }
+}

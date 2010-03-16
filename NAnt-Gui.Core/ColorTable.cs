@@ -30,7 +30,7 @@ namespace NAntGui.Core
     /// <summary>
     /// Summary description for ColorTable.
     /// </summary>
-    public class ColorTable
+    public static class ColorTable
     {
         private const string BLUE = @"\red0\green0\blue255;";
         private const string COLOR_TAG = @"\cf";
@@ -39,7 +39,7 @@ namespace NAntGui.Core
         private const string HEADER = @"{\colortbl ;";
         private const string RED = @"\red255\green0\blue0;";
 
-        private static readonly List<Colors> UsedColors = new List<Colors>(3);
+        private static readonly List<Colors> _usedColors = new List<Colors>(3);
         private static StringBuilder _colorList = new StringBuilder();
 
         public static string RedTag
@@ -64,18 +64,18 @@ namespace NAntGui.Core
 
         private static string GetColorTag(Colors pColor)
         {
-            if (!UsedColors.Contains(pColor))
+            if (!_usedColors.Contains(pColor))
             {
-                UsedColors.Add(pColor);
+                _usedColors.Add(pColor);
                 _colorList.Append(GetColor(pColor));
             }
-            return COLOR_TAG + (UsedColors.IndexOf(pColor) + 1);
+            return COLOR_TAG + (_usedColors.IndexOf(pColor) + 1);
         }
 
         public static void Reset()
         {
             _colorList = new StringBuilder();
-            UsedColors.Clear();
+            _usedColors.Clear();
         }
 
         private static string GetColor(Colors pColor)

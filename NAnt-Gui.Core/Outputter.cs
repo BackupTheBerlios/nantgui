@@ -26,37 +26,37 @@ namespace NAntGui.Core
     /// <summary>
     /// Summary description for Outputter.
     /// </summary>
-    public class Outputter
+    public static class Outputter
     {
         private const string FOOTER = @"\par}";
 
-        private static string Header =
+        private static string _header =
             @"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
             + @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
             + ColorTable.ColorTableRtf
             + @"\viewkind4\uc1\pard\cf0\fs17 ";
 
-        private static string Output = "";
+        private static string _output = "";
 
         public static string RtfDocument
         {
-            get { return Header + Output + FOOTER; }
+            get { return _header + _output + FOOTER; }
         }
 
         public static void AppendRtfText(string pRtfText)
         {
-            Header =
+            _header =
                 @"{\rtf1\ansi\ansicpg1252\deff0\deflang1033"
                 + @"{\fonttbl{\f0\fnil\fcharset0 Courier New;}}"
                 + ColorTable.ColorTableRtf
                 + @"\viewkind4\uc1\pard\cf0\fs17 ";
 
-            Output = pRtfText;
+            _output = pRtfText;
         }
 
         public static void Clear()
         {
-            Output = "";
+            _output = "";
             ColorTable.Reset();
         }
     }
