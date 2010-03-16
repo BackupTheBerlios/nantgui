@@ -1,19 +1,20 @@
 Required for 1.9/2.0
 --------------------
 - BUG: Installed app doesn't always seem to close
-- Filewatcher 	
-	* File deleted:		
-		- Ensure that when the file is deleted and kept open, the user is prompted for save upon close	
+- BUG: If the user has an open blank file and it is deleted, then they keep it open, 
+	then close without saving, they will not be prompted to save it.
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
 	* Documents that are changes should have * next to the name
 - If the file is readonly, make the editor readonly
+	* What happens if the user opens the file, then changes the readonly flag?
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)
 - Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
 	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)
 	
+(DONE): Filewatcher: Ensure that when the file is deleted and kept open, the user is prompted for save upon close		
 (DONE): Filewatcher: User should only be prompted about file changes when the application has focus.	
 (DONE): Filewatcher: When the user declines to reload a changed file, it should not prompt again
 (DONE): Filewatcher: File deleted: If the user selects yes, it keeps asking and keeps adding asterisks		

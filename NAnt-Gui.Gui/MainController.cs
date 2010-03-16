@@ -105,6 +105,7 @@ namespace NAntGui.Gui
                 window.TabText = Utils.AddAsterisk(window.TabText);
                 document.FileType = FileType.New;
                 // HACK: makes the closing see the file is unsaved
+                // Doesn't work if the file is already empty
                 document.Contents = string.Empty;
             }
         }
