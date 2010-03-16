@@ -82,7 +82,6 @@ namespace NAntGui.Gui
         private void CreateNewProject(object sender, NewProjectEventArgs e)
         {
             NAntDocument doc = new NAntDocument(_outputWindow, _options);
-//            doc.Contents = GetNewDocumentContents(e.Info);
             DocumentWindow window = new DocumentWindow(doc.FullName);
             SetupWindow(window, doc);
             window.Contents = GetNewDocumentContents(e.Info);
