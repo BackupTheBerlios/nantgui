@@ -22,8 +22,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui", "NAnt-Gui\NAnt-G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.Unittests", "NAnt-Gui.Unittests\NAnt-Gui.Unittests.csproj", "{C5ADC7F8-B5ED-4520-BA9F-8E4E3290A12B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt.InnoSetup.Tasks", "Nant.InnoSetup\NAnt.InnoSetup.Tasks.csproj", "{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.NAnt", "NAnt-Gui.NAnt\NAnt-Gui.NAnt.csproj", "{B42F3791-EDD7-494A-9229-A565588F2EF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.Framework", "NAnt-Gui.Framework\NAnt-Gui.Framework.csproj", "{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}"
@@ -33,6 +31,23 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAnt-Gui.Gui", "NAnt-Gui.Gui\NAnt-Gui.Gui.csproj", "{68259D7A-1A1D-461F-9156-8F1C13C057A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlEditor", "XmlEditor\Project\XmlEditor.csproj", "{6B717BD1-CD5E-498C-A42E-9E6A4584DC48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestFiles", "TestFiles", "{F8B2CA2B-1677-44BF-AB5F-AA16FCB0DECB}"
+	ProjectSection(SolutionItems) = preProject
+		Nant-Gui.TestFiles\Calling Targets.build = Nant-Gui.TestFiles\Calling Targets.build
+		Nant-Gui.TestFiles\FileToLoad.txt = Nant-Gui.TestFiles\FileToLoad.txt
+		Nant-Gui.TestFiles\IncludeTest.build = Nant-Gui.TestFiles\IncludeTest.build
+		Nant-Gui.TestFiles\IncludeTest.inc = Nant-Gui.TestFiles\IncludeTest.inc
+		Nant-Gui.TestFiles\LoadFileTest.build = Nant-Gui.TestFiles\LoadFileTest.build
+		Nant-Gui.TestFiles\Multiple Properties.build = Nant-Gui.TestFiles\Multiple Properties.build
+		Nant-Gui.TestFiles\NAnt.build = Nant-Gui.TestFiles\NAnt.build
+		Nant-Gui.TestFiles\NHibernate.build = Nant-Gui.TestFiles\NHibernate.build
+		Nant-Gui.TestFiles\NHibernate_default.build = Nant-Gui.TestFiles\NHibernate_default.build
+		Nant-Gui.TestFiles\Readonly Props.build = Nant-Gui.TestFiles\Readonly Props.build
+		Nant-Gui.TestFiles\test.build = Nant-Gui.TestFiles\test.build
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nant.InnoSetup.Tasks", "Nant.InnoSetup.Tasks\Nant.InnoSetup.Tasks.csproj", "{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,12 +74,6 @@ Global
 		{C5ADC7F8-B5ED-4520-BA9F-8E4E3290A12B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C5ADC7F8-B5ED-4520-BA9F-8E4E3290A12B}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{C5ADC7F8-B5ED-4520-BA9F-8E4E3290A12B}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
-		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
-		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 		{B42F3791-EDD7-494A-9229-A565588F2EF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B42F3791-EDD7-494A-9229-A565588F2EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B42F3791-EDD7-494A-9229-A565588F2EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,8 +104,17 @@ Global
 		{6B717BD1-CD5E-498C-A42E-9E6A4584DC48}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B717BD1-CD5E-498C-A42E-9E6A4584DC48}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{6B717BD1-CD5E-498C-A42E-9E6A4584DC48}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{D25C196C-39B0-41B9-901F-B6A2CD67EBB4}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8B2CA2B-1677-44BF-AB5F-AA16FCB0DECB} = {3BAD269C-8E8B-46AA-95A3-0B0C719778B3}
 	EndGlobalSection
 EndGlobal

@@ -96,13 +96,16 @@ namespace NAntGui.Gui
             {
                 xml.Load(path);
                 XmlElement element = xml.GetElementsByTagName("project")[0] as XmlElement;
-                element.Attributes["name"].Value = projectInfo.Name;
-                element.Attributes["default"].Value = projectInfo.Default;
+                if (element != null)
+                {
+                    element.Attributes["name"].Value = projectInfo.Name;
+                    element.Attributes["default"].Value = projectInfo.Default;
 
-                if (string.IsNullOrEmpty(projectInfo.Basedir))
-                    element.RemoveAttribute("basedir");
-                else
-                    element.Attributes["basedir"].Value = projectInfo.Basedir;
+                    if (string.IsNullOrEmpty(projectInfo.Basedir))
+                        element.RemoveAttribute("basedir");
+                    else
+                        element.Attributes["basedir"].Value = projectInfo.Basedir;
+                }
 
 
                 XmlNode node = xml.GetElementsByTagName("description")[0];
@@ -124,7 +127,7 @@ namespace NAntGui.Gui
             }
             catch
             {
-                MessageBox.Show("New project template missing.  Please re-install the application.");
+                Utils.ShowProjectTemplateMissingError();
             }
 
             return contents;
@@ -193,8 +196,7 @@ namespace NAntGui.Gui
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred while saving the file:\n" + ex.Message, "Error while saving",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Utils.ShowSaveError(document.Name, ex.Message);
                 }
             }
         }
@@ -227,8 +229,7 @@ namespace NAntGui.Gui
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred while saving the file:\n" + ex.Message, "Error while saving",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Utils.ShowSaveError(document.Name, ex.Message);
                 }
             }
         }
@@ -311,8 +312,7 @@ namespace NAntGui.Gui
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("An error occurred while saving the file:\n" + ex.Message, "Error while saving",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Utils.ShowSaveError(document.Name, ex.Message);
                     }
                 }
                 else if (result == DialogResult.Cancel)

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
 
 namespace NAntGui.Core
@@ -10,6 +11,9 @@ namespace NAntGui.Core
     /// </summary>
     public static class Utils
     {
+        private static readonly char[] _asterisk = new[] { '*' };
+        private static ResourceManager _resources = new ResourceManager("NAntGui.Core.Properties.Resources", Assembly.GetExecutingAssembly());
+
         public static string DockingConfigPath
         {
             get { return Path.Combine(Path.GetDirectoryName(Application.LocalUserAppDataPath), "DockPanel.config"); }
@@ -36,7 +40,7 @@ namespace NAntGui.Core
 
         public static string RemoveAsterisk(string text)
         {
-            return text.TrimEnd(new[] {'*'});
+            return text.TrimEnd(_asterisk);
         }
 
         public static string AddAsterisk(string text)
@@ -52,14 +56,31 @@ namespace NAntGui.Core
             }
             else
             {
-                MessageBox.Show("Help not found. It may not have been installed.", "Help Not Found");
+                MessageBox.Show(_resources.GetString("HelpNotFoundError"), _resources.GetString("HelpNotFoundTitle"),
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
-        public static void ShowFileNotFoundError(string recentItem)
+        public static void ShowFileNotFoundError(string file)
         {
-            MessageBox.Show(recentItem + " was not found.", "Build File Not Found",
+            MessageBox.Show(file + _resources.GetString("FileNotFoundError"), _resources.GetString("FileNotFoundTitle"),
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+        public static void ShowSaveError(string file, string exception)
+        {
+            string messageString = _resources.GetString("CouldNotSaveError");
+            string message = messageString != null
+                                 ? string.Format(messageString, file, exception)
+                                 : string.Format("{0}: {1}", file, exception);
+
+            MessageBox.Show(message, _resources.GetString("CouldNotSaveTitle"), MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+        }
+
+        public static void ShowProjectTemplateMissingError()
+        {
+            MessageBox.Show(_resources.GetString("ProjectTemplateMissingError"));
         }
 
         public static string GetDragFilename(DragEventArgs e)
