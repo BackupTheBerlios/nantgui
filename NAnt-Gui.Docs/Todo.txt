@@ -2,7 +2,10 @@ Required for 1.9/2.0
 --------------------
 - BUG: Installed app doesn't always seem to close
 - Filewatcher 	
-	* Ensure that when the file is deleted and kept open, the user is prompted for save upon close
+	* File deleted:
+		- If the user selects yes, it keeps asking and keeps adding asterisks
+		- If the user selects no, it crashes because the document dictionary is modify during enumeration
+		- Ensure that when the file is deleted and kept open, the user is prompted for save upon close
 	* When the user declines to reload a changed file, it should not prompt again
 	* User should only be prompted about file changes when the application has focus.
 - Fix all UI events.  
@@ -13,6 +16,7 @@ Required for 1.9/2.0
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)
 	
+(DONE): BUG: new file saved with save as isn't marked as existing	
 (DONE): Filewatcher: Saving the document changes which targets are selected (caused by filewatcher firing during save)
 (DONE): Filewatcher: should prompt the user, when the file changes, if they want to reload it
 (DONE): Filewatcher: Rewrite to use Application.Idle polling technique instead

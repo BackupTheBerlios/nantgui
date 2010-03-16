@@ -67,17 +67,19 @@ namespace NAntGui.Gui
                     if (!File.Exists(document.FullName))
                     {
                         OpenDocumentDeleted(document);
+                        // this break is here because the enumeration can't be modified
+                        // while looping.  This method will just be called again, so any
+                        // missed changes will be picked up right away.
+                        break;
                     }
-                    else
-                    {
-                        DateTime lastWrite = File.GetLastWriteTime(document.FullName);
-                        if (lastWrite > document.LastModified && _mainForm.IsActive)
-                        {
-                            DialogResult result = Errors.ShowDocumentChangedMessage(document.FullName);
 
-                            if (result == DialogResult.Yes)
-                                LoadDocument(document.FullName);
-                        }
+                    DateTime lastWrite = File.GetLastWriteTime(document.FullName);
+                    if (lastWrite > document.LastModified && _mainForm.IsActive)
+                    {
+                        DialogResult result = Errors.ShowDocumentChangedMessage(document.FullName);
+
+                        if (result == DialogResult.Yes)
+                            LoadDocument(document.FullName);
                     }
                 }
             }
@@ -95,7 +97,7 @@ namespace NAntGui.Gui
             else
             {
                 window.TabText = Utils.AddAsterisk(window.TabText);
-                // TODO: determine if closing this file causes the save prompt to display
+                document.FileType = FileType.New;
             }
         }
 

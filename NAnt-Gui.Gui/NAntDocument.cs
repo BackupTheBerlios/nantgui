@@ -109,6 +109,7 @@ namespace NAntGui.Gui
             Name = fileInfo.Name;
             Directory = fileInfo.DirectoryName;
             LastModified = fileInfo.LastWriteTime;
+            FileType = FileType.Existing;
 
             BuildScript = ScriptParserFactory.Create(fileInfo);
             _buildRunner = BuildRunnerFactory.Create(fileInfo, _logger, _options);
@@ -193,6 +194,8 @@ namespace NAntGui.Gui
 
         #region Properties
 
+        public FileType FileType { get; set; }
+
         public string FullName { get; private set; }
 
         public string Name { get; private set; }
@@ -202,8 +205,6 @@ namespace NAntGui.Gui
         public string Contents { get; private set; }
 
         internal IBuildScript BuildScript { get; private set; }
-
-        public FileType FileType { get; private set; }
 
         public DateTime LastModified { get; private set; }
 
