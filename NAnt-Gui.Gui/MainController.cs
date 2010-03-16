@@ -89,6 +89,7 @@ namespace NAntGui.Gui
 
         private static string GetNewDocumentContents(ProjectInfo projectInfo)
         {
+            string contents = "";
             string path = Path.Combine("..", BLANK_PROJECT);
             XmlDocument xml = new XmlDocument();
             try
@@ -117,18 +118,16 @@ namespace NAntGui.Gui
                     {
                         xtw.Formatting = Formatting.Indented;
                         xml.WriteTo(xtw);
-                        return sw.ToString();
+                        contents = sw.ToString();
                     }
                 }
-
-                //return xml.InnerXml;
             }
             catch
             {
                 MessageBox.Show("New project template missing.  Please re-install the application.");
-                // TODO: Shouldn't return anything when there's an error
-                return "";
             }
+
+            return contents;
         }
 
         internal void Run(List<BuildTarget> targets)
@@ -176,18 +175,26 @@ namespace NAntGui.Gui
             }
             else if (document.IsDirty(window.Contents))
             {
-                //_ignoreDocumentChanged = true;
-                document.Save(window.Contents, true);
-                //_ignoreDocumentChanged = false;
-
-                if (window == ActiveWindow)
+                try
                 {
-                    List<BuildTarget> targets = _mainForm.SelectedTargets;
-                    UpdateTitle();
-                    UpdateDisplay();
-                    _mainForm.SelectedTargets = targets;
+                    //_ignoreDocumentChanged = true;
+                    document.Save(window.Contents, true);
+                    //_ignoreDocumentChanged = false;
 
-                    _mainForm.Enable();
+                    if (window == ActiveWindow)
+                    {
+                        List<BuildTarget> targets = _mainForm.SelectedTargets;
+                        UpdateTitle();
+                        UpdateDisplay();
+                        _mainForm.SelectedTargets = targets;
+
+                        _mainForm.Enable();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while saving the file:\n" + ex.Message, "Error while saving",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -204,17 +211,25 @@ namespace NAntGui.Gui
             {
                 NAntDocument document = _documents[window];
 
-                document.SaveAs(filename, window.Contents);
-                window.TabText = document.Name;
-                document.BuildFinished = _mainForm.SetStateStopped;
+                try
+                {
+                    document.SaveAs(filename, window.Contents);
+                    window.TabText = document.Name;
+                    document.BuildFinished = _mainForm.SetStateStopped;
 
-                Settings.Default.SaveScriptInitialDir = document.Directory;
-                Settings.Default.Save();
+                    Settings.Default.SaveScriptInitialDir = document.Directory;
+                    Settings.Default.Save();
 
-                RecentItems.Add(filename);
+                    RecentItems.Add(filename);
 
-                _mainForm.CreateRecentItemsMenu();
-                _mainForm.Enable();
+                    _mainForm.CreateRecentItemsMenu();
+                    _mainForm.Enable();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while saving the file:\n" + ex.Message, "Error while saving",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -279,9 +294,17 @@ namespace NAntGui.Gui
 
                 if (result == DialogResult.Yes)
                 {
-                    //_ignoreDocumentChanged = true;
-                    document.Save(window.Contents, false);
-                    //_ignoreDocumentChanged = false;
+                    try
+                    {
+                        //_ignoreDocumentChanged = true;
+                        document.Save(window.Contents, false);
+                        //_ignoreDocumentChanged = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occurred while saving the file:\n" + ex.Message, "Error while saving",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 else if (result == DialogResult.Cancel)
                 {

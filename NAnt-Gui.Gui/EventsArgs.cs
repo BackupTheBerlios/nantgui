@@ -66,17 +66,12 @@ namespace NAntGui.Gui
 
     internal class RunEventArgs : EventArgs
     {
-        private readonly BuildTarget _target;
-
         internal RunEventArgs(BuildTarget target)
         {
-            _target = target;
+            Target = target;
         }
 
-        internal BuildTarget Target
-        {
-            get { return _target; }
-        }
+        internal BuildTarget Target { get; private set; }
     }
 
     /// <summary>
@@ -90,6 +85,6 @@ namespace NAntGui.Gui
             Info = info;
         }
 
-        internal ProjectInfo Info { get; set; }
+        internal ProjectInfo Info { get; private set; }
     }
 }

@@ -21,7 +21,7 @@
 
 #endregion
 
-namespace NAntGui.Gui
+namespace NAntGui.Framework
 {
     /// <summary>
     /// Description of ProjectInfo.

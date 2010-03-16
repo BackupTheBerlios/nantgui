@@ -80,7 +80,7 @@ namespace NAntGui.Gui
             _name = fileInfo.Name;
             _directory = fileInfo.DirectoryName;
 
-            Load(filename);
+            Load();
 
             _buildScript = ScriptParserFactory.Create(fileInfo);
             _buildRunner = BuildRunnerFactory.Create(fileInfo, logger, _options);
@@ -96,7 +96,7 @@ namespace NAntGui.Gui
         {
             if (_fileType == FileType.Existing)
             {
-                Load(_fullName);
+                Load();
                 ParseBuildFile();
             }
         }
@@ -130,7 +130,7 @@ namespace NAntGui.Gui
                 ParseBuildFile();
         }
 
-        internal void Load(string filename)
+        private void Load()
         {
             _fileType = FileType.Existing;
             _contents = File.ReadAllText(_fullName);

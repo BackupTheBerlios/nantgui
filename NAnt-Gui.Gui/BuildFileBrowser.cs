@@ -29,7 +29,7 @@ namespace NAntGui.Gui
     /// <summary>
     /// Summary description for BuildFileBrowser.
     /// </summary>
-    internal class BuildFileBrowser
+    internal static class BuildFileBrowser
     {
         private static readonly OpenFileDialog _openDialog = new OpenFileDialog();
         private static readonly SaveFileDialog _saveDialog = new SaveFileDialog();
