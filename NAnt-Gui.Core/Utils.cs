@@ -19,9 +19,13 @@ namespace NAntGui.Core
         {
             get
             {
-                Assembly ass = Assembly.GetExecutingAssembly();
-                FileInfo info = new FileInfo(ass.Location);
-                return info.DirectoryName;
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                if (assembly != null && assembly.Location != null)
+                {
+                    FileInfo info = new FileInfo(assembly.Location);
+                    return info.DirectoryName;
+                }
+                return "";
             }
         }
 
@@ -48,7 +52,7 @@ namespace NAntGui.Core
             }
             else
             {
-                MessageBox.Show("Help not found.  It may not have been installed.", "Help Not Found");
+                MessageBox.Show("Help not found. It may not have been installed.", "Help Not Found");
             }
         }
 
@@ -62,7 +66,8 @@ namespace NAntGui.Core
         {
             object dragData = e.Data.GetData(DataFormats.FileDrop, false);
             string[] files = dragData as string[];
-            return files[0];
+            if (files != null && files.Length > 0) return files[0];
+            return "";
         }
     }
 }

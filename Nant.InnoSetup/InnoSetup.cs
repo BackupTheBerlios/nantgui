@@ -31,7 +31,7 @@ using NAnt.Core.Attributes;
 using NAnt.Core.Tasks;
 using NAnt.Core.Types;
 
-namespace NAnt.Contrib.InnoSetup.Tasks
+namespace NAnt.InnoSetup.Tasks
 {
     /// <summary>
     /// Compiles an InnoSetup script to an installer.
