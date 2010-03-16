@@ -61,6 +61,9 @@ namespace NAntGui.Gui.Controls
             }
             set
             {
+                foreach (TreeNode node in _treeView.Nodes[0].Nodes)
+                    node.Checked = false;
+
                 foreach (BuildTarget target in value)
                     SelectTarget(target);
             }

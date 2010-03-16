@@ -1,8 +1,7 @@
 Required for 1.9/2.0
 --------------------
 - BUG: Installed app doesn't always seem to close
-- Filewatcher 
-	* Saving the document changes which targets are selected (caused by filewatcher firing during save)
+- Filewatcher 	
 	* Ensure that when the file is deleted and kept open, the user is prompted for save upon close
 	* When the user declines to reload a changed file, it should not prompt again
 	* User should only be prompted about file changes when the application has focus.
@@ -54,6 +53,7 @@ For 2.1 and beyond
 - Add basic MSBuild support
 
 1.9.1:
+(DONE): Filewatcher: Saving the document changes which targets are selected (caused by filewatcher firing during save)
 (DONE): Filewatcher: should prompt the user, when the file changes, if they want to reload it
 (DONE): Filewatcher: Rewrite to use Application.Idle polling technique instead
 (DONE): BUG: New project doesn't prompt for save on close.
