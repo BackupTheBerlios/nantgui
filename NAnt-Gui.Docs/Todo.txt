@@ -24,50 +24,34 @@ For 2.1 and beyond
   documents into an existing document. By default it will allow drag and drop of text, but with the drag-enter method it should be able 
   to handle different results for different dragged objects (text vs file)
 - Dynamic help in the text editor with NAnt
-- New Project screen (fix up Stencil and use it to generate project from template)
-	+ write generator to produce template from XSD for NAnt	
 - Find and replace
-
-+ Create options for LineNumbers, Folding, TabSpaces, etc...
-+ FOLDING AND COMPLETION
-	+ Scintilla does not have folding or completion for XML.  Need to figure out how to get the completion from SharpDevelop into NAnt-Gui
-	  Scintilla does have find and replace with regular expressions and other features not in Sharpdevelop text editor control
-	+ Determine if Scintilla.Net would be a better editor, if not figure out how to get code completion
-+ Consider using the Application.Idle event to update the display (enabled/disabled menu items and buttons) like Greg.XmlEditor, his code is not a tangled mess
-+ New NAnt project needs to be parsed and title should be Untitled*
-+ Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
+- Create options for LineNumbers, Folding, TabSpaces, etc...
+- Consider using the Application.Idle event to update the display (enabled/disabled menu items and buttons) like Greg.XmlEditor, his code is not a tangled mess
+- New NAnt project needs to be parsed and title should be Untitled*
+- Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
   control.  Would give access to syntax highlighting, code completion, add-in architecture, 
   find/replace dialog, etc...
-
-+ CODE Generation
-	+ Need to recurse and fill in the body of elements with sequences/choices
-	+ Create required attributes
-	+ How to implement file picker for filenames?
+- CODE Generation
+	* Need to recurse and fill in the body of elements with sequences/choices
+	* Create required attributes
+	* How to implement file picker for filenames?
 		- by file or dir on the end of the attribute?
-	+ What about booleans and other values?
-	+ How to determine if end tag is required	
-	+ Consider doing like NAntPad and creating a specific XSD that is easier to generate code from (supports bool, file and dir types)
-+ /CODE Generation  
-
-**** Should the parser be rewritten to use a looping reading style? ****
-+ Add loadfile parsing
-+ Add sysinfo parsing
-+ Add regex parsing
-**** /Should the parser be rewritten to use a looping reading style? ****
-	* Enable drag and drop reordering of tabs (PROBABLY NOT GOING TO BE ABLE TO DO THIS BECAUSE
-	  MAGICLIBRARY ISN'T SO MAGICAL.  NO EASY WAY TO ENABLE THIS)
-+ Add a property window to change nant settings after nant-gui is loaded
-+ Add on the fly parsing back in (need to suppress parsing errors and allow an unsaved document to be parsed)
-+ Put save of buildfiles into THREADS (More difficult than it first appears)
-+ Put load and save of buildfiles into threads
-+ Create custom commandline options that make sense for msbuild, nant, and multiple tabs
+	* What about booleans and other values?
+	* How to determine if end tag is required	
+	* Consider doing like NAntPad and creating a specific XSD that is easier to generate code from (supports bool, file and dir types)
+- Rewrite the parser so that the location of elements is known
+	* Add loadfile parsing
+	* Add sysinfo parsing
+	* Add regex parsing
+	* Right-click target in tree view gives option to "Go to Target"
+- Add a property window to change nant settings after nant-gui is loaded
+- Add on the fly parsing back in (need to suppress parsing errors and allow an unsaved document to be parsed)
+- Put save of buildfiles into THREADS (More difficult than it first appears)
+- Create custom commandline options that make sense for msbuild, nant, and multiple tabs
 	* Associate command line options for each file
-+ Right-click target in tree view gives option to "Go to Target"
-+ Code completion
-+ Validate build files 
+- Validate build files 
 	* show errors in an error window like VS.Net show errors
-
-+ Add basic MSBuild support
+- Add basic MSBuild support
 
 1.9.1:
 (DONE): BUG: New project doesn't prompt for save on close.
