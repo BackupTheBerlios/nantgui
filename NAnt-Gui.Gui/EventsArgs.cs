@@ -23,6 +23,7 @@
 
 using System;
 using System.Drawing;
+using NAntGui.Core;
 using NAntGui.Framework;
 
 namespace NAntGui.Gui

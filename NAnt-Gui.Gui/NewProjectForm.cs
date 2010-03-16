@@ -23,6 +23,7 @@
 
 using System;
 using System.Windows.Forms;
+using NAntGui.Core;
 
 namespace NAntGui.Gui
 {
@@ -65,18 +66,6 @@ namespace NAntGui.Gui
 
                 OnNewProject(project);
 
-                //XmlSerializer serial = new XmlSerializer(typeof(project));
-                //MemoryStream stream = new MemoryStream();
-
-                //serial.Serialize(stream, proj);
-
-                //byte[] buffer = new byte[stream.Length];
-
-                //stream.Read(buffer, 0, (int)stream.Length - 1);
-
-                //string xml = Encoding.Unicode.GetString(buffer);
-
-                //MessageBox.Show(xml);
                 Close();
             }
             else

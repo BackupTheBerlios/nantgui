@@ -118,6 +118,7 @@
     <Compile Include="Outputter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ProjectInfo.cs" />
     <Compile Include="ScriptParserFactory.cs">
       <SubType>Code</SubType>
     </Compile>

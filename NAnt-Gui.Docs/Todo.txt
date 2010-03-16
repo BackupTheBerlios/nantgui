@@ -1,6 +1,5 @@
 Required for 1.9/2.0
 --------------------
-- BUG: Errors when loading/saving a file are not caught
 - BUG: New project doesn't prompt for save on close.
 - BUG: Installed app doesn't always seem to close
 - Filewatcher 
@@ -72,6 +71,7 @@ For 2.1 and beyond
 + Add basic MSBuild support
 
 1.9.1:
+(DONE): BUG: Errors when loading/saving a file are not caught
 (DONE): Figure out why tabcompletion doesn't work on the xmlcontrol
 (DONE): Figure out why folding doesn't work on the xmlcontrol
 (DONE): Closing the app while running a build throws a "cannot access disposed object" in OutputWindow.WriteOutput

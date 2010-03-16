@@ -21,29 +21,19 @@
 
 #endregion
 
-namespace NAntGui.Framework
+namespace NAntGui.Core
 {
     /// <summary>
     /// Description of ProjectInfo.
     /// </summary>
-    internal class ProjectInfo
+    public class ProjectInfo
     {
-        //internal ProjectInfo()
-        //{
-        //}
+        public string Name { get; set; }
 
-        //internal ProjectInfo(string name, string description, string @default, string basedir)
-        //{
-        //    Assert.NotNull(name, "name");
-        //    _name = name;
-        //}
+        public string Description { get; set; }
 
-        internal string Name { get; set; }
+        public string Default { get; set; }
 
-        internal string Description { get; set; }
-
-        internal string Default { get; set; }
-
-        internal string Basedir { get; set; }
+        public string Basedir { get; set; }
     }
 }

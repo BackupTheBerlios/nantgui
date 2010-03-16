@@ -243,13 +243,22 @@ namespace NAntGui.Gui
 
         internal void ReloadActiveDocument()
         {
-            TextLocation position = ActiveWindow.CaretPosition;
-            ActiveDocument.Reload();
-            ActiveWindow.Contents = ActiveDocument.Contents;
-            ActiveWindow.TabText = ActiveDocument.Name;
-            ActiveWindow.MoveCaretTo(position.Line, position.Column);
+            try
+            {
+                TextLocation position = ActiveWindow.CaretPosition;
+                ActiveDocument.Reload();
+                ActiveWindow.Contents = ActiveDocument.Contents;
+                ActiveWindow.TabText = ActiveDocument.Name;
+                ActiveWindow.MoveCaretTo(position.Line, position.Column);
 
-            UpdateDisplay();
+                UpdateDisplay();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while loading the file:\n" + ex.Message, "Error while loading",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
         internal void OpenDocument()
@@ -505,6 +514,7 @@ namespace NAntGui.Gui
                 return window;
             }
 
+            Utils.ShowFileNotFoundError(filename);
             return null;
         }
 
