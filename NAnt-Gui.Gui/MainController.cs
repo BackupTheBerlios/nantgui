@@ -467,11 +467,14 @@ namespace NAntGui.Gui
             window.SaveClicked += delegate { SaveDocument(); };
             window.Show(_mainForm.DockPanel);
 
-            FileWatcher watcher = new FileWatcher();
-            watcher.SynchronizingObject = window;
-            watcher.Watch(doc.FullName);
-            watcher.Changed += WindowDocumentChangedOutside;
-            _watchers.Add(watcher);
+            if (doc.FileType == FileType.Existing)
+            {
+                FileWatcher watcher = new FileWatcher();
+                watcher.SynchronizingObject = window;
+                watcher.Watch(doc.FullName);
+                watcher.Changed += WindowDocumentChangedOutside;
+                _watchers.Add(watcher);
+            }
         }
 
         private void WindowFormClosed(object sender, FormClosedEventArgs e)

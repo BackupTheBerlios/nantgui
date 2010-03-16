@@ -1,5 +1,6 @@
 Required for 1.9/2.0
 --------------------
+- BUG: New project doesn't work.  Filewatcher failes.
 - BUG: New project doesn't prompt for save on close.
 - BUG: Installed app doesn't always seem to close
 - Filewatcher 
