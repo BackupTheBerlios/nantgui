@@ -2,7 +2,7 @@ Required for 1.9/2.0
 --------------------
 - BUG: Installed app doesn't always seem to close
 - BUG: If the user has an open blank file and it is deleted, then they keep it open, 
-	then close without saving, they will not be prompted to save it.
+	then close without saving, they will not be prompted to save it. (see: Unsaved property)
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
