@@ -1,4 +1,34 @@
 1.9.1:
+(DONE): Filewatcher: Ensure that when the file is deleted and kept open, the user is prompted for save upon close		
+(DONE): Filewatcher: User should only be prompted about file changes when the application has focus.	
+(DONE): Filewatcher: When the user declines to reload a changed file, it should not prompt again
+(DONE): Filewatcher: File deleted: If the user selects yes, it keeps asking and keeps adding asterisks		
+(DONE): Filewatcher: File deleted: If the user selects no, it crashes because the document dictionary is modify during enumeration	
+(DONE): BUG: new file saved with save as isn't marked as existing	
+(DONE): Filewatcher: Saving the document changes which targets are selected (caused by filewatcher firing during save)
+(DONE): Filewatcher: should prompt the user, when the file changes, if they want to reload it
+(DONE): Filewatcher: Rewrite to use Application.Idle polling technique instead
+(DONE): BUG: New project doesn't prompt for save on close.
+(DONE): BUG: New project doesn't work.  Filewatcher failes.
+(DONE): BUG: Errors when loading/saving a file are not caught
+(DONE): Figure out why tabcompletion doesn't work on the xmlcontrol
+(DONE): Figure out why folding doesn't work on the xmlcontrol
+(DONE): Closing the app while running a build throws a "cannot access disposed object" in OutputWindow.WriteOutput
+(DONE): Active document should be checked
+(DONE): Clicking the menuitem shouldn't reload the document
+(DONE): Window menu that lists all open tabs
+(DONE): create it in the controller and pass it into the NAntDocument.  The window isn't the right place for it, but it's there
+	    because it needs a control to synchronize the threading
+(DONE): Add save all menu item and toolstrip button
+(DONE): Closing multiple tabs that require saving works just like SharpDevelop (cancel is only valid for current document)
+(DONE): Implement Run menuitem on the targets tree
+(DONE): Implement tool tip on targets tree
+(DONE): Add 'close all but this' menu item to tab right click
+(DONE): Add 'save' menu item to tab right click	
+(DONE): Add 'close all tabs' menu item to tab right click
+(DONE): Add 'close other tabs' menu item to tab right click	
+(DONE): Should save the locations of the toolstrips on the mainform	
+(DONE): New Project code implementation
 
 1.9.0:
 (DONE): Update website to show that NAnt-Gui runs in .Net 2.0
