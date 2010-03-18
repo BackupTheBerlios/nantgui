@@ -74,6 +74,7 @@ Source: NAnt-Gui.build; DestDir: {app}\src; Flags: ignoreversion; Components: sr
 Source: NAnt-Gui.iss; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: build_number.txt; DestDir: {app}\src; Flags: ignoreversion; Components: src
 Source: Ant.ico; DestDir: {app}\src; Flags: ignoreversion; Components: src
+Source: build.bat; DestDir: {app}\src; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Docs
 Source: NAnt-Gui.Docs\*.*; DestDir: {app}\src\NAnt-Gui.Docs; Flags: ignoreversion; Components: src
 ; Libraries

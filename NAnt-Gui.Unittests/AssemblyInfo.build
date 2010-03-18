@@ -2,7 +2,7 @@
 	<target name="main" description="main">
 		<loadfile file="..\build_number.txt" property="nantgui.version" />
 
-		<asminfo output="AssemblyInfo.cs" language="CSharp">
+		<asminfo output="Properties\AssemblyInfo.cs" language="CSharp">
 		    <imports>
 		        <import namespace="System.Reflection" />
 		    </imports>
