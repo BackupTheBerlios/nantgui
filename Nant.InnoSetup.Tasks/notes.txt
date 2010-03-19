@@ -1,0 +1,23 @@
+  scriptfile    filename of Inno Setup script (.iss),
+                '-' to read from standard input
+
+  definition    emulates #define directive:
+                  /d<name>[=<value>]   #define public <name> <value>
+
+  option        emulates #pragma directive:
+                  /$<letter>(+|-)      #pragma option -<letter>(+|-)
+                  /p<letter>(+|-)      #pragma parseroption -<letter>(+|-)
+                  /i<paths>            #pragma include <paths>
+                  /{#<string>          #pragma inlinestart <string>
+                  /}<string>           #pragma inlineend <string>
+                  /v<number>           #pragma verboselevel <number>
+                specify output path:
+                  /o<path>
+                specify output filename:
+                  /f<filename>
+                specify a signtool:
+                  /s<name>=<command>
+                quiet compile:
+                  /q
+
+Example: isppcc script.iss /$c- /pu+ "/dLic=Trial Lic.txt" /iC:\INC;D:\INC
