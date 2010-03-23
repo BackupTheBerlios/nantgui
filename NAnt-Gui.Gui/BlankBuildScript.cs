@@ -28,9 +28,9 @@ namespace NAntGui.Gui
             get { return new PropertyCollection(); }
         }
 
-        public List<BuildTarget> Targets
+        public List<IBuildTarget> Targets
         {
-            get { return new List<BuildTarget>(); }
+            get { return new List<IBuildTarget>(); }
         }
     }
 }

@@ -1,4 +1,4 @@
-#region Copyleft and Copyright
+﻿#region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
 // Copyright (C) 2004-2007 Colin Svingen
@@ -21,37 +21,20 @@
 
 #endregion
 
-using System;
-using System.Xml;
+using System.IO;
+using NAntGui.Framework;
 
-namespace NAntGui.Framework
+namespace NAnt_Gui.MSBuild
 {
-    public abstract class BuildTarget : IBuildTarget
+    public class MSBuildScript : BuildScript
     {
-        protected BuildTarget()
+        public MSBuildScript(FileInfo file) : base(file)
         {
-            Name = "";
-            Description = "";
-            Depends = new string[] {};
+            Name = file.Name;
         }
 
-        public string[] Depends { get; protected set; }
-
-        public string Name { get; protected set; }
-
-        public string Description { get; protected set; }
-
-        public bool Default { get; set; }
-
-        public int CompareTo(object obj)
+        public override void Parse()
         {
-            if (obj is IBuildTarget)
-            {
-                IBuildTarget target = obj as IBuildTarget;
-                return Name.CompareTo(target.Name);
-            }
-
-            throw new ArgumentException("Object wasn't a IBuildTarget.", "obj");
         }
     }
 }

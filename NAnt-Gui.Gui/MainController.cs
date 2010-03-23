@@ -137,7 +137,7 @@ namespace NAntGui.Gui
             window.Contents = Utils.GetNewDocumentContents(e.Info);
         }
 
-        internal void Run(List<BuildTarget> targets)
+        internal void Run(List<IBuildTarget> targets)
         {
             if (ActiveDocument.IsDirty(ActiveWindow.Contents))
             {
@@ -190,7 +190,7 @@ namespace NAntGui.Gui
 
                     if (window == ActiveWindow)
                     {
-                        List<BuildTarget> targets = _mainForm.SelectedTargets;
+                        List<IBuildTarget> targets = _mainForm.SelectedTargets;
                         UpdateTitle();
                         UpdateDisplay();
                         _mainForm.SelectedTargets = targets;

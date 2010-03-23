@@ -44,7 +44,7 @@ namespace NAntGui.Framework
 
         public abstract PropertyCollection Properties { set; }
 
-        public abstract List<BuildTarget> Targets { set; }
+        public abstract List<IBuildTarget> Targets { set; }
         public event EventHandler<BuildFinishedEventArgs> BuildFinished;
         protected abstract void DoRun();
 

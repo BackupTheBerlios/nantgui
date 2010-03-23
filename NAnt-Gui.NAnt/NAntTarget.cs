@@ -28,48 +28,17 @@ using NAntGui.Framework;
 namespace NAntGui.NAnt
 {
     /// <summary>
-    /// Summary description for Target.
+    /// Summary description for NAntTarget.
+    /// TODO: Convert from XmlDocument to XmlReader.  Create to get line numbers for later use.
     /// </summary>    
     public class NAntTarget : BuildTarget, IComparable
     {
-        // TODO: Convert from XmlDocument to XmlReader.  Create to get line numbers for later use.
-        private string[] _depends;
-
-        public NAntTarget(XmlElement element)
+        public void ParseAttributes(XmlElement element)
         {
-            ParseAttributes(element);
-        }
-
-        #region IComparable Members
-
-        public int CompareTo(object obj)
-        {
-            if (obj is BuildTarget)
-            {
-                BuildTarget target = obj as BuildTarget;
-                return _name.CompareTo(target.Name);
-            }
-
-            throw new ArgumentException("Object wasn't a BuildTarget.", "obj");
-        }
-
-        #endregion
-
-        #region Properties
-
-        public string[] Depends
-        {
-            get { return _depends; }
-        }
-
-        #endregion
-
-        private void ParseAttributes(XmlElement element)
-        {
-            _name = element.GetAttribute("name");
-            _description = element.GetAttribute("description");
+            Name = element.GetAttribute("name");
+            Description = element.GetAttribute("description");
             string depends = element.GetAttribute("depends");
-            _depends = SplitDepends(depends);
+            Depends = SplitDepends(depends);
         }
 
         private static string[] SplitDepends(string depends)

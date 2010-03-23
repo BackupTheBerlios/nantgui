@@ -21,17 +21,18 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace NAntGui.Framework
 {
     public interface IBuildScript
     {
-        List<BuildTarget> Targets { get; }
-        PropertyCollection Properties { get; }
-
         string Name { get; }
         string Description { get; }
+        List<IBuildTarget> Targets { get; }
+        PropertyCollection Properties { get; }
+
         void Parse();
     }
 }

@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using NAnt.Core;
@@ -34,40 +33,32 @@ namespace NAntGui.NAnt
 {
     /// <summary>
     /// Contains the logic for parsing the build file.
+    /// TODO: Convert from XmlDocument to XmlReader.  Create to get line numbers for later use.
     /// </summary>
-    public class NAntBuildScript : IBuildScript
+    public class NAntBuildScript : BuildScript
     {
-        private readonly List<string> _depends = new List<string>();
-
-        private readonly FileInfo _file;
-        private readonly PropertyCollection _properties = new PropertyCollection();
-        private readonly List<BuildTarget> _targets = new List<BuildTarget>();
         private string _baseDir;
         private string _defaultTargetName;
-        private string _description = "";
-        private string _name;
 
         /// <summary>
         /// Create a new project parser.
         /// </summary>
-        public NAntBuildScript(string file)
+        public NAntBuildScript(FileInfo file)
+            : base(file)
         {
-            Assert.NotNull(file, "file");
-
-            _file = new FileInfo(file);
+            
         }
 
         #region IBuildScript Members
 
-        public void Parse()
+        public override void Parse()
         {
             XmlDocument doc = CreateXmlDoc();
             Project project = CreateProject(doc);
 
-            _targets.Clear();
-            _depends.Clear();
-            _properties.Clear();
-            _description = string.Empty;
+            Targets.Clear();
+            Properties.Clear();
+            Description = string.Empty;
 
             ParseName(doc);
             ParseBaseDir(doc);
@@ -115,7 +106,7 @@ namespace NAntGui.NAnt
 
         private void ParseName(XmlDocument doc)
         {
-            _name = _file.Name;
+            Name = _file.Name;
 
             // there should only be one, but in order for the parser to 
             // be fault tolerent, it must be a little lazy
@@ -123,7 +114,7 @@ namespace NAntGui.NAnt
             {
                 if (element.HasAttribute("name"))
                 {
-                    _name = element.GetAttribute("name");
+                    Name = element.GetAttribute("name");
                     break;
                 }
             }
@@ -147,7 +138,7 @@ namespace NAntGui.NAnt
         {
             foreach (XmlElement element in doc.GetElementsByTagName("description"))
             {
-                _description += element.InnerText + " ";
+                Description += element.InnerText + " ";
             }
         }
 
@@ -155,13 +146,16 @@ namespace NAntGui.NAnt
         {
             foreach (XmlElement element in doc.GetElementsByTagName("target"))
             {
-                NAntTarget nantTarget = new NAntTarget(element);
-                if (nantTarget.Name == _defaultTargetName) nantTarget.Default = true;
-                _targets.Add(nantTarget);
-                _depends.AddRange(nantTarget.Depends);
+                NAntTarget nantTarget = new NAntTarget();
+                nantTarget.ParseAttributes(element);
+
+                if (nantTarget.Name == _defaultTargetName) 
+                    nantTarget.Default = true;
+
+                Targets.Add(nantTarget);
             }
 
-            _targets.Sort();
+            Targets.Sort();
         }
 
         private void FollowIncludes(Project project, XmlDocument doc)
@@ -214,7 +208,7 @@ namespace NAntGui.NAnt
             NAntProperty prop = new NAntProperty("BaseDir", _baseDir, "Project", false);
 
             //project.Properties.AddReadOnly(prop.Name, project.BaseDirectory);
-            _properties.Add(prop);
+            Properties.Add(prop);
         }
 
         private void ParseProperties(Project project, XmlDocument doc)
@@ -232,12 +226,12 @@ namespace NAntGui.NAnt
                         project.Properties.AddReadOnly(
                             nantProperty.Name, nantProperty.ExpandedValue);
 
-                        _properties.Add(nantProperty);
+                        Properties.Add(nantProperty);
                     }
                 }
                 else
                 {
-                    _properties.Add(nantProperty);
+                    Properties.Add(nantProperty);
                 }
             }
         }
@@ -252,7 +246,7 @@ namespace NAntGui.NAnt
             }
             catch (BuildException)
             {
-                /* ignore */
+                // TODO: Do something with the error message
             }
         }
 
@@ -282,7 +276,7 @@ namespace NAntGui.NAnt
                             true);
 
                         nantProperty.ExpandedValue = nantProperty.Value;
-                        _properties.Add(nantProperty);
+                        Properties.Add(nantProperty);
                     }
                     catch (BuildException)
                     {
@@ -310,7 +304,7 @@ namespace NAntGui.NAnt
                             true);
 
                         nantProperty.ExpandedValue = nantProperty.Value;
-                        _properties.Add(nantProperty);
+                        Properties.Add(nantProperty);
                     }
                     catch (BuildException)
                     {
@@ -341,45 +335,11 @@ namespace NAntGui.NAnt
                             element.ParentNode.Attributes["name"].Value, false);
 
                         nAntProperty.ExpandedValue = nAntProperty.Value;
-                        _properties.Add(nAntProperty);
+                        Properties.Add(nAntProperty);
                     }
                 }
             }
         }
-
-        #region Properties
-
-        public string DefaultTarget
-        {
-            get { return _defaultTargetName; }
-        }
-
-        public List<string> Depends
-        {
-            get { return _depends; }
-        }
-
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public string Description
-        {
-            get { return _description; }
-        }
-
-        public List<BuildTarget> Targets
-        {
-            get { return _targets; }
-        }
-
-        public PropertyCollection Properties
-        {
-            get { return _properties; }
-        }
-
-        #endregion
 
         /*
 		/// <summary>

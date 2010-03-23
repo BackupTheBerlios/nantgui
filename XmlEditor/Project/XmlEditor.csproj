@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -40,20 +41,20 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Optimize>False</Optimize>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <Optimize>false</Optimize>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <OutputPath>bin\Debug\</OutputPath>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>True</Optimize>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugType>Full</DebugType>
@@ -66,32 +67,33 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.Core, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.Core.WinForms, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.Core.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpDevelop, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.SharpDevelop.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpDevelop.Dom, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.TextEditor, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.TextEditor.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ICSharpCode.Core, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.Core.WinForms, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.Core.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.SharpDevelop.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=f829da5c02be14ee">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.2.0.5505, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty Libraries\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\AssemblyInfo.cs" />
@@ -148,7 +150,6 @@
     <EmbeddedResource Include="Resources\XmlCommentTreeNodeIcon.png" />
     <None Include="PostBuildEvent.proj" />
     <None Include="XmlEditor.addin">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <Compile Include="Src\RunXslTransformCommand.cs" />
     <Compile Include="Src\XslOutputView.cs" />
@@ -205,6 +206,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
-  <Import Project="PostBuildEvent.proj" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

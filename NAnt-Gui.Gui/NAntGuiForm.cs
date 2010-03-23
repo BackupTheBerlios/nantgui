@@ -135,7 +135,7 @@ namespace NAntGui.Gui
             }
         }
 
-        internal List<BuildTarget> SelectedTargets
+        internal List<IBuildTarget> SelectedTargets
         {
             get { return _targetsWindow.SelectedTargets; }
             set { _targetsWindow.SelectedTargets = value; }
@@ -475,7 +475,7 @@ namespace NAntGui.Gui
 
         private void TargetsWindowRunTarget(object sender, RunEventArgs e)
         {
-            _controller.Run(new List<BuildTarget>{ e.Target });
+            _controller.Run(new List<IBuildTarget>{ e.Target });
         }
 
         private IDockContent GetContentFromPersistString(string persistString)

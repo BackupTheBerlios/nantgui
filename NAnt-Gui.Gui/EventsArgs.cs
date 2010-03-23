@@ -67,12 +67,12 @@ namespace NAntGui.Gui
 
     internal class RunEventArgs : EventArgs
     {
-        internal RunEventArgs(BuildTarget target)
+        internal RunEventArgs(IBuildTarget target)
         {
             Target = target;
         }
 
-        internal BuildTarget Target { get; private set; }
+        internal IBuildTarget Target { get; private set; }
     }
 
     /// <summary>

@@ -146,7 +146,7 @@ namespace NAntGui.Gui
                 _buildRunner.Run();
         }
 
-        internal void SetTargets(List<BuildTarget> targets)
+        internal void SetTargets(List<IBuildTarget> targets)
         {
             Assert.NotNull(targets, "targets");
             if (_buildRunner != null)

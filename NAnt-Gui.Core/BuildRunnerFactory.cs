@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NAntGui.Framework;
 using NAntGui.NAnt;
@@ -35,15 +36,14 @@ namespace NAntGui.Core
     {
         public static BuildRunnerBase Create(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options)
         {
-            switch (fileInfo.Extension)
-            {
-                default:
-                case "nant":
-                case "build":
-                    return new NAntBuildRunner(fileInfo, logger, options);
-                case "proj":
-                    throw new NotImplementedException("Pete's code goes here :)");
-            }
+            if (Utils.NantExtensions.Contains(fileInfo.Extension))
+                return new NAntBuildRunner(fileInfo, logger, options);
+
+            if (Utils.MsbuildExtensions.Contains(fileInfo.Extension) || fileInfo.Extension.EndsWith("proj"))
+                throw new NotImplementedException("MSBuild runner not implemented");
+
+            // TODO: What to do with generic files?
+            throw new NotImplementedException("OMG, can't handle files I don't know about?");
         }
     }
 }

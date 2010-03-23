@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using NAnt_Gui.MSBuild;
 using NAntGui.Framework;
 using NAntGui.NAnt;
 
@@ -12,15 +13,19 @@ namespace NAntGui.Core
     {
         public static IBuildScript Create(FileInfo fileInfo)
         {
-            switch (fileInfo.Extension)
-            {
-                default:
-                case "nant":
-                case "build":
-                    return new NAntBuildScript(fileInfo.FullName);
-                case "proj":
-                    throw new NotImplementedException("Pete's code goes here :)");
-            }
+            IBuildScript script;
+
+            if (Utils.NantExtensions.Contains(fileInfo.Extension))
+                script = new NAntBuildScript(fileInfo);
+            else if (Utils.MsbuildExtensions.Contains(fileInfo.Extension) || fileInfo.Extension.EndsWith("proj"))
+                script = new MSBuildScript(fileInfo);
+            else
+                // TODO: What to do with generic files?
+                throw new NotImplementedException("OMG, can't handle files I don't know about!?!");
+
+            return script;
         }
     }
+
+
 }

@@ -37,7 +37,7 @@ namespace NAntGui.NAnt
         private readonly FileInfo _fileInfo;
         private Project _project;
         private PropertyCollection _properties;
-        private List<BuildTarget> _targets;
+        private List<IBuildTarget> _targets;
 
         public NAntBuildRunner(FileInfo fileInfo, ILogsMessage logger, CmdOptions options) :
             base(logger, options)
@@ -51,7 +51,7 @@ namespace NAntGui.NAnt
             set { _properties = value; }
         }
 
-        public override List<BuildTarget> Targets
+        public override List<IBuildTarget> Targets
         {
             set { _targets = value; }
         }
@@ -180,7 +180,7 @@ namespace NAntGui.NAnt
 
         private void AddTargets()
         {
-            foreach (BuildTarget target in _targets)
+            foreach (IBuildTarget target in _targets)
             {
                 _project.BuildTargets.Add(target.Name);
             }

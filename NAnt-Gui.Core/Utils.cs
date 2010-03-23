@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -72,7 +73,7 @@ namespace NAntGui.Core
 
         public static string GetNewDocumentContents(ProjectInfo projectInfo)
         {
-            string contents = string.Empty;
+            string contents = String.Empty;
             string path = Path.Combine("..", BLANK_PROJECT);
             XmlDocument xml = new XmlDocument();
 
@@ -124,5 +125,8 @@ namespace NAntGui.Core
                 }
             }
         }
+
+        internal static readonly List<string> NantExtensions = new List<string> { "nant", "build" };
+        internal static readonly List<string> MsbuildExtensions = new List<string> { "targets", "proj", "properties" };
     }
 }
