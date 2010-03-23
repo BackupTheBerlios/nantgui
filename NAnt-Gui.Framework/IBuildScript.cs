@@ -21,7 +21,6 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 namespace NAntGui.Framework
@@ -31,7 +30,7 @@ namespace NAntGui.Framework
         string Name { get; }
         string Description { get; }
         List<IBuildTarget> Targets { get; }
-        PropertyCollection Properties { get; }
+        Dictionary<string, IBuildProperty> Properties { get; }
 
         void Parse();
     }

@@ -23,9 +23,9 @@ namespace NAntGui.Gui
             get { return "Untitled"; }
         }
 
-        public PropertyCollection Properties
+        public Dictionary<string, IBuildProperty> Properties
         {
-            get { return new PropertyCollection(); }
+            get { return new Dictionary<string, IBuildProperty>(); }
         }
 
         public List<IBuildTarget> Targets

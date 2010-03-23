@@ -1,8 +1,10 @@
 Required for 1.9.*/2.0
 --------------------
+***  Make sure you can override property values ****
 - BUG: Installed app doesn't always seem to close
 - BUG: If the user has an open blank file and it is deleted, then they keep it open, 
 	then close without saving, they will not be prompted to save it. (see: Unsaved property)
+- Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
@@ -13,6 +15,9 @@ Required for 1.9.*/2.0
 	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)	
+	
+	
+(DONE): Add basic MSBuild support	
 	
 
 For 2.1 and beyond
@@ -52,7 +57,3 @@ For 2.1 and beyond
 	* Associate command line options for each file
 - Validate build files 
 	* show errors in an error window like VS.Net show errors
-- Add basic MSBuild support
-
-
-

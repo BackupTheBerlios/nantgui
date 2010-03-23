@@ -23,29 +23,44 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace NAntGui.Framework
 {
     public abstract class BuildRunnerBase
     {
+        public event EventHandler<BuildFinishedEventArgs> BuildFinished;
+
         protected ILogsMessage _logger;
         protected CommandLineOptions _options;
+        protected Dictionary<string, IBuildProperty> _properties;
+        protected List<IBuildTarget> _targets;
+        protected FileInfo _fileInfo;
+
         private Thread _thread;
 
-        protected BuildRunnerBase(ILogsMessage logger, CommandLineOptions options)
+        protected BuildRunnerBase(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options)
         {
             Assert.NotNull(logger, "logger");
             Assert.NotNull(options, "options");
+            Assert.NotNull(fileInfo, "fileInfo");
 
+            _fileInfo = fileInfo;
             _logger = logger;
             _options = options;
         }
 
-        public abstract PropertyCollection Properties { set; }
+        public Dictionary<string, IBuildProperty> Properties
+        {
+            set { _properties = value; }
+        }
 
-        public abstract List<IBuildTarget> Targets { set; }
-        public event EventHandler<BuildFinishedEventArgs> BuildFinished;
+        public List<IBuildTarget> Targets
+        {
+            set { _targets = value; }
+        }
+
         protected abstract void DoRun();
 
         public void Run()

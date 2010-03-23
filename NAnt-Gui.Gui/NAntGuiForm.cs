@@ -220,7 +220,7 @@ namespace NAntGui.Gui
             }
         }
 
-        internal void AddProperties(PropertyCollection properties)
+        internal void AddProperties(Dictionary<string, IBuildProperty> properties)
         {
             _propertyWindow.AddProperties(properties);
         }

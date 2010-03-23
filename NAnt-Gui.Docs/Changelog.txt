@@ -1,3 +1,5 @@
+1.9.2:
+
 1.9.1:
 (DONE): Filewatcher: Ensure that when the file is deleted and kept open, the user is prompted for save upon close		
 (DONE): Filewatcher: User should only be prompted about file changes when the application has focus.	

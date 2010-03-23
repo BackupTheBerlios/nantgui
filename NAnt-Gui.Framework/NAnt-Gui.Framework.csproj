@@ -91,7 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfo.build" />
+    <Compile Include="BuildFileParseException.cs" />
     <Compile Include="BuildScript.cs" />
+    <Compile Include="IBuildProperty.cs" />
     <Compile Include="IBuildTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -122,9 +124,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ILogsMessage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PropertyCollection.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

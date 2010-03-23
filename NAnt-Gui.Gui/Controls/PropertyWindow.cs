@@ -21,6 +21,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Windows.Forms;
 using NAntGui.Framework;
 
@@ -41,7 +42,7 @@ namespace NAntGui.Gui.Controls
             get { return _propertyGrid; }
         }
 
-        internal void AddProperties(PropertyCollection properties)
+        internal void AddProperties(Dictionary<string, IBuildProperty> properties)
         {
             _propertyGrid.SelectedObject = new PropertyShelf(properties);
         }

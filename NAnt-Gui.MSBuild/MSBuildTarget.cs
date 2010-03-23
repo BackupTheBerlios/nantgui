@@ -21,45 +21,28 @@
 
 #endregion
 
-using System.Collections;
+using NAntGui.Framework;
 
-namespace NAntGui.Framework
+namespace NAntGui.MSBuild
 {
-    /// <summary>
-    /// Summary description for PropertyCollection.
-    /// </summary>
-    public class PropertyCollection : IEnumerable
+    class MSBuildTarget : BuildTarget
     {
-        private readonly Hashtable _properties;
-
-        public PropertyCollection()
+        public MSBuildTarget(string name)
         {
-            _properties = new Hashtable();
+            Name = name;
         }
 
-        public BuildProperty this[string key]
-        {
-            get { return (BuildProperty) _properties[key]; }
-            set { _properties[key] = value; }
-        }
+        //public void ParseAttributes(XmlElement element)
+        //{
+        //    Name = element.GetAttribute("Name");
+        //    string depends = element.GetAttribute("DependsOnTargets");
+        //    Depends = SplitDepends(depends);
+        //    Inputs = element.GetAttribute("Inputs");
+        //    Outputs = element.GetAttribute("Outputs");
+        //    Condition = element.GetAttribute("Condition");
+        //}
 
-        #region IEnumerable Members
-
-        public IEnumerator GetEnumerator()
-        {
-            return _properties.Values.GetEnumerator();
-        }
-
-        #endregion
-
-        public void Add(BuildProperty prop)
-        {
-            _properties.Add(prop.Key, prop);
-        }
-
-        public void Clear()
-        {
-            _properties.Clear();
-        }
+        public string Condition { get; set; }
+        public bool Initial { get; set; }
     }
 }

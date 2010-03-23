@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using System.Xml;
 
 namespace NAntGui.Framework
 {
@@ -35,7 +34,7 @@ namespace NAntGui.Framework
             Depends = new string[] {};
         }
 
-        public string[] Depends { get; protected set; }
+        public string[] Depends { get; set; }
 
         public string Name { get; protected set; }
 

@@ -4,7 +4,7 @@
   <loadtasks assembly="Tools\nantcontrib-0.85\bin\NAnt.Contrib.Tasks.dll" />
   
   <target name="Installer" description="Create InnoSetup Installer" depends="Release">
-	<loadtasks assembly="Nant.InnoSetup.Tasks\bin\Release\NAnt.InnoSetup.Tasks.dll" />
+	  <loadtasks assembly="Nant.InnoSetup.Tasks\bin\Release\NAnt.InnoSetup.Tasks.dll" />
     <innosetup script="NAnt-Gui.iss" />
   </target>
 

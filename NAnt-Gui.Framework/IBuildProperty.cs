@@ -1,4 +1,4 @@
-﻿#region Copyleft and Copyright
+#region Copyleft and Copyright
 
 // NAnt-Gui - Gui frontend to the NAnt .NET build tool
 // Copyright (C) 2004-2007 Colin Svingen
@@ -25,7 +25,14 @@ using System;
 
 namespace NAntGui.Framework
 {
-    public class BuildFinishedEventArgs : EventArgs
+    public interface IBuildProperty
     {
+        string Name { get; }
+        string Value { get; set;  }
+        string Category { get; }
+        string DefaultExpandedValue { get; set; }
+        bool ReadOnly { get; }
+        Type Type { get; }
+        string ExpandedValue { get; set; }
     }
 }

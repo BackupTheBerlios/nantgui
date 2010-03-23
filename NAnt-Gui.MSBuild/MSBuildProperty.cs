@@ -21,37 +21,18 @@
 
 #endregion
 
-using System.Xml;
 using NAntGui.Framework;
 
-namespace NAntGui.NAnt
+namespace NAntGui.MSBuild
 {
-    /// <summary>
-    /// Summary description for Property.
-    /// </summary>
-    public class NAntProperty : BuildProperty
+    class MSBuildProperty : BuildProperty
     {
-        public NAntProperty(XmlElement element) :
-            this(element.GetAttribute("name"),
-                 element.GetAttribute("value"),
-                 GetCategory(element),
-                 GetReadonly(element))
-        {
-        }
+        private const string KEY = "{0}.{1}.{2}.{3}";
 
-        public NAntProperty(string name, string value, string category, bool readOnly) :
-            base(name, value, category, readOnly)
+        public MSBuildProperty(string name, string value, string category, string condition) :
+            base(name, value, category, false)
         {
-        }
-
-        private static bool GetReadonly(XmlElement element)
-        {
-            return element.HasAttribute("readonly") ? bool.Parse(element.GetAttribute("readonly")) : false;
-        }
-
-        private static string GetCategory(XmlNode element)
-        {
-            return element.ParentNode.Name == "target" ? element.ParentNode.Attributes["name"].Value : "Global";
+            Key = string.Format(KEY, category, condition, name, value);
         }
     }
 }

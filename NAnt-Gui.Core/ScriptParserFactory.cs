@@ -1,7 +1,7 @@
 using System;
 using System.IO;
-using NAnt_Gui.MSBuild;
 using NAntGui.Framework;
+using NAntGui.MSBuild;
 using NAntGui.NAnt;
 
 namespace NAntGui.Core

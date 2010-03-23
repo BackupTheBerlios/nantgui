@@ -610,6 +610,7 @@ namespace NAntGui.Gui
                 _mainForm.CanRedo(ActiveWindow.CanRedo);
                 _mainForm.CheckActiveDocuemnt(_documents[ActiveWindow]);
             }
+
             UpdateDisplay();
         }
 

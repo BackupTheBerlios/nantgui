@@ -126,7 +126,7 @@ namespace NAntGui.Core
             }
         }
 
-        internal static readonly List<string> NantExtensions = new List<string> { "nant", "build" };
-        internal static readonly List<string> MsbuildExtensions = new List<string> { "targets", "proj", "properties" };
+        internal static readonly List<string> NantExtensions = new List<string> { ".nant", ".build" };
+        internal static readonly List<string> MsbuildExtensions = new List<string> { ".targets", ".proj", ".properties" };
     }
 }

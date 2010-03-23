@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using NAnt.Core;
@@ -34,26 +33,12 @@ namespace NAntGui.NAnt
 {
     public class NAntBuildRunner : BuildRunnerBase
     {
-        private readonly FileInfo _fileInfo;
         private Project _project;
-        private PropertyCollection _properties;
-        private List<IBuildTarget> _targets;
 
         public NAntBuildRunner(FileInfo fileInfo, ILogsMessage logger, CmdOptions options) :
-            base(logger, options)
+            base(fileInfo, logger, options)
         {
-            Assert.NotNull(fileInfo, "fileInfo");
-            _fileInfo = fileInfo;
-        }
-
-        public override PropertyCollection Properties
-        {
-            set { _properties = value; }
-        }
-
-        public override List<IBuildTarget> Targets
-        {
-            set { _targets = value; }
+            
         }
 
 /*
@@ -132,7 +117,7 @@ namespace NAntGui.NAnt
 
         private void AddProperties()
         {
-            foreach (BuildProperty property in _properties)
+            foreach (IBuildProperty property in _properties.Values)
             {
                 if (property.Category == "Project" && property.Name == "BaseDir")
                 {
@@ -145,7 +130,7 @@ namespace NAntGui.NAnt
             }
         }
 
-        private void LoadNonProjectProperty(BuildProperty property)
+        private void LoadNonProjectProperty(IBuildProperty property)
         {
             if (!property.ReadOnly &&
                 property.ExpandedValue != property.DefaultExpandedValue)
@@ -165,7 +150,7 @@ namespace NAntGui.NAnt
             return unexpandedValue.IsMatch(value);
         }
 
-        private void TryChangingExpandedValue(BuildProperty property)
+        private void TryChangingExpandedValue(IBuildProperty property)
         {
             try
             {

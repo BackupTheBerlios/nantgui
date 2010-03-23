@@ -25,108 +25,59 @@ using System;
 
 namespace NAntGui.Framework
 {
-    public class BuildProperty
+    public abstract class BuildProperty : IBuildProperty
     {
         private const string KEY = "{0}.{1}";
 
-        private readonly string _key;
-        private readonly string _name;
-        private readonly bool _readOnly;
-        private string _category;
-        private string _defaultExpandedValue;
-        private string _expandedValue;
-        private string _value;
-
-        public BuildProperty() : this("")
-        {
-        }
-
-        public BuildProperty(string name) : this(name, "")
-        {
-        }
-
-        public BuildProperty(string name, string value) : this(name, value, "Global")
-        {
-        }
-
-        public BuildProperty(string name, string value, string category) :
-            this(name, value, category, false)
-        {
-        }
-
-        public BuildProperty(string name, string value, string category, bool readOnly) :
+        protected BuildProperty(string name, string value, string category, bool readOnly) :
             this(name, value, category, readOnly, value)
         {
         }
 
-        public BuildProperty(string name, string value, string category,
-                             bool readOnly, string expandedValue)
+        private BuildProperty(string name, string value, string category, bool readOnly, string expandedValue)
         {
             Assert.NotNull(name, "name");
             Assert.NotNull(value, "value");
             Assert.NotNull(category, "category");
             Assert.NotNull(expandedValue, "expandedValue");
 
-            _name = name;
-            _value = value;
-            _category = category;
-            _readOnly = readOnly;
-            _key = string.Format(KEY, category, name);
-            _defaultExpandedValue = expandedValue;
-            _expandedValue = expandedValue;
+            Name = name;
+            Value = value;
+            Category = category;
+            ReadOnly = readOnly;
+            Key = string.Format(KEY, category, name);
+            DefaultExpandedValue = expandedValue;
+            ExpandedValue = expandedValue;
         }
 
-        public virtual string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; private set; }
 
-        public virtual string Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public string Value { get; set; }
 
-        public virtual string Category
-        {
-            get { return _category; }
-            set { _category = value; }
-        }
+        public string Category { get; set; }
 
-        public virtual string DefaultExpandedValue
-        {
-            get { return _defaultExpandedValue; }
-            set { _defaultExpandedValue = value; }
-        }
+        public string DefaultExpandedValue { get; set; }
 
-        public virtual bool ReadOnly
-        {
-            get { return _readOnly; }
-        }
+        public bool ReadOnly { get; private set; }
 
-        public virtual string Key
-        {
-            get { return _key; }
-        }
+        public string Key { get; protected set; }
+
+        public string ExpandedValue { get; set; }
 
         public virtual Type Type
         {
             get
             {
-                string val = (_value == null) ? "" : _value.ToLower();
+                string val = (Value == null) ? "" : Value.ToLower();
                 return (val == "true" || val == "false") ? typeof (bool) : typeof (string);
             }
         }
 
-        public virtual string ExpandedValue
+/*
+        public string ToString()
         {
-            get { return _expandedValue; }
-            set { _expandedValue = value; }
+            return string.Format("{0}: {1}", Name, Value);
         }
-
-        public override string ToString()
-        {
-            return string.Format("{0}: {1}", _name, _value);
-        }
+*/
     }
 }

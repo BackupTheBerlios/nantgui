@@ -58,6 +58,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -74,6 +77,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfo.build" />
+    <Compile Include="BuildFinishHandler.cs" />
+    <Compile Include="GuiLogger.cs" />
+    <Compile Include="MSBuildProperty.cs" />
+    <Compile Include="MSBuildRunner.cs" />
     <Compile Include="MSBuildScript.cs" />
     <Compile Include="MSBuildTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

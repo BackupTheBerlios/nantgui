@@ -37,9 +37,9 @@ namespace NAntGui.Gui
 
         private class BuildPropertyDescriptor : PropertyDescriptor
         {
-            private readonly BuildProperty _item;
+            private readonly IBuildProperty _item;
 
-            internal BuildPropertyDescriptor(BuildProperty item, Attribute[] attrs) :
+            internal BuildPropertyDescriptor(IBuildProperty item, Attribute[] attrs) :
                 base(item.Name, attrs)
             {
                 _item = item;
@@ -96,9 +96,9 @@ namespace NAntGui.Gui
 
         #endregion
 
-        private readonly PropertyCollection _properties;
+        private readonly Dictionary<string, IBuildProperty> _properties;
 
-        internal PropertyShelf(PropertyCollection properties)
+        internal PropertyShelf(Dictionary<string, IBuildProperty> properties)
         {
             Assert.NotNull(properties, "properties");
             _properties = properties;
@@ -115,7 +115,7 @@ namespace NAntGui.Gui
 
             List<BuildPropertyDescriptor> props = new List<BuildPropertyDescriptor>();
 
-            foreach (BuildProperty property in _properties)
+            foreach (IBuildProperty property in _properties.Values)
             {
                 List<CategoryAttribute> attrs = new List<CategoryAttribute>();
 

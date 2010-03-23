@@ -25,7 +25,10 @@ using System;
 
 namespace NAntGui.Framework
 {
-    public class BuildFinishedEventArgs : EventArgs
+    public class BuildFileParseException : ApplicationException
     {
+        public BuildFileParseException(string message) : base(message)
+        {
+        }
     }
 }
