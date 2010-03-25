@@ -1,10 +1,8 @@
 Required for 1.9.*/2.0
 --------------------
 ***  Make sure you can override property values ****
-- BUG: Installed app doesn't always seem to close
 - BUG: If the user has an open blank file and it is deleted, then they keep it open, 
 	then close without saving, they will not be prompted to save it. (see: Unsaved property)
-- Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
@@ -15,7 +13,10 @@ Required for 1.9.*/2.0
 	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)	
-	
+- Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
+- Fix the fact that MSBuild targets don't show up if you have the description setting set	
+- Figure out which MSBuild to us.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,
+  I'm linking against certain versions of the the dlls, which I can't change at runtime.	
 	
 (DONE): Add basic MSBuild support	
 	
@@ -25,7 +26,11 @@ For 2.1 and beyond
 - Rename 
 	* NAntDocument NAntGuiDocument
 	* IBuildScript IScriptParser
+	* BuildScript ScriptParserBase
 	* NAntBuildScript NAntScriptParser	
+	* MSBuildScript MSBuildScriptParser
+	* BuildTarget BuildTargetBase
+	* BuildProperty BuildPropertyBase
 - Figure out if there is a way to override the default behavior of the xmleditor sharpdevelop control to allow drag and drop of
   documents into an existing document. By default it will allow drag and drop of text, but with the drag-enter method it should be able 
   to handle different results for different dragged objects (text vs file)
