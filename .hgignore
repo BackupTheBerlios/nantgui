@@ -1,0 +1,4 @@
+glob:**/bin/*
+glob:**/obj/*
+glob:**/AssemblyInfo.cs
+glob:_ReSharper*
