@@ -1,5 +1,7 @@
 Required for 1.9.*/2.0
 --------------------
+- Unistall of the app should remove the path from the PATH environment variable
+- 1.9/2.0 should probably be a different GUID (AppId) so both 1.x series and 2.x can be installed at once?
 ***  Make sure you can override property values ****
 - BUG: If the user has an open blank file and it is deleted, then they keep it open, 
 	then close without saving, they will not be prompted to save it. (see: Unsaved property)
