@@ -1,24 +1,30 @@
-Required for 1.9.*/2.0
---------------------
+Required for 2.0
+----------------
 - Unistall of the app should remove the path from the PATH environment variable
-- 1.9/2.0 should probably be a different GUID (AppId) so both 1.x series and 2.x can be installed at once?
+- 1.9/2.0 should probably be a different GUID (AppId) and Program Group so both 1.x series and 2.x can be installed at once?
 ***  Make sure you can override property values ****
-- BUG: If the user has an open blank file and it is deleted, then they keep it open, 
-	then close without saving, they will not be prompted to save it. (see: Unsaved property)
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
 	* Documents that are changes should have * next to the name
+	* Consider using the Application.Idle event to update the display (enabled/disabled menu items and buttons) 
+	  like Greg.XmlEditor, his code is not a tangled mess	
+- Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
+	
+Suggested for 2.0.1
+-------------------	
 - If the file is readonly, make the editor readonly
 	* What happens if the user opens the file, then changes the readonly flag?
-- Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
-	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)	
 - Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
 - Fix the fact that MSBuild targets don't show up if you have the description setting set	
-- Figure out which MSBuild to us.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,
+- Figure out which MSBuild to use.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,
   I'm linking against certain versions of the the dlls, which I can't change at runtime.	
+- BUG: If the user has an open blank file and it is deleted, then they keep it open, 
+	then close without saving, they will not be prompted to save it. (see: Unsaved property)  
+- Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
+	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)  
 	
 (DONE): Add basic MSBuild support	
 	
@@ -39,7 +45,6 @@ For 2.1 and beyond
 - Dynamic help in the text editor with NAnt
 - Find and replace
 - Create options for LineNumbers, Folding, TabSpaces, etc...
-- Consider using the Application.Idle event to update the display (enabled/disabled menu items and buttons) like Greg.XmlEditor, his code is not a tangled mess
 - New NAnt project needs to be parsed and title should be Untitled*
 - Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
   control.  Would give access to syntax highlighting, code completion, add-in architecture, 

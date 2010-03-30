@@ -207,11 +207,14 @@ Name: {app}\src\Tools\nant-0.85-rc3; Type: filesandordirs; Components: src
 Name: {app}\src\Tools\nantcontrib-0.85-rc3; Type: filesandordirs; Components: src
 
 [Code]
+const
+	KEY = 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
+
 function GetENVPath(Param: string) : string;
 var
 	Path: string;
 begin
-	if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment', 'Path', Path) then
+	if RegQueryStringValue(HKLM, KEY, 'Path', Path) then
 		Result := Path
 	else
 		Result := '';
@@ -222,7 +225,30 @@ var
 	EnvPath: string;
 	Path: string;
 begin
-	RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment', 'Path', EnvPath);
+	RegQueryStringValue(HKLM, KEY, 'Path', EnvPath);
 	Path := ExpandConstant('{app}') + '\bin';
 	Result := Pos(Path, EnvPath) = 0;
 end;
+
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+	EnvPath, Path: string;
+	Location: Integer;
+begin
+  if CurUninstallStep = usUninstall then
+  begin
+	RegQueryStringValue(HKLM, KEY, 'Path', EnvPath)
+	Path := ExpandConstant('{app}') + '\bin'
+
+	Location := Pos(Path, EnvPath)
+
+	if Location <> 0 then
+	begin
+	  Delete(EnvPath, Location, Length(Path))
+	  RegWriteStringValue(HKLM, KEY, 'Path', EnvPath)
+	end;
+  end;
+end;
+
+
