@@ -431,10 +431,16 @@ namespace NAntGui.Gui
 
         private void NAntGuiForm_Load(object sender, EventArgs e)
         {
-            DeserializeDockContent deserializeDockContent = GetContentFromPersistString;
-
             if (File.Exists(Utils.DockingConfigPath))
-                _dockPanel.LoadFromXml(Utils.DockingConfigPath, deserializeDockContent);
+            {
+                _dockPanel.LoadFromXml(Utils.DockingConfigPath, GetContentFromPersistString);
+            }
+            else
+            {
+                _targetsWindow.Show(_dockPanel);
+                _propertyWindow.Show(_dockPanel);
+                _outputWindow.Show(_dockPanel);
+            }
 
             if (!String.IsNullOrEmpty(_initialOptions.BuildFile))
                 ProcessArguments(_initialOptions);
