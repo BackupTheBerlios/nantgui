@@ -1,6 +1,6 @@
 Required for 2.0
 ----------------
-***  Make sure you can override property values ****
+- BUG: The properties, targets and output don't show up on first install
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
 	* If no documents are opened, close, save, save as, and reload should be disabled
@@ -23,7 +23,8 @@ Suggested for 2.0.1
 	then close without saving, they will not be prompted to save it. (see: Unsaved property)  
 - Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
 	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)  
-	
+
+(DONE): Make sure you can override property values
 (DONE): Unistall of the app should remove the path from the PATH environment variable
 (DONE): Add basic MSBuild support
 (CANCELLED): 1.9/2.0 should probably be a different GUID (AppId) and Program Group so both 1.x series and 2.x can be installed at once?
