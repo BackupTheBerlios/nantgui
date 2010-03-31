@@ -3,7 +3,7 @@
 
 #define MyAppName "NAnt-Gui"
 #define MyAppPublisher "Colin Svingen"
-#define MyAppURL "http://www.swoogan.com/nantgui.html"
+#define MyAppURL "nantgui.berlios.de"
 #define MyAppExeName "NAnt-Gui.exe"
 
 #define NAnt = "Tools\nant-0.85"
@@ -22,25 +22,28 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=true
-OutputDir=installer
+OutputDir=Installer
 OutputBaseFilename={#MyAppName}-{#AppVersion}
 Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 ChangesAssociations=true
 LicenseFile=NAnt-Gui.Docs\License.txt
-AppCopyright=2005 Colin Svingen
+AppCopyright=2005-2010 Colin Svingen
 AppVersion={#AppVersion}
 AppID={{5A46EB86-CC66-403A-9789-E7D7413C20D2}
-AppContact=nantgui@swoogan.com
+AppContact=swoogan@gmail.com
 UninstallDisplayIcon={app}\src\Ant.ico
+VersionInfoVersion={#AppVersion}
+VersionInfoCopyright=2005-2010 Colin Svingen
+VersionInfoProductName={#MyAppName}
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: assocbuild; GroupDescription: Associate with file types; Description: Associate with .build files
 Name: assocnant; GroupDescription: Associate with file types; Description: Associate with .nant files; Flags: unchecked
-Name: envpath; GroupDescription: Set environment variables; Description: Add bin directory to path
+Name: envpath; GroupDescription: Set environment variables; Description: Add bin directory to PATH
 
 [Files]
 ; ### Binary ###
@@ -56,6 +59,7 @@ Source: NAnt-Gui.Core\bin\Release\NAnt-Gui.Core.dll; DestDir: {app}\bin; Flags: 
 Source: NAnt-Gui.Gui\bin\Release\NAnt-Gui.Gui.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.Framework\bin\Release\NAnt-Gui.Framework.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui.NAnt\bin\Release\NAnt-Gui.NAnt.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
+Source: NAnt-Gui.MSBuild\bin\Release\NAnt-Gui.MSBuild.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; XmlEditor
 Source: XmlEditor\Project\bin\Release\XmlEditor.dll; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 ; Libraries
@@ -131,7 +135,6 @@ Source: NAnt-Gui.MSBuild\*.build; DestDir: {app}\src\NAnt-Gui.MSBuild; Flags: ig
 Source: NAnt.InnoSetup.Tasks\*.cs; DestDir: {app}\src\NAnt.InnoSetup.Tasks; Flags: ignoreversion; Components: src
 Source: NAnt.InnoSetup.Tasks\*.csproj; DestDir: {app}\src\NAnt.InnoSetup.Tasks; Flags: ignoreversion; Components: src
 Source: NAnt.InnoSetup.Tasks\Sample.iss; DestDir: {app}\src\NAnt.InnoSetup.Tasks; Flags: ignoreversion skipifsourcedoesntexist; Components: src
-Source: NAnt.InnoSetup.Tasks\Sample.xml; DestDir: {app}\src\NAnt.InnoSetup.Tasks; Flags: ignoreversion; Components: src
 Source: NAnt.InnoSetup.Tasks\Properties\*.cs; DestDir: {app}\src\NAnt.InnoSetup.Tasks\Properties; Flags: ignoreversion; Components: src
 ; Tools
 Source: Tools\*; DestDir: {app}\src\Tools; Flags: ignoreversion recursesubdirs; Components: src
@@ -169,8 +172,8 @@ Name: {group}\{cm:UninstallProgram, {#MyAppName}}; Filename: {uninstallexe}
 Filename: {app}\bin\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 
 [Dirs]
-Name: {app}\src; Components: src
-Name: {app}\bin; Components: bin
+;Name: {app}\src; Components: src
+;Name: {app}\bin; Components: bin
 Name: {app}\src\NAnt-Gui\Properties; Components: src; Tasks: 
 Name: {app}\src\NAnt-Gui.Framework\Properties; Components: src; Tasks: 
 Name: {app}\src\NAnt-Gui.MSBuild\Properties; Components: src; Tasks: 
@@ -190,7 +193,7 @@ Root: HKCR; Subkey: NAntNAntFile\DefaultIcon; ValueType: string; ValueName: ; Va
 Root: HKCR; Subkey: NAntNAntFile\shell\Open\command; ValueType: string; ValueData: """{app}\bin\{#MyAppExeName}"" -f:""%1"""; Flags: uninsdeletevalue; Tasks: assocnant
 Root: HKCR; Subkey: NAntNAntFile\shell\Edit\command; ValueType: string; ValueData: """{sys}\notepad.exe"" ""%1"""; Tasks: assocnant
 
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: Path; ValueData: "{code:GetENVPath};{app}\bin"; Tasks: envpath; Check: IfNotInPath
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: string; ValueName: Path; ValueData: "{code:GetEnvPath}{app}\bin;"; Tasks: envpath; Check: IfNotInPath
 
 [Components]
 Name: bin; Description: Executable files; Types: custom compact full
@@ -210,12 +213,36 @@ Name: {app}\src\Tools\nantcontrib-0.85-rc3; Type: filesandordirs; Components: sr
 const
 	KEY = 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
 
-function GetENVPath(Param: string) : string;
+
+function GetLastChar(Input: String) : String;
+var
+	Len: Integer;
+begin
+	Len := Length(Input);
+	if Len > 0 then
+		Result := Copy(Input, Len, 1)
+	else
+		Result := ''
+end;
+
+{ Adds a semicolon to the given string if one is NOT already there }
+function AddSemicolon(Input: String) : String;
+var
+	LastChar: string;
+begin
+	LastChar := GetLastChar(Input);
+	if LastChar <> ';' then
+		Result := Input + ';'
+	else
+		Result := Input
+end;
+
+function GetEnvPath(Param: string) : string;
 var
 	Path: string;
 begin
 	if RegQueryStringValue(HKLM, KEY, 'Path', Path) then
-		Result := Path
+		Result := AddSemicolon(Path)
 	else
 		Result := '';
 end;
@@ -235,13 +262,17 @@ procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
 	EnvPath, Path: string;
 	Location: Integer;
+	Answer: Boolean;
 begin
   if CurUninstallStep = usUninstall then
   begin
 	RegQueryStringValue(HKLM, KEY, 'Path', EnvPath)
-	Path := ExpandConstant('{app}') + '\bin'
+	Path := ExpandConstant('{app}') + '\bin;'
 
-	Location := Pos(Path, EnvPath)
+	{ In case they took the last semicolon off }
+	EnvPath := AddSemicolon(EnvPath)
+
+    Location := Pos(Path, EnvPath)
 
 	if Location <> 0 then
 	begin
@@ -250,5 +281,3 @@ begin
 	end;
   end;
 end;
-
-

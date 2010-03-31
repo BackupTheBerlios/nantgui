@@ -1,7 +1,5 @@
 Required for 2.0
 ----------------
-- Unistall of the app should remove the path from the PATH environment variable
-- 1.9/2.0 should probably be a different GUID (AppId) and Program Group so both 1.x series and 2.x can be installed at once?
 ***  Make sure you can override property values ****
 - Fix all UI events.  
 	* Reload should be disabled when a new document is created	
@@ -26,7 +24,9 @@ Suggested for 2.0.1
 - Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
 	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)  
 	
-(DONE): Add basic MSBuild support	
+(DONE): Unistall of the app should remove the path from the PATH environment variable
+(DONE): Add basic MSBuild support
+(CANCELLED): 1.9/2.0 should probably be a different GUID (AppId) and Program Group so both 1.x series and 2.x can be installed at once?
 	
 
 For 2.1 and beyond

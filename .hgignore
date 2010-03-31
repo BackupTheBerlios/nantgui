@@ -4,3 +4,5 @@ glob:**/AssemblyInfo.cs
 glob:_ReSharper*
 ^NAnt-Gui.suo$
 resharper
+sln.cache
+Installer
