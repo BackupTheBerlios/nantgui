@@ -5,14 +5,14 @@ Required for 2.0
 	  like Greg.XmlEditor, his code is not a tangled mess	
 	* States:
 		+ Document changed/not (menu item and tab title)
+			^ Documents that are changes should have * next to the name
 		+ Build running/stopped
 		+ No documents open
+			^ Close, save, save as, and reload should be disabled
 		+ 1 or more documents open
 		+ Focused document is new
+			^ Reload should be disabled
 		+ Focused document is NOT new
-	* Reload should be disabled when a new document is created	
-	* If no documents are opened, close, save, save as, and reload should be disabled
-	* Documents that are changes should have * next to the name
 
 - Figure out which MSBuild to use.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,	  
 - Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
