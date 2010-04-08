@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NAnt-Gui.iss = NAnt-Gui.iss
 		NAnt-Gui.Docs\Readme.Txt = NAnt-Gui.Docs\Readme.Txt
 		NAnt-Gui.Docs\SharpDevelop-license.txt = NAnt-Gui.Docs\SharpDevelop-license.txt
-		NAnt-Gui.Docs\Todo.txt = NAnt-Gui.Docs\Todo.txt
+		..\..\..\..\..\..\Todo.txt = ..\..\..\..\..\..\Todo.txt
 		NAnt-Gui.Docs\WeifenLuo.WinFormsUI.Docking-license.txt = NAnt-Gui.Docs\WeifenLuo.WinFormsUI.Docking-license.txt
 	EndProjectSection
 EndProject
