@@ -27,11 +27,12 @@ Suggested for 2.0.1
 	(might not work because I had to modify more than the control)	
 - Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
 - Bug: MSBuild targets don't show up if you have the description setting set	  
-- BUG: If the user has an open blank file and it is deleted, then they keep it open, 
-	then close without saving, they will not be prompted to save it. (see: Unsaved property)  
-- Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
-	it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)  
 
+
+(FIXED): If the user has an open blank file and it is deleted, then they keep it open, 
+		 then close without saving, they will not be prompted to save it. (see: Unsaved property)  
+(DONE): Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
+ 	    it's been deleted, IsDirty doesn't really make sense (forces me to delete the contents so user is prompted for save)  
 (FIXED): BUG: The properties, targets and output don't show up on first install
 (DONE): Make sure you can override property values
 (DONE): Unistall of the app should remove the path from the PATH environment variable
