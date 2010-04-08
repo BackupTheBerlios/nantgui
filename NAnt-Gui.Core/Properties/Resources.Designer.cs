@@ -151,7 +151,7 @@ namespace NAntGui.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to was not found..
+        ///   Looks up a localized string similar to File &quot;{0}&quot; was not found..
         /// </summary>
         internal static string FileNotFoundError {
             get {

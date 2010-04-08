@@ -70,66 +70,15 @@ namespace NAntGui.Gui
             get { return _dockPanel; }
         }
 
-        private RunState RunState
+        private bool IsRunning
         {
             set
             {
-                switch (value)
-                {
-                    case RunState.Running:
-                        _runMenuItem.Enabled = false;
-                        _stopMenuItem.Enabled = true;
-                        _runToolStripButton.Enabled = false;
-                        _stopToolStripButton.Enabled = true;
-                        break;
-                    case RunState.Stopped:
-                        _runMenuItem.Enabled = true;
-                        _stopMenuItem.Enabled = false;
-                        _runToolStripButton.Enabled = true;
-                        _stopToolStripButton.Enabled = false;
-                        break;
-                }
-            }
-        }
 
-        // TODO: See if this is needed
-        private EditState EditState
-        {
-            set
-            {
-                switch (value)
-                {
-                    case EditState.TabFocused:
-                        _cutMenuItem.Enabled = true;
-                        _pasteMenuItem.Enabled = true;
-                        _deleteMenuItem.Enabled = true;
-                        _undoMenuItem.Enabled = true;
-                        _redoMenuItem.Enabled = true;
-                        _copyMenuItem.Enabled = true;
-                        _selectAllMenuItem.Enabled = true;
-                        _wordWrapMenuItem.Enabled = true;
-                        break;
-                    case EditState.OutputFocused:
-                        _cutMenuItem.Enabled = false;
-                        _pasteMenuItem.Enabled = false;
-                        _deleteMenuItem.Enabled = false;
-                        _undoMenuItem.Enabled = false;
-                        _redoMenuItem.Enabled = false;
-                        _copyMenuItem.Enabled = true;
-                        _selectAllMenuItem.Enabled = true;
-                        _wordWrapMenuItem.Enabled = true;
-                        break;
-                    case EditState.NoFocus:
-                        _cutMenuItem.Enabled = false;
-                        _pasteMenuItem.Enabled = false;
-                        _deleteMenuItem.Enabled = false;
-                        _undoMenuItem.Enabled = false;
-                        _redoMenuItem.Enabled = false;
-                        _copyMenuItem.Enabled = false;
-                        _selectAllMenuItem.Enabled = false;
-                        _wordWrapMenuItem.Enabled = false;
-                        break;
-                }
+                _runMenuItem.Enabled = !value;                        
+                _runToolStripButton.Enabled = !value;
+                _stopMenuItem.Enabled = value;
+                _stopToolStripButton.Enabled = value;
             }
         }
 
@@ -155,12 +104,12 @@ namespace NAntGui.Gui
         {
             if (InvokeRequired)
             {
-                MethodInvoker invoker = delegate { RunState = RunState.Stopped; };
+                MethodInvoker invoker = delegate { IsRunning = false; };
                 Invoke(invoker);
             }
             else
             {
-                RunState = RunState.Stopped;
+                IsRunning = false;
             }
         }
         
@@ -245,6 +194,75 @@ namespace NAntGui.Gui
             }
         }
 
+        internal void NoDocumentsOpen()
+        {
+            _reloadMenuItem.Enabled = false;
+            _saveMenuItem.Enabled = false;
+            _saveAsMenuItem.Enabled = false;
+            _closeMenuItem.Enabled = false;
+            _runMenuItem.Enabled = false;
+            _stopMenuItem.Enabled = false;
+            _undoMenuItem.Enabled = false;
+            _redoMenuItem.Enabled = false;
+
+            _reloadToolStripButton.Enabled = false;
+            _saveToolStripButton.Enabled = false;
+            _stopToolStripButton.Enabled = false;
+            _runToolStripButton.Enabled = false;
+            _undoToolStripButton.Enabled = false;
+            _redoToolStripButton.Enabled = false;
+
+            // Not sure if this should be here:
+            _targetsWindow.Clear();
+            _propertyWindow.Clear();
+
+            SetStatus(String.Empty, String.Empty);
+        }
+
+        internal void DocumentsOpen()
+        {
+            _reloadMenuItem.Enabled = true;
+            _saveMenuItem.Enabled = true;
+            _saveAsMenuItem.Enabled = true;
+            _closeMenuItem.Enabled = true;
+            _runMenuItem.Enabled = true;
+
+            _reloadToolStripButton.Enabled = true;
+            _saveToolStripButton.Enabled = true;
+            _runToolStripButton.Enabled = true;
+        }
+
+        internal void DisableEditCommands()
+        {
+            _copyMenuItem.Enabled = false;
+            _cutMenuItem.Enabled = false;
+            _pasteMenuItem.Enabled = false;
+            _deleteMenuItem.Enabled = false;
+            _selectAllMenuItem.Enabled = false;
+
+            _copyToolStripButton.Enabled = false;
+            _cutToolStripButton.Enabled = false;
+            _pasteToolStripButton.Enabled = false;
+        }
+
+        internal void EnableEditCommands()
+        {
+            _copyMenuItem.Enabled = true;
+            _cutMenuItem.Enabled = true;
+            _pasteMenuItem.Enabled = true;
+            _deleteMenuItem.Enabled = true;
+            _selectAllMenuItem.Enabled = true;
+
+            _copyToolStripButton.Enabled = true;
+            _cutToolStripButton.Enabled = true;
+            _pasteToolStripButton.Enabled = true;
+        }
+
+        internal void UpdateDocumentMenuItem(NAntDocument document, string name)
+        {
+            _documentsMenuItem.DropDownItems[document.FullName].Text = name;
+        }
+
         #region Private Methods
 
         private void NAntGuiForm_DragDrop(object sender, DragEventArgs e)
@@ -276,7 +294,7 @@ namespace NAntGui.Gui
 
         private void RunClicked(object sender, EventArgs e)
         {
-            RunState = RunState.Running;
+            IsRunning = true;
             _outputWindow.Clear();
             _outputWindow.Show(_dockPanel);
             _controller.Run(_targetsWindow.SelectedTargets);
@@ -494,18 +512,19 @@ namespace NAntGui.Gui
 
         private void OutputWindowEnter(object sender, EventArgs e)
         {
+            // TODO: move this event handler to controller
             _controller.OutputGotFocused();
-            EditState = EditState.TabFocused;
         }
 
         private void OutputWindowLeave(object sender, EventArgs e)
         {
+            // TODO: move this event handler to controller
             _controller.OutputLostFocused();
-            EditState = EditState.NoFocus;
         }
 
         private void OutputWindowFileNameClicked(object sender, FileNameEventArgs e)
         {
+            // TODO: move this event handler to controller
             _controller.LoadDocument(e.FileName);
             _controller.SetCursor(e.Point.X, e.Point.Y);
         }
@@ -532,71 +551,5 @@ namespace NAntGui.Gui
 
         #endregion
 
-
-        internal void NoDocumentsOpen()
-        {
-            _reloadMenuItem.Enabled = false;
-            _saveMenuItem.Enabled = false;
-            _saveAsMenuItem.Enabled = false;
-            _closeMenuItem.Enabled = false;
-            _runMenuItem.Enabled = false;
-            _stopMenuItem.Enabled = false;
-            _undoMenuItem.Enabled = false;
-            _redoMenuItem.Enabled = false;
-
-            _reloadToolStripButton.Enabled = false;
-            _saveToolStripButton.Enabled = false;
-            _stopToolStripButton.Enabled = false;
-            _runToolStripButton.Enabled = false;
-            _undoToolStripButton.Enabled = false;
-            _redoToolStripButton.Enabled = false;
-
-            // Not sure if this should be here:
-            _targetsWindow.Clear();
-            _propertyWindow.Clear();
-
-            _statusStrip.Items[0].Text = "";
-            _statusStrip.Items[2].Text = "";
-
-        }
-
-        internal void DocumentsOpen()
-        {
-            _reloadMenuItem.Enabled = true;
-            _saveMenuItem.Enabled = true;
-            _saveAsMenuItem.Enabled = true;
-            _closeMenuItem.Enabled = true;
-            _runMenuItem.Enabled = true;            
-
-            _reloadToolStripButton.Enabled = true;
-            _saveToolStripButton.Enabled = true;
-            _runToolStripButton.Enabled = true;
-        }
-
-        internal void DisableEditCommands()
-        {
-            _copyMenuItem.Enabled = false;
-            _cutMenuItem.Enabled = false;
-            _pasteMenuItem.Enabled = false;
-            _deleteMenuItem.Enabled = false;
-            _selectAllMenuItem.Enabled = false;
-
-            _copyToolStripButton.Enabled = false;
-            _cutToolStripButton.Enabled = false;
-            _pasteToolStripButton.Enabled = false;
-        }
-
-        internal void EnableEditCommands()
-        {
-            _copyMenuItem.Enabled = true;
-            _cutMenuItem.Enabled = true;
-            _pasteMenuItem.Enabled = true;
-            _deleteMenuItem.Enabled = true;
-            _selectAllMenuItem.Enabled = true;
-
-            _copyToolStripButton.Enabled = true;
-            _cutToolStripButton.Enabled = true;
-            _pasteToolStripButton.Enabled = true;
-        }
     }
 }

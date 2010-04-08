@@ -165,9 +165,6 @@
     <Compile Include="Controls\TargetsWindow.Designer.cs">
       <DependentUpon>TargetsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditStateEnum.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="EventsArgs.cs" />
     <Compile Include="IEditCommands.cs">
       <SubType>Code</SubType>
@@ -208,9 +205,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RecentItems.cs" />
-    <Compile Include="RunStateEnum.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="NAntDocument.cs">
       <SubType>Code</SubType>
     </Compile>

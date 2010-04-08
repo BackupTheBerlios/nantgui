@@ -224,8 +224,7 @@ namespace NAntGui.Gui
             catch (Exception ex)
             {
                 Errors.CouldNotLoadFile(ActiveDocument.FullName, ex.Message);
-            }
-            
+            }            
         }
 
         internal void OpenDocument()
@@ -608,14 +607,7 @@ namespace NAntGui.Gui
             }
             catch (BuildFileLoadException error)
             {
-                const string msgFrmt = "{0}: {1}{2}";
-                string msg = string.Format(msgFrmt, error.Message,
-                                           Environment.NewLine,
-                                           error.InnerException.Message);
-
-                MessageBox.Show(msg, "Error Loading Build File",
-                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
+                Errors.CouldNotLoadFile(document.Name, error.InnerException.Message);
                 SetCursor(error.LineNumber, error.ColumnNumber);
             }
         }
@@ -640,16 +632,9 @@ namespace NAntGui.Gui
 
         private void UpdateTitle()
         {
-            bool isDirty = IsDirty(ActiveWindow);
-
-            if (isDirty && !Utils.HasAsterisk(ActiveWindow.TabText))
-            {
-                ActiveWindow.TabText = Utils.AddAsterisk(ActiveWindow.TabText);
-            }
-            else if (!isDirty && Utils.HasAsterisk(ActiveWindow.TabText))
-            {
-                ActiveWindow.TabText = Utils.RemoveAsterisk(ActiveWindow.TabText);
-            }
+            string name = IsDirty(ActiveWindow) ? Utils.AddAsterisk(ActiveDocument.Name) : ActiveDocument.Name;
+            ActiveWindow.TabText = name;
+            _mainForm.UpdateDocumentMenuItem(ActiveDocument, name);
         }
 
         private void SaveDocument(DocumentWindow window)

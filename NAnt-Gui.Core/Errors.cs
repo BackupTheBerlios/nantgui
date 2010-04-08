@@ -18,7 +18,12 @@ namespace NAntGui.Core
 
         public static void FileNotFound(string file)
         {
-            MessageBox.Show(file + _resources.GetString("FileNotFoundError"), _resources.GetString("FileNotFoundTitle"),
+            string messageString = _resources.GetString("FileNotFoundError");
+            string message = messageString != null
+                                 ? String.Format(messageString, file)
+                                 : String.Format("{0}", file);
+
+            MessageBox.Show(message, _resources.GetString("FileNotFoundTitle"),
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
