@@ -260,7 +260,16 @@ namespace NAntGui.Gui
 
         internal void UpdateDocumentMenuItem(NAntDocument document, string name)
         {
-            _documentsMenuItem.DropDownItems[document.FullName].Text = name;
+            if (_documentsMenuItem.DropDownItems[document.FullName] != null)
+            {
+                _documentsMenuItem.DropDownItems[document.FullName].Text = name;
+            }
+            else  // During a SaveAs the FullName changes
+            {
+                foreach (ToolStripItem item in _documentsMenuItem.DropDownItems)
+                    if (item.Tag == document)
+                        item.Text = name;
+            }
         }
 
         #region Private Methods

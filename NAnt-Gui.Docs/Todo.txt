@@ -4,14 +4,15 @@ Required for 2.0
 	* Document changed/not (menu item and tab title)
 		+ Documents that are changes should have * next to the name
 	* Save (on new)/SaveAs should update the menuitem text in the documents menu
-- BUG: SaveAs on new document should change the window title and the documents menu item
-- BUG: Should prompt the user if reloading a changed document	
+- BUG: SaveAs on new document should change the window title
 - Remove all the bitmap images
 - Figure out which MSBuild to use.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,	  
   I'm linking against certain versions of the the dlls, which I can't change at runtime.	
 - Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
 - General testing
 
+(FIXED): SaveAs on new document should change the documents menu item
+(FIXED): Should prompt the user if reloading a changed document	
 (FIXED): New documents that are unsaved should not load at startup the next time.
 (DONE): Fix all UI events: Consider using the Application.Idle event to update the display (enabled/disabled menu items and buttons) 
 	    like Greg.XmlEditor, his code is not a tangled mess	

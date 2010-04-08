@@ -682,7 +682,6 @@ namespace NAntGui.Gui
                     Settings.Default.Save();
 
                     RecentItems.Add(filename);
-
                     _mainForm.CreateRecentItemsMenu();
                 }
                 catch (Exception ex)
