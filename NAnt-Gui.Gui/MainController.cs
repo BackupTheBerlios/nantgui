@@ -114,9 +114,11 @@ namespace NAntGui.Gui
             else
             {
                 _mainForm.DocumentsOpen();
+
                 _editCommands = ActiveWindow.EditCommands;
                 _mainForm.UndoEnabled = ActiveWindow.CanUndo;
                 _mainForm.RedoEnabled = ActiveWindow.CanRedo;
+                _mainForm.ReloadEnabled = (ActiveDocument.FileType == FileType.Existing);
             }
 
             if (_editCommands == null)

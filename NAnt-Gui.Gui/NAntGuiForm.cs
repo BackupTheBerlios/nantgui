@@ -210,6 +210,15 @@ namespace NAntGui.Gui
             }
         }
 
+        internal bool ReloadEnabled
+        {
+            set
+            {
+                _reloadMenuItem.Enabled = value;
+                _reloadToolStripButton.Enabled = value;
+            }
+        }
+
         internal void AddDocumentMenuItem(NAntDocument document)
         {
             ToolStripMenuItem item = new ToolStripMenuItem(document.Name);
