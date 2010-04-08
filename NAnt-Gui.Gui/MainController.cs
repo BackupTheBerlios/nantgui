@@ -107,7 +107,26 @@ namespace NAntGui.Gui
 
         private void UpdateInterface()
         {
-            // TODO: Implement
+            if (_documents.Count == 0)
+            {
+                _mainForm.NoDocumentsOpen();
+            }
+            else
+            {
+                _mainForm.DocumentsOpen();
+                _editCommands = ActiveWindow.EditCommands;
+                _mainForm.UndoEnabled = ActiveWindow.CanUndo;
+                _mainForm.RedoEnabled = ActiveWindow.CanRedo;
+            }
+
+            if (_editCommands == null)
+            {
+                _mainForm.DisableEditCommands();
+            }
+            else
+            {
+                _mainForm.EnableEditCommands();
+            }
         }
 
         private void OpenDocumentDeleted(NAntDocument document)
@@ -169,89 +188,15 @@ namespace NAntGui.Gui
             ActiveDocument.Stop();
         }
 
-        private void UpdateTitle()
-        {
-            bool isDirty = IsDirty(ActiveWindow);
-
-            if (isDirty && !Utils.HasAsterisk(ActiveWindow.TabText))
-            {
-                ActiveWindow.TabText = Utils.AddAsterisk(ActiveWindow.TabText);
-            }
-            else if (!isDirty && Utils.HasAsterisk(ActiveWindow.TabText))
-            {
-                ActiveWindow.TabText = Utils.RemoveAsterisk(ActiveWindow.TabText);
-            }
-        }
-
         internal void SaveDocument()
         {
             SaveDocument(ActiveWindow);
         }
 
-        private void SaveDocument(DocumentWindow window)
-        {
-            NAntDocument document = _documents[window];
-
-            if (document.FileType == FileType.New)
-            {
-                SaveDocumentAs(window);
-            }
-            else if (IsDirty(window))
-            {
-                try
-                {
-                    //_ignoreDocumentChanged = true;
-                    document.Save(window.Contents, true);
-                    //_ignoreDocumentChanged = false;
-
-                    if (window == ActiveWindow)
-                    {
-                        List<IBuildTarget> targets = _mainForm.SelectedTargets;
-                        UpdateTitle();
-                        UpdateDisplay();
-                        _mainForm.SelectedTargets = targets;
-
-                        _mainForm.Enable();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Errors.CouldNotSave(document.Name, ex.Message);
-                }
-            }
-        }
 
         internal void SaveDocumentAs()
         {
             SaveDocumentAs(ActiveWindow);
-        }
-
-        private void SaveDocumentAs(DocumentWindow window)
-        {
-            string filename = BuildFileBrowser.BrowseForSave();
-            if (filename != null)
-            {
-                NAntDocument document = _documents[window];
-
-                try
-                {
-                    document.SaveAs(filename, window.Contents);
-                    window.TabText = document.Name;
-                    document.BuildFinished += _mainForm.SetStateStopped;
-
-                    Settings.Default.SaveScriptInitialDir = document.Directory;
-                    Settings.Default.Save();
-
-                    RecentItems.Add(filename);
-
-                    _mainForm.CreateRecentItemsMenu();
-                    _mainForm.Enable();
-                }
-                catch (Exception ex)
-                {
-                    Errors.CouldNotSave(document.Name, ex.Message);
-                }
-            }
         }
 
         internal void SaveAllDocuments()
@@ -572,7 +517,6 @@ namespace NAntGui.Gui
         {
             _documents.Add(window, doc);
             _mainForm.AddDocumentMenuItem(doc);
-            _mainForm.Enable();
 
             window.Contents = doc.Contents;
             window.TabText = doc.Name;
@@ -611,8 +555,6 @@ namespace NAntGui.Gui
 
                 _documents[window].Close();
                 _documents.Remove(window);
-
-                if (_documents.Count == 0) _mainForm.Disable();
             }
         }
 
@@ -635,10 +577,7 @@ namespace NAntGui.Gui
         {
             if (ActiveWindow != null)
             {
-                _editCommands = ActiveWindow.EditCommands;
-                _mainForm.CanUndo(ActiveWindow.CanUndo);
-                _mainForm.CanRedo(ActiveWindow.CanRedo);
-                _mainForm.CheckActiveDocuemnt(_documents[ActiveWindow]);
+                _mainForm.CheckActiveDocument(_documents[ActiveWindow]);
             }
 
             UpdateDisplay();
@@ -656,7 +595,6 @@ namespace NAntGui.Gui
 
         private void LoaderRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _mainForm.Enable();
             UpdateDisplay();
         }
 
@@ -696,12 +634,79 @@ namespace NAntGui.Gui
             //}
 
             UpdateTitle();
-            _mainForm.CanRedo(ActiveWindow.CanRedo);
-            _mainForm.CanUndo(ActiveWindow.CanUndo);
+        }
+
+        private void UpdateTitle()
+        {
+            bool isDirty = IsDirty(ActiveWindow);
+
+            if (isDirty && !Utils.HasAsterisk(ActiveWindow.TabText))
+            {
+                ActiveWindow.TabText = Utils.AddAsterisk(ActiveWindow.TabText);
+            }
+            else if (!isDirty && Utils.HasAsterisk(ActiveWindow.TabText))
+            {
+                ActiveWindow.TabText = Utils.RemoveAsterisk(ActiveWindow.TabText);
+            }
+        }
+
+        private void SaveDocument(DocumentWindow window)
+        {
+            NAntDocument document = _documents[window];
+
+            if (document.FileType == FileType.New)
+            {
+                SaveDocumentAs(window);
+            }
+            else if (IsDirty(window))
+            {
+                try
+                {
+                    document.Save(window.Contents, true);
+
+                    if (window == ActiveWindow)
+                    {
+                        List<IBuildTarget> targets = _mainForm.SelectedTargets;
+                        UpdateTitle();
+                        UpdateDisplay();
+                        _mainForm.SelectedTargets = targets;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Errors.CouldNotSave(document.Name, ex.Message);
+                }
+            }
+        }
+
+        private void SaveDocumentAs(DocumentWindow window)
+        {
+            string filename = BuildFileBrowser.BrowseForSave();
+            if (filename != null)
+            {
+                NAntDocument document = _documents[window];
+
+                try
+                {
+                    document.SaveAs(filename, window.Contents);
+                    window.TabText = document.Name;
+                    document.BuildFinished += _mainForm.SetStateStopped;
+
+                    Settings.Default.SaveScriptInitialDir = document.Directory;
+                    Settings.Default.Save();
+
+                    RecentItems.Add(filename);
+
+                    _mainForm.CreateRecentItemsMenu();
+                }
+                catch (Exception ex)
+                {
+                    Errors.CouldNotSave(document.Name, ex.Message);
+                }
+            }
         }
 
         #endregion
-
  
     }
 }

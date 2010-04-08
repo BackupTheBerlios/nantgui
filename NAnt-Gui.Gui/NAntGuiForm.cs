@@ -63,8 +63,6 @@ namespace NAntGui.Gui
 
             SetStyle(ControlStyles.DoubleBuffer, true);
             MainFormSerializer.Attach(this, _propertyWindow, _standardToolStrip, _buildToolStrip);
-
-            Disable();
         }
 
         internal DockPanel DockPanel
@@ -165,44 +163,7 @@ namespace NAntGui.Gui
                 RunState = RunState.Stopped;
             }
         }
-
-        internal void Enable()
-        {
-            _reloadMenuItem.Enabled = true;
-            _saveMenuItem.Enabled = true;
-            _saveAsMenuItem.Enabled = true;
-            _closeMenuItem.Enabled = true;
-            _runMenuItem.Enabled = true;
-            _stopMenuItem.Enabled = false;
-
-            _reloadToolStripButton.Enabled = true;
-            _saveToolStripButton.Enabled = true;
-            _runToolStripButton.Enabled = true;
-        }
-
-
-        internal void Disable()
-        {
-            _reloadMenuItem.Enabled = false;
-            _saveMenuItem.Enabled = false;
-            _saveAsMenuItem.Enabled = false;
-            _closeMenuItem.Enabled = false;
-            _runMenuItem.Enabled = false;
-            _stopMenuItem.Enabled = false;
-
-            _reloadToolStripButton.Enabled = false;
-            _saveToolStripButton.Enabled = false;
-            _stopToolStripButton.Enabled = false;
-            _runToolStripButton.Enabled = false;
-
-            // Not sure if this should be here:
-            _targetsWindow.Clear();
-            _propertyWindow.Clear();
-
-            _statusStrip.Items[0].Text = "";
-            _statusStrip.Items[2].Text = "";
-        }
-
+        
         internal void CreateRecentItemsMenu()
         {
             _recentMenuItem.DropDownItems.Clear();
@@ -231,16 +192,22 @@ namespace NAntGui.Gui
             _targetsWindow.SetTargets(buildScript.Targets);
         }
 
-        internal void CanRedo(bool canRedo)
+        internal bool RedoEnabled
         {
-            _redoMenuItem.Enabled = canRedo;
-            _redoToolStripButton.Enabled = canRedo;
+            set
+            {
+                _redoMenuItem.Enabled = value;
+                _redoToolStripButton.Enabled = value;
+            }
         }
 
-        internal void CanUndo(bool canUndo)
+        internal bool UndoEnabled
         {
-            _undoMenuItem.Enabled = canUndo;
-            _undoToolStripButton.Enabled = canUndo;
+            set
+            {
+                _undoMenuItem.Enabled = value;
+                _undoToolStripButton.Enabled = value;
+            }
         }
 
         internal void AddDocumentMenuItem(NAntDocument document)
@@ -257,7 +224,7 @@ namespace NAntGui.Gui
             _documentsMenuItem.DropDownItems.RemoveByKey(document.FullName);
         }
 
-        internal void CheckActiveDocuemnt(NAntDocument document)
+        internal void CheckActiveDocument(NAntDocument document)
         {
             foreach (ToolStripItem item in _documentsMenuItem.DropDownItems)
             {
@@ -555,6 +522,72 @@ namespace NAntGui.Gui
         }
 
         #endregion
- 
+
+
+        internal void NoDocumentsOpen()
+        {
+            _reloadMenuItem.Enabled = false;
+            _saveMenuItem.Enabled = false;
+            _saveAsMenuItem.Enabled = false;
+            _closeMenuItem.Enabled = false;
+            _runMenuItem.Enabled = false;
+            _stopMenuItem.Enabled = false;
+            _undoMenuItem.Enabled = false;
+            _redoMenuItem.Enabled = false;
+
+            _reloadToolStripButton.Enabled = false;
+            _saveToolStripButton.Enabled = false;
+            _stopToolStripButton.Enabled = false;
+            _runToolStripButton.Enabled = false;
+            _undoToolStripButton.Enabled = false;
+            _redoToolStripButton.Enabled = false;
+
+            // Not sure if this should be here:
+            _targetsWindow.Clear();
+            _propertyWindow.Clear();
+
+            _statusStrip.Items[0].Text = "";
+            _statusStrip.Items[2].Text = "";
+
+        }
+
+        internal void DocumentsOpen()
+        {
+            _reloadMenuItem.Enabled = true;
+            _saveMenuItem.Enabled = true;
+            _saveAsMenuItem.Enabled = true;
+            _closeMenuItem.Enabled = true;
+            _runMenuItem.Enabled = true;            
+
+            _reloadToolStripButton.Enabled = true;
+            _saveToolStripButton.Enabled = true;
+            _runToolStripButton.Enabled = true;
+        }
+
+        internal void DisableEditCommands()
+        {
+            _copyMenuItem.Enabled = false;
+            _cutMenuItem.Enabled = false;
+            _pasteMenuItem.Enabled = false;
+            _deleteMenuItem.Enabled = false;
+            _selectAllMenuItem.Enabled = false;
+
+            _copyToolStripButton.Enabled = false;
+            _cutToolStripButton.Enabled = false;
+            _pasteToolStripButton.Enabled = false;
+        }
+
+        internal void EnableEditCommands()
+        {
+            _copyMenuItem.Enabled = true;
+            _cutMenuItem.Enabled = true;
+            _pasteMenuItem.Enabled = true;
+            _deleteMenuItem.Enabled = true;
+            _selectAllMenuItem.Enabled = true;
+
+            _copyToolStripButton.Enabled = true;
+            _cutToolStripButton.Enabled = true;
+            _pasteToolStripButton.Enabled = true;
+        }
     }
 }

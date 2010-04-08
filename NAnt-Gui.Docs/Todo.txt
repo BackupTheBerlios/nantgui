@@ -7,8 +7,6 @@ Required for 2.0
 		+ Document changed/not (menu item and tab title)
 			^ Documents that are changes should have * next to the name
 		+ Build running/stopped
-		+ No documents open
-			^ Close, save, save as, and reload should be disabled
 		+ 1 or more documents open
 			^ various buttons enabled
 		+ Focused document is new
@@ -20,17 +18,8 @@ Required for 2.0
   I'm linking against certain versions of the the dlls, which I can't change at runtime.	
 - Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
 - General testing
-	
-Suggested for 2.0.1
--------------------	
-- If the file is readonly, make the editor readonly
-	* What happens if the user opens the file, then changes the readonly flag?
-- Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
-	(might not work because I had to modify more than the control)	
-- Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
-- Bug: MSBuild targets don't show up if you have the description setting set	  
 
-
+(DONE): Fix all UI events: No documents open
 (FIXED): If the user has an open blank file and it is deleted, then they keep it open, 
 		 then close without saving, they will not be prompted to save it. (see: Unsaved property)  
 (DONE): Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after
@@ -41,6 +30,14 @@ Suggested for 2.0.1
 (DONE): Add basic MSBuild support
 (CANCELLED): 1.9/2.0 should probably be a different GUID (AppId) and Program Group so both 1.x series and 2.x can be installed at once?
 	
+Suggested for 2.0.1
+-------------------	
+- If the file is readonly, make the editor readonly
+	* What happens if the user opens the file, then changes the readonly flag?
+- Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
+	(might not work because I had to modify more than the control)	
+- Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
+- Bug: MSBuild targets don't show up if you have the description setting set	  
 
 For 2.1 and beyond
 -----------
