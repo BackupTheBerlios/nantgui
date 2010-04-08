@@ -674,7 +674,7 @@ namespace NAntGui.Gui
             this._deleteMenuItem.Size = new System.Drawing.Size(166, 22);
             this._deleteMenuItem.Text = "&Delete";
             this._deleteMenuItem.ToolTipText = "Delete the selected text";
-            this._deleteMenuItem.Click += new System.EventHandler(this.DeleteMenuItemClick);
+            this._deleteMenuItem.Click += new System.EventHandler(this.DeleteClicked);
             // 
             // toolStripSeparator8
             // 
@@ -687,14 +687,14 @@ namespace NAntGui.Gui
             this._selectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this._selectAllMenuItem.Size = new System.Drawing.Size(166, 22);
             this._selectAllMenuItem.Text = "Select &All";
-            this._selectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItemClick);
+            this._selectAllMenuItem.Click += new System.EventHandler(this.SelectAllClicked);
             // 
             // _wordWrapMenuItem
             // 
             this._wordWrapMenuItem.Name = "_wordWrapMenuItem";
             this._wordWrapMenuItem.Size = new System.Drawing.Size(166, 22);
             this._wordWrapMenuItem.Text = "W&ord Wrap Output";
-            this._wordWrapMenuItem.Click += new System.EventHandler(this.WordWrapOutputMenuItemClick);
+            this._wordWrapMenuItem.Click += new System.EventHandler(this.WordWrapOutputClicked);
             // 
             // _viewMenuItem
             // 
@@ -790,7 +790,7 @@ namespace NAntGui.Gui
             this._closeAllDocumentsMenuItem.Name = "_closeAllDocumentsMenuItem";
             this._closeAllDocumentsMenuItem.Size = new System.Drawing.Size(170, 22);
             this._closeAllDocumentsMenuItem.Text = "C&lose All Documents";
-            this._closeAllDocumentsMenuItem.Click += new System.EventHandler(this.CloseAllDocumentsMenuItemClick);
+            this._closeAllDocumentsMenuItem.Click += new System.EventHandler(this.CloseAllDocumentsClicked);
             // 
             // toolStripMenuItem3
             // 

@@ -4,8 +4,9 @@ Required for 2.0
 	* Document changed/not (menu item and tab title)
 		+ Documents that are changes should have * next to the name
 	* Save (on new)/SaveAs should update the menuitem text in the documents menu
-- BUG: Should prompt the user if reloading a changed document	
 - BUG: New documents that are unsaved should not load at startup the next time.
+- BUG: SaveAs on new document should change the window title and the documents menu item
+- BUG: Should prompt the user if reloading a changed document	
 - Remove all the bitmap images
 - Figure out which MSBuild to use.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,	  
   I'm linking against certain versions of the the dlls, which I can't change at runtime.	

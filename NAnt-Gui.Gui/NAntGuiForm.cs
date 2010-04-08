@@ -401,22 +401,22 @@ namespace NAntGui.Gui
             _controller.Paste();
         }
 
-        private void DeleteMenuItemClick(object sender, EventArgs e)
+        private void DeleteClicked(object sender, EventArgs e)
         {
             _controller.Delete();
         }
 
-        private void SelectAllMenuItemClick(object sender, EventArgs e)
+        private void SelectAllClicked(object sender, EventArgs e)
         {
             _controller.SelectAll();
         }
 
-        private void CloseAllDocumentsMenuItemClick(object sender, EventArgs e)
+        private void CloseAllDocumentsClicked(object sender, EventArgs e)
         {
             _controller.CloseAllDocuments();
         }
 
-        private void WordWrapOutputMenuItemClick(object sender, EventArgs e)
+        private void WordWrapOutputClicked(object sender, EventArgs e)
         {
             _wordWrapMenuItem.Checked = !_wordWrapMenuItem.Checked;
             _outputWindow.WordWrap = _wordWrapMenuItem.Checked;

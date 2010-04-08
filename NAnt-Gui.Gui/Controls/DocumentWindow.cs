@@ -34,6 +34,7 @@ namespace NAntGui.Gui.Controls
     /// </summary>
     public partial class DocumentWindow : DockContent
     {
+        private const string NEW_DOC = @".\Untitled*";
         private readonly string _filePath;
 
         internal DocumentWindow()
@@ -98,7 +99,8 @@ namespace NAntGui.Gui.Controls
         {
             // Add extra information into the persist string for this document
             // so that it is available when deserialized.
-            return GetType() + "|" + _filePath;
+            string type = GetType().ToString();
+            return _filePath == NEW_DOC ? type : type + "|" + _filePath;
         }
 
         internal event DocumentEventHandler DocumentChanged

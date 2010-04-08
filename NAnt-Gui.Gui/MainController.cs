@@ -676,7 +676,7 @@ namespace NAntGui.Gui
                 try
                 {
                     document.SaveAs(filename, window.Contents);
-                    window.TabText = document.Name;
+                    UpdateTitle();
                     document.BuildFinished += _mainForm.SetStateStopped;
 
                     Settings.Default.SaveScriptInitialDir = document.Directory;
