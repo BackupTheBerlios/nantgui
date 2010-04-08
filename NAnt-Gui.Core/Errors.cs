@@ -71,5 +71,16 @@ namespace NAntGui.Core
                                    MessageBoxIcon.Information,
                                    MessageBoxDefaultButton.Button1);
         }
+
+        public static DialogResult DocumentNotSaved(string file)
+        {
+            string messageString = _resources.GetString("DocumentNotSaved");
+            string message = messageString != null
+                                 ? String.Format(messageString, file)
+                                 : String.Format("{0}", file);
+
+            return MessageBox.Show(message, _resources.GetString("DocumentNotSavedTitle"), 
+                                   MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+        }
     }
 }

@@ -15,6 +15,7 @@ Required for 2.0
 		+ Focused document is NOT new
 
 - Figure out which MSBuild to use.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,	  
+  I'm linking against certain versions of the the dlls, which I can't change at runtime.	
 - Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
 - General testing
 	
@@ -25,8 +26,7 @@ Suggested for 2.0.1
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)	
 - Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
-- Bug: MSBuild targets don't show up if you have the description setting set	
-  I'm linking against certain versions of the the dlls, which I can't change at runtime.	
+- Bug: MSBuild targets don't show up if you have the description setting set	  
 - BUG: If the user has an open blank file and it is deleted, then they keep it open, 
 	then close without saving, they will not be prompted to save it. (see: Unsaved property)  
 - Make an UnSaved property on the Document instead of IsDirty?  In certain instances, like keeping the file open after

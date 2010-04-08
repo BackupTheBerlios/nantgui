@@ -97,6 +97,24 @@ namespace NAntGui.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have unsaved changes to &quot;{0}&quot;. Save?.
+        /// </summary>
+        internal static string DocumentNotSaved {
+            get {
+                return ResourceManager.GetString("DocumentNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Changes?.
+        /// </summary>
+        internal static string DocumentNotSavedTitle {
+            get {
+                return ResourceManager.GetString("DocumentNotSavedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}{1}{1}This document has changed outside of NAnt-Gui.{1}Would you like to reload it?.
         /// </summary>
         internal static string FileChanged {

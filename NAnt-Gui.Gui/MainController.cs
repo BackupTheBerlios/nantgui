@@ -60,35 +60,54 @@ namespace NAntGui.Gui
 
         void Application_Idle(object sender, EventArgs e)
         {
-            foreach (NAntDocument document in _documents.Values)
+            CheckForFileChanges();
+            UpdateInterface();
+        }
+
+        private void CheckForFileChanges()
+        {
+            NAntDocument[] docs = new NAntDocument[_documents.Values.Count];
+            _documents.Values.CopyTo(docs, 0);
+
+            foreach (NAntDocument document in docs)
             {
                 if (document.FileType == FileType.Existing && _mainForm.IsActive)
                 {
-                    if (!File.Exists(document.FullName))
-                    {
-                        OpenDocumentDeleted(document);
-                        // this break is here because the enumeration can't be modified
-                        // while looping.  This method will just be called again, so any
-                        // missed changes will be picked up right away.
-                        break;
-                    }
-
-                    DateTime lastWrite = File.GetLastWriteTime(document.FullName);
-                    if (lastWrite > document.LastModified && lastWrite != document.IgnoreModifiedDate)
-                    {
-                        DialogResult result = Errors.ShowDocumentChangedMessage(document.FullName);
-
-                        if (result == DialogResult.Yes)
-                        {
-                            LoadDocument(document.FullName);
-                        }
-                        else
-                        {
-                            document.IgnoreModifiedDate = lastWrite;
-                        }
-                    }
+                    CheckIfFileDeleted(document);
+                    CheckIfFileModified(document);
                 }
             }
+        }
+
+        private void CheckIfFileDeleted(NAntDocument document)
+        {
+            if (!File.Exists(document.FullName))
+            {
+                OpenDocumentDeleted(document);
+            }
+        }
+
+        private void CheckIfFileModified(NAntDocument document)
+        {
+            DateTime lastWrite = File.GetLastWriteTime(document.FullName);
+            if (lastWrite > document.LastModified && lastWrite != document.IgnoreModifiedDate)
+            {
+                DialogResult result = Errors.ShowDocumentChangedMessage(document.FullName);
+
+                if (result == DialogResult.Yes)
+                {
+                    LoadDocument(document.FullName);
+                }
+                else
+                {
+                    document.IgnoreModifiedDate = lastWrite;
+                }
+            }
+        }
+
+        private void UpdateInterface()
+        {
+            // TODO: Implement
         }
 
         private void OpenDocumentDeleted(NAntDocument document)
@@ -104,9 +123,6 @@ namespace NAntGui.Gui
             {
                 window.TabText = Utils.AddAsterisk(window.TabText);
                 document.FileType = FileType.New;
-                // HACK: makes the closing see the file is unsaved
-                // Doesn't work if the file is already empty
-                document.Contents = string.Empty;
             }
         }
 
@@ -139,7 +155,7 @@ namespace NAntGui.Gui
 
         internal void Run(List<IBuildTarget> targets)
         {
-            if (ActiveDocument.IsDirty(ActiveWindow.Contents))
+            if (IsDirty(ActiveWindow))
             {
                 SaveDocument();
             }
@@ -155,7 +171,7 @@ namespace NAntGui.Gui
 
         private void UpdateTitle()
         {
-            bool isDirty = ActiveDocument.IsDirty(ActiveWindow.Contents);
+            bool isDirty = IsDirty(ActiveWindow);
 
             if (isDirty && !Utils.HasAsterisk(ActiveWindow.TabText))
             {
@@ -180,7 +196,7 @@ namespace NAntGui.Gui
             {
                 SaveDocumentAs(window);
             }
-            else if (document.IsDirty(window.Contents))
+            else if (IsDirty(window))
             {
                 try
                 {
@@ -287,47 +303,6 @@ namespace NAntGui.Gui
             }
         }
 
-        private void CloseDocument(object sender, FormClosingEventArgs e)
-        {
-            DocumentWindow window;
-
-            if (sender is DocumentWindow)
-                window = sender as DocumentWindow;
-            else
-                window = ActiveWindow;
-
-            NAntDocument document = _documents[window];
-
-            if (document.IsDirty(window.Contents))
-            {
-                DialogResult result = MessageBox.Show("You have unsaved changes to " +
-                                                      document.Name + ".  Save?",
-                                                      "Save Changes?", MessageBoxButtons.YesNoCancel,
-                                                      MessageBoxIcon.Exclamation);
-
-                if (result == DialogResult.Yes)
-                {
-                    try
-                    {
-                        //_ignoreDocumentChanged = true;
-                        document.Save(window.Contents, false);
-                        //_ignoreDocumentChanged = false;
-                    }
-                    catch (Exception ex)
-                    {
-                        Errors.CouldNotSave(document.Name, ex.Message);
-                    }
-                }
-                else if (result == DialogResult.Cancel)
-                {
-                    e.Cancel = true;
-                }
-            }
-
-            if (!e.Cancel)
-                _mainForm.RemoveDocumentMenuItem(document);
-        }
-
         internal void CloseAllDocuments()
         {
             for (int index = _mainForm.DockPanel.Contents.Count - 1; index >= 0; index--)
@@ -335,19 +310,6 @@ namespace NAntGui.Gui
                 if (_mainForm.DockPanel.Contents[index] is DocumentWindow)
                 {
                     DocumentWindow window = (DocumentWindow) _mainForm.DockPanel.Contents[index];
-                    window.Close();
-                }
-            }
-        }
-
-        private void CloseAllButThisClicked()
-        {
-            for (int index = _mainForm.DockPanel.Contents.Count - 1; index >= 0; index--)
-            {
-                IDockContent content = _mainForm.DockPanel.Contents[index];
-                if (content is DocumentWindow && content != ActiveWindow)
-                {
-                    DocumentWindow window = content as DocumentWindow;
                     window.Close();
                 }
             }
@@ -407,19 +369,6 @@ namespace NAntGui.Gui
             optionsForm.ShowDialog();
         }
 
-        private DocumentWindow FindDocumentWindow(string file)
-        {
-            foreach (DocumentWindow window in _mainForm.DockPanel.Documents)
-            {
-                if (_documents[window].FullName == file)
-                {
-                    return window;
-                }
-            }
-
-            return null;
-        }
-
         internal void LoadDocument(string filename)
         {
             DocumentWindow window = FindDocumentWindow(filename);
@@ -450,39 +399,7 @@ namespace NAntGui.Gui
                 // Parse the file in the background
                 _loader.RunWorkerAsync();
             }
-        }
-
-        private void SetupWindow(DocumentWindow window, NAntDocument doc)
-        {
-            _documents.Add(window, doc);
-            _mainForm.AddDocumentMenuItem(doc);
-            _mainForm.Enable();
-
-            window.Contents = doc.Contents;
-            window.TabText = doc.Name;
-
-            window.DocumentChanged += WindowDocumentChanged;
-            window.FormClosing += CloseDocument;
-            window.FormClosed += WindowFormClosed;
-            window.CloseClicked += delegate { Close(); };
-            window.CloseAllClicked += delegate { CloseAllDocuments(); };
-            window.CloseAllButThisClicked += delegate { CloseAllButThisClicked(); };
-            window.SaveClicked += delegate { SaveDocument(); };
-            window.Show(_mainForm.DockPanel);
-        }
-
-        private void WindowFormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (sender is DocumentWindow)
-            {
-                DocumentWindow window = sender as DocumentWindow;
-
-                _documents[window].Close();
-                _documents.Remove(window);
-                
-                if (_documents.Count == 0) _mainForm.Disable();
-            }
-        }
+        } 
 
         internal DocumentWindow GetWindow(string filename)
         {
@@ -504,23 +421,7 @@ namespace NAntGui.Gui
 
             Errors.FileNotFound(filename);
             return null;
-        }
-
-        private void UpdateDisplay()
-        {
-            if (ActiveDocument != null)
-            {
-                _mainForm.Text = string.Format("NAnt-Gui - {0}", ActiveWindow.TabText);
-
-                IBuildScript buildScript = ActiveDocument.BuildScript;
-
-                string name = string.Format("{0} ({1})", buildScript.Name, buildScript.Description);
-
-                _mainForm.SetStatus(name, ActiveDocument.FullName);
-                _mainForm.AddTargets(buildScript);
-                _mainForm.AddProperties(buildScript.Properties);
-            }
-        }
+        } 
 
         internal void DragDrop(DragEventArgs e)
         {
@@ -590,6 +491,135 @@ namespace NAntGui.Gui
 
 
         #region Private Methods
+
+        private void CloseDocument(object sender, FormClosingEventArgs e)
+        {
+            DocumentWindow window;
+
+            if (sender is DocumentWindow)
+                window = sender as DocumentWindow;
+            else
+                window = ActiveWindow;
+
+            NAntDocument document = _documents[window];            
+
+            if (document.FileType == FileType.New)
+            {
+                DialogResult result = Errors.DocumentNotSaved(document.Name);
+
+                if (result == DialogResult.Yes)
+                {
+                    SaveDocumentAs(window);
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }                
+            }
+            else if (IsDirty(window))
+            {
+                DialogResult result = Errors.DocumentNotSaved(document.Name);
+
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        document.Save(window.Contents, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Errors.CouldNotSave(document.Name, ex.Message);
+                    }
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
+
+            if (!e.Cancel)
+                _mainForm.RemoveDocumentMenuItem(document);
+
+        }
+
+        private DocumentWindow FindDocumentWindow(string file)
+        {
+            foreach (DocumentWindow window in _mainForm.DockPanel.Documents)
+            {
+                if (_documents[window].FullName == file)
+                {
+                    return window;
+                }
+            }
+
+            return null;
+        }
+
+        private void CloseAllButThisClicked()
+        {
+            for (int index = _mainForm.DockPanel.Contents.Count - 1; index >= 0; index--)
+            {
+                IDockContent content = _mainForm.DockPanel.Contents[index];
+                if (content is DocumentWindow && content != ActiveWindow)
+                {
+                    DocumentWindow window = content as DocumentWindow;
+                    window.Close();
+                }
+            }
+        }
+
+        private void SetupWindow(DocumentWindow window, NAntDocument doc)
+        {
+            _documents.Add(window, doc);
+            _mainForm.AddDocumentMenuItem(doc);
+            _mainForm.Enable();
+
+            window.Contents = doc.Contents;
+            window.TabText = doc.Name;
+
+            window.DocumentChanged += WindowDocumentChanged;
+            window.FormClosing += CloseDocument;
+            window.FormClosed += WindowFormClosed;
+            window.CloseClicked += delegate { Close(); };
+            window.CloseAllClicked += delegate { CloseAllDocuments(); };
+            window.CloseAllButThisClicked += delegate { CloseAllButThisClicked(); };
+            window.SaveClicked += delegate { SaveDocument(); };
+            window.Show(_mainForm.DockPanel);
+        }
+
+        private void UpdateDisplay()
+        {
+            if (ActiveDocument != null)
+            {
+                _mainForm.Text = string.Format("NAnt-Gui - {0}", ActiveWindow.TabText);
+
+                IBuildScript buildScript = ActiveDocument.BuildScript;
+
+                string name = string.Format("{0} ({1})", buildScript.Name, buildScript.Description);
+
+                _mainForm.SetStatus(name, ActiveDocument.FullName);
+                _mainForm.AddTargets(buildScript);
+                _mainForm.AddProperties(buildScript.Properties);
+            }
+        }
+
+        private void WindowFormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (sender is DocumentWindow)
+            {
+                DocumentWindow window = sender as DocumentWindow;
+
+                _documents[window].Close();
+                _documents.Remove(window);
+
+                if (_documents.Count == 0) _mainForm.Disable();
+            }
+        }
+
+        private bool IsDirty(DocumentWindow window)
+        {
+            window.Contents != _documents[window].Contents;
+        }
 
         private DocumentWindow ActiveWindow
         {

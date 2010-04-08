@@ -129,6 +129,12 @@
   <data name="CouldNotSaveTitle" xml:space="preserve">
     <value>Error Saving File</value>
   </data>
+  <data name="DocumentNotSaved" xml:space="preserve">
+    <value>You have unsaved changes to "{0}". Save?</value>
+  </data>
+  <data name="DocumentNotSavedTitle" xml:space="preserve">
+    <value>Save Changes?</value>
+  </data>
   <data name="FileChanged" xml:space="preserve">
     <value>{0}{1}{1}This document has changed outside of NAnt-Gui.{1}Would you like to reload it?</value>
   </data>

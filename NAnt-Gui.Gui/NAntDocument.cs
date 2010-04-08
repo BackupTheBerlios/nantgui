@@ -159,11 +159,6 @@ namespace NAntGui.Gui
                 _buildRunner.Stop();
         }
 
-        internal bool IsDirty(string contents)
-        {
-            return contents != Contents;
-        }
-
         private void ParseBuildFile()
         {
             // Might want a more specific exception type to be caught here.
