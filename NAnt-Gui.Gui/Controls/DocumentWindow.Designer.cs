@@ -73,7 +73,7 @@ namespace NAntGui.Gui.Controls
             this.toolStripSeparator1,
             this.saveMenuItem});
             this.contextMenuTabPage.Name = "contextMenuTabPage";
-            this.contextMenuTabPage.Size = new System.Drawing.Size(171, 98);
+            this.contextMenuTabPage.Size = new System.Drawing.Size(171, 120);
             // 
             // closeMenuItem
             // 
@@ -103,7 +103,6 @@ namespace NAntGui.Gui.Controls
             // saveMenuItem
             // 
             this.saveMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveMenuItem.Image")));
-            this.saveMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.saveMenuItem.Name = "saveMenuItem";
             this.saveMenuItem.Size = new System.Drawing.Size(170, 22);
             this.saveMenuItem.Text = "Save";
@@ -112,11 +111,13 @@ namespace NAntGui.Gui.Controls
             // 
             this._editor.ConvertTabsToSpaces = true;
             this._editor.DefaultNamespacePrefix = "";
+            this._editor.DefaultSchemaCompletionData = null;
             this._editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this._editor.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Auto;
             this._editor.IsReadOnly = false;
             this._editor.Location = new System.Drawing.Point(0, 4);
             this._editor.Name = "_editor";
+            this._editor.SchemaCompletionDataItems = ((ICSharpCode.XmlEditor.XmlSchemaCompletionDataCollection)(resources.GetObject("_editor.SchemaCompletionDataItems")));
             this._editor.ShowVRuler = false;
             this._editor.Size = new System.Drawing.Size(516, 393);
             this._editor.TabIndent = 2;
