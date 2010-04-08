@@ -618,7 +618,7 @@ namespace NAntGui.Gui
 
         private bool IsDirty(DocumentWindow window)
         {
-            window.Contents != _documents[window].Contents;
+            return window.Contents != _documents[window].Contents;
         }
 
         private DocumentWindow ActiveWindow

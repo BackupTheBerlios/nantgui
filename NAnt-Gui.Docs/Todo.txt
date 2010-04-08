@@ -10,10 +10,12 @@ Required for 2.0
 		+ No documents open
 			^ Close, save, save as, and reload should be disabled
 		+ 1 or more documents open
+			^ various buttons enabled
 		+ Focused document is new
 			^ Reload should be disabled
 		+ Focused document is NOT new
-
+- Save (on new)/SaveAs should update the menuitem text in the documents menu
+- Remove all the bitmap images
 - Figure out which MSBuild to use.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,	  
   I'm linking against certain versions of the the dlls, which I can't change at runtime.	
 - Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	

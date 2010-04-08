@@ -250,7 +250,7 @@ namespace NAntGui.Gui
             this._newDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._newDropDownButton.Name = "_newDropDownButton";
             this._newDropDownButton.Size = new System.Drawing.Size(29, 22);
-            this._newDropDownButton.Text = "toolStripDropDownButton1";
+            this._newDropDownButton.Text = "New";
             this._newDropDownButton.Click += new System.EventHandler(this.NewProjectClicked);
             // 
             // newProjectToolStripMenuItem
@@ -258,7 +258,7 @@ namespace NAntGui.Gui
             this.newProjectToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newProjectToolStripMenuItem.Image")));
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
             this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.newProjectToolStripMenuItem.Text = "New NAnt &Project";
+            this.newProjectToolStripMenuItem.Text = "New NAnt Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.NewProjectClicked);
             // 
             // _newBlankMenuItem
@@ -266,7 +266,7 @@ namespace NAntGui.Gui
             this._newBlankMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_newBlankMenuItem.Image")));
             this._newBlankMenuItem.Name = "_newBlankMenuItem";
             this._newBlankMenuItem.Size = new System.Drawing.Size(159, 22);
-            this._newBlankMenuItem.Text = "New &Blank";
+            this._newBlankMenuItem.Text = "New Blank";
             this._newBlankMenuItem.Click += new System.EventHandler(this.NewClicked);
             // 
             // openToolStripButton
@@ -276,17 +276,16 @@ namespace NAntGui.Gui
             this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripButton.Name = "openToolStripButton";
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.openToolStripButton.Text = "&Open";
+            this.openToolStripButton.Text = "Open";
             this.openToolStripButton.Click += new System.EventHandler(this.OpenClicked);
             // 
             // _saveToolStripButton
             // 
             this._saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this._saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("_saveToolStripButton.Image")));
-            this._saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._saveToolStripButton.Name = "_saveToolStripButton";
             this._saveToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._saveToolStripButton.Text = "&Save";
+            this._saveToolStripButton.Text = "Save";
             this._saveToolStripButton.Click += new System.EventHandler(this.SaveClicked);
             // 
             // _saveAllToolStripButton
@@ -296,7 +295,7 @@ namespace NAntGui.Gui
             this._saveAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._saveAllToolStripButton.Name = "_saveAllToolStripButton";
             this._saveAllToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._saveAllToolStripButton.Text = "_saveAllButton";
+            this._saveAllToolStripButton.Text = "Save All";
             this._saveAllToolStripButton.Click += new System.EventHandler(this.SaveAllClicked);
             // 
             // _reloadToolStripButton
@@ -306,7 +305,7 @@ namespace NAntGui.Gui
             this._reloadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._reloadToolStripButton.Name = "_reloadToolStripButton";
             this._reloadToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._reloadToolStripButton.Text = "toolStripButton1";
+            this._reloadToolStripButton.Text = "Reload";
             this._reloadToolStripButton.Click += new System.EventHandler(this.ReloadClicked);
             // 
             // printToolStripButton
@@ -317,7 +316,7 @@ namespace NAntGui.Gui
             this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.printToolStripButton.Name = "printToolStripButton";
             this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.printToolStripButton.Text = "&Print";
+            this.printToolStripButton.Text = "Print";
             // 
             // toolStripSeparator
             // 
@@ -331,7 +330,7 @@ namespace NAntGui.Gui
             this._cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._cutToolStripButton.Name = "_cutToolStripButton";
             this._cutToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._cutToolStripButton.Text = "C&ut";
+            this._cutToolStripButton.Text = "Cut";
             this._cutToolStripButton.Click += new System.EventHandler(this.CutClicked);
             // 
             // _copyToolStripButton
@@ -341,7 +340,7 @@ namespace NAntGui.Gui
             this._copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._copyToolStripButton.Name = "_copyToolStripButton";
             this._copyToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._copyToolStripButton.Text = "&Copy";
+            this._copyToolStripButton.Text = "Copy";
             this._copyToolStripButton.Click += new System.EventHandler(this.CopyClicked);
             // 
             // pasteToolStripButton
@@ -351,7 +350,7 @@ namespace NAntGui.Gui
             this.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pasteToolStripButton.Name = "pasteToolStripButton";
             this.pasteToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.pasteToolStripButton.Text = "&Paste";
+            this.pasteToolStripButton.Text = "Paste";
             this.pasteToolStripButton.Click += new System.EventHandler(this.PasteClicked);
             // 
             // toolStripSeparator10
@@ -366,7 +365,7 @@ namespace NAntGui.Gui
             this._undoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._undoToolStripButton.Name = "_undoToolStripButton";
             this._undoToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._undoToolStripButton.Text = "toolStripButton1";
+            this._undoToolStripButton.Text = "Undo";
             this._undoToolStripButton.Click += new System.EventHandler(this.UndoClicked);
             // 
             // _redoToolStripButton
@@ -376,7 +375,7 @@ namespace NAntGui.Gui
             this._redoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._redoToolStripButton.Name = "_redoToolStripButton";
             this._redoToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._redoToolStripButton.Text = "toolStripButton2";
+            this._redoToolStripButton.Text = "Redo";
             this._redoToolStripButton.Click += new System.EventHandler(this.RedoClicked);
             // 
             // toolStripSeparator9
@@ -392,7 +391,7 @@ namespace NAntGui.Gui
             this._helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._helpToolStripButton.Name = "_helpToolStripButton";
             this._helpToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this._helpToolStripButton.Text = "He&lp";
+            this._helpToolStripButton.Text = "Help";
             // 
             // _statusStrip
             // 
@@ -753,7 +752,6 @@ namespace NAntGui.Gui
             // _runMenuItem
             // 
             this._runMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_runMenuItem.Image")));
-            this._runMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this._runMenuItem.Name = "_runMenuItem";
             this._runMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this._runMenuItem.Size = new System.Drawing.Size(178, 22);
@@ -764,7 +762,6 @@ namespace NAntGui.Gui
             // _stopMenuItem
             // 
             this._stopMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_stopMenuItem.Image")));
-            this._stopMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this._stopMenuItem.Name = "_stopMenuItem";
             this._stopMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
             this._stopMenuItem.Size = new System.Drawing.Size(178, 22);
@@ -869,24 +866,26 @@ namespace NAntGui.Gui
             this._buildToolStrip.Name = "_buildToolStrip";
             this._buildToolStrip.Size = new System.Drawing.Size(58, 25);
             this._buildToolStrip.TabIndex = 15;
-            this._buildToolStrip.Text = "toolStrip1";
+            this._buildToolStrip.Text = "Build ToolStrip";
             // 
             // _runToolStripButton
             // 
+            this._runToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this._runToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("_runToolStripButton.Image")));
-            this._runToolStripButton.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this._runToolStripButton.Name = "_runToolStripButton";
             this._runToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this._runToolStripButton.Text = "Run";
             this._runToolStripButton.ToolTipText = "Build Default Target";
             this._runToolStripButton.Click += new System.EventHandler(this.RunClicked);
             // 
             // _stopToolStripButton
             // 
+            this._stopToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this._stopToolStripButton.Enabled = false;
             this._stopToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("_stopToolStripButton.Image")));
-            this._stopToolStripButton.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this._stopToolStripButton.Name = "_stopToolStripButton";
             this._stopToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this._stopToolStripButton.Text = "Stop";
             this._stopToolStripButton.ToolTipText = "Abort the Current Build";
             this._stopToolStripButton.Click += new System.EventHandler(this.StopClicked);
             // 

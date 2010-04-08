@@ -194,6 +194,11 @@
     <Compile Include="OptionsForm.Designer.cs">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -250,6 +255,11 @@
       <DependentUpon>OptionsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="AssemblyInfo.build" />
     <Content Include="Images\1.3.0_screen_1.png" />
     <Content Include="Images\Build.png" />
@@ -278,7 +288,6 @@
     <Content Include="Images\Output.png" />
     <Content Include="Images\Paste.bmp" />
     <Content Include="Images\PasteHS.png" />
-    <Content Include="Images\Play.bmp" />
     <Content Include="Images\PlayHS.png" />
     <Content Include="Images\Properties.ico" />
     <Content Include="Images\Properties.png" />
@@ -286,7 +295,6 @@
     <Content Include="Images\Save.bmp" />
     <Content Include="Images\SaveAllHS.png" />
     <Content Include="Images\SaveHS.png" />
-    <Content Include="Images\Stop.bmp" />
     <Content Include="Images\StopHS.png" />
     <Content Include="Images\Target.ico" />
     <Content Include="Images\Target.png" />
