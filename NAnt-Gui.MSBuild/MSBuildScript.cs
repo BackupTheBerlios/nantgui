@@ -119,7 +119,7 @@ namespace NAntGui.MSBuild
                         // the expanded value
                         MSBuildProperty property = new MSBuildProperty(msproperty.Name, msproperty.FinalValue,
                                                                        group.Condition, msproperty.Condition);
-                        Properties.Add(property.Key, property);
+                        Properties.Add(property);
                     }
                 }
             }

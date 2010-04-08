@@ -40,6 +40,7 @@ namespace NAntGui.Gui.Controls
     {
         private const int PLAIN_TEXT_INDEX = 1;
         private const int RICH_TEXT_INDEX = 2;
+        private object _lock = new object();
 
         private readonly PointConverter _pc = new PointConverter();
 
@@ -148,7 +149,7 @@ namespace NAntGui.Gui.Controls
         private void WriteOutput(string message)
         {
             // TODO: determine if this lock is necessary
-            lock (this)
+            lock (_lock)
             {
                 if (!_richTextBox.Focused) _richTextBox.Focus();
 
@@ -216,7 +217,7 @@ namespace NAntGui.Gui.Controls
         private string GetLine()
         {
             int lineNumber = GetLineAtCursor();
-            return _richTextBox.Lines[lineNumber];
+            return lineNumber > _richTextBox.Lines.Length ? _richTextBox.Lines[lineNumber] : String.Empty;
         }
 
         private void CopyToolStripMenuItemClick(object sender, EventArgs e)

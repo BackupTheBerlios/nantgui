@@ -131,7 +131,7 @@ namespace NAntGui.Gui
             }
         }
 
-        internal void AddProperties(Dictionary<string, IBuildProperty> properties)
+        internal void AddProperties(List<IBuildProperty> properties)
         {
             _propertyWindow.AddProperties(properties);
         }
@@ -213,7 +213,6 @@ namespace NAntGui.Gui
             _undoToolStripButton.Enabled = false;
             _redoToolStripButton.Enabled = false;
 
-            // Not sure if this should be here:
             _targetsWindow.Clear();
             _propertyWindow.Clear();
 
@@ -467,13 +466,8 @@ namespace NAntGui.Gui
 
         private void AttachEventHandlers()
         {
-            _outputWindow.Enter += OutputWindowEnter;
-            _outputWindow.Leave += OutputWindowLeave;
-
             _outputWindow.DragEnter += NAntGuiForm_DragEnter;
-            _outputWindow.DragDrop += NAntGuiForm_DragDrop;
-
-            _outputWindow.FileNameClicked += OutputWindowFileNameClicked;
+            _outputWindow.DragDrop += NAntGuiForm_DragDrop;            
 
             _propertyWindow.DragEnter += NAntGuiForm_DragEnter;
             _propertyWindow.DragDrop += NAntGuiForm_DragDrop;
@@ -520,25 +514,6 @@ namespace NAntGui.Gui
             return content;
         }
 
-        private void OutputWindowEnter(object sender, EventArgs e)
-        {
-            // TODO: move this event handler to controller
-            _controller.OutputGotFocused();
-        }
-
-        private void OutputWindowLeave(object sender, EventArgs e)
-        {
-            // TODO: move this event handler to controller
-            _controller.OutputLostFocused();
-        }
-
-        private void OutputWindowFileNameClicked(object sender, FileNameEventArgs e)
-        {
-            // TODO: move this event handler to controller
-            _controller.LoadDocument(e.FileName);
-            _controller.SetCursor(e.Point.X, e.Point.Y);
-        }
-
         private void SaveAllClicked(object sender, EventArgs e)
         {
             _controller.SaveAllDocuments();
@@ -561,5 +536,18 @@ namespace NAntGui.Gui
 
         #endregion
 
+
+        internal void OutputWindowHasFocus()
+        {
+            _copyMenuItem.Enabled = true;
+            _cutMenuItem.Enabled = false;
+            _pasteMenuItem.Enabled = false;
+            _deleteMenuItem.Enabled = false;
+            _selectAllMenuItem.Enabled = true;
+
+            _copyToolStripButton.Enabled = true;
+            _cutToolStripButton.Enabled = false;
+            _pasteToolStripButton.Enabled = false;
+        }
     }
 }

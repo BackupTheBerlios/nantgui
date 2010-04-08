@@ -38,6 +38,13 @@ namespace NAntGui.Gui
 {
     public class MainController
     {
+        private enum FocusedItems
+        {
+            Window,
+            Output,
+            Other
+        }
+
         private readonly BackgroundWorker _loader = new BackgroundWorker();
         private readonly CommandLineOptions _options;
 
@@ -47,6 +54,8 @@ namespace NAntGui.Gui
 
         private readonly Dictionary<DocumentWindow, NAntDocument> _documents =
             new Dictionary<DocumentWindow, NAntDocument>();
+
+        private FocusedItems _focusedItem = FocusedItems.Other;
 
         public MainController(CommandLineOptions options)
         {
@@ -108,26 +117,31 @@ namespace NAntGui.Gui
         private void UpdateInterface()
         {
             if (_documents.Count == 0)
-            {
-                _mainForm.NoDocumentsOpen();
-            }
+                _mainForm.NoDocumentsOpen();                
             else
-            {
                 _mainForm.DocumentsOpen();
 
-                _editCommands = ActiveWindow.EditCommands;
+
+            if (_focusedItem == FocusedItems.Output)
+            {
+                _mainForm.UndoEnabled = false;
+                _mainForm.RedoEnabled = false;
+                _mainForm.OutputWindowHasFocus();
+                _editCommands = _outputWindow;                
+            }
+            else if (_focusedItem == FocusedItems.Window)
+            {
                 _mainForm.UndoEnabled = ActiveWindow.CanUndo;
                 _mainForm.RedoEnabled = ActiveWindow.CanRedo;
                 _mainForm.ReloadEnabled = (ActiveDocument.FileType == FileType.Existing);
-            }
-
-            if (_editCommands == null)
-            {
-                _mainForm.DisableEditCommands();
+                _editCommands = ActiveWindow.EditCommands;
+                _mainForm.EnableEditCommands();
             }
             else
             {
-                _mainForm.EnableEditCommands();
+                _mainForm.UndoEnabled = false;
+                _mainForm.RedoEnabled = false;
+                _mainForm.DisableEditCommands();
             }
         }
 
@@ -382,14 +396,14 @@ namespace NAntGui.Gui
             e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
         }
 
-        internal void OutputGotFocused()
+        internal void OutputWindowEnter(object sender, EventArgs e)
         {
-            _editCommands = _outputWindow;
+            _focusedItem = FocusedItems.Output;
         }
 
-        internal void OutputLostFocused()
+        internal void OutputWindowLeave(object sender, EventArgs e)
         {
-            _editCommands = null;
+            _focusedItem = FocusedItems.Other;
         }
 
         internal void Cut()
@@ -422,10 +436,13 @@ namespace NAntGui.Gui
         {
             // may decouple the form and the controller (using events) later
             _mainForm = mainForm;
-            _outputWindow = outputWindow;
-
             _mainForm.DockPanel.ActiveDocumentChanged += DockPanel_ActiveDocumentChanged;
-            _mainForm.DockPanel.Leave += DockPanel_Leave;
+
+            _outputWindow = outputWindow;
+            _outputWindow.Enter += OutputWindowEnter;
+            _outputWindow.Leave += OutputWindowLeave;
+            _outputWindow.FileNameClicked += OutputWindowFileNameClicked;
+            
         }
 
         public void SelectWindow(string filename)
@@ -440,6 +457,12 @@ namespace NAntGui.Gui
 
 
         #region Private Methods
+
+        private void OutputWindowFileNameClicked(object sender, FileNameEventArgs e)
+        {
+            LoadDocument(e.FileName);
+            SetCursor(e.Point.X, e.Point.Y);
+        }
 
         private void CloseDocument(object sender, FormClosingEventArgs e)
         {
@@ -532,7 +555,19 @@ namespace NAntGui.Gui
             window.CloseAllClicked += delegate { CloseAllDocuments(); };
             window.CloseAllButThisClicked += delegate { CloseAllButThisClicked(); };
             window.SaveClicked += delegate { SaveDocument(); };
+            window.Leave += new EventHandler(WindowLeave);
+            window.Enter += new EventHandler(WindowEnter);
             window.Show(_mainForm.DockPanel);
+        }
+
+        void WindowEnter(object sender, EventArgs e)
+        {
+            _focusedItem = FocusedItems.Window;
+        }
+
+        void WindowLeave(object sender, EventArgs e)
+        {
+            _focusedItem = FocusedItems.Other;
         }
 
         private void UpdateDisplay()
@@ -572,13 +607,11 @@ namespace NAntGui.Gui
 
         private void DockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            _mainForm.CheckActiveDocument(_documents[ActiveWindow]);
-            UpdateDisplay();
-        }
-
-        private void DockPanel_Leave(object sender, EventArgs e)
-        {
-            _editCommands = null;
+            if (ActiveWindow != null)
+            {
+                _mainForm.CheckActiveDocument(_documents[ActiveWindow]);
+                UpdateDisplay();
+            }
         }
 
         private void LoaderDoWork(object sender, DoWorkEventArgs e)

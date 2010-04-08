@@ -63,10 +63,8 @@ namespace NAntGui.Gui
             public override bool CanResetValue(object component)
             {
                 return _item.DefaultExpandedValue == null
-                           ?
-                               false
-                           :
-                               _item.ExpandedValue != _item.DefaultExpandedValue;
+                           ? false
+                           : _item.ExpandedValue != _item.DefaultExpandedValue;
             }
 
             public override object GetValue(object component)
@@ -87,61 +85,43 @@ namespace NAntGui.Gui
             public override bool ShouldSerializeValue(object component)
             {
                 return _item.DefaultExpandedValue == null
-                           ?
-                               false
-                           :
-                               _item.ExpandedValue != _item.DefaultExpandedValue;
+                           ? false
+                           : _item.ExpandedValue != _item.DefaultExpandedValue;
             }
         }
 
         #endregion
 
-        private readonly Dictionary<string, IBuildProperty> _properties;
+        private readonly List<IBuildProperty> _properties;
 
-        internal PropertyShelf(Dictionary<string, IBuildProperty> properties)
+        internal PropertyShelf(List<IBuildProperty> properties)
         {
             Assert.NotNull(properties, "properties");
             _properties = properties;
         }
 
-        #region ICustomTypeDescriptor Members
-
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             // Rather than passing this function on to the default TypeDescriptor,
-            // which would return the actual properties of PropertyBag, I construct
+            // which would return the actual properties of this object, I construct
             // a list here that contains property descriptors for the elements of the
-            // Properties list in the bag.
+            // _properties List.
 
             List<BuildPropertyDescriptor> props = new List<BuildPropertyDescriptor>();
 
-            foreach (IBuildProperty property in _properties.Values)
+            foreach (IBuildProperty property in _properties)
             {
-                List<CategoryAttribute> attrs = new List<CategoryAttribute>();
+                List<Attribute> attrs = new List<Attribute>();
 
-                // If a category, description, editor, or type converter are specified
-                // in the PropertySpec, create attributes to define that relationship.
                 if (property.Category != null)
                     attrs.Add(new CategoryAttribute(property.Category));
 
-                CategoryAttribute[] attrArray = attrs.ToArray();
-
-                // Create a new property descriptor for the property item, and add
-                // it to the list.
-                BuildPropertyDescriptor pd = new BuildPropertyDescriptor(
-                    property, attrArray);
-
+                BuildPropertyDescriptor pd = new BuildPropertyDescriptor(property, attrs.ToArray());
                 props.Add(pd);
             }
 
-            // Convert the list of PropertyDescriptors to a collection that the
-            // ICustomTypeDescriptor can use, and return it.
-            BuildPropertyDescriptor[] propArray = props.ToArray();
-
-            return new PropertyDescriptorCollection(propArray);
+            return new PropertyDescriptorCollection(props.ToArray());
         }
-
-        #endregion
 
         #region Useless ICustomTypeDescriptor methods
 

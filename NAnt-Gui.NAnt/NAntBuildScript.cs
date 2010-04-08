@@ -97,7 +97,7 @@ namespace NAntGui.NAnt
         {
             _baseDir = project.BaseDirectory;
             NAntProperty property = new NAntProperty("BaseDir", _baseDir, "Project", false);
-            Properties.Add(property.Key, property);
+            Properties.Add(property);
         }
 
         private void ParseTargets(XmlDocument doc)
@@ -163,12 +163,12 @@ namespace NAntGui.NAnt
                         project.Properties.AddReadOnly(
                             property.Name, property.ExpandedValue);
 
-                        Properties.Add(property.Key, property);
+                        Properties.Add(property);
                     }
                 }
                 else
                 {
-                    Properties.Add(property.Key, property);
+                    Properties.Add(property);
                 }
             }
         }
@@ -213,7 +213,7 @@ namespace NAntGui.NAnt
                             true);
 
                         property.ExpandedValue = property.Value;
-                        Properties.Add(property.Key, property);
+                        Properties.Add(property);
                     }
                     catch (BuildException)
                     {
@@ -241,7 +241,7 @@ namespace NAntGui.NAnt
                             true);
 
                         property.ExpandedValue = property.Value;
-                        Properties.Add(property.Key, property);
+                        Properties.Add(property);
                     }
                     catch (BuildException)
                     {
@@ -272,7 +272,7 @@ namespace NAntGui.NAnt
                             element.ParentNode.Attributes["name"].Value, false);
 
                         property.ExpandedValue = property.Value;
-                        Properties.Add(property.Key, property);
+                        Properties.Add(property);
                     }
                 }
             }

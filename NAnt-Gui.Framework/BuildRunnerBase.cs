@@ -34,7 +34,7 @@ namespace NAntGui.Framework
 
         protected ILogsMessage _logger;
         protected CommandLineOptions _options;
-        protected Dictionary<string, IBuildProperty> _properties;
+        protected List<IBuildProperty> _properties;
         protected List<IBuildTarget> _targets;
         protected FileInfo _fileInfo;
 
@@ -51,7 +51,7 @@ namespace NAntGui.Framework
             _options = options;
         }
 
-        public Dictionary<string, IBuildProperty> Properties
+        public List<IBuildProperty> Properties
         {
             set { _properties = value; }
         }

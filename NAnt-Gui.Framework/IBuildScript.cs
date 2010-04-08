@@ -30,7 +30,7 @@ namespace NAntGui.Framework
         string Name { get; }
         string Description { get; }
         List<IBuildTarget> Targets { get; }
-        Dictionary<string, IBuildProperty> Properties { get; }
+        List<IBuildProperty> Properties { get; }
 
         void Parse();
     }

@@ -64,7 +64,7 @@ namespace NAntGui.Gui.Controls
             this._runMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this._runMenuItem.Size = new System.Drawing.Size(152, 22);
             this._runMenuItem.Text = "&Run";
-            this._runMenuItem.ToolTipText = "Builds the current build file";
+            this._runMenuItem.ToolTipText = "Builds the selected target";
             this._runMenuItem.Click += new System.EventHandler(this.RunMenuItemClick);
             // 
             // _treeView

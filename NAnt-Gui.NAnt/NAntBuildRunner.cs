@@ -117,7 +117,7 @@ namespace NAntGui.NAnt
 
         private void AddProperties()
         {
-            foreach (IBuildProperty property in _properties.Values)
+            foreach (IBuildProperty property in _properties)
             {
                 if (property.Category == "Project" && property.Name == "BaseDir")
                 {

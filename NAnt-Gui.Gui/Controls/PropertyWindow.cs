@@ -42,9 +42,9 @@ namespace NAntGui.Gui.Controls
             get { return _propertyGrid; }
         }
 
-        internal void AddProperties(Dictionary<string, IBuildProperty> properties)
+        internal void AddProperties(List<IBuildProperty> properties)
         {
-            _propertyGrid.SelectedObject = new PropertyShelf(properties);
+            _propertyGrid.SelectedObject = new PropertyShelf(properties);            
         }
 
         internal void Clear()

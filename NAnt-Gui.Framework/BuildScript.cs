@@ -34,7 +34,7 @@ namespace NAntGui.Framework
         {
             Assert.NotNull(file, "file");
             _file = file;
-            Properties = new Dictionary<string, IBuildProperty>();
+            Properties = new List<IBuildProperty>();
             Targets = new List<IBuildTarget>();
         }
 
@@ -44,7 +44,7 @@ namespace NAntGui.Framework
 
         public List<IBuildTarget> Targets { get; private set; }
 
-        public Dictionary<string, IBuildProperty> Properties { get; private set; }
+        public List<IBuildProperty> Properties { get; private set; }
 
         public abstract void Parse();
     }

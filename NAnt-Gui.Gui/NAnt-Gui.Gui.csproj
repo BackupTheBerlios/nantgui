@@ -261,7 +261,6 @@
     <Content Include="Images\CopyHS.png" />
     <Content Include="Images\CutHS.png" />
     <Content Include="Images\DeleteHS.png" />
-    <Content Include="Images\Edit_Redo.bmp" />
     <Content Include="Images\Edit_RedoHS.png" />
     <Content Include="Images\Edit_UndoHS.png" />
     <Content Include="Images\FormRunHS.png" />
@@ -269,10 +268,8 @@
     <Content Include="Images\NewProject.png" />
     <Content Include="Images\Open.png" />
     <Content Include="Images\OpenHS.png" />
-    <Content Include="Images\Options.bmp" />
     <Content Include="Images\Output.ico" />
     <Content Include="Images\Output.png" />
-    <Content Include="Images\Paste.bmp" />
     <Content Include="Images\PasteHS.png" />
     <Content Include="Images\PlayHS.png" />
     <Content Include="Images\Properties.ico" />
