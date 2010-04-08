@@ -1,8 +1,6 @@
 Required for 2.0
 ----------------
 - Fix all UI events.  
-	* Document changed/not (menu item and tab title)
-		+ Documents that are changes should have * next to the name
 	* Save (on new)/SaveAs should update the menuitem text in the documents menu
 - BUG: SaveAs on new document should change the window title
 - Remove all the bitmap images
@@ -11,6 +9,7 @@ Required for 2.0
 - Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
 - General testing
 
+(DONE): Document changed/not (menu item, tab title, window title) should have/not have an * next to the name
 (FIXED): SaveAs on new document should change the documents menu item
 (FIXED): Should prompt the user if reloading a changed document	
 (FIXED): New documents that are unsaved should not load at startup the next time.

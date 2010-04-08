@@ -94,9 +94,10 @@ namespace NAntGui.Gui
                 _controller.LoadDocument(options.BuildFile);
         }
 
-        internal void SetStatus(string name, string fullname)
+        internal void SetStatus(string name, string description, string fullname)
         {
-            _statusStrip.Items[0].Text = name;
+            string title = string.Format("{0} ({1})", name, description);
+            _statusStrip.Items[0].Text = title;
             _statusStrip.Items[2].Text = fullname;
         }
 
@@ -216,7 +217,7 @@ namespace NAntGui.Gui
             _targetsWindow.Clear();
             _propertyWindow.Clear();
 
-            SetStatus(String.Empty, String.Empty);
+            SetStatus(String.Empty, String.Empty, String.Empty);
         }
 
         internal void DocumentsOpen()

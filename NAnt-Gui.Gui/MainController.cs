@@ -219,8 +219,6 @@ namespace NAntGui.Gui
                     ActiveDocument.Reload();
                     ActiveWindow.Contents = ActiveDocument.Contents;                    
                     ActiveWindow.MoveCaretTo(position.Line, position.Column);
-
-                    UpdateTitle();
                     UpdateDisplay();
                 }
                 catch (Exception ex)
@@ -352,24 +350,26 @@ namespace NAntGui.Gui
 
         internal DocumentWindow GetWindow(string filename)
         {
+            DocumentWindow window = null;
+
             if (File.Exists(filename))
             {
                 NAntDocument doc = new NAntDocument(filename, _outputWindow, _options);
                 doc.BuildFinished += _mainForm.SetStateStopped;
 
-                DocumentWindow window = new DocumentWindow(doc.FullName);
+                window = new DocumentWindow(doc.FullName);
                 SetupWindow(window, doc);
 
                 RecentItems.Add(doc.FullName);
 
                 ParseBuildFile(doc);
-                UpdateDisplay();
-
-                return window;
+            }
+            else
+            {
+                Errors.FileNotFound(filename);
             }
 
-            Errors.FileNotFound(filename);
-            return null;
+            return window;
         } 
 
         internal void DragDrop(DragEventArgs e)
@@ -537,18 +537,11 @@ namespace NAntGui.Gui
 
         private void UpdateDisplay()
         {
-            if (ActiveDocument != null)
-            {
-                _mainForm.Text = string.Format("NAnt-Gui - {0}", ActiveWindow.TabText);
-
-                IBuildScript buildScript = ActiveDocument.BuildScript;
-
-                string name = string.Format("{0} ({1})", buildScript.Name, buildScript.Description);
-
-                _mainForm.SetStatus(name, ActiveDocument.FullName);
-                _mainForm.AddTargets(buildScript);
-                _mainForm.AddProperties(buildScript.Properties);
-            }
+            _mainForm.Text = string.Format("NAnt-Gui - {0}", ActiveWindow.TabText);
+            _mainForm.SetStatus(ActiveDocument.BuildScript.Name, ActiveDocument.BuildScript.Description, 
+                ActiveDocument.FullName);
+            _mainForm.AddTargets(ActiveDocument.BuildScript);
+            _mainForm.AddProperties(ActiveDocument.BuildScript.Properties);
         }
 
         private void WindowFormClosed(object sender, FormClosedEventArgs e)
@@ -634,6 +627,7 @@ namespace NAntGui.Gui
             string name = IsDirty(ActiveWindow) ? Utils.AddAsterisk(ActiveDocument.Name) : ActiveDocument.Name;
             ActiveWindow.TabText = name;
             _mainForm.UpdateDocumentMenuItem(ActiveDocument, name);
+            _mainForm.Text = String.Format("NAnt-Gui - {0}", name);
         }
 
         private void SaveDocument(DocumentWindow window)
@@ -674,15 +668,16 @@ namespace NAntGui.Gui
 
                 try
                 {
-                    document.SaveAs(filename, window.Contents);
-                    UpdateTitle();
-                    document.BuildFinished += _mainForm.SetStateStopped;
+                    document.SaveAs(filename, window.Contents);                    
+                    document.BuildFinished += _mainForm.SetStateStopped;                   
 
                     Settings.Default.SaveScriptInitialDir = document.Directory;
                     Settings.Default.Save();
 
                     RecentItems.Add(filename);
                     _mainForm.CreateRecentItemsMenu();
+                    UpdateTitle();
+                    UpdateDisplay();
                 }
                 catch (Exception ex)
                 {
