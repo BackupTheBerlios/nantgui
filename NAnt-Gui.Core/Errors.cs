@@ -87,5 +87,11 @@ namespace NAntGui.Core
             return MessageBox.Show(message, _resources.GetString("DocumentNotSavedTitle"), 
                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
         }
+
+        public static DialogResult ReloadUnsaved()
+        {
+            return MessageBox.Show(_resources.GetString("ReloadUnsaved"), _resources.GetString("ReloadUnsavedTitle"),
+                                   MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+        }
     }
 }

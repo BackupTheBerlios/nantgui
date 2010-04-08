@@ -4,7 +4,6 @@ Required for 2.0
 	* Document changed/not (menu item and tab title)
 		+ Documents that are changes should have * next to the name
 	* Save (on new)/SaveAs should update the menuitem text in the documents menu
-- BUG: New documents that are unsaved should not load at startup the next time.
 - BUG: SaveAs on new document should change the window title and the documents menu item
 - BUG: Should prompt the user if reloading a changed document	
 - Remove all the bitmap images
@@ -13,6 +12,7 @@ Required for 2.0
 - Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
 - General testing
 
+(FIXED): New documents that are unsaved should not load at startup the next time.
 (DONE): Fix all UI events: Consider using the Application.Idle event to update the display (enabled/disabled menu items and buttons) 
 	    like Greg.XmlEditor, his code is not a tangled mess	
 (DONE): Fix all UI events: Focused document is new; Reload should be disabled

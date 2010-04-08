@@ -162,4 +162,10 @@
   <data name="ProjectTemplateMissingError" xml:space="preserve">
     <value>New project template missing.  Please re-install the application.</value>
   </data>
+  <data name="ReloadUnsaved" xml:space="preserve">
+    <value>Are you sure you want to reload the current file and lose the changes you have made?</value>
+  </data>
+  <data name="ReloadUnsavedTitle" xml:space="preserve">
+    <value>Reload</value>
+  </data>
 </root>

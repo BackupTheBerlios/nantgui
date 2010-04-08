@@ -194,5 +194,23 @@ namespace NAntGui.Core.Properties {
                 return ResourceManager.GetString("ProjectTemplateMissingError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reload the current file and lose the changes you have made?.
+        /// </summary>
+        internal static string ReloadUnsaved {
+            get {
+                return ResourceManager.GetString("ReloadUnsaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload.
+        /// </summary>
+        internal static string ReloadUnsavedTitle {
+            get {
+                return ResourceManager.GetString("ReloadUnsavedTitle", resourceCulture);
+            }
+        }
     }
 }

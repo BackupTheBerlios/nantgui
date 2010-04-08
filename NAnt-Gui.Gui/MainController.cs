@@ -211,20 +211,23 @@ namespace NAntGui.Gui
 
         internal void ReloadActiveDocument()
         {
-            try
+            if (!IsDirty(ActiveWindow) || Errors.ReloadUnsaved() == DialogResult.Yes)
             {
-                TextLocation position = ActiveWindow.CaretPosition;
-                ActiveDocument.Reload();
-                ActiveWindow.Contents = ActiveDocument.Contents;
-                ActiveWindow.TabText = ActiveDocument.Name;
-                ActiveWindow.MoveCaretTo(position.Line, position.Column);
+                try
+                {
+                    TextLocation position = ActiveWindow.CaretPosition;
+                    ActiveDocument.Reload();
+                    ActiveWindow.Contents = ActiveDocument.Contents;                    
+                    ActiveWindow.MoveCaretTo(position.Line, position.Column);
 
-                UpdateDisplay();
+                    UpdateTitle();
+                    UpdateDisplay();
+                }
+                catch (Exception ex)
+                {
+                    Errors.CouldNotLoadFile(ActiveDocument.FullName, ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                Errors.CouldNotLoadFile(ActiveDocument.FullName, ex.Message);
-            }            
         }
 
         internal void OpenDocument()
@@ -576,11 +579,7 @@ namespace NAntGui.Gui
 
         private void DockPanel_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (ActiveWindow != null)
-            {
-                _mainForm.CheckActiveDocument(_documents[ActiveWindow]);
-            }
-
+            _mainForm.CheckActiveDocument(_documents[ActiveWindow]);
             UpdateDisplay();
         }
 
