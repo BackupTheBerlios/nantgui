@@ -43,8 +43,7 @@ namespace NAntGui.Core
             else if (Utils.MsbuildExtensions.Contains(fileInfo.Extension) || fileInfo.Extension.EndsWith("proj"))
                 runner = new MSBuildRunner(fileInfo, logger, options);
             else
-                // TODO: What to do with generic files?
-                throw new NotImplementedException("OMG, can't handle files I don't know about?");
+                runner = new NullRunner(fileInfo, logger, options);
 
             return runner;
         }

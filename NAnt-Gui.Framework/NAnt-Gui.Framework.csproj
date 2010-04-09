@@ -93,8 +93,10 @@
     <None Include="AssemblyInfo.build" />
     <Compile Include="BuildFileParseException.cs" />
     <Compile Include="BuildScript.cs" />
+    <Compile Include="GenericFile.cs" />
     <Compile Include="IBuildProperty.cs" />
     <Compile Include="IBuildTarget.cs" />
+    <Compile Include="NullRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

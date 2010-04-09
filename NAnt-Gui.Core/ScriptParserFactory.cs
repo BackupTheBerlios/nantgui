@@ -20,8 +20,7 @@ namespace NAntGui.Core
             else if (Utils.MsbuildExtensions.Contains(fileInfo.Extension) || fileInfo.Extension.EndsWith("proj"))
                 script = new MSBuildScript(fileInfo);
             else
-                // TODO: What to do with generic files?
-                throw new NotImplementedException("OMG, can't handle files I don't know about!?!");
+                script = new GenericFile(fileInfo);
 
             return script;
         }
