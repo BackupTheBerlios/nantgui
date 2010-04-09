@@ -74,7 +74,11 @@ namespace NAntGui.Core
         public static string GetNewDocumentContents(ProjectInfo projectInfo)
         {
             string contents = String.Empty;
-            string path = Path.Combine("..", BLANK_PROJECT);
+#if DEBUG
+            string path = BLANK_PROJECT;            
+#else
+            string path = Path.Combine(Path.Combine("..", "Data"), BLANK_PROJECT);
+#endif
             XmlDocument xml = new XmlDocument();
 
             try

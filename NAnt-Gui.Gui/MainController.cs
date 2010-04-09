@@ -657,7 +657,7 @@ namespace NAntGui.Gui
 
         private void UpdateTitle()
         {
-            string name = IsDirty(ActiveWindow) ? Utils.AddAsterisk(ActiveDocument.Name) : ActiveDocument.Name;
+            string name = IsDirty(ActiveWindow) && !Utils.HasAsterisk(ActiveDocument.Name) ? Utils.AddAsterisk(ActiveDocument.Name) : ActiveDocument.Name;
             ActiveWindow.TabText = name;
             _mainForm.UpdateDocumentMenuItem(ActiveDocument, name);
             _mainForm.Text = String.Format("NAnt-Gui - {0}", name);

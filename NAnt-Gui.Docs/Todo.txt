@@ -1,9 +1,7 @@
 Required for 2.0
 ----------------
-- BUG: During build, build_number.txt is asked to be reloaded twice
+- BUG: During build, build_number.txt is asked to be reloaded twice (first time it's not actually reloaded)
 - BUG: During build, play button is not disabled
-- Show/Hide Build menu and Build toolstrip for GenericFiles
-	+ In general, need different behaviours for the three different file types
 - Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
 - Test what happens if .Net 2.0 not installed.  App shouldn't install (check in installer).
 - Test what happens if MSbuild is not installed.
@@ -44,7 +42,11 @@ Suggested for 2.0.1
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)	
 - Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
+- Show/Hide Build menu and Build toolstrip for GenericFiles
+	+ In general, need different behaviours for the three different file types
 - Bug: MSBuild targets don't show up if you have the description setting set	  
+- Create custom commandline options that make sense for msbuild, nant, and multiple tabs
+	* Associate command line options for each file
 
 For 2.1 and beyond
 ------------------
@@ -66,8 +68,9 @@ For 2.1 and beyond
 - Create options for LineNumbers, Folding, TabSpaces, etc...
 - New NAnt project needs to be parsed and title should be Untitled*
 - Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
-  control.  Would give access to syntax highlighting, code completion, add-in architecture, 
-  find/replace dialog, etc...
+  control.  Would POTENTIALLY give access to add-in architecture, find/replace dialog, etc...  these things depend on Sharpdevelop, so some
+  (lots?) of rewritting would still be required. If it will be difficult to bring in changes from new sharpdevelop releases, then there is
+  little benifit to doing this.
 - CODE Generation
 	* Need to recurse and fill in the body of elements with sequences/choices
 	* Create required attributes
@@ -81,10 +84,9 @@ For 2.1 and beyond
 	* Add sysinfo parsing
 	* Add regex parsing
 	* Right-click target in tree view gives option to "Go to Target"
-- Add a property window to change nant settings after nant-gui is loaded
+- Add a property window to change nant/msbuild settings after nant-gui is loaded
 - Add on the fly parsing back in (need to suppress parsing errors and allow an unsaved document to be parsed)
+	* show errors in an error window like VS.Net show errors
 - Put save of buildfiles into THREADS (More difficult than it first appears)
-- Create custom commandline options that make sense for msbuild, nant, and multiple tabs
-	* Associate command line options for each file
 - Validate build files 
 	* show errors in an error window like VS.Net show errors
