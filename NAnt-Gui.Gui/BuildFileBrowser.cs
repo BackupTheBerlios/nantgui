@@ -42,7 +42,7 @@ namespace NAntGui.Gui
 
             _openDialog.Filter =
                 _saveDialog.Filter =
-                "Build Files (*.build; *.nant)|*.build;*.nant|NAnt Includes (*.inc)|*.inc|All Files (*.*)|*.*";
+                "NAnt Files (*.build; *.nant)|*.build;*.nant|NAnt Includes (*.inc)|*.inc|MSBuild Files (*.csproj; *.vbproj; *.booproj; *.proj)|*.csproj;*.vbproj;*.booproj;*.proj|All Files (*.*)|*.*";
         }
 
         internal static string[] BrowseForLoad()
