@@ -66,6 +66,8 @@ namespace NAntGui.Framework
         public void Run()
         {
             _thread = new Thread(DoRun);
+            _thread.SetApartmentState(ApartmentState.STA);
+
             BeforeStart();
             _thread.Start();
             AfterStart();

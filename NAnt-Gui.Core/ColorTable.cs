@@ -33,11 +33,13 @@ namespace NAntGui.Core
     public static class ColorTable
     {
         private const string BLUE = @"\red0\green0\blue255;";
-        private const string COLOR_TAG = @"\cf";
-        private const string FOOTER = "}";
         private const string GREEN = @"\red0\green255\blue0;";
-        private const string HEADER = @"{\colortbl ;";
         private const string RED = @"\red255\green0\blue0;";
+        private const string YELLOW = @"\red255\green195\blue0;";
+
+        private const string COLOR_TAG = @"\cf";
+        private const string HEADER = @"{\colortbl ;";
+        private const string FOOTER = "}";        
 
         private static readonly List<Colors> _usedColors = new List<Colors>(3);
         private static StringBuilder _colorList = new StringBuilder();
@@ -45,6 +47,11 @@ namespace NAntGui.Core
         public static string RedTag
         {
             get { return GetColorTag(Colors.Red); }
+        }
+
+        public static string YellowTag
+        {
+            get { return GetColorTag(Colors.Yellow); }
         }
 
         public static string BlueTag
@@ -88,20 +95,19 @@ namespace NAntGui.Core
                     return GREEN;
                 case Colors.Blue:
                     return BLUE;
+                case Colors.Yellow:
+                    return YELLOW;
                 default:
                     throw new ArgumentException("Invalid color: " + pColor, "pColor");
             }
         }
 
-        #region Nested type: Colors
-
         private enum Colors
         {
             Red,
             Green,
-            Blue
+            Blue,
+            Yellow
         }
-
-        #endregion
     }
 }

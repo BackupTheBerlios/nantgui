@@ -35,7 +35,7 @@ namespace NAntGui.Core
 
         public static string Highlight(string text)
         {
-            string[] expressions = {"\n", BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "ERROR"};
+            string[] expressions = {"\n", BUILD_FAILED, BUILD_SUCCEEDED, @"\[[^\[]+\]", "error", "warning"};
             string highlightedText = Escape(text);
             highlightedText = ReplaceNewlines(highlightedText);
 
@@ -55,6 +55,7 @@ namespace NAntGui.Core
 
         private static string ReplaceMatches(MatchCollection matches, string expression, string highlightedText)
         {
+            bool matchedTask = false;
             foreach (Match match in matches)
             {
                 switch (expression)
@@ -73,15 +74,24 @@ namespace NAntGui.Core
                         break;
 
                     case @"\[[^\[]+\]":
-                        output = ColorTable.BlueTag + Tags.SPACE
-                                 + match.Value + Tags.BLACK + Tags.SPACE;
+                        if (!matchedTask)
+                        {
+                            output = ColorTable.BlueTag + Tags.SPACE
+                                     + match.Value + Tags.BLACK + Tags.SPACE;
+
+                            highlightedText = highlightedText.Replace(match.Value, output);
+                            matchedTask = true;
+                        }
+                        break;
+                    case "error":
+                        output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
+                                 + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
 
                         highlightedText = highlightedText.Replace(match.Value, output);
                         break;
-                    case "error":
-                    case "ERROR":
-                        output = ColorTable.RedTag + Tags.BOLD + Tags.SPACE
-                                 + match.Value + Tags.BLACK + Tags.END_BOLD + Tags.SPACE;
+                    case "warning":
+                        output = ColorTable.YellowTag + Tags.SPACE
+                                 + match.Value + Tags.BLACK + Tags.SPACE;
 
                         highlightedText = highlightedText.Replace(match.Value, output);
                         break;

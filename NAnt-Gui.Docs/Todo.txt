@@ -1,5 +1,7 @@
 Required for 2.0
 ----------------
+- BUG: During build, build_number.txt is asked to be reloaded twice
+- BUG: During build, play button is not disabled
 - Show/Hide Build menu and Build toolstrip for GenericFiles
 	+ In general, need different behaviours for the three different file types
 - Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
