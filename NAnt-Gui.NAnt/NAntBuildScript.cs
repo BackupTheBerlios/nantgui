@@ -75,10 +75,10 @@ namespace NAntGui.NAnt
             {
                 return new Project(_file.FullName, Level.Info, 0);
             }
-            catch (ArgumentException)
-            {
-                return null;
-            }
+            //catch (ArgumentException)
+            //{
+            //    return null;
+            //}
             catch (Exception error)
             {
                 throw new BuildFileLoadException("Error parsing NAnt project", error);

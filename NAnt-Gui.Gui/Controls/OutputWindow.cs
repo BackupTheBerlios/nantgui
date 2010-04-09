@@ -217,7 +217,7 @@ namespace NAntGui.Gui.Controls
         private string GetLine()
         {
             int lineNumber = GetLineAtCursor();
-            return lineNumber > _richTextBox.Lines.Length ? _richTextBox.Lines[lineNumber] : String.Empty;
+            return lineNumber < _richTextBox.Lines.Length ? _richTextBox.Lines[lineNumber] : String.Empty;
         }
 
         private void CopyToolStripMenuItemClick(object sender, EventArgs e)

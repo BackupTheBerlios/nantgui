@@ -65,7 +65,9 @@ namespace NAntGui.NAnt
 
         protected override void BeforeStop()
         {
-            _project.DetachBuildListeners();
+            // project can be null if an exception was thrown when it's created in DoRun
+            if (_project != null)
+                _project.DetachBuildListeners();
         }
 
         protected override void DoRun()
