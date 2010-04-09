@@ -1,14 +1,19 @@
 Required for 2.0
 ----------------
-- Fix all UI events.  
-	* Save (on new)/SaveAs should update the menuitem text in the documents menu
-- BUG: SaveAs on new document should change the window title
-- Remove all the bitmap images
-- Figure out which MSBuild to use.  Probably 3.5, and if not found then 2.0.  Or make it a setting.  However,	  
-  I'm linking against certain versions of the the dlls, which I can't change at runtime.	
-- Test what happens if .Net 3.0 and 3.5 are NOT installed, especially msbuild 3.5	
+- Show/Hide Build menu and Build toolstrip for GenericFiles
+	+ In general, need different behaviours for the three different file types
+- Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
+- Test what happens if .Net 2.0 not installed.  App shouldn't install (check in installer).
+- Test what happens if MSbuild is not installed.
 - General testing
 
+(FIXED): Drag-Drop stopped working
+(DONE): Figure out what to do with files with unknown extensions
+(DONE): Fix all UI events
+(DONE): Figure out which MSBuild to use.  Uses 2.0, because this app is tied to 2.0
+(DONE): Remove all the bitmap images
+(FIXED): SaveAs on new document should change the window title
+(DONE): Save (on new)/SaveAs should update the menuitem text in the documents menu
 (DONE): Document changed/not (menu item, tab title, window title) should have/not have an * next to the name
 (FIXED): SaveAs on new document should change the documents menu item
 (FIXED): Should prompt the user if reloading a changed document	
@@ -31,6 +36,7 @@ Required for 2.0
 	
 Suggested for 2.0.1
 -------------------	
+- Hook up the PropertyGrid editor context menu to the Edit commands main menu
 - If the file is readonly, make the editor readonly
 	* What happens if the user opens the file, then changes the readonly flag?
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
@@ -39,7 +45,8 @@ Suggested for 2.0.1
 - Bug: MSBuild targets don't show up if you have the description setting set	  
 
 For 2.1 and beyond
------------
+------------------
+- Add an option to turn on file parsing in properties and turn the property editor to a file picker: [Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
 - Rename 
 	* NAntDocument NAntGuiDocument
 	* IBuildScript IScriptParser
@@ -52,6 +59,7 @@ For 2.1 and beyond
   documents into an existing document. By default it will allow drag and drop of text, but with the drag-enter method it should be able 
   to handle different results for different dragged objects (text vs file)
 - Dynamic help in the text editor with NAnt
+- Printing
 - Find and replace
 - Create options for LineNumbers, Folding, TabSpaces, etc...
 - New NAnt project needs to be parsed and title should be Untitled*
