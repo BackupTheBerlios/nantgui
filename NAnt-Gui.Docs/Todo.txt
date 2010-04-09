@@ -1,13 +1,13 @@
 Required for 2.0
 ----------------
 - WTF: Where's my ctrl+space code completion???
-- BUG: During build, build_number.txt is asked to be reloaded twice (first time it's not actually reloaded)
 - BUG: During build, play button is not disabled
 - Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
 - Test what happens if .Net 2.0 not installed.  App shouldn't install (check in installer).
 - Test what happens if MSbuild is not installed.
 - General testing
 
+(FIXED): During build, build_number.txt is asked to be reloaded twice (first time it's not actually reloaded)
 (CANCELLED): New NAnt project needs to be parsed; Can't be parsed until it's saved.
 (FIXED): Drag-Drop stopped working
 (DONE): Figure out what to do with files with unknown extensions

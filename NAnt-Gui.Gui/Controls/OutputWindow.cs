@@ -197,7 +197,7 @@ namespace NAntGui.Gui.Controls
             Match m = reg.Match(line);
             Group g = m.Groups[3];
             string coords = g.Value;
-            return (Point) _pc.ConvertFromString(coords);
+            return String.IsNullOrEmpty(coords) ? Point.Empty: (Point) _pc.ConvertFromString(coords);
         }
 
         private static string GetFile(string line)
@@ -209,7 +209,7 @@ namespace NAntGui.Gui.Controls
 
         private static bool HasFile(string line)
         {
-            const string fileReg = @"[a-zA-Z]:(\\[^\\]*)+(\.[\\\.]+)*\(\d+,\d+\)";
+            const string fileReg = @"[a-zA-Z]:(\\[^\\]*)+(\.[\\\.]+)*(\(\d+,\d+\))?";
             Regex reg = new Regex(fileReg);
             return reg.IsMatch(line);
         }

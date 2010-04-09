@@ -74,7 +74,7 @@ namespace NAntGui.Gui
         }
 
         private void CheckForFileChanges()
-        {
+        {           
             NAntDocument[] docs = new NAntDocument[_documents.Values.Count];
             _documents.Values.CopyTo(docs, 0);
 
@@ -243,6 +243,27 @@ namespace NAntGui.Gui
             }
         }
 
+        internal void ReloadWindow(DocumentWindow window)
+        {
+            if (!IsDirty(window) || Errors.ReloadUnsaved() == DialogResult.Yes)
+            {
+                NAntDocument document = _documents[window];
+
+                try
+                {
+                    TextLocation position = window.CaretPosition;
+                    document.Reload();
+                    window.Contents = document.Contents;
+                    window.MoveCaretTo(position.Line, position.Column);
+                    UpdateDisplay();
+                }
+                catch (Exception ex)
+                {
+                    Errors.CouldNotLoadFile(document.FullName, ex.Message);
+                }
+            }
+        }
+
         internal void OpenDocument()
         {
             foreach (string filename in BuildFileBrowser.BrowseForLoad())
@@ -338,8 +359,7 @@ namespace NAntGui.Gui
             if (window != null)
             {
                 window.Select();
-                // Need this for the file watcher, not sure if it breaks other things
-                ReloadActiveDocument();
+                ReloadWindow(window);
             }
             else if (!File.Exists(filename))
             {
@@ -518,14 +538,10 @@ namespace NAntGui.Gui
         private DocumentWindow FindDocumentWindow(string file)
         {
             foreach (DocumentWindow window in _mainForm.DockPanel.Documents)
-            {
                 if (_documents[window].FullName == file)
-                {
                     return window;
-                }
-            }
 
-            return null;
+            return null;            
         }
 
         private void CloseAllButThisClicked()
