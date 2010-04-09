@@ -1,5 +1,6 @@
 Required for 2.0
 ----------------
+- WTF: Where's my ctrl+space code completion???
 - BUG: During build, build_number.txt is asked to be reloaded twice (first time it's not actually reloaded)
 - BUG: During build, play button is not disabled
 - Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
@@ -7,6 +8,7 @@ Required for 2.0
 - Test what happens if MSbuild is not installed.
 - General testing
 
+(CANCELLED): New NAnt project needs to be parsed; Can't be parsed until it's saved.
 (FIXED): Drag-Drop stopped working
 (DONE): Figure out what to do with files with unknown extensions
 (DONE): Fix all UI events
@@ -47,6 +49,7 @@ Suggested for 2.0.1
 - Bug: MSBuild targets don't show up if you have the description setting set	  
 - Create custom commandline options that make sense for msbuild, nant, and multiple tabs
 	* Associate command line options for each file
+- New MSBuild project	
 
 For 2.1 and beyond
 ------------------
@@ -66,7 +69,6 @@ For 2.1 and beyond
 - Printing
 - Find and replace
 - Create options for LineNumbers, Folding, TabSpaces, etc...
-- New NAnt project needs to be parsed and title should be Untitled*
 - Port NAnt-Gui to SharpDevelop.Core?  Would thereby eleminate the need to use the text editor 
   control.  Would POTENTIALLY give access to add-in architecture, find/replace dialog, etc...  these things depend on Sharpdevelop, so some
   (lots?) of rewritting would still be required. If it will be difficult to bring in changes from new sharpdevelop releases, then there is

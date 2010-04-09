@@ -186,6 +186,7 @@ namespace NAntGui.Gui
             DocumentWindow window = new DocumentWindow(doc.FullName);
             SetupWindow(window, doc);
             window.Contents = Utils.GetNewDocumentContents(e.Info);
+            ParseBuildFile(doc);
         }
 
         internal void Run(List<IBuildTarget> targets)
@@ -572,11 +573,20 @@ namespace NAntGui.Gui
 
         private void UpdateDisplay()
         {
-            _mainForm.Text = string.Format("NAnt-Gui - {0}", ActiveWindow.TabText);
-            _mainForm.SetStatus(ActiveDocument.BuildScript.Name, ActiveDocument.BuildScript.Description, 
-                ActiveDocument.FullName);
+            _mainForm.Text = string.Format("NAnt-Gui - {0}", ActiveWindow.TabText);            
             _mainForm.AddTargets(ActiveDocument.BuildScript);
             _mainForm.AddProperties(ActiveDocument.BuildScript.Properties);
+
+            // The following is required because when a file is loaded, update display gets called from ActiveDocument_Changed
+            // before the document is finished loading and these values have been parsed.
+            string description = String.Empty;
+            string name = String.Empty;
+            if (!String.IsNullOrEmpty(ActiveDocument.BuildScript.Description))
+                description = ActiveDocument.BuildScript.Description.Replace(Environment.NewLine, String.Empty);
+            if (!String.IsNullOrEmpty(ActiveDocument.BuildScript.Name))
+                name = ActiveDocument.BuildScript.Name;
+            
+            _mainForm.SetStatus(ActiveDocument.BuildScript.Name, description, ActiveDocument.FullName);
         }
 
         private void WindowFormClosed(object sender, FormClosedEventArgs e)
