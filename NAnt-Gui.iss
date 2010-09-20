@@ -9,7 +9,7 @@
 #define NAnt = "Tools\nant-0.91-alpha2"
 #define NAntContrib = "Tools\nantcontrib-0.85"
 
-#define AppVersion = GetStringFileInfo("NAnt-Gui\bin\Release\NAnt-Gui.exe", "FileVersion")
+#define AppVersion = GetFileVersion(AddBackslash(SourcePath) + "NAnt-Gui\bin\Release\NAnt-Gui.exe")
 
 
 [Setup]
@@ -197,7 +197,7 @@ Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 
 [Components]
 Name: bin; Description: Executable files; Types: custom compact full
-Name: bin\nant; Description: NAnt 0.85; Types: custom compact full
+Name: bin\nant; Description: NAnt 0.91-alpha2; Types: custom compact full
 Name: bin\contrib; Description: NAnt Contrib 0.85; Types: full custom compact
 Name: bin\innosetup; Description: NAnt InnoSetup Task; Types: full
 Name: examples; Description: Example NAnt build files; Types: full
@@ -206,7 +206,9 @@ Name: src; Description: Source code files; Types: full
 
 [InstallDelete]
 Name: {app}\src\Tools\ispack-5.1.6.exe; Type: files; Components: src
+Name: {app}\src\Tools\ispack-5.3.8.exe; Type: files; Components: src
 Name: {app}\src\Tools\nant-0.85-rc3; Type: filesandordirs; Components: src
+Name: {app}\src\Tools\nant-0.85; Type: filesandordirs; Components: src
 Name: {app}\src\Tools\nantcontrib-0.85-rc3; Type: filesandordirs; Components: src
 
 [Code]
@@ -281,3 +283,7 @@ begin
 	end;
   end;
 end;
+
+#ifdef Debug
+  #expr SaveToFile(AddBackslash(SourcePath) + "Preprocessed.iss")
+#endif
