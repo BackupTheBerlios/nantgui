@@ -73,6 +73,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAnt.Core, Version=0.91.3881.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Tools\nant-0.91-alpha2\bin\NAnt.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -84,9 +88,6 @@
     </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
-    </Reference>
-    <Reference Include="NAnt.Core, Version=0.85.2478.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Tools\nant-0.85\bin\NAnt.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

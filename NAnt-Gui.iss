@@ -95,7 +95,6 @@ Source: NAnt-Gui.Unittests\*.cs; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: i
 Source: NAnt-Gui.Unittests\*.resx; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt-Gui.Unittests\*.csproj; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Unittests\*.build; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
-; Source: NAnt-Gui.Unittests\*.bat; DestDir: {app}\src\NAnt-Gui.Unittests; Flags: ignoreversion; Components: src
 ; NAnt-Gui.Gui
 Source: NAnt-Gui.Gui\*.cs; DestDir: {app}\src\Nant-Gui.Gui; Flags: ignoreversion; Components: src
 Source: NAnt-Gui.Gui\*.resx; DestDir: {app}\src\Nant-Gui.Gui; Flags: ignoreversion skipifsourcedoesntexist; Components: src
@@ -136,6 +135,8 @@ Source: NAnt.InnoSetup.Tasks\*.cs; DestDir: {app}\src\NAnt.InnoSetup.Tasks; Flag
 Source: NAnt.InnoSetup.Tasks\*.csproj; DestDir: {app}\src\NAnt.InnoSetup.Tasks; Flags: ignoreversion; Components: src
 Source: NAnt.InnoSetup.Tasks\Sample.iss; DestDir: {app}\src\NAnt.InnoSetup.Tasks; Flags: ignoreversion skipifsourcedoesntexist; Components: src
 Source: NAnt.InnoSetup.Tasks\Properties\*.cs; DestDir: {app}\src\NAnt.InnoSetup.Tasks\Properties; Flags: ignoreversion; Components: src
+; Schemas
+Source: Schemas\*; DestDir: {app}\src\Schemas; Flags: ignoreversion recursesubdirs; Components: src
 ; Tools
 Source: Tools\*; DestDir: {app}\src\Tools; Flags: ignoreversion recursesubdirs; Components: src
 ; XmlEditor

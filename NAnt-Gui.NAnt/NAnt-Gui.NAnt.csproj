@@ -58,6 +58,14 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAnt.Core, Version=0.91.3881.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Tools\nant-0.91-alpha2\bin\NAnt.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NAnt.Win32Tasks, Version=0.91.3881.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Tools\nant-0.91-alpha2\bin\NAnt.Win32Tasks.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -71,12 +79,6 @@
       <Name>NAnt-Gui.Framework</Name>
       <Project>{50B75C58-CEE2-4CC5-BFB2-0462187C59C3}</Project>
     </ProjectReference>
-    <Reference Include="NAnt.Core, Version=0.85.2478.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Tools\nant-0.85\bin\NAnt.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NAnt.Win32Tasks, Version=0.85.2478.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Tools\nant-0.85\bin\NAnt.Win32Tasks.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfo.build" />

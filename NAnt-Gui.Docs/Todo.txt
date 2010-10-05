@@ -37,15 +37,16 @@ Required for 2.0
 (FIXED): BUG: During build, play button is not disabled
 (FIXED): BUG: edit file, click the close menuitem, will be asked twice to save.
 (DONE): Update copyright for nant
+(DONE): Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
 	
 Suggested for 2.0.1
 -------------------	
+- Remove NAnt-Gui.Framework dependency on NAnt.Core for commandline option parsing
 - Hook up the PropertyGrid editor context menu to the Edit commands main menu
 - If the file is readonly, make the editor readonly
 	* What happens if the user opens the file, then changes the readonly flag?
 - Make my own XmlEditorControl so I don't have to repeatedly modify sharpdevelop's code 
 	(might not work because I had to modify more than the control)	
-- Get schema for MSBuild to give to XmlEditor, figure out how to switch between the schemas for nant and msbuild	
 - Show/Hide Build menu and Build toolstrip for GenericFiles
 	+ In general, need different behaviours for the three different file types
 - Bug: MSBuild targets don't show up if you have the description setting set	  
