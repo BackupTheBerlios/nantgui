@@ -162,7 +162,7 @@ namespace NAntGui.Gui
             this.listBox1.HorizontalScrollbar = true;
             this.listBox1.Items.AddRange(new object[] {
             "ICSharpCode.TextEditor Copyright © 2000-2005 icsharpcode.net",
-            "NAnt 0.8.5 Copyright © 2001-2004 Gerry Shaw",
+            "NAnt 0.91-alpha2 Copyright 2001-2008 Gerry Shaw",
             "WeifenLuo.WinFormsUI.Docking 2.3.1 Copyright © 2007 Weifen Luo"});
             this.listBox1.Location = new System.Drawing.Point(8, 88);
             this.listBox1.Name = "listBox1";

@@ -36,6 +36,7 @@ Required for 2.0
 (FIXED): WTF: Where's my ctrl+space code completion???
 (FIXED): BUG: During build, play button is not disabled
 (FIXED): BUG: edit file, click the close menuitem, will be asked twice to save.
+(DONE): Update copyright for nant
 	
 Suggested for 2.0.1
 -------------------	
