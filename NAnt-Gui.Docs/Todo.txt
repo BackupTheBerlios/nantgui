@@ -1,7 +1,7 @@
 Required for 2.0
 ----------------
-- WTF: Where's my ctrl+space code completion???
 - BUG: During build, play button is not disabled
+- BUG: edit file, close, will be asked twice to save.
 - Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
 - Test what happens if .Net 2.0 not installed.  App shouldn't install (check in installer).
 - Test what happens if MSbuild is not installed.
@@ -35,6 +35,7 @@ Required for 2.0
 (DONE): Unistall of the app should remove the path from the PATH environment variable
 (DONE): Add basic MSBuild support
 (CANCELLED): 1.9/2.0 should probably be a different GUID (AppId) and Program Group so both 1.x series and 2.x can be installed at once?
+(FIXED): WTF: Where's my ctrl+space code completion???
 	
 Suggested for 2.0.1
 -------------------	

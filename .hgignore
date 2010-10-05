@@ -6,3 +6,4 @@ glob:_ReSharper*
 resharper
 sln.cache
 Installer
+glob:NAnt-Gui.5.1.ReSharper.user

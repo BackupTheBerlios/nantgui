@@ -51,7 +51,7 @@ Name: envpath; GroupDescription: Set environment variables; Description: Add bin
 Source: NAnt-Gui.Docs\*.txt; DestDir: {app}; Flags: ignoreversion; Excludes: Readme.Txt
 Source: NAnt-Gui.Docs\Readme.Txt; DestDir: {app}; Flags: ignoreversion isreadme
 Source: NAnt-Gui.Docs\BlankProject.build; DestDir: {app}\Data; Flags: ignoreversion
-Source: {#NAnt}\schema\nant.xsd; DestDir: {app}\Data; Flags: ignoreversion
+Source: Schemas\*; DestDir: {app}\Data\Schemas; Flags: ignoreversion recursesubdirs
 ; NAnt-Gui
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe; DestDir: {app}\bin; Flags: ignoreversion; Components: bin
 Source: NAnt-Gui\bin\Release\NAnt-Gui.exe.config; DestDir: {app}\bin; Flags: ignoreversion; Components: bin

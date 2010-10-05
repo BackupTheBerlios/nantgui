@@ -27,12 +27,8 @@ namespace NAntGui.Core
             get
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                if (assembly != null && assembly.Location != null)
-                {
-                    FileInfo info = new FileInfo(assembly.Location);
-                    return info.DirectoryName;
-                }
-                return "";
+                FileInfo info = new FileInfo(assembly.Location);
+                return info.DirectoryName;
             }
         }
 

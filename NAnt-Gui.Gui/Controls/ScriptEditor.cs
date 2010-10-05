@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using ICSharpCode.XmlEditor;
@@ -38,25 +39,34 @@ namespace NAntGui.Gui.Controls
         {
             InitializeComponent();
 #if DEBUG
-            const string fileName = @"..\..\..\Tools\nant-0.85\schema\nant.xsd";
+            const string folderName = @"..\..\..\Schemas";
 #else
-            const string fileName = @"..\Data\nant.xsd";
+            const string folderName = @"..\Data\Schemas";
 #endif
-            string path = Path.Combine(Utils.RunDirectory, fileName);
-            if (File.Exists(path))
+            string path = Path.Combine(Utils.RunDirectory, folderName);
+            if (Directory.Exists(path))
             {
-                try
-                {
-                    XmlSchemaCompletionData data = new XmlSchemaCompletionData(path);
-                    DefaultSchemaCompletionData = data;
-                    SchemaCompletionDataItems = new XmlSchemaCompletionDataCollection(new[] { data });
-                    CodeCompletionPopupCommand command = new CodeCompletionPopupCommand();
-                    editactions.Add(Keys.Space | Keys.Control, command);
-                }
-                catch (Exception)
-                {
-                }
+                List<XmlSchemaCompletionData> datas = GetSchemas(path,  new List<XmlSchemaCompletionData>());
+                //DefaultSchemaCompletionData = data;
+                SchemaCompletionDataItems = new XmlSchemaCompletionDataCollection(datas.ToArray());
+                CodeCompletionPopupCommand command = new CodeCompletionPopupCommand();
+                editactions.Add(Keys.Space | Keys.Control, command);
             }
+        }
+
+        private List<XmlSchemaCompletionData> GetSchemas(string path, List<XmlSchemaCompletionData> datas)
+        {
+            foreach (string file in Directory.GetFiles(path, "*.xsd"))
+            {
+                datas.Add(new XmlSchemaCompletionData(file));
+            }
+
+            foreach(string directory in Directory.GetDirectories(path))
+            {
+                GetSchemas(directory, datas);
+            }
+
+            return datas;
         }
 
         public void UpdateFolding()
