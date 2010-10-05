@@ -63,11 +63,11 @@ namespace NAntGui.Gui
             _options = options;
             _loader.DoWork += LoaderDoWork;
             _loader.RunWorkerCompleted += LoaderRunWorkerCompleted;
-            RecentItems.ItemAdded += RecentItems_ItemAdded;
-            Application.Idle += Application_Idle;
+            RecentItems.ItemAdded += RecentItemsItemAdded;
+            Application.Idle += ApplicationIdle;
         }
 
-        void Application_Idle(object sender, EventArgs e)
+        void ApplicationIdle(object sender, EventArgs e)
         {
             CheckForFileChanges();
             UpdateInterface();
@@ -121,6 +121,9 @@ namespace NAntGui.Gui
             else
                 _mainForm.DocumentsOpen();
 
+            // TODO: If running, this overrides the above to set the run button to 
+            // disabled. Should consolidate the two to prevent the duplication
+            _mainForm.UpdateBuildControls();           
 
             if (_focusedItem == FocusedItems.Output)
             {
@@ -161,7 +164,7 @@ namespace NAntGui.Gui
             }
         }
 
-        private void RecentItems_ItemAdded(object sender, RecentItemsEventArgs e)
+        private void RecentItemsItemAdded(object sender, RecentItemsEventArgs e)
         {
             _mainForm.CreateRecentItemsMenu();
         }
@@ -277,13 +280,7 @@ namespace NAntGui.Gui
         /// </summary>
         internal void Close()
         {
-            FormClosingEventArgs e = new FormClosingEventArgs(CloseReason.UserClosing, false);
-            CloseDocument(ActiveWindow, e);
-
-            if (!e.Cancel)
-            {
-                ActiveWindow.Close();
-            }
+            ActiveWindow.Close();
         }
 
         internal void CloseAllDocuments()
@@ -307,7 +304,7 @@ namespace NAntGui.Gui
         internal void MainFormClosing()
         {
             // Don't need this event while closing (should be in CloseAllDocuments)
-            _mainForm.DockPanel.ActiveDocumentChanged -= DockPanel_ActiveDocumentChanged;
+            _mainForm.DockPanel.ActiveDocumentChanged -= DockPanelActiveDocumentChanged;
         }
 
         internal void SelectAll()
@@ -457,7 +454,7 @@ namespace NAntGui.Gui
         {
             // may decouple the form and the controller (using events) later
             _mainForm = mainForm;
-            _mainForm.DockPanel.ActiveDocumentChanged += DockPanel_ActiveDocumentChanged;
+            _mainForm.DockPanel.ActiveDocumentChanged += DockPanelActiveDocumentChanged;
 
             _outputWindow = outputWindow;
             _outputWindow.Enter += OutputWindowEnter;
@@ -572,8 +569,8 @@ namespace NAntGui.Gui
             window.CloseAllClicked += delegate { CloseAllDocuments(); };
             window.CloseAllButThisClicked += delegate { CloseAllButThisClicked(); };
             window.SaveClicked += delegate { SaveDocument(); };
-            window.Leave += new EventHandler(WindowLeave);
-            window.Enter += new EventHandler(WindowEnter);
+            window.Leave += WindowLeave;
+            window.Enter += WindowEnter;
             window.Show(_mainForm.DockPanel);
         }
 
@@ -593,10 +590,13 @@ namespace NAntGui.Gui
             _mainForm.AddTargets(ActiveDocument.BuildScript);
             _mainForm.AddProperties(ActiveDocument.BuildScript.Properties);
 
-            // The following is required because when a file is loaded, update display gets called from ActiveDocument_Changed
+            // The following is required because when a file is loaded, update display gets called from ActiveDocumentChanged
             // before the document is finished loading and these values have been parsed.
             string description = String.Empty;
+
+            // TODO: Figure out why this unused variable exists.
             string name = String.Empty;
+
             if (!String.IsNullOrEmpty(ActiveDocument.BuildScript.Description))
                 description = ActiveDocument.BuildScript.Description.Replace(Environment.NewLine, String.Empty);
             if (!String.IsNullOrEmpty(ActiveDocument.BuildScript.Name))
@@ -631,7 +631,7 @@ namespace NAntGui.Gui
             get { return (ActiveWindow != null) ? _documents[ActiveWindow] : null; }
         }
 
-        private void DockPanel_ActiveDocumentChanged(object sender, EventArgs e)
+        private void DockPanelActiveDocumentChanged(object sender, EventArgs e)
         {
             if (ActiveWindow != null)
             {

@@ -46,6 +46,8 @@ namespace NAntGui.Gui
         private readonly PropertyWindow _propertyWindow = new PropertyWindow();
         private readonly TargetsWindow _targetsWindow = new TargetsWindow();
 
+        private bool _isRunning;
+
         public bool IsActive { get; private set; }
 
         public NAntGuiForm(MainController controller, CommandLineOptions options)
@@ -68,18 +70,6 @@ namespace NAntGui.Gui
         internal DockPanel DockPanel
         {
             get { return _dockPanel; }
-        }
-
-        private bool IsRunning
-        {
-            set
-            {
-
-                _runMenuItem.Enabled = !value;                        
-                _runToolStripButton.Enabled = !value;
-                _stopMenuItem.Enabled = value;
-                _stopToolStripButton.Enabled = value;
-            }
         }
 
         internal List<IBuildTarget> SelectedTargets
@@ -105,12 +95,12 @@ namespace NAntGui.Gui
         {
             if (InvokeRequired)
             {
-                MethodInvoker invoker = delegate { IsRunning = false; };
+                MethodInvoker invoker = delegate { _isRunning = false; };
                 Invoke(invoker);
             }
             else
             {
-                IsRunning = false;
+                _isRunning = false;
             }
         }
         
@@ -272,9 +262,30 @@ namespace NAntGui.Gui
             }
         }
 
+        internal void UpdateBuildControls()
+        {
+            _runMenuItem.Enabled = !_isRunning;
+            _runToolStripButton.Enabled = !_isRunning;
+            _stopMenuItem.Enabled = _isRunning;
+            _stopToolStripButton.Enabled = _isRunning;
+        }
+
+        internal void OutputWindowHasFocus()
+        {
+            _copyMenuItem.Enabled = true;
+            _cutMenuItem.Enabled = false;
+            _pasteMenuItem.Enabled = false;
+            _deleteMenuItem.Enabled = false;
+            _selectAllMenuItem.Enabled = true;
+
+            _copyToolStripButton.Enabled = true;
+            _cutToolStripButton.Enabled = false;
+            _pasteToolStripButton.Enabled = false;
+        }
+
         #region Private Methods
 
-        private void NAntGuiForm_DragDrop(object sender, DragEventArgs e)
+        private void NAntGuiFormDragDrop(object sender, DragEventArgs e)
         {
             _controller.DragDrop(e);
         }
@@ -284,7 +295,7 @@ namespace NAntGui.Gui
             MainController.DragEnter(e);
         }
 
-        private void NantGuiForm_Closing(object sender, FormClosingEventArgs e)
+        private void NantGuiFormClosing(object sender, FormClosingEventArgs e)
         {
             _dockPanel.SaveAsXml(Utils.DockingConfigPath);
             _controller.MainFormClosing();
@@ -303,7 +314,7 @@ namespace NAntGui.Gui
 
         private void RunClicked(object sender, EventArgs e)
         {
-            IsRunning = true;
+            _isRunning = true;
             _outputWindow.Clear();
             _outputWindow.Show(_dockPanel);
             _controller.Run(_targetsWindow.SelectedTargets);
@@ -432,7 +443,7 @@ namespace NAntGui.Gui
             Settings.Default.WordWrapOutput = _wordWrapMenuItem.Checked;
         }
 
-        private void NAntGuiForm_Load(object sender, EventArgs e)
+        private void NAntGuiFormLoad(object sender, EventArgs e)
         {
             if (File.Exists(Utils.DockingConfigPath))
             {
@@ -467,13 +478,13 @@ namespace NAntGui.Gui
         private void AttachEventHandlers()
         {
             _outputWindow.DragEnter += NAntGuiForm_DragEnter;
-            _outputWindow.DragDrop += NAntGuiForm_DragDrop;            
+            _outputWindow.DragDrop += NAntGuiFormDragDrop;            
 
             _propertyWindow.DragEnter += NAntGuiForm_DragEnter;
-            _propertyWindow.DragDrop += NAntGuiForm_DragDrop;
+            _propertyWindow.DragDrop += NAntGuiFormDragDrop;
 
             _targetsWindow.DragEnter += NAntGuiForm_DragEnter;
-            _targetsWindow.DragDrop += NAntGuiForm_DragDrop;
+            _targetsWindow.DragDrop += NAntGuiFormDragDrop;
             _targetsWindow.RunTarget += TargetsWindowRunTarget;
         }
 
@@ -524,30 +535,16 @@ namespace NAntGui.Gui
             _controller.NewNAntProjectClicked();
         }
 
-        private void NAntGuiForm_Activated(object sender, EventArgs e)
+        private void NAntGuiFormActivated(object sender, EventArgs e)
         {
             IsActive = true;
         }
 
-        private void NAntGuiForm_Deactivate(object sender, EventArgs e)
+        private void NAntGuiFormDeactivate(object sender, EventArgs e)
         {
             IsActive = false;
         }
 
         #endregion
-
-
-        internal void OutputWindowHasFocus()
-        {
-            _copyMenuItem.Enabled = true;
-            _cutMenuItem.Enabled = false;
-            _pasteMenuItem.Enabled = false;
-            _deleteMenuItem.Enabled = false;
-            _selectAllMenuItem.Enabled = true;
-
-            _copyToolStripButton.Enabled = true;
-            _cutToolStripButton.Enabled = false;
-            _pasteToolStripButton.Enabled = false;
-        }
     }
 }

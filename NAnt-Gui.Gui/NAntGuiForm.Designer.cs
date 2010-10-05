@@ -901,12 +901,12 @@ namespace NAntGui.Gui
             this.MinimumSize = new System.Drawing.Size(480, 344);
             this.Name = "NAntGuiForm";
             this.Text = "NAnt-Gui";
-            this.Deactivate += new System.EventHandler(this.NAntGuiForm_Deactivate);
-            this.Load += new System.EventHandler(this.NAntGuiForm_Load);
-            this.Activated += new System.EventHandler(this.NAntGuiForm_Activated);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.NAntGuiForm_DragDrop);
+            this.Deactivate += new System.EventHandler(this.NAntGuiFormDeactivate);
+            this.Load += new System.EventHandler(this.NAntGuiFormLoad);
+            this.Activated += new System.EventHandler(this.NAntGuiFormActivated);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.NAntGuiFormDragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.NAntGuiForm_DragEnter);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NantGuiForm_Closing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NantGuiFormClosing);
             this._standardToolStrip.ResumeLayout(false);
             this._standardToolStrip.PerformLayout();
             this._statusStrip.ResumeLayout(false);

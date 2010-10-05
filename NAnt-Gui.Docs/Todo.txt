@@ -1,10 +1,8 @@
 Required for 2.0
 ----------------
-- BUG: During build, play button is not disabled
-- BUG: edit file, close, will be asked twice to save.
 - Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
 - Test what happens if .Net 2.0 not installed.  App shouldn't install (check in installer).
-- Test what happens if MSbuild is not installed.
+- Test what happens if MSbuild is not installed (comes with framework?).
 - General testing
 
 (FIXED): During build, build_number.txt is asked to be reloaded twice (first time it's not actually reloaded)
@@ -36,6 +34,8 @@ Required for 2.0
 (DONE): Add basic MSBuild support
 (CANCELLED): 1.9/2.0 should probably be a different GUID (AppId) and Program Group so both 1.x series and 2.x can be installed at once?
 (FIXED): WTF: Where's my ctrl+space code completion???
+(FIXED): BUG: During build, play button is not disabled
+(FIXED): BUG: edit file, click the close menuitem, will be asked twice to save.
 	
 Suggested for 2.0.1
 -------------------	
