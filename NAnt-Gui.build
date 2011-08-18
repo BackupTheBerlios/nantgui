@@ -3,8 +3,12 @@
 
   <loadtasks assembly="Tools\nantcontrib-0.85\bin\NAnt.Contrib.Tasks.dll" />
   
-  <target name="Installer" description="Create InnoSetup Installer" depends="Release">
-	  <loadtasks assembly="Nant.InnoSetup.Tasks\bin\Release\NAnt.InnoSetup.Tasks.dll" />
+  <property name="debug" value="true" overwrite="false" />
+  <property name="config" value="Debug" if="${debug}" />
+  <property name="config" value="Release" unless="${debug}" />
+   
+  <target name="Installer" description="Create InnoSetup Installer" depends="Build">
+	  <loadtasks assembly="Nant.InnoSetup.Tasks\bin\${Config}\NAnt.InnoSetup.Tasks.dll" />
     <innosetup script="NAnt-Gui.iss" />
   </target>
 
@@ -13,27 +17,19 @@
     <exec program="installer\NAnt-Gui-${nantgui.version}.exe" />
   </target>
 
-  <target name="Debug" description="Build Debug App">
+  <target name="Build" description="Build the app">
+  	<version path="build_number.txt" prefix="nantgui" revisiontype="Increment" buildtype="NoIncrement" unless="${debug}" />
     <exec program="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSbuild.exe">
 	    <arg value="NAnt-Gui.sln" />
-		  <arg value="/p:Configuration=Debug" />
-	  </exec>
-  </target>
-
-  <target name="Release" description="Build Release App">
-  	<version path="build_number.txt" prefix="nantgui" revisiontype="Increment" buildtype="NoIncrement" />
-    <exec program="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSbuild.exe">
-	    <arg value="NAnt-Gui.sln" />
-		  <arg value="/p:Configuration=Release" />
+		  <arg value="/p:Configuration=${config}" />
 	  </exec>
   </target>
 
   <target name="Clean" description="Delete all the binaries">
     <delete>
-      <fileset>
-        <include name="**\Debug\NAnt-Gui.*" />
-	      <include name="**\Release\NAnt-Gui.*" />
-	  </fileset>
+        <fileset>
+            <include name="**\{$config}\NAnt-Gui.*" />	      
+        </fileset>
     </delete>
   </target>
 </project>

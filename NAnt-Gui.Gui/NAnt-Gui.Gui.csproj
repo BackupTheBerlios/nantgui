@@ -313,7 +313,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)Tools\nant-0.91-alpha2\bin\nant.exe" -nologo -q -t:net-2.0 -f:"$(ProjectDir)AssemblyInfo.build"</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)Tools\nant-0.91-alpha2\bin\nant.exe" -nologo -q -f:"$(ProjectDir)AssemblyInfo.build"</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

@@ -1,7 +1,7 @@
 Required for 2.0
 ----------------
-- Test what happens if .Net 3.0 or 3.5 are NOT installed.  Make sure that it runs with only 2.0.
-- Test what happens if .Net 2.0 not installed.  App shouldn't install (check in installer).
+- BUG: Failed build does not change the build buttons states
+- Test what happens if .Net 3.5 not installed.  App shouldn't install (check in installer).
 - Test what happens if MSbuild is not installed (comes with framework?).
 - General testing
 

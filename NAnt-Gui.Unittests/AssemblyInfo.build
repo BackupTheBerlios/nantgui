@@ -12,7 +12,7 @@
 		        <attribute type="AssemblyVersionAttribute" value="${nantgui.version}" />
 		        <attribute type="AssemblyTitleAttribute" value="NAnt-Gui.Unittests" />
 		        <attribute type="AssemblyDescriptionAttribute" value="Executes and edits NAnt build scripts" />
-		        <attribute type="AssemblyCopyrightAttribute" value="Copyright © 2005, Colin Svingen" />
+		        <attribute type="AssemblyCopyrightAttribute" value="Copyright © 2011, Colin Svingen" />
 		        <attribute type="AssemblyProductAttribute" value="NAnt-Gui" />
 		    </attributes>
 		    <references>
