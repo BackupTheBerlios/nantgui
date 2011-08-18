@@ -24,7 +24,6 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Xml;
 using Microsoft.Win32;
 using NAnt.Core;
 using NAnt.Core.Attributes;
@@ -46,7 +45,7 @@ namespace NAnt.InnoSetup.Tasks
     [TaskName("innosetup")]
     public class InnoSetup : ExternalProgramBase
     {
-        private const string INNO_EXE = "iscc.exe";
+        private const string InnoExe = "iscc.exe";
 
         #region Private Instance Fields
 
@@ -124,7 +123,7 @@ namespace NAnt.InnoSetup.Tasks
                 }
 
                 string lInnoDir = lKey.GetValue("InstallLocation", "").ToString();
-                string lFullPath = Path.Combine(lInnoDir, INNO_EXE);
+                string lFullPath = Path.Combine(lInnoDir, InnoExe);
 
                 if (!File.Exists(lFullPath))
                 {
@@ -194,12 +193,7 @@ namespace NAnt.InnoSetup.Tasks
             process.StartInfo.WorkingDirectory = WorkingDirectory.FullName;
         }
 
-        /// <summary>
-        /// Performs additional checks after the task has been initialized.
-        /// </summary>
-        /// <param name="taskNode">The <see cref="XmlNode" /> used to initialize the task.</param>
-        /// <exception cref="BuildException"><see cref="Script" /> does not hold a valid file name.</exception>
-        protected override void InitializeTask(XmlNode taskNode)
+        protected override void Initialize()
         {
             // just check if program file to execute is a valid file name
             if (!Script.Exists)
@@ -209,7 +203,7 @@ namespace NAnt.InnoSetup.Tasks
                                                        Script.FullName, Name), Location);
             }
 
-            base.InitializeTask(taskNode);
+            base.Initialize();
         }
 
         #endregion

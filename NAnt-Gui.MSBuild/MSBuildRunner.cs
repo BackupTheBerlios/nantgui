@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Build.BuildEngine;
-using Microsoft.Win32;
 using NAntGui.Framework;
 using BuildFinishedEventArgs=Microsoft.Build.Framework.BuildFinishedEventArgs;
 
@@ -33,19 +32,11 @@ namespace NAntGui.MSBuild
 {
     public class MSBuildRunner : BuildRunnerBase
     {
-        private const string MSBUILD_TOOLSPATH = @"SOFTWARE\Microsoft\MSBuild\ToolsVersions\2.0";
         private static readonly Engine _engine = new Engine();
 
         public MSBuildRunner(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options) :
             base(fileInfo, logger, options)
         {
-            RegistryKey key = Registry.LocalMachine.OpenSubKey(MSBUILD_TOOLSPATH, false);
-            if (key != null)
-            {
-                Engine.BinPath = key.GetValue("MSBuildToolsPath").ToString();
-                key.Close();
-            }
-
             _engine.RegisterLogger(new GuiLogger(_logger));
             _engine.RegisterLogger(new BuildFinishHandler(Build_Finished));
         }
