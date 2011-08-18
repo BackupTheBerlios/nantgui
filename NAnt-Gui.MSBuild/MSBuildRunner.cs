@@ -51,8 +51,8 @@ namespace NAntGui.MSBuild
             Environment.CurrentDirectory = _fileInfo.DirectoryName;
             
             List<string> targets = _targets.ConvertAll(prop => prop.Name);
-
-            _engine.BuildProjectFile(_fileInfo.FullName, targets.ToArray());
+            Project proj = _engine.GetLoadedProject(_fileInfo.FullName);
+            _engine.BuildProject(proj, targets.ToArray());
             //SetTargetFramework();
         }
 

@@ -8,7 +8,7 @@
   <property name="config" value="Release" unless="${debug}" />
    
   <target name="Installer" description="Create InnoSetup Installer" depends="Build">
-	  <loadtasks assembly="Nant.InnoSetup.Tasks\bin\${Config}\NAnt.InnoSetup.Tasks.dll" />
+	  <loadtasks assembly="Nant.InnoSetup.Tasks\bin\${config}\NAnt.InnoSetup.Tasks.dll" />
     <innosetup script="NAnt-Gui.iss" />
   </target>
 
