@@ -14,26 +14,15 @@
   </target>
 
   <target name="Debug" description="Build Debug App">
-    
-    <msbuild project="NAnt-Gui.sln">
-  		<arg value="/property:Configuration=debug" />
-  	</msbuild>
-    
-    <!--  Doesn't work now with a 2008 solution 
-	  <exec program="C:\WINDOWS\Microsoft.NET\Framework\v3.5\MSbuild.exe">
-       <arg value="NAnt-Gui.sln" />       
-    </exec>
-    -->
+    <exec program="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSbuild.exe">
+	    <arg value="NAnt-Gui.sln" />
+		  <arg value="/p:Configuration=Debug" />
+	  </exec>
   </target>
 
   <target name="Release" description="Build Release App">
   	<version path="build_number.txt" prefix="nantgui" revisiontype="Increment" buildtype="NoIncrement" />
-	  <!--  Doesn't work now with a 2008 solution 
-	  <msbuild project="NAnt-Gui.sln">
-  		<arg value="/property:Configuration=release" />
-	  </msbuild>
-	  -->
-	  <exec program="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSbuild.exe">
+    <exec program="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSbuild.exe">
 	    <arg value="NAnt-Gui.sln" />
 		  <arg value="/p:Configuration=Release" />
 	  </exec>

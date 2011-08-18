@@ -101,7 +101,7 @@ namespace NAnt.InnoSetup.Tasks
         /// </value>
         public override string ProgramArguments
         {
-            get { return ""; }
+            get { return string.Empty; }
         }
 
         /// <summary>
@@ -115,22 +115,28 @@ namespace NAnt.InnoSetup.Tasks
             get
             {
                 const string keyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1";
-                RegistryKey lKey = Registry.LocalMachine.OpenSubKey(keyPath);
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(keyPath);
 
-                if (lKey == null)
+                if (key == null)
                 {
-                    throw new BuildException("Inno Setup does not appear to be installed.", Location);
+                    const string keyPath64 = @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1";
+                    key = Registry.LocalMachine.OpenSubKey(keyPath64);
+
+                    if (key == null)
+                    {
+                        throw new BuildException("Inno Setup does not appear to be installed.", Location);
+                    }
                 }
 
-                string lInnoDir = lKey.GetValue("InstallLocation", "").ToString();
-                string lFullPath = Path.Combine(lInnoDir, InnoExe);
+                string innoDir = key.GetValue("InstallLocation", "").ToString();
+                string fullPath = Path.Combine(innoDir, InnoExe);
 
-                if (!File.Exists(lFullPath))
+                if (!File.Exists(fullPath))
                 {
                     throw new BuildException("Inno Setup (iscc.exe) could not be found.", Location);
                 }
 
-                return lFullPath;
+                return fullPath;
             }
         }
 
