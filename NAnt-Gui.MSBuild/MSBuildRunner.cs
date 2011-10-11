@@ -24,53 +24,43 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Framework;
 using NAntGui.Framework;
-using BuildFinishedEventArgs=Microsoft.Build.Framework.BuildFinishedEventArgs;
+using BuildFinishedEventArgs = Microsoft.Build.Framework.BuildFinishedEventArgs;
 
 namespace NAntGui.MSBuild
 {
     public class MSBuildRunner : BuildRunnerBase
     {
-        private static readonly Engine _engine = new Engine();
+        List<ILogger> _loggers = new List<ILogger>();
+        ProjectCollection _projects = new ProjectCollection();
+        Project _project;
 
         public MSBuildRunner(FileInfo fileInfo, ILogsMessage logger, CommandLineOptions options) :
             base(fileInfo, logger, options)
         {
-            _engine.RegisterLogger(new GuiLogger(_logger));
-            _engine.RegisterLogger(new BuildFinishHandler(Build_Finished));
-        }
-
-        public static Engine Engine
-        {
-            get { return _engine; }
+            _loggers.Add(new GuiLogger(_logger, OnBuildFinished));
         }
 
         protected override void DoRun()
         {
-            Environment.CurrentDirectory = _fileInfo.DirectoryName;
+            Environment.CurrentDirectory = _fileInfo.DirectoryName;            
             
             List<string> targets = _targets.ConvertAll(prop => prop.Name);
-            Project proj = _engine.GetLoadedProject(_fileInfo.FullName);
-            _engine.BuildProject(proj, targets.ToArray());
+            _project = _projects.LoadProject(_fileInfo.FullName);
+            _project.Build(targets.ToArray(), _loggers);
+            
             //SetTargetFramework();
         }
 
-/*
-        private BuildPropertyGroup GenerateProperties()
+        public override void Close()
         {
-            BuildPropertyGroup group = new BuildPropertyGroup();
-            foreach (IBuildProperty property in _properties.Values)
-            {
-                group.AddNewProperty()
-                
-            }
-
-            return group;
+            base.Close();
+            _projects.UnregisterAllLoggers();
         }
-*/
 
-        private void Build_Finished(object sender, BuildFinishedEventArgs e)
+        public void OnBuildFinished(object sender, BuildFinishedEventArgs e)
         {
             FinishBuild();
         }

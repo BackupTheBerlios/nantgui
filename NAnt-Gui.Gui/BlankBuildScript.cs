@@ -10,7 +10,7 @@ namespace NAntGui.Gui
     {
         public string Description
         {
-            get { return ""; }
+            get { return string.Empty; }
         }
 
         public void Parse()
@@ -21,6 +21,11 @@ namespace NAntGui.Gui
         public string Name
         {
             get { return "Untitled"; }
+        }
+
+        public bool HideTargetsWithoutDescription
+        {
+            get { return false; }
         }
 
         public List<IBuildProperty> Properties

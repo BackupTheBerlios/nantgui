@@ -27,6 +27,7 @@ using System.IO;
 using System.Windows.Forms;
 using NAntGui.Core;
 using NAntGui.Framework;
+using NAntGui.Gui.Properties;
 
 namespace NAntGui.Gui
 {
@@ -76,7 +77,7 @@ namespace NAntGui.Gui
 
             Load();
 
-            BuildScript = ScriptParserFactory.Create(fileInfo);
+            BuildScript = ScriptParserFactory.Create(fileInfo, Settings.Default.HideTargetsWithoutDescription);
             _buildRunner = BuildRunnerFactory.Create(fileInfo, logger, _options);
             _buildRunner.Properties = BuildScript.Properties;
         }
@@ -111,7 +112,7 @@ namespace NAntGui.Gui
             LastModified = fileInfo.LastWriteTime;
             FileType = FileType.Existing;
 
-            BuildScript = ScriptParserFactory.Create(fileInfo);
+            BuildScript = ScriptParserFactory.Create(fileInfo, Settings.Default.HideTargetsWithoutDescription);
             _buildRunner = BuildRunnerFactory.Create(fileInfo, _logger, _options);
 
             ParseBuildFile();
@@ -156,7 +157,10 @@ namespace NAntGui.Gui
         internal void Close()
         {
             if (_buildRunner != null)
+            {
                 _buildRunner.Stop();
+                _buildRunner.Close();
+            }
         }
 
         private void ParseBuildFile()
@@ -174,10 +178,10 @@ namespace NAntGui.Gui
                 MessageBox.Show(error.Message);
             }
 #else
-			catch
-			{
-				/* ignore */
-			}
+            catch
+            {
+                /* ignore */
+            }
 #endif
         }
 

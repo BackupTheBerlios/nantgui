@@ -43,10 +43,10 @@ namespace NAntGui.NAnt
         /// <summary>
         /// Create a new project parser.
         /// </summary>
-        public NAntBuildScript(FileInfo file)
+        public NAntBuildScript(FileInfo file, bool hideTargetsWithoutDescription)
             : base(file)
         {
-            
+            HideTargetsWithoutDescription = hideTargetsWithoutDescription;
         }
 
         public override void Parse()
@@ -279,33 +279,33 @@ namespace NAntGui.NAnt
         }
 
         /*
-		/// <summary>
-		/// Not in use right now because it opens a can of worms.
-		/// The only way to know what value the input attribute has 
-		/// is to run the program.  
-		/// </summary>
-		/// <param name="project"></param>
-		private void AddRegex(Project project)
-		{
-			foreach (XmlElement element in project.Document.GetElementsByTagName("regex"))
-			{
-				if (TypeFactory.TaskBuilders.Contains(element.Name))
-				{
-					ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
-					if (task != null && task.PropertyName != null)
-					{
-						task.Execute();
+        /// <summary>
+        /// Not in use right now because it opens a can of worms.
+        /// The only way to know what value the input attribute has 
+        /// is to run the program.  
+        /// </summary>
+        /// <param name="project"></param>
+        private void AddRegex(Project project)
+        {
+            foreach (XmlElement element in project.Document.GetElementsByTagName("regex"))
+            {
+                if (TypeFactory.TaskBuilders.Contains(element.Name))
+                {
+                    ReadRegistryTask task = (ReadRegistryTask) project.CreateTask(element);
+                    if (task != null && task.PropertyName != null)
+                    {
+                        task.Execute();
 
-						NAntProperty nAntProperty = new NAntProperty(
-							task.PropertyName, task.Properties[task.PropertyName], 
-							element.ParentNode.Attributes["name"].Value, false);
+                        NAntProperty nAntProperty = new NAntProperty(
+                            task.PropertyName, task.Properties[task.PropertyName], 
+                            element.ParentNode.Attributes["name"].Value, false);
 
-						nAntProperty.ExpandedValue = nAntProperty.Value;
-						_properties.Add(nAntProperty);
-					}
-				}
-			}
-		}
-		*/
+                        nAntProperty.ExpandedValue = nAntProperty.Value;
+                        _properties.Add(nAntProperty);
+                    }
+                }
+            }
+        }
+        */
     }
 }

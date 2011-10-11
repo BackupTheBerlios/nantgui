@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using NAntGui.Framework;
-using NAntGui.Gui.Properties;
 
 namespace NAntGui.Gui.Controls
 {
@@ -76,7 +75,7 @@ namespace NAntGui.Gui.Controls
             _treeView.Nodes.Clear();
         }
 
-        internal void SetTargets(List<IBuildTarget> targets)
+        internal void SetTargets(List<IBuildTarget> targets, bool hideTargetsWithoutDescription)
         {
             _treeView.Nodes.Clear();
 
@@ -84,7 +83,7 @@ namespace NAntGui.Gui.Controls
 
             foreach (IBuildTarget target in targets)
             {
-                AddTargetTreeNode(target);
+                AddTargetTreeNode(target, hideTargetsWithoutDescription);
             }
 
             _treeView.ExpandAll();
@@ -142,9 +141,9 @@ namespace NAntGui.Gui.Controls
 
         #region Private Methods
 
-        private void AddTargetTreeNode(IBuildTarget target)
+        private void AddTargetTreeNode(IBuildTarget target, bool hideTargetsWithoutDescription)
         {
-            if (!Settings.Default.HideTargetsWithoutDescription || HasDescription(target.Description))
+            if (!hideTargetsWithoutDescription || HasDescription(target.Description))
             {
                 string targetName = FormatTargetName(target.Name, target.Description);
                 TreeNode node = new TreeNode(targetName);

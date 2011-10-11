@@ -24,47 +24,47 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 using NAntGui.Framework;
-using BuildProperty=Microsoft.Build.BuildEngine.BuildProperty;
+using Microsoft.Build.Execution;
 
 
 namespace NAntGui.MSBuild
 {
     public class MSBuildScript : BuildScript
     {
+        private ProjectCollection _projects = new ProjectCollection();
+        private ProjectInstance _projectInstance;
+        private Project _project;
         private List<string> _defaultTargets;
         private List<string> _initialTargets;
 
         public MSBuildScript(FileInfo file) : base(file)
         {
-            Name = file.Name;
+            Name = file.Name.Remove(file.Name.LastIndexOf('.'));
+            Name = Name.Substring(0, 1).ToUpper() + Name.Substring(1);
+            HideTargetsWithoutDescription = false;
         }
 
         public override void Parse()
         {
-            Project project = CreateProject();
+            CreateProject();
 
             Targets.Clear();
             Properties.Clear();
 
-            ParseDefaultTargets(project);
-            ParseInitialTargets(project);
-            ParseTargets(project);
-            ParseProperties(project);
+            _defaultTargets = _projectInstance.DefaultTargets;
+            _initialTargets = _projectInstance.InitialTargets;
+            ParseTargets();
+            ParseProperties();
         }
 
-        private Project CreateProject()
+        private void CreateProject()
         {
             try
             {
-                Project project = new Project(MSBuildRunner.Engine);
-                project.Load(_file.FullName);
-                return project;
-            }
-            catch (ArgumentException)
-            {
-                return null;
+                _projectInstance = new ProjectInstance(_file.FullName);
+                _project = _projects.LoadProject(_file.FullName);
             }
             catch (Exception error)
             {
@@ -72,22 +72,13 @@ namespace NAntGui.MSBuild
             }
         }
 
-        private void ParseDefaultTargets(Project project)
+        private void ParseTargets()
         {
-            _defaultTargets = new List<string>(project.DefaultTargets.Replace(" ", "").Split(';'));
-        }
-
-        private void ParseInitialTargets(Project project)
-        {
-            _initialTargets = new List<string>(project.InitialTargets.Replace(" ", "").Split(';'));
-        }
-
-        private void ParseTargets(Project project)
-        {
-            foreach (Target mstarget in project.Targets)
+            foreach (ProjectTargetInstance mstarget in _projectInstance.Targets.Values)
             {
-                if (!mstarget.IsImported || _defaultTargets.Contains(mstarget.Name))
-                {
+                // TODO: Figure out how to eliminate imported targets
+                //if (!mstarget.IsImported || _defaultTargets.Contains(mstarget.Name))
+                //{
                     MSBuildTarget target = new MSBuildTarget(mstarget.Name);
                     target.Condition = mstarget.Condition;
                     target.Depends = mstarget.DependsOnTargets.Replace(" ", "").Split(';');
@@ -99,28 +90,39 @@ namespace NAntGui.MSBuild
                         target.Initial = true;
 
                     Targets.Add(target);
-                }
+                //}
             }
-
-            //Targets.Sort();
         }
 
-        private void ParseProperties(Project project)
+        private void ParseProperties()
         {
-            foreach (BuildPropertyGroup group in project.PropertyGroups)
+            foreach (ProjectProperty msproperty in _project.Properties)
             {
-                foreach (BuildProperty msproperty in group)
+                // TODO: Should allow the user to toggle shwoing imported properties
+                if (!msproperty.Name.StartsWith("_") && !msproperty.IsImported && 
+                    !msproperty.IsEnvironmentProperty && !msproperty.IsGlobalProperty && 
+                    !msproperty.IsReservedProperty)
                 {
-                    // TODO: Should allow the user to toggle shwoing imported properties
-                    if (!msproperty.Name.StartsWith("_") && !msproperty.IsImported)
-                    {
-                        // TODO: Should allow the user to toggle using the FinalValue on and off, 
-                        // because sometimes they may want to change the actual value, and sometimes 
-                        // the expanded value
-                        MSBuildProperty property = new MSBuildProperty(msproperty.Name, msproperty.FinalValue,
-                                                                       group.Condition, msproperty.Condition);
-                        Properties.Add(property);
-                    }
+                    // TODO: Should allow the user to toggle using the FinalValue on and off, 
+                    // because sometimes they may want to change the actual value, and sometimes 
+                    // the expanded value
+                    MSBuildProperty property = new MSBuildProperty(msproperty.Name, msproperty.EvaluatedValue,
+                                                                    string.Empty, string.Empty);
+                    Properties.Add(property);
+                }
+                else if (!msproperty.Name.StartsWith("_") && !msproperty.IsImported &&                    
+                    msproperty.IsReservedProperty)
+                {
+                    MSBuildProperty property = new MSBuildProperty(msproperty.Name, msproperty.EvaluatedValue,
+                                                                   "Reserved", string.Empty);
+                    Properties.Add(property);
+                }
+                else if (!msproperty.Name.StartsWith("_") && !msproperty.IsImported &&
+                    msproperty.IsEnvironmentProperty)
+                {
+                    MSBuildProperty property = new MSBuildProperty(msproperty.Name, msproperty.EvaluatedValue,
+                                                                   "Environment", string.Empty);
+                    Properties.Add(property);
                 }
             }
         }

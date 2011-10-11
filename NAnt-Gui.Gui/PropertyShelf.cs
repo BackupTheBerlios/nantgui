@@ -118,7 +118,7 @@ namespace NAntGui.Gui
 
                 BuildPropertyDescriptor pd = new BuildPropertyDescriptor(property, attrs.ToArray());
                 props.Add(pd);
-            }
+            }           
 
             return new PropertyDescriptorCollection(props.ToArray());
         }

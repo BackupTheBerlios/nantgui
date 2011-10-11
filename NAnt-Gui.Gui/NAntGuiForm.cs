@@ -129,7 +129,7 @@ namespace NAntGui.Gui
         internal void AddTargets(IBuildScript buildScript)
         {
             _targetsWindow.ProjectName = buildScript.Name;
-            _targetsWindow.SetTargets(buildScript.Targets);
+            _targetsWindow.SetTargets(buildScript.Targets, buildScript.HideTargetsWithoutDescription);
         }
 
         internal bool RedoEnabled

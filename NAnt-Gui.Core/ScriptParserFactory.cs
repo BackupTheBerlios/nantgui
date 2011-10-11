@@ -11,12 +11,12 @@ namespace NAntGui.Core
     /// </summary>
     public static class ScriptParserFactory
     {
-        public static IBuildScript Create(FileInfo fileInfo)
+        public static IBuildScript Create(FileInfo fileInfo, bool hideTargetsWithoutDescription)
         {
             IBuildScript script;
 
             if (Utils.NantExtensions.Contains(fileInfo.Extension))
-                script = new NAntBuildScript(fileInfo);
+                script = new NAntBuildScript(fileInfo, hideTargetsWithoutDescription);
             else if (Utils.MsbuildExtensions.Contains(fileInfo.Extension) || fileInfo.Extension.EndsWith("proj"))
                 script = new MSBuildScript(fileInfo);
             else

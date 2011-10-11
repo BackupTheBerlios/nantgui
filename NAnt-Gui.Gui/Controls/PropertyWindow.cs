@@ -24,6 +24,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using NAntGui.Framework;
+using System.ComponentModel;
 
 namespace NAntGui.Gui.Controls
 {
@@ -44,7 +45,24 @@ namespace NAntGui.Gui.Controls
 
         internal void AddProperties(List<IBuildProperty> properties)
         {
-            _propertyGrid.SelectedObject = new PropertyShelf(properties);            
+            _propertyGrid.SelectedObject = new PropertyShelf(properties);
+            CollapseBuiltinCategories();
+        }
+
+        private void CollapseBuiltinCategories()
+        {
+            GridItem root = _propertyGrid.SelectedGridItem;
+            while (root.Parent != null)
+                root = root.Parent;
+
+            if (root != null)
+            {
+                foreach (GridItem item in root.GridItems)
+                {
+                    if (item.Label == "Environment" || item.Label == "Reserved")
+                        item.Expanded = false;
+                }
+            }
         }
 
         internal void Clear()

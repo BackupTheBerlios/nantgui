@@ -1,24 +1,51 @@
 ﻿using System;
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 using NAntGui.Framework;
 
 namespace NAntGui.MSBuild
 {
-    class GuiLogger : Logger
+    class GuiLogger : ILogger
     {
         private readonly ILogsMessage _messageLogger;
+        private readonly BuildFinishedEventHandler _buildFinished;
+        private LoggerVerbosity _verbosity;
 
-        public GuiLogger(ILogsMessage messageLogger)
+        public GuiLogger(ILogsMessage messageLogger, BuildFinishedEventHandler buildFinished)
         {
             _messageLogger = messageLogger;
+            _buildFinished = buildFinished;
+            _verbosity = LoggerVerbosity.Normal;
         }
 
-        public override void Initialize(IEventSource eventSource)
+        void ILogger.Initialize(IEventSource eventSource)
         {
             eventSource.MessageRaised += EventSourceMessageRaised;
             eventSource.WarningRaised += EventSourceWarningRaised;
             eventSource.ErrorRaised += EventSourceErrorRaised;
+            eventSource.BuildFinished += _buildFinished;
+        }
+
+        public string Parameters
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void Shutdown()
+        {
+            // do nothing
+        }
+
+        public LoggerVerbosity Verbosity
+        {
+            get { return _verbosity; }
+            set { _verbosity = value; }
         }
 
         private void EventSourceErrorRaised(object sender, BuildErrorEventArgs e)
@@ -39,9 +66,9 @@ namespace NAntGui.MSBuild
         {
             // BuildMessageEventArgs adds Importance to BuildEventArgs
             // Let's take account of the verbosity setting we've been passed in deciding whether to log the message
-            if ((e.Importance == MessageImportance.High && IsVerbosityAtLeast(LoggerVerbosity.Minimal))
-                || (e.Importance == MessageImportance.Normal && IsVerbosityAtLeast(LoggerVerbosity.Normal))
-                || (e.Importance == MessageImportance.Low && IsVerbosityAtLeast(LoggerVerbosity.Detailed))
+            if ((e.Importance == MessageImportance.High && _verbosity == LoggerVerbosity.Minimal)
+                || (e.Importance == MessageImportance.Normal && _verbosity == LoggerVerbosity.Normal)
+                || (e.Importance == MessageImportance.Low && _verbosity == LoggerVerbosity.Detailed)
                 )
             {
                 WriteMessage(string.Empty, e);
@@ -52,5 +79,5 @@ namespace NAntGui.MSBuild
         {
             _messageLogger.LogMessage(line + e.Message);
         }
-    }
+     }
 }
